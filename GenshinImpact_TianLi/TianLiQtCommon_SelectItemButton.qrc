@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="TianLiQtCommon_SelectedItemButton">
+    <file>resource/TianLiQtCommon_SelectedItemButton/TianLiQtCommon_SelectedItemButton_background_hover.png</file>
+    <file>resource/TianLiQtCommon_SelectedItemButton/TianLiQtCommon_SelectedItemButton_background.png</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TianLiQtCommon_PickedItemButton</class>
+ <widget class="QPushButton" name="TianLiQtCommon_PickedItemButton">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>195</width>
+    <height>27</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>195</width>
+    <height>27</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>195</width>
+    <height>27</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>TianLiQtCommon_PickedItemButton</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{
+background-image:url(:/TianLiQtCommon_PickedItemButton/resource/TianLiQtCommon_PickedItemButton/TianLiQtCommon_PickedItemButton_background.png);
+border:none;
+}
+QPushButton:hover{
+background-image:url(:/TianLiQtCommon_PickedItemButton/resource/TianLiQtCommon_PickedItemButton/TianLiQtCommon_PickedItemButton_background_hover.png);
+}
+</string>
+  </property>
+  <widget class="QLabel" name="label_Image">
+   <property name="geometry">
+    <rect>
+     <x>27</x>
+     <y>0</y>
+     <width>27</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Null</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Title">
+   <property name="geometry">
+    <rect>
+     <x>54</x>
+     <y>0</y>
+     <width>130</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>HYWenHei</family>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+font-size:12px;</string>
+   </property>
+   <property name="text">
+    <string>空物品</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="TianLiQtCommon_PickedItemButton.qrc"/>
+ </resources>
+ <connections/>
+</ui>

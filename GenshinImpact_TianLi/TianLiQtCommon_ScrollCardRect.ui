@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TianLiQtCommon_ScrollCardRect</class>
+ <widget class="QWidget" name="TianLiQtCommon_ScrollCardRect">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>160</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TianLiQtCommon_ScrollCardRect</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>280</width>
+     <height>140</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">.QWidget{
+background-color:qradialgradient(spread:pad, cx:0.5, cy:0.488636, radius:1.502, fx:0.318, fy:0.227273, stop:0 rgba(235,233,227, 255), stop:0.659091 rgba(228,221,213, 255), stop:1 rgba(224,215,206, 255));
+border-radius:9px;
+}</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>2</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>2</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item row="1" column="0">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="styleSheet">
+       <string notr="true">.QScrollArea{
+background-color:rgba(255, 255, 255,0);
+border: none;
+}
+
+
+.QScrollArea QScrollBar:vertical {
+border: none;
+background: rgb(255, 255, 255);
+width: 6px;
+margin: 0px 0 0px 0;
+}
+.QScrollBar:horizontal {
+border: none;
+background: rgb(255, 255, 255);
+height: 1px;
+margin: 0px 0 0px 0;
+}
+
+
+.QScrollBar::handle:vertical {
+background: rgb(233, 236, 240);
+border-radius: 0px;
+min-height: 100px;
+border: none;
+}
+
+.QScrollBar::handle:horizontal {
+background: rgb(244, 242, 238);
+border-radius: 2px;
+min-width: 520px;
+border: none;
+}
+
+QScrollBar::handle:vertical:hover, QScrollBar::handle:vertical:pressed{ 
+background:rgb(210, 213, 216);
+}
+QScrollBar::handle:horizontal:hover,QScrollBar::handle:horizontal:pressed{ 
+background:rgb(210, 213, 216);
+}
+
+QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical{
+background: none;
+width: 0px;
+height: 0px;
+}
+QScrollBar::add-page:horizontal,QScrollBar::sub-page:horizontal{
+background: none;
+width: 0px;
+height: 0px;
+}
+
+QScrollBar::sub-line:vertical{
+border: none;
+height: 0px;
+subcontrol-position: top;
+subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal{
+border: none;
+width: 0px;
+subcontrol-position: left;
+subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal:hover,QScrollBar::sub-line:horizontal:pressed{
+background: rgb(255, 255, 255);
+width: 0px;
+height: 0px;
+}
+QScrollBar::sub-line:horizontal:hover,QScrollBar::sub-line:horizontal:pressed{
+background: rgb(255, 255, 255);
+width: 0px;
+height: 0px;
+}
+
+QScrollBar::add-line:vertical{
+border: none;
+height: 0px;
+subcontrol-position: bottom;
+subcontrol-origin: margin;
+}
+QScrollBar::add-line:horizontal{
+border: none;
+width: 0px;
+subcontrol-position: right;
+subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:vertical:hover,QScrollBar::add-line:vertical:pressed{
+background: rgb(255, 255, 255);
+width: 0px;
+height: 0px;
+}
+QScrollBar::add-line:horizontal:hover,QScrollBar::add-line:horizontal:pressed{
+background: rgb(255, 255, 255);
+width: 0px;
+height: 0px;
+}
+</string>
+      </property>
+      <property name="midLineWidth">
+       <number>0</number>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>274</width>
+         <height>110</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="leftMargin">
+         <number>6</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>3</number>
+        </property>
+        <property name="bottomMargin">
+         <number>3</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>6</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>6</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="label_Up">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>280</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>24</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">.QLabel{
+background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  rgba(233, 229, 222,255), stop:1 rgba(235,233,227, 0));
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Down">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>120</y>
+     <width>280</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>24</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">.QLabel{
+background-color:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(233, 229, 222,255), stop:1 rgba(235,233,227, 0));
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Title">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>18</y>
+     <width>251</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>HYWenHei</family>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">.QLabel{
+font-size:14px;
+}</string>
+   </property>
+   <property name="text">
+    <string>标题</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi", "GenshinImpact_TianLi\GenshinImpact_TianLi.vcxproj", "{9BDDB7C6-9680-4FC5-BB05-AE567E9CD227}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Setup", "GenshinImpact_TianLi_Setup\GenshinImpact_TianLi_Setup.vcxproj", "{4B8927E3-4588-42B5-9A46-B5A3CA12B4CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9BDDB7C6-9680-4FC5-BB05-AE567E9CD227}.Debug|x64.ActiveCfg = Debug|x64
+		{9BDDB7C6-9680-4FC5-BB05-AE567E9CD227}.Debug|x64.Build.0 = Debug|x64
+		{9BDDB7C6-9680-4FC5-BB05-AE567E9CD227}.Release|x64.ActiveCfg = Release|x64
+		{9BDDB7C6-9680-4FC5-BB05-AE567E9CD227}.Release|x64.Build.0 = Release|x64
+		{4B8927E3-4588-42B5-9A46-B5A3CA12B4CB}.Debug|x64.ActiveCfg = Debug|x64
+		{4B8927E3-4588-42B5-9A46-B5A3CA12B4CB}.Debug|x64.Build.0 = Debug|x64
+		{4B8927E3-4588-42B5-9A46-B5A3CA12B4CB}.Release|x64.ActiveCfg = Release|x64
+		{4B8927E3-4588-42B5-9A46-B5A3CA12B4CB}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6DFCB1D7-9E41-49EA-B4DD-55C9D56F23AB}
+	EndGlobalSection
+EndGlobal

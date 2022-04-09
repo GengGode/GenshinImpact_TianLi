@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/GenshinImpact_TianLi_Setup">
+        <file>resource/Group 370 (2).png</file>
+        <file>resource/Group 370.png</file>
+    </qresource>
+    <qresource prefix="/新前缀">
+        <file>resource/Frame 194.png</file>
+        <file>resource/Frame 195.png</file>
+        <file>resource/Frame 196.png</file>
+        <file>resource/Frame 197.png</file>
+        <file>resource/Frame 198.png</file>
+        <file>resource/Frame 199.png</file>
+        <file>resource/Union (Stroke) (1).png</file>
+        <file>resource/Union (Stroke).png</file>
+        <file>resource/Vector.png</file>
+        <file>resource/Group 72 1 1.png</file>
+    </qresource>
+    <qresource prefix="/font"/>
+</RCC>

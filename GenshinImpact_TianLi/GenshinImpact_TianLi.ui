@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GenshinImpact_TianLiClass</class>
+ <widget class="QMainWindow" name="GenshinImpact_TianLiClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1573</width>
+    <height>872</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>天理系统</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item row="1" column="0" rowspan="2">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>10</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="2" rowspan="2">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>10</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="3" column="1">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>1550</width>
+        <height>10</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="1">
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>1550</width>
+        <height>10</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="1" rowspan="2">
+     <widget class="QWidget" name="widget" native="true">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <widget class="QLabel" name="label_Main">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>0</y>
+         <width>1521</width>
+         <height>841</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel
+{
+background-image:url(:/GenshinImpact_TianLi/resource/主界面背景.png);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_Exit">
+       <property name="geometry">
+        <rect>
+         <x>1460</x>
+         <y>100</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">.QPushButton{
+border:none;
+image:url(:/GenshinImpact_TianLi/resource/退出按钮.png);
+
+}
+.QPushButton:hover{
+border:none;
+image:url(:/GenshinImpact_TianLi/resource/退出按钮_变暗.png);
+
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_MainPage">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>30</y>
+         <width>1291</width>
+         <height>771</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">.QLabel
+{
+background-image:url(:/GenshinImpact_TianLi/resource/书册.png);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_Tab_2">
+       <property name="geometry">
+        <rect>
+         <x>14</x>
+         <y>175</y>
+         <width>165</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>HYWenHei</family>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">.QPushButton{
+border:none;
+background-repeat:no-repeat;
+background-origin:content;
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签二.png);
+
+padding-left: 9px;
+padding-right: 21px;
+font-size:25px;
+color:rgb(226, 210, 191);
+}
+.QPushButton:hover{
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签二_变亮.png);
+
+padding-left: 9px;
+
+padding-right: 21px;
+
+}
+.QPushButton:checked{
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/Tab_联机_selected.png);
+
+padding-left: 0px;
+
+padding-right: -9px;
+color:rgb(134, 99, 67);
+}</string>
+       </property>
+       <property name="text">
+        <string>界面</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">Tab_ButtonGroup</string>
+       </attribute>
+      </widget>
+      <widget class="QPushButton" name="pushButton_Tab_3">
+       <property name="geometry">
+        <rect>
+         <x>14</x>
+         <y>276</y>
+         <width>165</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>HYWenHei</family>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">.QPushButton{
+border:none;
+background-repeat:no-repeat;
+background-origin:content;
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签三.png);
+
+padding-left: 9px;
+padding-right: 21px;
+font-size:25px;
+color:rgb(226, 210, 191);
+}
+.QPushButton:hover{
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签三_变亮.png);
+
+padding-left: 9px;
+
+padding-right: 21px;
+
+}
+.QPushButton:checked{
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/Tab_联机_selected.png);
+
+padding-left: 0px;
+
+padding-right: -9px;
+color:rgb(134, 99, 67);
+}</string>
+       </property>
+       <property name="text">
+        <string>联机</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">Tab_ButtonGroup</string>
+       </attribute>
+      </widget>
+      <widget class="QPushButton" name="pushButton_Tab_4">
+       <property name="geometry">
+        <rect>
+         <x>14</x>
+         <y>377</y>
+         <width>165</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>HYWenHei</family>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">.QPushButton{
+border:none;
+background-repeat:no-repeat;
+background-origin:content;
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签四.png);
+
+padding-left: 9px;
+padding-right: 21px;
+font-size:25px;
+color:rgb(226, 210, 191);
+}
+.QPushButton:hover{
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签四_变亮.png);
+
+padding-left: 9px;
+
+padding-right: 21px;
+
+}
+.QPushButton:checked{
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/Tab_特殊_selected.png);
+
+padding-left: 0px;
+
+padding-right: -9px;
+color:rgb(134, 99, 67);
+}</string>
+       </property>
+       <property name="text">
+        <string>特殊</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">Tab_ButtonGroup</string>
+       </attribute>
+      </widget>
+      <widget class="QStackedWidget" name="stackedWidget_MainTabPages">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>40</y>
+         <width>1271</width>
+         <height>751</height>
+        </rect>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="page">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="spacing">
+          <number>18</number>
+         </property>
+         <property name="leftMargin">
+          <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <property name="bottomMargin">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QWidget" name="widget_2" native="true"/>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_3" native="true">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="widget_MapMask" native="true">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>621</width>
+              <height>731</height>
+             </rect>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0" columnstretch="0,0,0">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetDefaultConstraint</enum>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_MapMask_33">
+               <property name="maximumSize">
+                <size>
+                 <width>31</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel
+{
+background-repeat:no-repeat;
+background-origin:content;
+background-image:url(:/Tab_DiTu/resource/Tab_DiTu/Tab_DiTu_MaskMap_33.png);
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLabel" name="label_MapMask_23">
+               <property name="maximumSize">
+                <size>
+                 <width>31</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel
+{
+background-repeat:repeat-y;
+background-origin:content;
+background-image:url(:/Tab_DiTu/resource/Tab_DiTu/Tab_DiTu_MaskMap_23.png);
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="label_MapMask_22">
+               <property name="styleSheet">
+                <string notr="true">QLabel
+{
+background-origin:content;
+background-image:url(:/Tab_DiTu/resource/Tab_DiTu/Tab_DiTu_MaskMap_22.png);
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_MapMask_13">
+               <property name="maximumSize">
+                <size>
+                 <width>31</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel
+{
+background-repeat:no-repeat;
+background-origin:content;
+background-image:url(:/Tab_DiTu/resource/Tab_DiTu/Tab_DiTu_MaskMap_13.png);
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_MapMask_12">
+               <property name="styleSheet">
+                <string notr="true">QLabel
+{
+background-repeat:repeat-x;
+background-origin:content;
+background-image:url(:/Tab_DiTu/resource/Tab_DiTu/Tab_DiTu_MaskMap_12.png);
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_MapMask_21">
+               <property name="maximumSize">
+                <size>
+                 <width>31</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel
+{
+background-repeat:repeat-y;
+background-origin:content;
+background-image:url(:/Tab_DiTu/resource/Tab_DiTu/Tab_DiTu_MaskMap_21.png);
+}
+</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_MapMask_11">
+               <property name="maximumSize">
+                <size>
+                 <width>31</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel
+{
+background-repeat:no-repeat;
+background-origin:content;
+background-image:url(:/Tab_DiTu/resource/Tab_DiTu/Tab_DiTu_MaskMap_11.png);
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLabel" name="label_MapMask_32">
+               <property name="styleSheet">
+                <string notr="true">QLabel
+{
+background-repeat:repeat-x;
+background-origin:content;
+background-image:url(:/Tab_DiTu/resource/Tab_DiTu/Tab_DiTu_MaskMap_32.png);
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_MapMask_31">
+               <property name="maximumSize">
+                <size>
+                 <width>31</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel
+{
+background-repeat:no-repeat;
+background-origin:content;
+background-image:url(:/Tab_DiTu/resource/Tab_DiTu/Tab_DiTu_MaskMap_31.png);
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page_2"/>
+       <widget class="QWidget" name="page_3"/>
+       <widget class="QWidget" name="page_4"/>
+      </widget>
+      <widget class="QPushButton" name="pushButton_Tab_1">
+       <property name="geometry">
+        <rect>
+         <x>14</x>
+         <y>74</y>
+         <width>165</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>165</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>165</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>HYWenHei</family>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">.QPushButton{
+border:none;
+background-repeat:no-repeat;
+background-origin:content;
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签一.png);
+
+padding-left: 9px;
+padding-right: 21px;
+font-size:25px;
+color:rgb(226, 210, 191);
+}
+.QPushButton:hover{
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签一_变亮.png);
+
+padding-left: 9px;
+
+padding-right: 21px;
+
+}
+.QPushButton:checked{
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/Tab_地图_selected.png);
+
+padding-left: 0px;
+
+padding-right: -9px;
+color:rgb(134, 99, 67);
+}</string>
+       </property>
+       <property name="text">
+        <string>地图</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">Tab_ButtonGroup</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>14</x>
+         <y>74</y>
+         <width>16</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+       </layout>
+      </widget>
+      <zorder>label_Main</zorder>
+      <zorder>pushButton_Exit</zorder>
+      <zorder>label_MainPage</zorder>
+      <zorder>stackedWidget_MainTabPages</zorder>
+      <zorder>pushButton_Tab_2</zorder>
+      <zorder>pushButton_Tab_3</zorder>
+      <zorder>pushButton_Tab_4</zorder>
+      <zorder>pushButton_Tab_1</zorder>
+      <zorder>verticalLayoutWidget</zorder>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="GenshinImpact_TianLi.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushButton_Exit</sender>
+   <signal>clicked()</signal>
+   <receiver>GenshinImpact_TianLiClass</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1445</x>
+     <y>138</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>786</x>
+     <y>435</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <buttongroups>
+  <buttongroup name="Tab_ButtonGroup"/>
+ </buttongroups>
+</ui>
