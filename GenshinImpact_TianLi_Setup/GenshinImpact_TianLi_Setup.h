@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QPropertyAnimation>
 #include <QGraphicsDropShadowEffect>
 
 #include <QtWidgets/QWidget>
@@ -18,7 +19,8 @@ private:
 private:
     QGraphicsDropShadowEffect* mainShadow_A;
     QGraphicsDropShadowEffect* mainShadow_B;
-
+    QGraphicsDropShadowEffect* mainShadow;
+    QPropertyAnimation* mainShadowAnimation;
 private:
     QPoint m_Press;
     QPoint m_Move;
@@ -29,4 +31,11 @@ private:
 
 private:
     bool eventFilter(QObject* object, QEvent* event) Q_DECL_OVERRIDE;
+
+private slots:
+    void pushButton_FastInstall();
+    void pushButton_CustomizeInstall();
+    void pushButton_Finishing_Cancel();
+    void pushButton_Finished_Run();
+    void pushButton_Finished_Exit();
 };

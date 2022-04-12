@@ -87,7 +87,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -105,11 +105,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="TianLiQtCommon_TimeLineLabel.cpp" />
     <QtRcc Include="GenshinImpact_TianLi_Setup.qrc" />
     <QtUic Include="GenshinImpact_TianLi_Setup.ui" />
     <QtMoc Include="GenshinImpact_TianLi_Setup.h" />
     <ClCompile Include="GenshinImpact_TianLi_Setup.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="TianLiQtCommon_TimeLineLabel.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="TianLiQtCommon_TimeLineLabel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
