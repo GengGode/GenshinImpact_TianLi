@@ -22,6 +22,8 @@ private:
 	void UI_Checked();
 
 private:
+	QTimer *timer;
+private:
 	// 一些参数 属性
 
 	// 是否被选中
@@ -32,6 +34,8 @@ private:
 	bool m_isBegin = false;
 	// 是否是最后一个
 	bool m_isEnd = false;
+	// 角度
+	int alpha = 0;
 public:
 	void setAction(bool value);
 	void setChecked(bool value);
@@ -39,6 +43,8 @@ public:
 	void setEnd(bool value);
 	bool isAction();
 	bool isChecked();
+private slots:
+	void timeout();
 signals:
 	void checkChange();
 private:

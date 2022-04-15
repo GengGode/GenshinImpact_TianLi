@@ -16,7 +16,15 @@ GenshinImpact_TianLi_Setup::GenshinImpact_TianLi_Setup(QWidget *parent)
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground, true);
 
-    mainShadow = new QGraphicsDropShadowEffect(this);
+    //auto shadowLamda = [](const QColor& color = QColor(0, 0, 0), int radius = 16) {
+    //    auto shadow = new QGraphicsDropShadowEffect;
+    //    shadow->setOffset(0, 0);
+    //    shadow->setColor(color);
+    //    shadow->setBlurRadius(radius);
+    //    return shadow;
+    //};
+
+    mainShadow = new QGraphicsDropShadowEffect();
     mainShadow->setOffset(0, 0);
     mainShadow->setColor(QColor(255, 255, 255));
     mainShadow->setBlurRadius(16);
@@ -26,13 +34,13 @@ GenshinImpact_TianLi_Setup::GenshinImpact_TianLi_Setup(QWidget *parent)
     mainShadowAnimation->setDuration(500);
     mainShadowAnimation->setEasingCurve(QEasingCurve::OutExpo);
 
-    mainShadow_A = new QGraphicsDropShadowEffect(this);
+    mainShadow_A = new QGraphicsDropShadowEffect();
     mainShadow_A->setOffset(0, 0);
     mainShadow_A->setColor(QColor(255, 255, 255));
     mainShadow_A->setBlurRadius(16);
     ui.label_MainShadow_A->setGraphicsEffect(mainShadow_A);
 
-    mainShadow_B = new QGraphicsDropShadowEffect(this);
+    mainShadow_B = new QGraphicsDropShadowEffect();
     mainShadow_B->setOffset(0, 0);
     mainShadow_B->setColor(QColor(255, 0, 0));
     mainShadow_B->setBlurRadius(14);
@@ -65,6 +73,8 @@ GenshinImpact_TianLi_Setup::GenshinImpact_TianLi_Setup(QWidget *parent)
     timeLineLabel_4->setEnd(true);
 
 
+    connect(ui.pushButton_UI_Close, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::pushButton_UI_Close);
+    connect(ui.pushButton_UI_Mini, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::pushButton_UI_Mini);
     connect(ui.pushButton_FastInstall, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::pushButton_FastInstall);
     connect(ui.pushButton_CustomizeInstall, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::pushButton_CustomizeInstall);
     connect(ui.pushButton_Finishing_Cancel, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::pushButton_Finishing_Cancel);
@@ -117,17 +127,39 @@ bool GenshinImpact_TianLi_Setup::eventFilter(QObject* object, QEvent* event)
     }
     if (event->type() == QEvent::Enter)
     {
-        mainShadowAnimation->setEndValue("#8b371e");
         mainShadowAnimation->stop();
+        mainShadowAnimation->setEndValue("#8b371e");
         mainShadowAnimation->start();
     }
     if (event->type() == QEvent::Leave)
     {
-        mainShadowAnimation->setEndValue("#DDDDDD");
         mainShadowAnimation->stop();
+        mainShadowAnimation->setEndValue("#DDDDDD");
         mainShadowAnimation->start();
     }
     return QWidget::eventFilter(object, event);
+}
+void GenshinImpact_TianLi_Setup::pushButton_UI_Close()
+{
+    //ui.label_MainShadow->hide();
+    ui.label_MainShadow_A->hide();
+    ui.label_MainShadow_B->hide();
+
+    exitAnimation = new QPropertyAnimation(ui.label_MainShadow, "geometry");
+    exitAnimation->setDuration(1000);
+    exitAnimation->setEndValue(QRect(10 , 10, 500, 200));
+    connect(exitAnimation, &QPropertyAnimation::valueChanged, [=]() {
+        this->update();
+        });
+    connect(exitAnimation, &QPropertyAnimation::finished, [=]() {
+        //this->close();
+        });
+    exitAnimation->start();
+}
+
+void GenshinImpact_TianLi_Setup::pushButton_UI_Mini()
+{
+    this->showMinimized();
 }
 
 void GenshinImpact_TianLi_Setup::pushButton_FastInstall()

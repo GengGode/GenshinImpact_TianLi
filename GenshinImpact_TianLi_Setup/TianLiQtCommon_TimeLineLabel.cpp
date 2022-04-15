@@ -1,19 +1,24 @@
 #include "TianLiQtCommon_TimeLineLabel.h"
 
 #include <QPainter>
+#include <QTimer>
 #include <QDebug>
 
 TianLiQtCommon_TimeLineLabel::TianLiQtCommon_TimeLineLabel(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	qDebug() << "create TimeLineLabel\n";
+
+	timer = new QTimer(this);
+	connect(timer, &QTimer::timeout, this, &TianLiQtCommon_TimeLineLabel::timeout);
+	timer->setInterval(100);
+
 	UI_NoCheck();
+
 }
 
 TianLiQtCommon_TimeLineLabel::~TianLiQtCommon_TimeLineLabel()
 {
-	qDebug() << "delete TimeLineLabel\n";
 }
 
 void TianLiQtCommon_TimeLineLabel::paintEvent(QPaintEvent* event)
@@ -46,7 +51,7 @@ void TianLiQtCommon_TimeLineLabel::paintEvent(QPaintEvent* event)
 				float y = 2;
 				float w = m_c_D;
 				float h = m_c_D;
-				float a0 = 0;
+				float a0 = alpha;
 				float a = 90;
 
 				QRectF r(x, y, w, h);
@@ -99,16 +104,6 @@ void TianLiQtCommon_TimeLineLabel::paintEvent(QPaintEvent* event)
 		QRectF r(x, y, w, h);
 		paint.drawEllipse(r);
 	}
-
-	//// 基础大圆
-	//paint.setPen(Qt::NoPen);//设置画笔形式 
-	//paint.setBrush(QBrush(Qt::red, Qt::SolidPattern));//设置画刷形式 
-	//paint.drawEllipse(mMagin, mMagin, mMiniR*2, mMiniR*2);
-
-	//paint.setPen(Qt::SolidLine);
-
-	//paint.drawLine(mMagin + mMiniR, mMagin * 2 + mMiniR * 2 + 1, mMagin + mMiniR, mMagin * 2 + mMiniR * 2 + mLen);
-
 }
 
 void TianLiQtCommon_TimeLineLabel::UI_NoCheck()
@@ -116,6 +111,7 @@ void TianLiQtCommon_TimeLineLabel::UI_NoCheck()
 	ui.label_Title->move(22, 7);
 	ui.label_ProgressBackground->hide();
 	ui.label_ProgressBar->hide();
+	timer->stop();
 }
 
 void TianLiQtCommon_TimeLineLabel::UI_Checked()
@@ -123,6 +119,7 @@ void TianLiQtCommon_TimeLineLabel::UI_Checked()
 	ui.label_Title->move(22, 0);
 	ui.label_ProgressBackground->show();
 	ui.label_ProgressBar->show();
+	timer->start();
 }
 
 void TianLiQtCommon_TimeLineLabel::setAction(bool value)
@@ -158,4 +155,10 @@ bool TianLiQtCommon_TimeLineLabel::isAction()
 bool TianLiQtCommon_TimeLineLabel::isChecked()
 {
 	return m_isChecked;
+}
+void TianLiQtCommon_TimeLineLabel::timeout()
+{
+	alpha+=5;
+	if (alpha > 360)alpha = 0;
+	update();
 }

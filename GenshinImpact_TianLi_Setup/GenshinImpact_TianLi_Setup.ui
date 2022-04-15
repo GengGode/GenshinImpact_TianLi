@@ -35,10 +35,10 @@ border-radius:5px;
     <string/>
    </property>
    <property name="buddy">
-    <cstring>pushButton_2</cstring>
+    <cstring>pushButton_UI_Mini</cstring>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pushButton_UI_Close">
    <property name="geometry">
     <rect>
      <x>690</x>
@@ -64,7 +64,7 @@ background-image:url(:/新前缀/resource/Frame 196.png);
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="pushButton_UI_Mini">
    <property name="geometry">
     <rect>
      <x>650</x>
@@ -750,8 +750,8 @@ border-radius:5px;
   <zorder>label_MainShadow_A</zorder>
   <zorder>label_MainShadow_B</zorder>
   <zorder>label_3</zorder>
-  <zorder>pushButton</zorder>
-  <zorder>pushButton_2</zorder>
+  <zorder>pushButton_UI_Close</zorder>
+  <zorder>pushButton_UI_Mini</zorder>
   <zorder>label_4</zorder>
   <zorder>label_5</zorder>
   <zorder>stackedWidget</zorder>
@@ -762,38 +762,5 @@ border-radius:5px;
  <resources>
   <include location="GenshinImpact_TianLi_Setup.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>GenshinImpact_TianLi_SetupClass</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>607</x>
-     <y>21</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>359</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>GenshinImpact_TianLi_SetupClass</receiver>
-   <slot>showMinimized()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>665</x>
-     <y>35</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>369</x>
-     <y>211</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

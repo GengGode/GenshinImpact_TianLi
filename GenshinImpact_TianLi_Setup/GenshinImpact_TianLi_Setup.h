@@ -21,6 +21,7 @@ private:
     QGraphicsDropShadowEffect* mainShadow_B;
     QGraphicsDropShadowEffect* mainShadow;
     QPropertyAnimation* mainShadowAnimation;
+    QPropertyAnimation* exitAnimation;
 private:
     QPoint m_Press;
     QPoint m_Move;
@@ -33,6 +34,9 @@ private:
     bool eventFilter(QObject* object, QEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
+    void pushButton_UI_Close();
+    void pushButton_UI_Mini();
+
     void pushButton_FastInstall();
     void pushButton_CustomizeInstall();
     void pushButton_Finishing_Cancel();
