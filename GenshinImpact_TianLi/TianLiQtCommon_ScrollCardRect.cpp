@@ -21,7 +21,7 @@ TianLiQtCommon_ScrollCardRect::TianLiQtCommon_ScrollCardRect(QString title,QWidg
 	ui.label_Down->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 
 	ui.verticalLayout->addSpacing(12);
-	ui.scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignTop);
+	ui.scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
 }
 

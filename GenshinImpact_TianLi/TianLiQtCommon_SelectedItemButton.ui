@@ -46,8 +46,7 @@ background-color:qradialgradient(spread:pad, cx:0.5, cy:0.488636, radius:1.502, 
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">.QLabel{
-}</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>

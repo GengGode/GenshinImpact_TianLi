@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/TianLiQtCommon_NearbyItemButton">
+    <file>resource/TianLiQtCommon_NearbyItemButton/TianLiQtCommon_NearbyItemButton_background.png</file>
+    <file>resource/TianLiQtCommon_NearbyItemButton/TianLiQtCommon_NearbyItemButton_background_hover.png</file>
+  </qresource>
+</RCC>

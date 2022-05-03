@@ -7,6 +7,7 @@
 #include "TianLiQtCommon_ScrollCardRect.h"
 #include "TianLiQtCommon_SelectedItemButton.h"
 #include "TianLiQtCommon_PickedItemButton.h"
+#include "TianLiQtCommon_NearbyItemButton.h"
 
 #include <QMouseEvent>
 
@@ -99,6 +100,14 @@ void GenshinImpact_TianLi::addUI_CardRects()
 	TianLiQtCommon_ScrollCardRect* page1_cardRect_2_3 = new TianLiQtCommon_ScrollCardRect("附近物品日志", this);
 	page1_cardRect_2_3->setParent(ui.widget_2);
 	page1_cardRect_2_3->setGeometry(350, 380, 260, 160);
+	for (int i = 0; i < 2; i++)
+	{
+		QImage im;
+		im.load(":/Test/resource/Test/Tex_0537_0.png");
+		TianLiQtCommon_NearbyItemButton* asd = new TianLiQtCommon_NearbyItemButton(QString::number(i) + "号物品xxx", im);
+		
+		page1_cardRect_2_3->addWidget(asd);
+	}
 
 
 	TianLiQtCommon_ScrollCardRect* page1_cardRect_2_2 = new TianLiQtCommon_ScrollCardRect("选中物品", this);

@@ -41,6 +41,9 @@
     <QtRcc Include="TianLiQtCommon_PickedItemButton.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+    <QtRcc Include="TianLiQtCommon_NearbyItemButton.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -59,6 +62,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TianLiQtCommon_PickedItemButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TianLiQtCommon_NearbyItemButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,6 +89,9 @@
     <QtMoc Include="TianLiQtCommon_PickedItemButton.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="TianLiQtCommon_NearbyItemButton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="TianLiQtCommon_MapRect.ui">
@@ -98,6 +107,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="TianLiQtCommon_PickedItemButton.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="TianLiQtCommon_NearbyItemButton.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

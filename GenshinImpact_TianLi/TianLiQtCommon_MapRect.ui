@@ -25,7 +25,7 @@
    <property name="styleSheet">
     <string notr="true">QLabel
 {
-background-color:rgb(0, 170, 0);
+background-color:rgba(0, 255, 0,12);
 }</string>
    </property>
    <property name="text">

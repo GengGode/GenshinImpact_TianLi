@@ -128,7 +128,7 @@ bool GenshinImpact_TianLi_Setup::eventFilter(QObject* object, QEvent* event)
     if (event->type() == QEvent::Enter)
     {
         mainShadowAnimation->stop();
-        mainShadowAnimation->setEndValue("#8b371e");
+        mainShadowAnimation->setEndValue("#FF1C1C");
         mainShadowAnimation->start();
     }
     if (event->type() == QEvent::Leave)
@@ -146,13 +146,13 @@ void GenshinImpact_TianLi_Setup::pushButton_UI_Close()
     ui.label_MainShadow_B->hide();
 
     exitAnimation = new QPropertyAnimation(ui.label_MainShadow, "geometry");
-    exitAnimation->setDuration(1000);
-    exitAnimation->setEndValue(QRect(10 , 10, 500, 200));
+    exitAnimation->setDuration(200);
+    exitAnimation->setEndValue(QRect(10 , 20, 720, 384));
     connect(exitAnimation, &QPropertyAnimation::valueChanged, [=]() {
         this->update();
         });
     connect(exitAnimation, &QPropertyAnimation::finished, [=]() {
-        //this->close();
+        this->close();
         });
     exitAnimation->start();
 }
