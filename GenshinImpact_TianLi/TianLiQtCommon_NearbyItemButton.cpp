@@ -1,5 +1,7 @@
 #include "TianLiQtCommon_NearbyItemButton.h"
 
+#include <QGraphicsDropShadowEffect>
+
 TianLiQtCommon_NearbyItemButton::TianLiQtCommon_NearbyItemButton(QString title, QImage image, QWidget* parent)
 	: QPushButton(parent)
 {
@@ -7,6 +9,13 @@ TianLiQtCommon_NearbyItemButton::TianLiQtCommon_NearbyItemButton(QString title, 
 	setTitle(title);
 	setImage(image);
 	ui.label_Image->setScaledContents(true);
+
+	QGraphicsDropShadowEffect* titleShadow = new QGraphicsDropShadowEffect();
+	titleShadow->setOffset(0, 4);
+	titleShadow->setColor(QColor(0,0,0,191));
+	titleShadow->setBlurRadius(15);
+
+	ui.label_Title->setGraphicsEffect(titleShadow);
 }
 
 TianLiQtCommon_NearbyItemButton::~TianLiQtCommon_NearbyItemButton()
