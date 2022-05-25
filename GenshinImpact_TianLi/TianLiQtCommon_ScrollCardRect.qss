@@ -1,0 +1,120 @@
+QLabel#label_Down {
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(233, 229, 222,255), stop:1 rgba(235,233,227, 0));
+}
+QLabel#label_Title {
+    font-size: 0px;
+}
+QLabel#label_Up {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(233, 229, 222,255), stop:1 rgba(235,233,227, 0));
+}
+QWidget#widget_Main {
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.488636, radius:1.502, fx:0.318, fy:0.227273, stop:0 rgba(235,233,227, 255), stop:0.659091 rgba(228,221,213, 255), stop:1 rgba(224,215,206, 255));
+    border-radius: 9px;
+}
+
+QScrollArea#scrollArea_Main {
+    background-color: rgba(255, 255, 255,0);
+    border: none;
+}
+
+QScrollArea#scrollArea_Main QScrollBar:vertical {
+    border: none;
+    padding: 0px 0px 0px 0px;
+    background: rgb(238, 231, 221);
+    width: 6px;
+    margin: 0px 2px 0px 0px;
+}
+
+QScrollArea#scrollArea_Main QScrollBar:horizontal {
+    border: none;
+    background: rgb(238, 231, 221);
+    height: 1px;
+    margin: 0px 0px 0px 0px;
+}
+
+
+QScrollBar::handle:vertical {
+    background: rgb(229, 223, 216);
+    border-radius: 2px;
+    min-height: 100px;
+    border: none;
+}
+
+QScrollBar::handle:horizontal {
+    background: rgb(229, 223, 216);
+    border-radius: 2px;
+    min-width: 520px;
+    border: none;
+}
+
+QScrollBar::handle:vertical:hover, QScrollBar::handle:vertical:pressed {
+    background: rgb(217, 205, 189);
+}
+
+QScrollBar::handle:horizontal:hover, QScrollBar::handle:horizontal:pressed {
+    background: rgb(217, 205, 189);
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::sub-line:vertical {
+    border: none;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal {
+    border: none;
+    width: 0px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal:hover, QScrollBar::sub-line:horizontal:pressed {
+    background: rgb(255, 255, 255);
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::sub-line:horizontal:hover, QScrollBar::sub-line:horizontal:pressed {
+    background: rgb(255, 255, 255);
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::add-line:vertical {
+    border: none;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:horizontal {
+    border: none;
+    width: 0px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:pressed {
+    background: rgb(255, 255, 255);
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::add-line:horizontal:hover, QScrollBar::add-line:horizontal:pressed {
+    background: rgb(255, 255, 255);
+    width: 0px;
+    height: 0px;
+}

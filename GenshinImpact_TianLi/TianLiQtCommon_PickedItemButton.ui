@@ -33,7 +33,18 @@ border:none;
 QPushButton:hover{
 background-image:url(:/TianLiQtCommon_PickedItemButton/resource/TianLiQtCommon_PickedItemButton/TianLiQtCommon_PickedItemButton_background_hover.png);
 }
-</string>
+QPushButton:checked{
+background-image:url(:/TianLiQtCommon_PickedItemButton/resource/TianLiQtCommon_PickedItemButton/TianLiQtCommon_PickedItemButton_background_hover.png);
+}</string>
+  </property>
+  <property name="checkable">
+   <bool>true</bool>
+  </property>
+  <property name="checked">
+   <bool>false</bool>
+  </property>
+  <property name="autoExclusive">
+   <bool>false</bool>
   </property>
   <widget class="QLabel" name="label_Image">
    <property name="geometry">

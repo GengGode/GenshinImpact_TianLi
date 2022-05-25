@@ -15,13 +15,15 @@ TianLiQtCommon_ScrollCardRect::TianLiQtCommon_ScrollCardRect(QString title,QWidg
 	mainShadow->setOffset(2, 2);
 	mainShadow->setColor(QColor(0, 0, 0, 26));
 	mainShadow->setBlurRadius(5);
-	ui.widget->setGraphicsEffect(mainShadow);
+	ui.widget_Main->setGraphicsEffect(mainShadow);
 
 	ui.label_Up->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	ui.label_Down->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 
 	ui.verticalLayout->addSpacing(12);
 	ui.scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
+
+	this->setStyleSheet("file:///:/TianLiQtCommon_ScrollCardRect.qss");
 
 }
 
@@ -46,5 +48,5 @@ void TianLiQtCommon_ScrollCardRect::resizeEvent(QResizeEvent* event)
 	const int h = event->size().height();
 	ui.label_Up->setGeometry(10, 30, w - 20, 24);
 	ui.label_Down->setGeometry(10, h-40, w - 20, 24);
-	ui.widget->setGeometry(10,10,w-20,h-20);
+	ui.widget_Main->setGeometry(10,10,w-20,h-20);
 }

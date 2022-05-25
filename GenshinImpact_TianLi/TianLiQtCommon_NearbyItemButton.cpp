@@ -2,6 +2,8 @@
 
 #include <QGraphicsDropShadowEffect>
 
+#include <QDebug>
+
 TianLiQtCommon_NearbyItemButton::TianLiQtCommon_NearbyItemButton(QString title, QImage image, QWidget* parent)
 	: QPushButton(parent)
 {

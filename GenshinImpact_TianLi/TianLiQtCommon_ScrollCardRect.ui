@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>TianLiQtCommon_ScrollCardRect</string>
   </property>
-  <widget class="QWidget" name="widget" native="true">
+  <widget class="QWidget" name="widget_Main" native="true">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -45,106 +45,113 @@ border-radius:9px;
      <number>0</number>
     </property>
     <item row="1" column="0">
-     <widget class="QScrollArea" name="scrollArea">
+     <widget class="QScrollArea" name="scrollArea_Main">
       <property name="styleSheet">
-       <string notr="true">.QScrollArea{
-background-color:rgba(255, 255, 255,0);
-border: none;
+       <string notr="true">QScrollArea#scrollArea_Main {
+    background-color: rgba(255, 255, 255,0);
+    border: none;
+}
+
+QScrollArea#scrollArea_Main QScrollBar:vertical {
+    border: none;
+    padding: 0px 0px 0px 0px;
+    background: rgb(238, 231, 221);
+    width: 6px;
+    margin: 0px 2px 0px 0px;
+}
+
+QScrollArea#scrollArea_Main QScrollBar:horizontal {
+    border: none;
+    background: rgb(238, 231, 221);
+    height: 1px;
+    margin: 0px 0px 0px 0px;
 }
 
 
-.QScrollArea QScrollBar:vertical {
-border: none;
-background: rgb(255, 255, 255);
-width: 6px;
-margin: 0px 0 0px 0;
-}
-.QScrollBar:horizontal {
-border: none;
-background: rgb(255, 255, 255);
-height: 1px;
-margin: 0px 0 0px 0;
+QScrollBar::handle:vertical {
+    background: rgb(229, 223, 216);
+    border-radius: 2px;
+    min-height: 100px;
+    border: none;
 }
 
-
-.QScrollBar::handle:vertical {
-background: rgb(233, 236, 240);
-border-radius: 0px;
-min-height: 100px;
-border: none;
+QScrollBar::handle:horizontal {
+    background: rgb(229, 223, 216);
+    border-radius: 2px;
+    min-width: 520px;
+    border: none;
 }
 
-.QScrollBar::handle:horizontal {
-background: rgb(244, 242, 238);
-border-radius: 2px;
-min-width: 520px;
-border: none;
+QScrollBar::handle:vertical:hover, QScrollBar::handle:vertical:pressed {
+    background: rgb(217, 205, 189);
 }
 
-QScrollBar::handle:vertical:hover, QScrollBar::handle:vertical:pressed{ 
-background:rgb(210, 213, 216);
-}
-QScrollBar::handle:horizontal:hover,QScrollBar::handle:horizontal:pressed{ 
-background:rgb(210, 213, 216);
+QScrollBar::handle:horizontal:hover, QScrollBar::handle:horizontal:pressed {
+    background: rgb(217, 205, 189);
 }
 
-QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical{
-background: none;
-width: 0px;
-height: 0px;
-}
-QScrollBar::add-page:horizontal,QScrollBar::sub-page:horizontal{
-background: none;
-width: 0px;
-height: 0px;
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+    width: 0px;
+    height: 0px;
 }
 
-QScrollBar::sub-line:vertical{
-border: none;
-height: 0px;
-subcontrol-position: top;
-subcontrol-origin: margin;
-}
-QScrollBar::sub-line:horizontal{
-border: none;
-width: 0px;
-subcontrol-position: left;
-subcontrol-origin: margin;
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+    width: 0px;
+    height: 0px;
 }
 
-QScrollBar::sub-line:horizontal:hover,QScrollBar::sub-line:horizontal:pressed{
-background: rgb(255, 255, 255);
-width: 0px;
-height: 0px;
-}
-QScrollBar::sub-line:horizontal:hover,QScrollBar::sub-line:horizontal:pressed{
-background: rgb(255, 255, 255);
-width: 0px;
-height: 0px;
+QScrollBar::sub-line:vertical {
+    border: none;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
 }
 
-QScrollBar::add-line:vertical{
-border: none;
-height: 0px;
-subcontrol-position: bottom;
-subcontrol-origin: margin;
-}
-QScrollBar::add-line:horizontal{
-border: none;
-width: 0px;
-subcontrol-position: right;
-subcontrol-origin: margin;
+QScrollBar::sub-line:horizontal {
+    border: none;
+    width: 0px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
 }
 
-QScrollBar::add-line:vertical:hover,QScrollBar::add-line:vertical:pressed{
-background: rgb(255, 255, 255);
-width: 0px;
-height: 0px;
+QScrollBar::sub-line:horizontal:hover, QScrollBar::sub-line:horizontal:pressed {
+    background: rgb(255, 255, 255);
+    width: 0px;
+    height: 0px;
 }
-QScrollBar::add-line:horizontal:hover,QScrollBar::add-line:horizontal:pressed{
-background: rgb(255, 255, 255);
-width: 0px;
-height: 0px;
+
+QScrollBar::sub-line:horizontal:hover, QScrollBar::sub-line:horizontal:pressed {
+    background: rgb(255, 255, 255);
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::add-line:vertical {
+    border: none;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:horizontal {
+    border: none;
+    width: 0px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:pressed {
+    background: rgb(255, 255, 255);
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::add-line:horizontal:hover, QScrollBar::add-line:horizontal:pressed {
+    background: rgb(255, 255, 255);
+    width: 0px;
+    height: 0px;
 }
 </string>
       </property>
@@ -168,9 +175,12 @@ height: 0px;
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>263</width>
+         <width>274</width>
          <height>110</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="spacing">
@@ -196,7 +206,7 @@ height: 0px;
      </widget>
     </item>
     <item row="0" column="0">
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="label_Space_1">
       <property name="minimumSize">
        <size>
         <width>0</width>
@@ -209,7 +219,7 @@ height: 0px;
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="label_Space_2">
       <property name="minimumSize">
        <size>
         <width>0</width>

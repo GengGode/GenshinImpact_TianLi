@@ -34,7 +34,15 @@ border:none;
 QPushButton:hover{
 background-color:qradialgradient(spread:pad, cx:0.5, cy:0.488636, radius:1.502, fx:0.318, fy:0.227273, stop:0 rgba(235,233,227, 255), stop:0.659091 rgba(228,221,213, 255), stop:1 rgba(224,215,206, 255));
 }
-</string>
+QPushButton:checked{
+background-color:qradialgradient(spread:pad, cx:0.5, cy:0.488636, radius:1.502, fx:0.318, fy:0.227273, stop:0 rgba(235,233,227, 255), stop:0.659091 rgba(228,221,213, 255), stop:1 rgba(224,215,206, 255));
+}</string>
+  </property>
+  <property name="checkable">
+   <bool>true</bool>
+  </property>
+  <property name="autoExclusive">
+   <bool>false</bool>
   </property>
   <widget class="QLabel" name="label_Image">
    <property name="geometry">

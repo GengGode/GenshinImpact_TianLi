@@ -36,7 +36,19 @@ border:none;
 }
 QPushButton:hover{
 background-image:url(:/TianLiQtCommon_NearbyItemButton/resource/TianLiQtCommon_NearbyItemButton/TianLiQtCommon_NearbyItemButton_background_hover.png);
+}
+QPushButton:checked{
+background-image:url(:/TianLiQtCommon_NearbyItemButton/resource/TianLiQtCommon_NearbyItemButton/TianLiQtCommon_NearbyItemButton_background_hover.png);
 }</string>
+  </property>
+  <property name="checkable">
+   <bool>true</bool>
+  </property>
+  <property name="checked">
+   <bool>false</bool>
+  </property>
+  <property name="autoExclusive">
+   <bool>false</bool>
   </property>
   <widget class="QLabel" name="label_Title">
    <property name="geometry">
