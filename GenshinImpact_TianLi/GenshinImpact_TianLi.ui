@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>天理系统</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="GenshinImpact_TianLi.qrc">
+    <normaloff>:/Logo/resource/Icon.png</normaloff>:/Logo/resource/Icon.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">

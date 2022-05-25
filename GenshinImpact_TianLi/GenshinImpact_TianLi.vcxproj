@@ -112,6 +112,7 @@
     <ClCompile Include="TianLiQtCommon_ScrollCardRect.cpp" />
     <ClCompile Include="TianLiQtCommon_SelectedItemButton.cpp" />
     <QtRcc Include="GenshinImpact_TianLi.qrc" />
+    <QtRcc Include="TianLiQtCommon_MapRect.qrc" />
     <QtRcc Include="TianLiQtCommon_NearbyItemButton.qrc" />
     <QtRcc Include="TianLiQtCommon_PickedItemButton.qrc" />
     <QtRcc Include="TianLiQtCommon_SelectItemButton.qrc" />
@@ -146,6 +147,18 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="TianLiQtCommon_NearbyItemButton.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TianLiQtCommon_ScrollCardRect.qss" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GenshinImpact_TianLi_Logo.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Assets\Icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

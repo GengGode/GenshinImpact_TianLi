@@ -44,6 +44,9 @@
     <QtRcc Include="TianLiQtCommon_NearbyItemButton.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+    <QtRcc Include="TianLiQtCommon_MapRect.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -112,5 +115,23 @@
     <QtUic Include="TianLiQtCommon_NearbyItemButton.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TianLiQtCommon_ScrollCardRect.qss" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GenshinImpact_TianLi_Logo.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Assets\Icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

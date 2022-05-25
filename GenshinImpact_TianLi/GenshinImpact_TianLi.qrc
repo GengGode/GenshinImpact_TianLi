@@ -1,49 +1,53 @@
 <RCC>
-    <qresource prefix="/GenshinImpact_TianLi">
-        <file>resource/标准尺寸背景.png</file>
-        <file>resource/退出按钮.png</file>
-        <file>resource/退出按钮_变暗.png</file>
-        <file>resource/标准尺寸背景2.png</file>
-        <file>resource/封面.png</file>
-        <file>resource/书册.png</file>
-        <file>resource/主界面背景.png</file>
-    </qresource>
-    <qresource prefix="/TianLi_Tab">
-        <file>resource/TianLi_Tab/冒险手册_标签二.png</file>
-        <file>resource/TianLi_Tab/冒险手册_标签二_变亮.png</file>
-        <file>resource/TianLi_Tab/冒险手册_标签三.png</file>
-        <file>resource/TianLi_Tab/冒险手册_标签三_变亮.png</file>
-        <file>resource/TianLi_Tab/冒险手册_标签四.png</file>
-        <file>resource/TianLi_Tab/冒险手册_标签四_变亮.png</file>
-        <file>resource/TianLi_Tab/冒险手册_标签一.png</file>
-        <file>resource/TianLi_Tab/冒险手册_标签一_变亮.png</file>
-        <file>resource/TianLi_Tab/Tab_地图_select.png</file>
-        <file>resource/TianLi_Tab/Tab_地图_selected.png</file>
-        <file>resource/TianLi_Tab/Tab_界面_select.png</file>
-        <file>resource/TianLi_Tab/Tab_界面_selected.png</file>
-        <file>resource/TianLi_Tab/Tab_联机_select.png</file>
-        <file>resource/TianLi_Tab/Tab_联机_selected.png</file>
-        <file>resource/TianLi_Tab/Tab_特殊_select.png</file>
-        <file>resource/TianLi_Tab/Tab_特殊_selected.png</file>
-    </qresource>
-    <qresource prefix="/Tab_DiTu">
-        <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_11.png</file>
-        <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_12.png</file>
-        <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_13.png</file>
-        <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_21.png</file>
-        <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_22.png</file>
-        <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_23.png</file>
-        <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_31.png</file>
-        <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_32.png</file>
-        <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_33.png</file>
-    </qresource>
-    <qresource prefix="/Test">
-        <file>resource/Test/Tex_0537_0.png</file>
-        <file>resource/Test/Tex_0544_0.png</file>
-        <file>resource/Test/Tex_0551_0.png</file>
-        <file>resource/Test/Tex_0558_0.png</file>
-        <file>resource/Test/Tex_0565_0.png</file>
-        <file>resource/Test/Tex_0572_0.png</file>
-        <file>resource/Test/Tex_0579_0.png</file>
-    </qresource>
+  <qresource prefix="/GenshinImpact_TianLi">
+    <file>resource/标准尺寸背景.png</file>
+    <file>resource/退出按钮.png</file>
+    <file>resource/退出按钮_变暗.png</file>
+    <file>resource/标准尺寸背景2.png</file>
+    <file>resource/封面.png</file>
+    <file>resource/书册.png</file>
+    <file>resource/主界面背景.png</file>
+  </qresource>
+  <qresource prefix="Logo">
+    <file>resource/Icon.png</file>
+    <file>resource/Icon.ico</file>
+  </qresource>
+  <qresource prefix="/TianLi_Tab">
+    <file>resource/TianLi_Tab/冒险手册_标签二.png</file>
+    <file>resource/TianLi_Tab/冒险手册_标签二_变亮.png</file>
+    <file>resource/TianLi_Tab/冒险手册_标签三.png</file>
+    <file>resource/TianLi_Tab/冒险手册_标签三_变亮.png</file>
+    <file>resource/TianLi_Tab/冒险手册_标签四.png</file>
+    <file>resource/TianLi_Tab/冒险手册_标签四_变亮.png</file>
+    <file>resource/TianLi_Tab/冒险手册_标签一.png</file>
+    <file>resource/TianLi_Tab/冒险手册_标签一_变亮.png</file>
+    <file>resource/TianLi_Tab/Tab_地图_select.png</file>
+    <file>resource/TianLi_Tab/Tab_地图_selected.png</file>
+    <file>resource/TianLi_Tab/Tab_界面_select.png</file>
+    <file>resource/TianLi_Tab/Tab_界面_selected.png</file>
+    <file>resource/TianLi_Tab/Tab_联机_select.png</file>
+    <file>resource/TianLi_Tab/Tab_联机_selected.png</file>
+    <file>resource/TianLi_Tab/Tab_特殊_select.png</file>
+    <file>resource/TianLi_Tab/Tab_特殊_selected.png</file>
+  </qresource>
+  <qresource prefix="/Tab_DiTu">
+    <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_11.png</file>
+    <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_12.png</file>
+    <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_13.png</file>
+    <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_21.png</file>
+    <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_22.png</file>
+    <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_23.png</file>
+    <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_31.png</file>
+    <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_32.png</file>
+    <file>resource/Tab_DiTu/Tab_DiTu_MaskMap_33.png</file>
+  </qresource>
+  <qresource prefix="/Test">
+    <file>resource/Test/Tex_0537_0.png</file>
+    <file>resource/Test/Tex_0544_0.png</file>
+    <file>resource/Test/Tex_0551_0.png</file>
+    <file>resource/Test/Tex_0558_0.png</file>
+    <file>resource/Test/Tex_0565_0.png</file>
+    <file>resource/Test/Tex_0572_0.png</file>
+    <file>resource/Test/Tex_0579_0.png</file>
+  </qresource>
 </RCC>
