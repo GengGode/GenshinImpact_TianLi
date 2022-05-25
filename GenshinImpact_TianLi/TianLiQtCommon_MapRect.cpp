@@ -7,7 +7,7 @@ TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	ui.label->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+	//ui.label_Render->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 }
 
 TianLiQtCommon_MapRect::~TianLiQtCommon_MapRect()
@@ -17,7 +17,7 @@ TianLiQtCommon_MapRect::~TianLiQtCommon_MapRect()
 void TianLiQtCommon_MapRect::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::LeftButton &&
-		ui.label->frameRect().contains(event->globalPos() - this->frameGeometry().topLeft())) {
+		ui.label_Render->frameRect().contains(event->globalPos() - this->frameGeometry().topLeft())) {
 		m_Press = event->globalPos();
 		leftBtnClk = true;
 	}
@@ -46,5 +46,6 @@ void TianLiQtCommon_MapRect::resizeEvent(QResizeEvent* event)
 {
 	const int w = event->size().width();
 	const int h = event->size().height();
-	ui.widget_MapMask->setGeometry(0, 0, w, h);
+	ui.label_Mask->setGeometry(0, 0, w, h);
+	ui.label_Render->setGeometry(0, 0, w, h);
 }

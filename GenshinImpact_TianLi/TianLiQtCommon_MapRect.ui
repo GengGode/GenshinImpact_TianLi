@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>TianLiQtCommon_MapRect</string>
   </property>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="label_Render">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -23,16 +23,13 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QLabel
-{
-background-color:rgba(0, 255, 0,12);
-}</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
    </property>
   </widget>
-  <widget class="QWidget" name="widget_MapMask" native="true">
+  <widget class="QLabel" name="label_Mask">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -41,155 +38,23 @@ background-color:rgba(0, 255, 0,12);
      <height>800</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0" columnstretch="0,0,0">
-    <property name="sizeConstraint">
-     <enum>QLayout::SetDefaultConstraint</enum>
-    </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
-    <property name="spacing">
-     <number>0</number>
-    </property>
-    <item row="4" column="2">
-     <widget class="QLabel" name="label_MapMask_33">
-      <property name="maximumSize">
-       <size>
-        <width>31</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:qradialgradient(spread:pad, cx:0, cy:0, radius:1, fx:0, fy:0, stop:0 rgba(255, 255, 255, 0), stop:1 rgba(255, 255, 255, 255));</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QLabel" name="label_MapMask_23">
-      <property name="maximumSize">
-       <size>
-        <width>31</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:0, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(255,255,255, 0));</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLabel" name="label_MapMask_22">
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QLabel" name="label_MapMask_13">
-      <property name="maximumSize">
-       <size>
-        <width>31</width>
-        <height>31</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:qradialgradient(spread:pad, cx:0, cy:1, radius:1, fx:0, fy:1, stop:0 rgba(255, 255, 255, 0), stop:1 rgba(255, 255, 255, 255));</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="label_MapMask_12">
-      <property name="styleSheet">
-       <string notr="true">background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(255,255,255, 0));</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_MapMask_21">
-      <property name="maximumSize">
-       <size>
-        <width>31</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(255,255,255, 0));</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_MapMask_11">
-      <property name="maximumSize">
-       <size>
-        <width>31</width>
-        <height>31</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:qradialgradient(spread:pad, cx:1, cy:1, radius:1, fx:1, fy:1, stop:0 rgba(255, 255, 255, 0), stop:1 rgba(255, 255, 255, 255));</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="label_MapMask_32">
-      <property name="styleSheet">
-       <string notr="true">background-color:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(255,255,255, 0));</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="label_MapMask_31">
-      <property name="maximumSize">
-       <size>
-        <width>31</width>
-        <height>31</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:qradialgradient(spread:pad, cx:1, cy:0, radius:1, fx:1, fy:0, stop:0 rgba(255, 255, 255, 0), stop:1 rgba(255, 255, 255, 255));</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   <property name="styleSheet">
+    <string notr="true">QLabel#label_2{
+border-width:30px;
+border-image:url(:/TianLiQtCommon_MapRect/resource/TianLiQtCommon_MapRect/TianLiQtCommon_MapRect_MapMask.png) 30 30px 30px 30px 30px stretch stretch;
+
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
   </widget>
+  <zorder>label_Mask</zorder>
+  <zorder>label_Render</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="TianLiQtCommon_MapRect.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="/TianLiQtCommon_MapRect">
+    <file>resource/TianLiQtCommon_MapRect/TianLiQtCommon_MapRect_MapMask.png</file>
+  </qresource>
+</RCC>
