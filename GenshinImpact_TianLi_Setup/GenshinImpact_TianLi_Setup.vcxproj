@@ -116,6 +116,15 @@
   <ItemGroup>
     <QtMoc Include="TianLiQtCommon_TimeLineLabel.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GenshinImpact_TianLi_Setup.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resource\Icon.ico" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />
