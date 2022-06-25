@@ -7,18 +7,73 @@
 
 #include <opencv2/opencv.hpp>
 
-TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget *parent)
+#include "TianLiQtCommon_Logger.h"
+/// <summary>
+/// 
+/// </summary>
+/// <param name="GIMAP">原地图</param>
+/// <param name="viewMapSize">输出图片大小</param>
+/// <param name="viewMapCenter">输入视口中心坐标</param>
+/// <param name="viewMapScale">输入地图缩放</param>
+/// <returns></returns>
+cv::Mat GetViewMap(cv::Mat& GIMAP,cv::Size viewMapSize,cv::Point2d viewMapCenter,double viewMapScale)
+{
+	static cv::Mat viewMap;
+	static cv::Rect viewMapRect;
+	//static cv::Point2d viewMapCenter;
+	
+	static int mapSizeWidth = GIMAP.size().width;
+	static int mapSizeHeight = GIMAP.size().height;
+	const static cv::Point2d originGIMAP(1428, 2937);
+	//需要能越过边界，否则大范围显示时无法保证角色箭头处于正确位置
+
+	cv::Point minMapPoint = cv::Point(0, 0);
+
+	cv::Size reMapSize = viewMapSize;
+	cv::Point2d reAutoMapCenter = viewMapCenter;
+	reMapSize.width = (reMapSize.width * viewMapScale);
+	reMapSize.height = (reMapSize.height * viewMapScale);
+	reAutoMapCenter = viewMapCenter * viewMapScale;
+
+	cv::Point2d LT = originGIMAP - reAutoMapCenter;
+	cv::Point2d RB = originGIMAP + cv::Point2d(reMapSize) - reAutoMapCenter;
+
+	minMapPoint = LT;
+
+	if (LT.x < 0)
+	{
+		minMapPoint.x = 0;
+	}
+	if (LT.y < 0)
+	{
+		minMapPoint.y = 0;
+	}
+	if (RB.x > mapSizeWidth)
+	{
+		minMapPoint.x = mapSizeWidth - reMapSize.width;
+	}
+	if (RB.y > mapSizeHeight)
+	{
+		minMapPoint.y = mapSizeHeight - reMapSize.height;
+	}
+	viewMapRect = cv::Rect(minMapPoint, reMapSize);
+
+	resize(GIMAP(viewMapRect), viewMap, viewMapSize);
+	return viewMap;
+}
+
+TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget* parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
 
-	//ui.label_Render->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-	
-	QString mapStr = "C:\\Users\\GengG\\source\\repos\\GenshinImpact_TianLi\\GenshinImpact_TianLi\\resource\\TianLiQtCommon_MapRect\\GIMAP.png";
-	
-	mapMat = cv::Mat(cv::imread(mapStr.toStdString()));
-	
+	ui.label_Render->setVisible(false);
+	{
+		LogTraceFunction;
 
+		QString mapStr = "C:\\Users\\GengG\\source\\repos\\GenshinImpact_TianLi\\GenshinImpact_TianLi\\resource\\TianLiQtCommon_MapRect\\maplite.png";
+		mapMat = cv::imread(mapStr.toStdString());
+	}
 	//创建刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
 	mapMessageLoopTimer->start(Fps);//1000/30=33.3,1000/24=42
@@ -32,43 +87,89 @@ TianLiQtCommon_MapRect::~TianLiQtCommon_MapRect()
 
 void TianLiQtCommon_MapRect::mousePressEvent(QMouseEvent* event)
 {
-	if (event->button() == Qt::LeftButton &&
-		ui.label_Render->frameRect().contains(event->globalPos() - this->frameGeometry().topLeft())) {
+	if (event->button() == Qt::LeftButton ) 
+	{
 		m_Press = event->globalPos();
 		leftBtnClk = true;
 	}
-	event->ignore();
 }
 
 void TianLiQtCommon_MapRect::mouseReleaseEvent(QMouseEvent* event)
 {
-	if (event->button() == Qt::LeftButton) {
+	if (event->button() == Qt::LeftButton) 
+	{
 		leftBtnClk = false;
 	}
-	event->ignore();
+}
+
+void TianLiQtCommon_MapRect::mouseDoubleClickEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::LeftButton) 
+	{
+		//leftBtnClk = false;
+	}
 }
 
 void TianLiQtCommon_MapRect::mouseMoveEvent(QMouseEvent* event)
 {
 	if (leftBtnClk) {
 		m_Move = event->globalPos();
-		this->move(this->pos() + m_Move - m_Press);
-		mapPos=cv::Point(mapPos.x+ m_Move.x() - m_Press.x(),
-			mapPos.y+ m_Move.y() - m_Press.y());
+		mapPos=cv::Point(mapPos.x+( m_Move.x() - m_Press.x())*mapScale,
+			mapPos.y+(m_Move.y()- m_Press.y())*mapScale);
 		m_Press = m_Move;
+		
+		LogInfo(QString::number(mapPos.x)+","+QString::number(mapPos.y));
 	}
-	event->ignore();
+	update();
 }
+
+void TianLiQtCommon_MapRect::wheelEvent(QWheelEvent* event)
+{
+	//TianLi_Logger.Info(__FUNCTION__, QString::number(event->delta()));
+	//LogInfo(QString::number(event->delta() / 120));
+	LogInfo( QString::number(mapScale));
+	if (event->delta() > 0) {
+		if (mapScale > 10)return;
+		mapScale += deltaMapScale;
+	}
+	else {
+		if (mapScale <= 0.3)return;
+		mapScale -= deltaMapScale;
+	}
+}
+
 void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 {
-	cv::Rect mapRect = cv::Rect(mapPos.x,mapPos.y, ui.label_Render->width(), ui.label_Render->height());
-	cv::Mat mapMatRect = mapMat(mapRect);
+	// LogTraceFunction;
+	
+	//// 计算缩放可视窗口
+	//cv::Point mapSize(ui.label_Render->width() * mapScale, ui.label_Render->height() * mapScale);
+	//cv::Rect mapRect = cv::Rect(mapPos.x, mapPos.y, mapSize.x, mapSize.y);
+	//
+	////cv::Rect mapRect = cv::Rect(mapPos.x,mapPos.y, ui.label_Render->width(), ui.label_Render->height());
+	//
+	cv::Mat mapMatRect;// = mapMat(mapRect);
+	////cv::resize(mapMat(mapRect), mapMatRect, cv::Size(ui.label_Render->width(), ui.label_Render->height()));
+
+	//// 生成仿射变换参数矩阵
+	//cv::Mat mapMatAffine = cv::Mat::eye(2, 3, CV_32FC1);
+	//mapMatAffine.at<float>(0, 0) = mapScale;
+	//mapMatAffine.at<float>(1, 1) = mapScale;
+	//mapMatAffine.at<float>(0, 2) = ui.label_Render->width() / 2.0 - mapPos.x / mapScale;
+	//mapMatAffine.at<float>(1, 2) = ui.label_Render->height() / 2.0 - mapPos.y / mapScale;
+	//
+	//// 变换图像
+	//cv::Mat mapMatAffineResult;
+	//cv::warpAffine(mapMat, mapMatAffineResult, mapMatAffine, cv::Size(ui.label_Render->width(), ui.label_Render->height()));
+	//
+	//// 将变换后的图像显示到界面
+	//mapMatRect = mapMatAffineResult;
+	mapMatRect = GetViewMap(mapMat, cv::Size(ui.label_Render->width(), ui.label_Render->height()), mapPos, mapScale);
 	
 	std::vector<cv::Mat> mv;
 	cv::split(mapMatRect, mv);
 	mv.push_back(mapMaskMat);
 	cv::merge(mv,mapMatRect);
-
 
 	mapImage =  QImage((uchar*)(mapMatRect.data), mapMatRect.cols, mapMatRect.rows, mapMatRect.cols * (mapMatRect.channels()), QImage::Format_ARGB32);
 

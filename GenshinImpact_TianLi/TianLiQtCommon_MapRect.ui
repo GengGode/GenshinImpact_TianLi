@@ -10,14 +10,17 @@
     <height>800</height>
    </rect>
   </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>TianLiQtCommon_MapRect</string>
   </property>
   <widget class="QLabel" name="label_Render">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>40</y>
+     <x>0</x>
+     <y>0</y>
      <width>600</width>
      <height>800</height>
     </rect>

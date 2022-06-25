@@ -83,7 +83,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\x64\vc16\staticlib;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
@@ -118,6 +118,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="TianLiQtCommon_CardRect.cpp" />
+    <ClCompile Include="TianLiQtCommon_Logger.cpp" />
     <ClCompile Include="TianLiQtCommon_MapRect.cpp" />
     <ClCompile Include="TianLiQtCommon_NearbyItemButton.cpp" />
     <ClCompile Include="TianLiQtCommon_PickedItemButton.cpp" />
@@ -134,6 +135,7 @@
     <ClCompile Include="GenshinImpact_TianLi.cpp" />
     <ClCompile Include="main.cpp" />
     <QtUic Include="TianLiQtCommon_CardRect.ui" />
+    <QtUic Include="TianLiQtCommon_Logger.ui" />
     <QtUic Include="TianLiQtCommon_MapRect.ui" />
     <QtUic Include="TianLiQtCommon_NearbyItemButton.ui" />
     <QtUic Include="TianLiQtCommon_PickedItemButton.ui" />
@@ -165,14 +167,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <QtMoc Include="TianLiQtCommon_Logger.h" />
     <QtMoc Include="TianLiQtCommon_TypeGroupButton.h" />
     <QtMoc Include="TianLiQtCommon_SelectedItemButton.h" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="..\GenshinImpact_TianLi_Resource\GenshinImpact_TianLi_Resource.rc" />
     <ResourceCompile Include="GenshinImpact_TianLi_Logo.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GenshinImpact_TianLi_Resource\GenshinImpact_TianLi_Resource.vcxproj">
+      <Project>{534b6e8d-220b-48fc-9163-dddba5207f89}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

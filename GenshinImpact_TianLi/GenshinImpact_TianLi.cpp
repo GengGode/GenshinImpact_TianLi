@@ -15,6 +15,9 @@
 #include "..\GenshinImpact_TianLi_Sqlite\GenshinImpact_TianLi_Sqlite.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Sqlite.lib")
 
+#include "..\GenshinImpact_TianLi_Resource\GenshinImpact_TianLi_Resource.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Resource.lib")
+
 GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -35,6 +38,16 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	emit this->ui_updatePusButtonList();
 
 	//this->setCurrentIndex_MainTabPages(1);
+	HBITMAP _hBmp = LoadBitmap_GIMAP();
+	
+	BITMAP bmp;
+	GetObject(_hBmp, sizeof(BITMAP), &bmp);
+	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+	int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
+	cv::Mat v_mat;
+	v_mat.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
+	GetBitmapBits(_hBmp, bmp.bmHeight * bmp.bmWidth * nChannels, v_mat.data);
+	
 	
 	connect(ui.pushButton_Tab_1, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
 	connect(ui.pushButton_Tab_2, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_2_clicked);
@@ -51,18 +64,25 @@ GenshinImpact_TianLi::~GenshinImpact_TianLi()
 void GenshinImpact_TianLi::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::LeftButton &&
-		ui.label_Main->frameRect().contains(event->globalPos() - this->frameGeometry().topLeft())) {
-		m_Press = event->globalPos();
-		leftBtnClk = true;
+		ui.label_Main->frameRect().contains(event->globalPos() - this->frameGeometry().topLeft()))
+	{
+		//QPoint globalMapPos=ui.label_MapMask->mapToGlobal(QPoint(0, 0));
+		//QSize MapSize = ui.label_MapMask->size();
+		//if (!QRect(globalMapPos,MapSize).contains(event->globalPos()))
+		{
+
+			m_Press = event->globalPos();
+			leftBtnClk = true;
+		}
 	}
-	event->ignore();
+	//event->ignore();
 }
 void GenshinImpact_TianLi::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::LeftButton) {
 		leftBtnClk = false;
 	}
-	event->ignore();
+	//event->ignore();
 }
 void GenshinImpact_TianLi::mouseMoveEvent(QMouseEvent* event)
 {
@@ -71,7 +91,7 @@ void GenshinImpact_TianLi::mouseMoveEvent(QMouseEvent* event)
 		this->move(this->pos() + m_Move - m_Press);
 		m_Press = m_Move;
 	}
-	event->ignore();
+	//event->ignore();
 }
 
 void GenshinImpact_TianLi::loadDataBase()

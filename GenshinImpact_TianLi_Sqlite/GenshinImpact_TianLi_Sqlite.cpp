@@ -9,7 +9,7 @@
 #include <string>
 #include <corecrt_malloc.h>
 
-Item::Item(const char* name, int index, double x, double y, double z, int uuid, const char* msg)
+__stdcall Item::Item(const char* name, int index, double x, double y, double z, int uuid, const char* msg)
 
 {
 	this->name = new char[strlen(name) + 1];
@@ -23,7 +23,7 @@ Item::Item(const char* name, int index, double x, double y, double z, int uuid, 
 	strcpy_s(this->msg, strlen(msg) + 1, msg);
 }
 
-Item::~Item()
+__stdcall Item::~Item()
 {
 	if (name)
 	{
@@ -37,7 +37,7 @@ Item::~Item()
 	}
 }
 
-ItemsVector::ItemsVector()
+__stdcall ItemsVector::ItemsVector()
 {
 	names = NULL;
 	indexs = NULL;
@@ -49,7 +49,7 @@ ItemsVector::ItemsVector()
 	size = 0;
 }
 
-ItemsVector::~ItemsVector()
+__stdcall ItemsVector::~ItemsVector()
 {
 	if (names)
 	{
@@ -104,12 +104,12 @@ ItemsVector::~ItemsVector()
 	}
 }
 
-Item ItemsVector::operator[](int i)
+Item __stdcall ItemsVector::operator[](int i)
 {
 	return Item(names[i], indexs[i], xs[i], ys[i], zs[i], uuids[i], msgs[i]);
 }
 
-void ItemsVector::append(const char* name, int index, double x, double y, double z, int uuid, const char* msg)
+void __stdcall ItemsVector::append(const char* name, int index, double x, double y, double z, int uuid, const char* msg)
 {
 	if (name == NULL || msg == NULL)
 	{
@@ -215,13 +215,13 @@ void ItemsVector::append(const char* name, int index, double x, double y, double
 	}
 }
 
-TextVector::TextVector()
+__stdcall TextVector::TextVector()
 {
 	text = NULL;
 	size = 0;
 }
 
-TextVector::~TextVector()
+__stdcall TextVector::~TextVector()
 {
 	if (text)
 	{
@@ -236,7 +236,7 @@ TextVector::~TextVector()
 	}
 }
 
-const char* TextVector::operator[](int i)
+const char* __stdcall TextVector::operator[](int i)
 {
 	if (i > size)
 	{
@@ -245,7 +245,7 @@ const char* TextVector::operator[](int i)
 	return text[i];
 }
 
-void TextVector::append(const char* str)
+void __stdcall TextVector::append(const char* str)
 {
 	if (str == NULL)
 	{
@@ -277,30 +277,30 @@ void TextVector::append(const char* str)
 	}
 }
 
-GenshinImpact_TianLi_Sqlite::GenshinImpact_TianLi_Sqlite()
+__stdcall GenshinImpact_TianLi_Sqlite::GenshinImpact_TianLi_Sqlite()
 {
 	impl = new SqliteImpl();
 }
 
-GenshinImpact_TianLi_Sqlite::~GenshinImpact_TianLi_Sqlite()
+__stdcall GenshinImpact_TianLi_Sqlite::~GenshinImpact_TianLi_Sqlite()
 {
 	impl->close();
 	delete impl;
 }
 
-int GenshinImpact_TianLi_Sqlite::OpenSqlite(const char* dbPath)
+int __stdcall GenshinImpact_TianLi_Sqlite::OpenSqlite(const char* dbPath)
 {
 	impl->open(dbPath);
 	return 0;
 }
 
-int GenshinImpact_TianLi_Sqlite::CloseSqlite()
+int __stdcall GenshinImpact_TianLi_Sqlite::CloseSqlite()
 {
 	impl->close();
 	return 0;
 }
 static int callback(void* data, int argc, char** argv, char** azColName);
-int GenshinImpact_TianLi_Sqlite::ReadCountry(TextVector &text)
+int __stdcall GenshinImpact_TianLi_Sqlite::ReadCountry(TextVector &text)
 {
 	char* errmsg = NULL;
 	
@@ -314,7 +314,7 @@ int GenshinImpact_TianLi_Sqlite::ReadCountry(TextVector &text)
 	return 0;
 }
 
-int GenshinImpact_TianLi_Sqlite::ReadType(const char* country, TextVector& text)
+int __stdcall GenshinImpact_TianLi_Sqlite::ReadType(const char* country, TextVector& text)
 {
 	if (country == NULL)
 	{
@@ -333,7 +333,7 @@ int GenshinImpact_TianLi_Sqlite::ReadType(const char* country, TextVector& text)
 	}
 	return 0;
 }
-int GenshinImpact_TianLi_Sqlite::ReadItem(const char* country, const char* type, TextVector& text)
+int __stdcall GenshinImpact_TianLi_Sqlite::ReadItem(const char* country, const char* type, TextVector& text)
 {
 	if (country == NULL || type == NULL)
 	{
@@ -354,7 +354,7 @@ int GenshinImpact_TianLi_Sqlite::ReadItem(const char* country, const char* type,
 	return 0;
 }
 
-int GenshinImpact_TianLi_Sqlite::ReadItems(const char* country, const char* type, const char* item, TextVector& text)
+int __stdcall GenshinImpact_TianLi_Sqlite::ReadItems(const char* country, const char* type, const char* item, TextVector& text)
 {
 	if (country == NULL || type == NULL || item == NULL)
 	{
@@ -379,7 +379,7 @@ int GenshinImpact_TianLi_Sqlite::ReadItems(const char* country, const char* type
 	return 0;
 }
 static int callbackItems(void* data, int argc, char** argv, char** azColName);
-int GenshinImpact_TianLi_Sqlite::ReadItems(const char* country, const char* type, const char* item, ItemsVector& items)
+int __stdcall GenshinImpact_TianLi_Sqlite::ReadItems(const char* country, const char* type, const char* item, ItemsVector& items)
 {
 	if (country == NULL || type == NULL || item == NULL)
 	{

@@ -88,6 +88,9 @@
     <ClCompile Include="TianLiQtCommon_TypeGroupButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TianLiQtCommon_Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="GenshinImpact_TianLi_zh.ts">
@@ -116,6 +119,9 @@
     <QtMoc Include="TianLiQtCommon_TypeGroupButton.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="TianLiQtCommon_Logger.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="TianLiQtCommon_CardRect.ui">
@@ -139,6 +145,9 @@
     <QtUic Include="TianLiQtCommon_TypeGroupButton.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="TianLiQtCommon_Logger.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -147,6 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GenshinImpact_TianLi_Logo.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="..\GenshinImpact_TianLi_Resource\GenshinImpact_TianLi_Resource.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

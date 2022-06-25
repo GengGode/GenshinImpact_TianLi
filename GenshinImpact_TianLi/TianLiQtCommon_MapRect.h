@@ -19,7 +19,7 @@ private:
 	Ui::TianLiQtCommon_MapRect ui;
 
 private:
-	int radius = 32;
+	int radius = 50;
 
 //  Û±ÍÕœ∂Ø
 private:
@@ -28,10 +28,14 @@ private:
 	bool leftBtnClk = false;
 	void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 	void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+	void mouseDoubleClickEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 	void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+	void wheelEvent(QWheelEvent* event) Q_DECL_OVERRIDE;
 
 private:
 	cv::Point mapPos=cv::Point(1234,1234);
+	double mapScale =1.0;
+	const double deltaMapScale=0.2;
 	int Fps = 42;//ms
 	QTimer* mapMessageLoopTimer;
 	QImage mapImage;

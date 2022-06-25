@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="头文件\sqlite3">
-      <UniqueIdentifier>{213871f6-8437-4f68-adcc-bb030c8b7889}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\sqlite3">
-      <UniqueIdentifier>{f52e506c-0153-4b7a-9d89-0d984adeb1ae}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -27,43 +21,41 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GenshinImpact_TianLi_Sqlite.h">
+    <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="sqlite3\sqlite3ext.h">
-      <Filter>头文件\sqlite3</Filter>
-    </ClInclude>
-    <ClInclude Include="sqlite3\sqlite3.h">
-      <Filter>头文件\sqlite3</Filter>
-    </ClInclude>
-    <ClInclude Include="SqliteImpl.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Sqlite_RCVFS.h">
+    <ClInclude Include="GenshinImpact_TianLi_Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="GenshinImpact_TianLi_Resource.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GenshinImpact_TianLi_Sqlite.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="sqlite3\sqlite3.c">
-      <Filter>源文件\sqlite3</Filter>
-    </ClCompile>
-    <ClCompile Include="sqlite3\shell.c">
-      <Filter>源文件\sqlite3</Filter>
-    </ClCompile>
-    <ClCompile Include="SqliteImpl.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Sqlite_RCVFS.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GenshinImpact_TianLi_Resource.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resource\GIPAIMON.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="resource\GISTARTEMPLATE.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\sqlite1.bin">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="resource\sqlite2.bin">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="resource\KongYingJiuGuanData.sqlite" />
   </ItemGroup>
 </Project>
