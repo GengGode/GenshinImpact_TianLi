@@ -277,12 +277,12 @@ void __stdcall TextVector::append(const char* str)
 	}
 }
 
-__stdcall GenshinImpact_TianLi_Sqlite::GenshinImpact_TianLi_Sqlite()
+GenshinImpact_TianLi_Sqlite::GenshinImpact_TianLi_Sqlite()
 {
 	impl = new SqliteImpl();
 }
 
-__stdcall GenshinImpact_TianLi_Sqlite::~GenshinImpact_TianLi_Sqlite()
+GenshinImpact_TianLi_Sqlite::~GenshinImpact_TianLi_Sqlite()
 {
 	impl->close();
 	delete impl;
@@ -291,6 +291,12 @@ __stdcall GenshinImpact_TianLi_Sqlite::~GenshinImpact_TianLi_Sqlite()
 int __stdcall GenshinImpact_TianLi_Sqlite::OpenSqlite(const char* dbPath)
 {
 	impl->open(dbPath);
+	return 0;
+}
+
+int GenshinImpact_TianLi_Sqlite::OpenSqlite(unsigned char* dbData, int size)
+{
+	impl->open(dbData,size);
 	return 0;
 }
 

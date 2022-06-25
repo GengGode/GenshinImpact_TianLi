@@ -10,7 +10,8 @@ public:
 	SqliteImpl();
 	~SqliteImpl();
 	
-	int open(const char * dbName);
+	int open(const char* dbName);
+	int open(unsigned char * pData,int size);
 	int close();
 	int exec(const char * sql, int (*callback)(void*,int,char**,char**), void * data, char** errmsg);
 	

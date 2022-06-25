@@ -73,6 +73,7 @@ extern "C"
 		GenshinImpact_TianLi_Sqlite();
 		~GenshinImpact_TianLi_Sqlite();
 		int OpenSqlite(const char* dbPath);
+		int OpenSqlite(unsigned char *dbData,int size);
 		int CloseSqlite();
 
 		// 读取国家地区

@@ -33,12 +33,13 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 
 	ui.label_Main->setGraphicsEffect(mainShadow);
 	
+	
 	this->loadDataBase();
 	this->loadUIBase();
 	emit this->ui_updatePusButtonList();
 
-	//this->setCurrentIndex_MainTabPages(1);
-	HBITMAP _hBmp = LoadBitmap_GIMAP();
+
+	HBITMAP _hBmp = TianLi::LoadBitmap_GIMAP();
 	
 	BITMAP bmp;
 	GetObject(_hBmp, sizeof(BITMAP), &bmp);
@@ -48,6 +49,8 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	v_mat.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
 	GetBitmapBits(_hBmp, bmp.bmHeight * bmp.bmWidth * nChannels, v_mat.data);
 	
+	
+
 	
 	connect(ui.pushButton_Tab_1, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
 	connect(ui.pushButton_Tab_2, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_2_clicked);
@@ -97,7 +100,10 @@ void GenshinImpact_TianLi::mouseMoveEvent(QMouseEvent* event)
 void GenshinImpact_TianLi::loadDataBase()
 {
 	this->TianLi_Sqlite= new GenshinImpact_TianLi_Sqlite();
-	this->TianLi_Sqlite->OpenSqlite("KongYingJiuGuanData.sqlite");
+	
+	TianLi::SqliteDbMem SqliteDB_Mem= TianLi::LoadSqlite_KYJGDB();
+	
+	this->TianLi_Sqlite->OpenSqlite(SqliteDB_Mem.ptr, SqliteDB_Mem.size);
 
 	updata_Country();
 	

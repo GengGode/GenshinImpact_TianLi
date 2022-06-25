@@ -4,6 +4,6 @@
 #pragma comment(lib,"GenshinImpact_TianLi_Resource.lib")
 
 TEST(TestCaseName, TestName) {
-	HBITMAP map = LoadBitmap_GIMAP();
+	HBITMAP map = TianLi::LoadBitmap_GIMAP();
 	EXPECT_NE(map, nullptr);
 }
