@@ -8,6 +8,10 @@
 #include <opencv2/opencv.hpp>
 
 #include "TianLiQtCommon_Logger.h"
+
+#include "..\GenshinImpact_TianLi_Resource\GenshinImpact_TianLi_Resource.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Resource.lib")
+
 /// <summary>
 /// 
 /// </summary>
@@ -71,8 +75,22 @@ TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget* parent)
 	{
 		LogTraceFunction;
 
-		QString mapStr = "C:\\Users\\GengG\\source\\repos\\GenshinImpact_TianLi\\GenshinImpact_TianLi\\resource\\TianLiQtCommon_MapRect\\maplite.png";
-		mapMat = cv::imread(mapStr.toStdString());
+		//QString mapStr = "C:\\Users\\GengG\\source\\repos\\GenshinImpact_TianLi\\GenshinImpact_TianLi\\resource\\TianLiQtCommon_MapRect\\maplite.png";
+		//mapMat = cv::imread(mapStr.toStdString());
+		HBITMAP _hBmp = TianLi::LoadPNG_GIMAP();
+
+		BITMAP bmp;
+		GetObject(_hBmp, sizeof(BITMAP), &bmp);
+		int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+		int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
+		cv::Mat v_mat;
+		v_mat.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
+		GetBitmapBits(_hBmp, bmp.bmHeight * bmp.bmWidth * nChannels, v_mat.data);
+		if (nChannels == 4)
+		{
+			cv::cvtColor(v_mat, v_mat, cv::COLOR_RGBA2RGB);
+		}		
+		mapMat = v_mat;
 	}
 	//创建刷新定时器
 	mapMessageLoopTimer = new QTimer(this);

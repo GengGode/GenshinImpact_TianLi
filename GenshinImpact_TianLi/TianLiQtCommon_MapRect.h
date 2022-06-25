@@ -5,8 +5,6 @@
 #include <QWidget>
 #include "ui_TianLiQtCommon_MapRect.h"
 
-
-
 class TianLiQtCommon_MapRect : public QWidget
 {
 	Q_OBJECT

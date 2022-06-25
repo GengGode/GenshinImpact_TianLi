@@ -39,18 +39,15 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	emit this->ui_updatePusButtonList();
 
 
-	HBITMAP _hBmp = TianLi::LoadBitmap_GIMAP();
-	
-	BITMAP bmp;
-	GetObject(_hBmp, sizeof(BITMAP), &bmp);
-	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
-	int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
-	cv::Mat v_mat;
-	v_mat.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
-	GetBitmapBits(_hBmp, bmp.bmHeight * bmp.bmWidth * nChannels, v_mat.data);
-	
-	
-
+	//HBITMAP _hBmp = TianLi::LoadBitmap_GIMAP();
+	//
+	//BITMAP bmp;
+	//GetObject(_hBmp, sizeof(BITMAP), &bmp);
+	//int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+	//int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
+	//cv::Mat v_mat;
+	//v_mat.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
+	//GetBitmapBits(_hBmp, bmp.bmHeight * bmp.bmWidth * nChannels, v_mat.data);
 	
 	connect(ui.pushButton_Tab_1, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
 	connect(ui.pushButton_Tab_2, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_2_clicked);
@@ -124,10 +121,16 @@ void GenshinImpact_TianLi::updata_Country()
 
 	// 加载国家地区
 	this->TianLi_Sqlite->ReadCountry(countryTextVector);
+	// 如果读取到的数据是空的
+	if (countryTextVector.size == 0)
+	{
+		return;
+	}
 	for (int i = 0; i < countryTextVector.size; i++)
 	{
 		strList_Addr << countryTextVector[i];
 	}
+	
 
 	// 选中第一个国家地区
 	selectedStr_Addr = strList_Addr[0];
@@ -142,6 +145,11 @@ void GenshinImpact_TianLi::updata_TypeList()
 
 	// 加载该国家地区下的类型
 	this->TianLi_Sqlite->ReadType(selectedStr_Addr.toStdString().c_str(), typeTextVector);
+	// 如果读取到的数据是空的
+	if (typeTextVector.size == 0)
+	{
+		return;
+	}
 	for (int i = 0; i < typeTextVector.size; i++)
 	{
 		strList_Type << typeTextVector[i];
@@ -160,6 +168,11 @@ void GenshinImpact_TianLi::updata_ItemList()
 
 	// 加载该类型下的种类
 	this->TianLi_Sqlite->ReadItem(selectedStr_Addr.toStdString().c_str(), selectedStr_Type.toStdString().c_str(), itemTextVector);
+	// 如果读取到的数据是空的
+	if (itemTextVector.size == 0)
+	{
+		return;
+	}
 	for (int i = 0; i < itemTextVector.size; i++)
 	{
 		strList_Item << itemTextVector[i];
@@ -178,6 +191,11 @@ void GenshinImpact_TianLi::updata_ItemsList()
 
 	// 加载该种类下的物品
 	this->TianLi_Sqlite->ReadItems(selectedStr_Addr.toStdString().c_str(), selectedStr_Type.toStdString().c_str(), selectedStr_Item.toStdString().c_str(), itemsItemsVector);
+	// 如果读取到的数据是空的
+	if (itemsItemsVector.size == 0)
+	{
+		return;
+	}
 	for (int i = 0; i < itemsItemsVector.size; i++)
 	{
 		strList_Items << itemsItemsVector[i].name;

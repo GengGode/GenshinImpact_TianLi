@@ -11,7 +11,8 @@ namespace TianLi
 
 	extern const char* Temp_Sqlite_FileName;
 
-	HBITMAP LoadBitmap_GIMAP();
+	HBITMAP LoadPNG_GIMAP();
+	HBITMAP LoadBitmap_GIPAIMON();
 
 	SqliteDbMem LoadSqlite_KYJGDB();
 }

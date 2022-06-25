@@ -5,20 +5,75 @@
 #include "framework.h"
 
 #include "GenshinImpact_TianLi_Resource.h"
-#include <cstdio>
+#include <vector>
 
 namespace TianLi
 {
 	const char* Temp_Sqlite_FileName = "Tamp~";
-
-	// 加载 Bitmap 图片 ID_GIMAP
-	HBITMAP LoadBitmap_GIMAP()
+	
+	HBITMAP LoadPNG_GIMAP()
 	{
-		HMODULE H_Module = GetModuleHandleW(NULL);
-		HBITMAP H_GIMAP = LoadBitmap(H_Module, MAKEINTRESOURCE(IDB_BITMAP_GIPAIMON));
-		return H_GIMAP;
+		HMODULE hModu = NULL;
+		IWICStream* pIWICStream = NULL;
+		IWICBitmapDecoder* pIDecoder = NULL;
+		IWICBitmapFrameDecode* pIDecoderFrame = NULL;
+		IWICImagingFactory* m_pIWICFactory = NULL;
+		IWICBitmapSource* bitmap_source = NULL;
+		HRSRC imageResHandle = NULL;
+		HGLOBAL imageResDataHandle = NULL;
+		void* pImageFile = NULL;
+		DWORD imageFileSize = 0;
+		
+		HBITMAP hGIMAP;
+		
+		hModu = GetModuleHandle(0);
+
+		CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
+		CoCreateInstance(
+			CLSID_WICImagingFactory,
+			NULL,
+			CLSCTX_INPROC_SERVER,
+			IID_PPV_ARGS(&m_pIWICFactory)
+		);
+
+		imageResHandle = FindResource(hModu, MAKEINTRESOURCE(IDB_PNG_GIMAP), L"PNG");
+		imageResDataHandle = LoadResource(hModu, imageResHandle);
+		pImageFile = LockResource(imageResDataHandle);
+		imageFileSize = SizeofResource(hModu, imageResHandle);
+		m_pIWICFactory->CreateStream(&pIWICStream);
+
+		pIWICStream->InitializeFromMemory(
+			reinterpret_cast<BYTE*>(pImageFile),
+			imageFileSize);
+		m_pIWICFactory->CreateDecoderFromStream(
+			pIWICStream,                   // The stream to use to create the decoder
+			NULL,                          // Do not prefer a particular vendor
+			WICDecodeMetadataCacheOnLoad,  // Cache metadata when needed
+			&pIDecoder);                   // Pointer to the decoder
+		pIDecoder->GetFrame(0, &pIDecoderFrame);
+
+		bitmap_source = pIDecoderFrame;
+
+		UINT width = 0, height = 0, depht = 4;
+		bitmap_source->GetSize(&width, &height);
+
+		{
+			std::vector<BYTE> buffer(width * height * depht);
+			bitmap_source->CopyPixels(NULL, width * depht, buffer.size(), buffer.data());
+
+			hGIMAP = CreateBitmap(width, height, 1, 8 * depht, buffer.data());
+		}
+		return hGIMAP;
 	}
 
+	// 加载 Bitmap 图片 ID_GIPAIMON
+	HBITMAP LoadBitmap_GIPAIMON()
+	{
+		HMODULE H_Module = GetModuleHandleW(NULL);
+		HBITMAP H_GIPAIMON = LoadBitmap(H_Module, MAKEINTRESOURCE(IDB_BITMAP_GIPAIMON));
+		return H_GIPAIMON;
+	}
 	SqliteDbMem LoadSqlite_KYJGDB()
 	{
 		HMODULE H_Module = GetModuleHandleW(NULL);

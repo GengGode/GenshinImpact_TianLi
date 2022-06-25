@@ -50,12 +50,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource\sqlite1.bin">
-      <Filter>资源文件</Filter>
-    </None>
-    <None Include="resource\sqlite2.bin">
-      <Filter>资源文件</Filter>
-    </None>
     <None Include="resource\KongYingJiuGuanData.sqlite" />
   </ItemGroup>
 </Project>

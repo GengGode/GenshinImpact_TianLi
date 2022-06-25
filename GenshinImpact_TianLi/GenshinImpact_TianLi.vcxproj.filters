@@ -161,6 +161,9 @@
     <ResourceCompile Include="..\GenshinImpact_TianLi_Resource\GenshinImpact_TianLi_Resource.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="GenshinImpact_TianLi_Version.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\Icon.ico">
