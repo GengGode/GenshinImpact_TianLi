@@ -55,6 +55,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <IncludePath>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\x64\vc16\staticlib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
@@ -66,7 +68,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>aded.lib;IlmImfd.lib;ippicvmt.lib;ippiwd.lib;ittnotifyd.lib;libjpeg-turbod.lib;libopenjp2d.lib;libpngd.lib;libprotobufd.lib;libtiffd.lib;libwebpd.lib;opencv_aruco455d.lib;opencv_barcode455d.lib;opencv_bgsegm455d.lib;opencv_bioinspired455d.lib;opencv_calib3d455d.lib;opencv_ccalib455d.lib;opencv_core455d.lib;opencv_datasets455d.lib;opencv_dnn455d.lib;opencv_dnn_objdetect455d.lib;opencv_dnn_superres455d.lib;opencv_dpm455d.lib;opencv_face455d.lib;opencv_features2d455d.lib;opencv_flann455d.lib;opencv_fuzzy455d.lib;opencv_gapi455d.lib;opencv_hfs455d.lib;opencv_highgui455d.lib;opencv_imgcodecs455d.lib;opencv_imgproc455d.lib;opencv_img_hash455d.lib;opencv_intensity_transform455d.lib;opencv_line_descriptor455d.lib;opencv_mcc455d.lib;opencv_ml455d.lib;opencv_objdetect455d.lib;opencv_optflow455d.lib;opencv_phase_unwrapping455d.lib;opencv_photo455d.lib;opencv_plot455d.lib;opencv_quality455d.lib;opencv_rapid455d.lib;opencv_reg455d.lib;opencv_rgbd455d.lib;opencv_saliency455d.lib;opencv_shape455d.lib;opencv_stereo455d.lib;opencv_stitching455d.lib;opencv_structured_light455d.lib;opencv_superres455d.lib;opencv_surface_matching455d.lib;opencv_text455d.lib;opencv_tracking455d.lib;opencv_video455d.lib;opencv_videoio455d.lib;opencv_videostab455d.lib;opencv_wechat_qrcode455d.lib;opencv_xfeatures2d455d.lib;opencv_ximgproc455d.lib;opencv_xobjdetect455d.lib;opencv_xphoto455d.lib;quircd.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -76,7 +83,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\x64\vc16\staticlib;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ade.lib;IlmImf.lib;ippicvmt.lib;ippiw.lib;ittnotify.lib;libjpeg-turbo.lib;libopenjp2.lib;libpng.lib;libprotobuf.lib;libtiff.lib;libwebp.lib;opencv_aruco455.lib;opencv_barcode455.lib;opencv_bgsegm455.lib;opencv_bioinspired455.lib;opencv_calib3d455.lib;opencv_ccalib455.lib;opencv_core455.lib;opencv_datasets455.lib;opencv_dnn455.lib;opencv_dnn_objdetect455.lib;opencv_dnn_superres455.lib;opencv_dpm455.lib;opencv_face455.lib;opencv_features2d455.lib;opencv_flann455.lib;opencv_fuzzy455.lib;opencv_gapi455.lib;opencv_hfs455.lib;opencv_highgui455.lib;opencv_imgcodecs455.lib;opencv_imgproc455.lib;opencv_img_hash455.lib;opencv_intensity_transform455.lib;opencv_line_descriptor455.lib;opencv_mcc455.lib;opencv_ml455.lib;opencv_objdetect455.lib;opencv_optflow455.lib;opencv_phase_unwrapping455.lib;opencv_photo455.lib;opencv_plot455.lib;opencv_quality455.lib;opencv_rapid455.lib;opencv_reg455.lib;opencv_rgbd455.lib;opencv_saliency455.lib;opencv_shape455.lib;opencv_stereo455.lib;opencv_stitching455.lib;opencv_structured_light455.lib;opencv_superres455.lib;opencv_surface_matching455.lib;opencv_text455.lib;opencv_tracking455.lib;opencv_video455.lib;opencv_videoio455.lib;opencv_videostab455.lib;opencv_wechat_qrcode455.lib;opencv_xfeatures2d455.lib;opencv_ximgproc455.lib;opencv_xobjdetect455.lib;opencv_xphoto455.lib;quirc.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
@@ -111,6 +123,7 @@
     <ClCompile Include="TianLiQtCommon_PickedItemButton.cpp" />
     <ClCompile Include="TianLiQtCommon_ScrollCardRect.cpp" />
     <ClCompile Include="TianLiQtCommon_SelectedItemButton.cpp" />
+    <ClCompile Include="TianLiQtCommon_TypeGroupButton.cpp" />
     <QtRcc Include="GenshinImpact_TianLi.qrc" />
     <QtRcc Include="TianLiQtCommon_MapRect.qrc" />
     <QtRcc Include="TianLiQtCommon_NearbyItemButton.qrc" />
@@ -126,6 +139,7 @@
     <QtUic Include="TianLiQtCommon_PickedItemButton.ui" />
     <QtUic Include="TianLiQtCommon_ScrollCardRect.ui" />
     <QtUic Include="TianLiQtCommon_SelectedItemButton.ui" />
+    <QtUic Include="TianLiQtCommon_TypeGroupButton.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="GenshinImpact_TianLi_zh.ts" />
@@ -140,25 +154,25 @@
     <QtMoc Include="TianLiQtCommon_ScrollCardRect.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="TianLiQtCommon_SelectedItemButton.h" />
-  </ItemGroup>
-  <ItemGroup>
     <QtMoc Include="TianLiQtCommon_PickedItemButton.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="TianLiQtCommon_NearbyItemButton.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="KongYingJiuGuanData.sqlite" />
     <None Include="TianLiQtCommon_ScrollCardRect.qss" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <QtMoc Include="TianLiQtCommon_TypeGroupButton.h" />
+    <QtMoc Include="TianLiQtCommon_SelectedItemButton.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GenshinImpact_TianLi_Logo.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Assets\Icon.ico" />
+    <Image Include="resource\Icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

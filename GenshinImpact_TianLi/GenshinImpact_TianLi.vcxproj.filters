@@ -21,6 +21,21 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
+    <Filter Include="Header Files\TianLiQtCommon">
+      <UniqueIdentifier>{c5666815-5443-4cca-91ad-91f6c27a941c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files\TianLiQtCommon">
+      <UniqueIdentifier>{8e41851f-59cd-42fc-b1d8-cc870939ffa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TianLiQtCommon">
+      <UniqueIdentifier>{775fb0ec-d3d6-4c49-a6c3-b0db74ed4b36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Translation Files\TianLiQtCommon">
+      <UniqueIdentifier>{0af76180-4f6b-4cf5-83ca-0460ad14949c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\TianLiQtCommon">
+      <UniqueIdentifier>{0de65009-1367-4a93-b7ee-0ff6186efd92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GenshinImpact_TianLi.qrc">
@@ -35,39 +50,42 @@
     <ClCompile Include="GenshinImpact_TianLi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <QtRcc Include="TianLiQtCommon_SelectItemButton.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
-    <QtRcc Include="TianLiQtCommon_PickedItemButton.qrc">
-      <Filter>Resource Files</Filter>
+    <QtRcc Include="TianLiQtCommon_MapRect.qrc">
+      <Filter>Resource Files\TianLiQtCommon</Filter>
     </QtRcc>
     <QtRcc Include="TianLiQtCommon_NearbyItemButton.qrc">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\TianLiQtCommon</Filter>
     </QtRcc>
-    <QtRcc Include="TianLiQtCommon_MapRect.qrc">
-      <Filter>Resource Files</Filter>
+    <QtRcc Include="TianLiQtCommon_PickedItemButton.qrc">
+      <Filter>Resource Files\TianLiQtCommon</Filter>
+    </QtRcc>
+    <QtRcc Include="TianLiQtCommon_SelectItemButton.qrc">
+      <Filter>Resource Files\TianLiQtCommon</Filter>
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TianLiQtCommon_MapRect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TianLiQtCommon_CardRect.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\TianLiQtCommon</Filter>
     </ClCompile>
-    <ClCompile Include="TianLiQtCommon_ScrollCardRect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TianLiQtCommon_SelectedItemButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TianLiQtCommon_PickedItemButton.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="TianLiQtCommon_MapRect.cpp">
+      <Filter>Source Files\TianLiQtCommon</Filter>
     </ClCompile>
     <ClCompile Include="TianLiQtCommon_NearbyItemButton.cpp">
+      <Filter>Source Files\TianLiQtCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="TianLiQtCommon_PickedItemButton.cpp">
+      <Filter>Source Files\TianLiQtCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="TianLiQtCommon_ScrollCardRect.cpp">
+      <Filter>Source Files\TianLiQtCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="TianLiQtCommon_SelectedItemButton.cpp">
+      <Filter>Source Files\TianLiQtCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="TianLiQtCommon_TypeGroupButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,47 +95,50 @@
     </QtTranslation>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="TianLiQtCommon_MapRect.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="TianLiQtCommon_CardRect.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\TianLiQtCommon</Filter>
     </QtMoc>
-    <QtMoc Include="TianLiQtCommon_ScrollCardRect.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="TianLiQtCommon_SelectedItemButton.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="TianLiQtCommon_PickedItemButton.h">
-      <Filter>Header Files</Filter>
+    <QtMoc Include="TianLiQtCommon_MapRect.h">
+      <Filter>Header Files\TianLiQtCommon</Filter>
     </QtMoc>
     <QtMoc Include="TianLiQtCommon_NearbyItemButton.h">
+      <Filter>Header Files\TianLiQtCommon</Filter>
+    </QtMoc>
+    <QtMoc Include="TianLiQtCommon_PickedItemButton.h">
+      <Filter>Header Files\TianLiQtCommon</Filter>
+    </QtMoc>
+    <QtMoc Include="TianLiQtCommon_ScrollCardRect.h">
+      <Filter>Header Files\TianLiQtCommon</Filter>
+    </QtMoc>
+    <QtMoc Include="TianLiQtCommon_SelectedItemButton.h">
+      <Filter>Header Files\TianLiQtCommon</Filter>
+    </QtMoc>
+    <QtMoc Include="TianLiQtCommon_TypeGroupButton.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="TianLiQtCommon_MapRect.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtUic Include="TianLiQtCommon_CardRect.ui">
-      <Filter>Form Files</Filter>
+      <Filter>Form Files\TianLiQtCommon</Filter>
     </QtUic>
-    <QtUic Include="TianLiQtCommon_ScrollCardRect.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="TianLiQtCommon_SelectedItemButton.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="TianLiQtCommon_PickedItemButton.ui">
-      <Filter>Form Files</Filter>
+    <QtUic Include="TianLiQtCommon_MapRect.ui">
+      <Filter>Form Files\TianLiQtCommon</Filter>
     </QtUic>
     <QtUic Include="TianLiQtCommon_NearbyItemButton.ui">
+      <Filter>Form Files\TianLiQtCommon</Filter>
+    </QtUic>
+    <QtUic Include="TianLiQtCommon_PickedItemButton.ui">
+      <Filter>Form Files\TianLiQtCommon</Filter>
+    </QtUic>
+    <QtUic Include="TianLiQtCommon_ScrollCardRect.ui">
+      <Filter>Form Files\TianLiQtCommon</Filter>
+    </QtUic>
+    <QtUic Include="TianLiQtCommon_SelectedItemButton.ui">
+      <Filter>Form Files\TianLiQtCommon</Filter>
+    </QtUic>
+    <QtUic Include="TianLiQtCommon_TypeGroupButton.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TianLiQtCommon_ScrollCardRect.qss" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -130,8 +151,14 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Assets\Icon.ico">
+    <Image Include="resource\Icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TianLiQtCommon_ScrollCardRect.qss">
+      <Filter>Resource Files\TianLiQtCommon</Filter>
+    </None>
+    <None Include="KongYingJiuGuanData.sqlite" />
   </ItemGroup>
 </Project>

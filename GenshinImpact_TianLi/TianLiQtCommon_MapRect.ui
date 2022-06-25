@@ -16,11 +16,14 @@
   <widget class="QLabel" name="label_Render">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
+     <x>80</x>
+     <y>40</y>
      <width>600</width>
      <height>800</height>
     </rect>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
    </property>
    <property name="styleSheet">
     <string notr="true"/>
@@ -29,28 +32,6 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_Mask">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>600</width>
-     <height>800</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLabel#label_2{
-border-width:30px;
-border-image:url(:/TianLiQtCommon_MapRect/resource/TianLiQtCommon_MapRect/TianLiQtCommon_MapRect_MapMask.png) 30 30px 30px 30px 30px stretch stretch;
-
-}</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <zorder>label_Mask</zorder>
-  <zorder>label_Render</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

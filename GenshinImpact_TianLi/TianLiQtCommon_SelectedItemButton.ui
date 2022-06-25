@@ -83,12 +83,12 @@ font-size:12px;</string>
     <string>空物品</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_Text">
+  <widget class="QLabel" name="label_Region">
    <property name="geometry">
     <rect>
      <x>164</x>
      <y>6</y>
-     <width>32</width>
+     <width>50</width>
      <height>10</height>
     </rect>
    </property>
@@ -118,8 +118,7 @@ color:rgba(0,0,0,128);
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">.QLabel{
-}</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
@@ -184,11 +183,11 @@ border-radius:1px;
   </widget>
   <zorder>label_Image</zorder>
   <zorder>label_Title</zorder>
-  <zorder>label_Text</zorder>
-  <zorder>label_LabelImage</zorder>
+  <zorder>label_Region</zorder>
   <zorder>label_Progress_Bg</zorder>
   <zorder>label_Progress_B</zorder>
   <zorder>label_Progress_A</zorder>
+  <zorder>label_LabelImage</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

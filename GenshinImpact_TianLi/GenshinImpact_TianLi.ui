@@ -341,7 +341,7 @@ color:rgb(134, 99, 67);
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="page">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -358,10 +358,10 @@ color:rgb(134, 99, 67);
           <number>6</number>
          </property>
          <item>
-          <widget class="QWidget" name="widget_2" native="true"/>
+          <widget class="QWidget" name="widget_MapTab_Left" native="true"/>
          </item>
          <item>
-          <widget class="QWidget" name="widget_3" native="true">
+          <widget class="QWidget" name="widget_MapTab_Right" native="true">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -570,7 +570,18 @@ background-image:url(:/Tab_DiTu/resource/Tab_DiTu/Tab_DiTu_MaskMap_31.png);
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page_2"/>
+       <widget class="QWidget" name="page_2">
+        <widget class="QWidget" name="widget_HUDTab" native="true">
+         <property name="geometry">
+          <rect>
+           <x>6</x>
+           <y>6</y>
+           <width>1259</width>
+           <height>739</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
        <widget class="QWidget" name="page_3"/>
        <widget class="QWidget" name="page_4"/>
       </widget>

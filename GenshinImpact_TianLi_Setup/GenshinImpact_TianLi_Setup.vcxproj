@@ -77,6 +77,9 @@
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
+    <Link>
+      <Profile>true</Profile>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>

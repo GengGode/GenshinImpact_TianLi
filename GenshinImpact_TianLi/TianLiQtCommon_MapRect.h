@@ -1,7 +1,11 @@
 #pragma once
 
+#include <opencv2/opencv.hpp>
+
 #include <QWidget>
 #include "ui_TianLiQtCommon_MapRect.h"
+
+
 
 class TianLiQtCommon_MapRect : public QWidget
 {
@@ -17,7 +21,7 @@ private:
 private:
 	int radius = 32;
 
-	// 鼠标拖动
+// 鼠标拖动
 private:
 	QPoint m_Press;
 	QPoint m_Move;
@@ -27,5 +31,15 @@ private:
 	void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 private:
+	cv::Point mapPos=cv::Point(1234,1234);
+	int Fps = 42;//ms
+	QTimer* mapMessageLoopTimer;
+	QImage mapImage;
+	cv::Mat mapMat;
+	cv::Mat mapMaskMat;
+	
+// UI重绘
+private:
+	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 	void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
 };
