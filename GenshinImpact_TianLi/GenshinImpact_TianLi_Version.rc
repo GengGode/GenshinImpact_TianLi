@@ -72,7 +72,7 @@ BEGIN
             VALUE "FileVersion", "0.0.0.1"
             VALUE "InternalName", "天理手册.exe"
             VALUE "LegalCopyright", "Copyright (C) 2022 维系天理"
-            VALUE "OriginalFilename", "GenshinI.exe"
+            VALUE "OriginalFilename", "原神天理.exe"
             VALUE "ProductName", "天理手册"
             VALUE "ProductVersion", "0.0.0.1"
         END
