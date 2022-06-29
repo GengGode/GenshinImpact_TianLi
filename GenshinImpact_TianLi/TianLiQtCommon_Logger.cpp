@@ -1,3 +1,5 @@
+#ifdef _DEBUG
+
 #include "TianLiQtCommon_Logger.h"
 
 #include <QMutex>
@@ -121,3 +123,5 @@ void TianLiQtCommon_Logger::Error(QString func, QString msg)
 {
 	log("Error", func, msg);
 }
+
+#endif

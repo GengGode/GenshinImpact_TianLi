@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef _DEBUG
+
 #include <mutex>
 
 #include <QWidget>
@@ -125,3 +127,5 @@ private:
 
 #define TianLi_Logger TianLiQtCommon_Logger::getInstance() 
 #define LogInfo( x) TianLi_Logger.Info(#x,x)
+
+#endif // _DEBUG
