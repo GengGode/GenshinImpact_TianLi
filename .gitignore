@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+*.sqlite
+/GenshinImpact_TianLi_Resource/resource/GIMAP.png
+/GenshinImpact_TianLi/resource/TianLiQtCommon_MapRect/001.png
+/GenshinImpact_TianLi/resource/TianLiQtCommon_MapRect/GIMAP.png
+/GenshinImpact_TianLi/resource/TianLiQtCommon_MapRect/Map.png
+/GenshinImpact_TianLi/resource/TianLiQtCommon_MapRect/maplite.png
