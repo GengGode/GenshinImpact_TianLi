@@ -5,10 +5,23 @@
 
 TEST(SqliteRead, SqliteReadCountry)
 {
-	TextVector textVector;
 	GenshinImpact_TianLi_Sqlite genshinImpact_TianLi_Sqlite;
 	genshinImpact_TianLi_Sqlite.OpenSqlite("KongYingJiuGuanData.sqlite");
-	genshinImpact_TianLi_Sqlite.ReadCountry(textVector);
-	genshinImpact_TianLi_Sqlite.CloseSqlite();
-	EXPECT_EQ(textVector.size, 11);
+
+	TextVector VecCountry;
+	genshinImpact_TianLi_Sqlite.ReadCountry(VecCountry);
+	
+	EXPECT_EQ(VecCountry.size, 11);
+	
+	TextVector VecType;
+	genshinImpact_TianLi_Sqlite.ReadType(VecCountry[0], VecType);
+	
+	EXPECT_EQ(VecType.size, 7);
+
+	TextVector VecItem;
+	genshinImpact_TianLi_Sqlite.ReadItem(VecCountry[0], VecType[0], VecItem);
+	
+	EXPECT_EQ(VecItem.size, 21);
+	
+	
 }

@@ -109,7 +109,7 @@ Item __stdcall ItemsVector::operator[](int i)
 	return Item(names[i], indexs[i], xs[i], ys[i], zs[i], uuids[i], msgs[i]);
 }
 
-void __stdcall ItemsVector::append(const char* name, int index, double x, double y, double z, int uuid, const char* msg)
+void __stdcall ItemsVector::Append(const char* name, int index, double x, double y, double z, int uuid, const char* msg)
 {
 	if (name == NULL || msg == NULL)
 	{
@@ -245,7 +245,7 @@ const char* __stdcall TextVector::operator[](int i)
 	return text[i];
 }
 
-void __stdcall TextVector::append(const char* str)
+void __stdcall TextVector::Append(const char* str)
 {
 	if (str == NULL)
 	{
@@ -414,7 +414,7 @@ static int callback(void* data, int argc, char** argv, char** azColName)
 	TextVector& text = *(TextVector*)data;
 	if (argc == 1)
 	{
-		text.append(argv[0]);
+		text.Append(argv[0]);
 	}
 	return 0;
 }
@@ -441,7 +441,7 @@ static int callbackItems(void* data, int argc, char** argv, char** azColName)
 		// z
 		// uuid
 		// msg
-		items.append(
+		items.Append(
 			argv[3],//name
 			atoi(argv[2]),//index
 			atof(argv[5]),//x

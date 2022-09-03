@@ -73,7 +73,8 @@ GenshinImpact_TianLi_Setup::GenshinImpact_TianLi_Setup(QWidget *parent)
     timeLineLabel_4->setEnd(true);
 
 
-    connect(ui.pushButton_UI_Close, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::pushButton_UI_Close);
+    //connect(ui.pushButton_UI_Close, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::pushButton_UI_Close);
+    connect(ui.pushButton_UI_Close, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::close);
     connect(ui.pushButton_UI_Mini, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::pushButton_UI_Mini);
     connect(ui.pushButton_FastInstall, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::pushButton_FastInstall);
     connect(ui.pushButton_CustomizeInstall, &QPushButton::clicked, this, &GenshinImpact_TianLi_Setup::pushButton_CustomizeInstall);
@@ -139,22 +140,30 @@ bool GenshinImpact_TianLi_Setup::eventFilter(QObject* object, QEvent* event)
     }
     return QWidget::eventFilter(object, event);
 }
+
+void GenshinImpact_TianLi_Setup::closeEvent(QCloseEvent* event)
+{
+    event->accept();
+}
 void GenshinImpact_TianLi_Setup::pushButton_UI_Close()
 {
     //ui.label_MainShadow->hide();
-    ui.label_MainShadow_A->hide();
-    ui.label_MainShadow_B->hide();
+	
+    //ui.label_MainShadow_A->hide();
+    //ui.label_MainShadow_B->hide();
 
-    exitAnimation = new QPropertyAnimation(ui.label_MainShadow, "geometry");
-    exitAnimation->setDuration(200);
-    exitAnimation->setEndValue(QRect(10 , 20, 720, 384));
-    connect(exitAnimation, &QPropertyAnimation::valueChanged, [=]() {
-        this->update();
-        });
-    connect(exitAnimation, &QPropertyAnimation::finished, [=]() {
-        this->close();
-        });
-    exitAnimation->start();
+    //exitAnimation = new QPropertyAnimation(ui.label_MainShadow, "geometry");
+    //exitAnimation->setDuration(200);
+    //exitAnimation->setEndValue(QRect(10 , 20, 720, 384));
+    //connect(exitAnimation, &QPropertyAnimation::valueChanged, [=]() {
+    //    this->update();
+    //    });
+    //connect(exitAnimation, &QPropertyAnimation::finished, [=]() {
+    //    this->close();
+    //    });
+    //exitAnimation->start();
+    this->close();
+
 }
 
 void GenshinImpact_TianLi_Setup::pushButton_UI_Mini()

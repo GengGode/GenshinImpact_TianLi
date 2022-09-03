@@ -7,7 +7,7 @@
 #include <QTableWidget>
 
 
-TianLiQtCommon_Logger& TianLiQtCommon_Logger::getInstance()
+TianLiQtCommon_Logger& TianLiQtCommon_Logger::GetInstance()
 {
 	static QMutex mutex;
 	static QScopedPointer<TianLiQtCommon_Logger> instance;
@@ -27,7 +27,9 @@ TianLiQtCommon_Logger::TianLiQtCommon_Logger(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	
+	this->setAttribute(Qt::WA_QuitOnClose, false);
+	this->setWindowFlags(Qt::Tool);
+
 	ui.tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);     
 	ui.tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);    
 	ui.tableWidget->verticalHeader()->setVisible(false);                     
@@ -56,9 +58,9 @@ TianLiQtCommon_Logger::~TianLiQtCommon_Logger()
 
 void TianLiQtCommon_Logger::append(QString time, QString type, QString func, QString msg)
 {
-	int rowcount = ui.tableWidget->rowCount();           //è·å–å½“å‰è¡Œæ•°
-	ui.tableWidget->insertRow(rowcount);                 //æ–°å¢è¡Œ
-	ui.tableWidget->setItem(rowcount, 0, new QTableWidgetItem(time)); //æ–°å¢è¡Œæ·»åŠ æ•°æ®
+	int rowcount = ui.tableWidget->rowCount();           //»ñÈ¡µ±Ç°ĞĞÊı
+	ui.tableWidget->insertRow(rowcount);                 //ĞÂÔöĞĞ
+	ui.tableWidget->setItem(rowcount, 0, new QTableWidgetItem(time)); //ĞÂÔöĞĞÌí¼ÓÊı¾İ
 	QTableWidgetItem* item_type = new QTableWidgetItem(type);
 	// Info Error Warning Debug other
 	// blue red orange yellow green
@@ -95,7 +97,7 @@ void TianLiQtCommon_Logger::append(QString time, QString type, QString func, QSt
 void TianLiQtCommon_Logger::log(QString type, QString func, QString msg)
 {
 	QDateTime time = QDateTime::currentDateTime();  
-	QString timestr = time.toString("yyyy-MM-dd hh:mm:ss:ms");             //è®¾ç½®æ˜¾ç¤ºæ ¼å¼
+	QString timestr = time.toString("yyyy-MM-dd hh:mm:ss:ms");             //ÉèÖÃÏÔÊ¾¸ñÊ½
 	append(timestr, type, func, msg);
 }
 

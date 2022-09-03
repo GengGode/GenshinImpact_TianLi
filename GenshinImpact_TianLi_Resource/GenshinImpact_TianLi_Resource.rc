@@ -52,6 +52,32 @@ END
 
 IDB_PNG_GIMAP           PNG                     "resource\\GIMAP.png"
 
+IDB_PNG_GIPAIMON        PNG                     "resource\\GIPAIMON.png"
+
+IDB_PNG_GIAVATAR        PNG                     "resource\\GIAVATAR.png"
+
+IDB_PNG_GIUID_0         PNG                     "resource\\NumUID\\UID0.png"
+
+IDB_PNG_GIUID_1         PNG                     "resource\\NumUID\\UID1.png"
+
+IDB_PNG_GIUID_2         PNG                     "resource\\NumUID\\UID2.png"
+
+IDB_PNG_GIUID_3         PNG                     "resource\\NumUID\\UID3.png"
+
+IDB_PNG_GIUID_4         PNG                     "resource\\NumUID\\UID4.png"
+
+IDB_PNG_GIUID_5         PNG                     "resource\\NumUID\\UID5.png"
+
+IDB_PNG_GIUID_6         PNG                     "resource\\NumUID\\UID6.png"
+
+IDB_PNG_GIUID_7         PNG                     "resource\\NumUID\\UID7.png"
+
+IDB_PNG_GIUID_8         PNG                     "resource\\NumUID\\UID8.png"
+
+IDB_PNG_GIUID_9         PNG                     "resource\\NumUID\\UID9.png"
+
+IDB_PNG_GIUID__         PNG                     "resource\\NumUID\\UID_.png"
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap

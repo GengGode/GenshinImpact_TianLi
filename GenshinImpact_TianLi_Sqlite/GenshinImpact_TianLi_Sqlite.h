@@ -17,10 +17,14 @@
 #endif
 
 #define APICALL __stdcall
+#ifndef DLLAPI
 #define DLLAPI GENSHINIMPACTTIANLISQLITE_API
+#endif // DLLAPI
 
 #else
+#ifndef DLLAPI
 #define DLLAPI
+#endif // DLLAPI
 #endif
 class SqliteImpl;
 extern "C"
@@ -55,7 +59,7 @@ extern "C"
 		~ItemsVector();
 		Item operator[](int i);
 
-		void append(const char* name, int index, double x, double y, double z, int uuid, const char* msg);
+		void Append(const char* name, int index, double x, double y, double z, int uuid, const char* msg);
 	};
 	struct DLLAPI  TextVector
 	{
@@ -64,7 +68,7 @@ extern "C"
 		TextVector();
 		~TextVector();
 		const char* operator[](int i);
-		void append(const char* str);
+		void Append(const char* str);
 	};
 	class  DLLAPI GenshinImpact_TianLi_Sqlite
 	{
@@ -85,7 +89,7 @@ extern "C"
 		// 读取该国家地区类型物品种类下的所有物品
 		int ReadItems(const char* country, const char* type, const char* item, TextVector& text);
 		int ReadItems(const char* country, const char* type, const char* item, ItemsVector& items);
-
+	
 	};
 
 }

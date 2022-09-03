@@ -31,9 +31,9 @@ private:
 	void wheelEvent(QWheelEvent* event) Q_DECL_OVERRIDE;
 
 private:
-	cv::Point mapPos=cv::Point(1234,1234);
+	cv::Point mapPos=cv::Point(1428, 2937);
 	double mapScale =1.0;
-	const double deltaMapScale=0.2;
+	const double deltaMapScale=0.1;
 	int Fps = 42;//ms
 	QTimer* mapMessageLoopTimer;
 	QImage mapImage;
@@ -44,4 +44,7 @@ private:
 private:
 	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 	void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
+	
+public slots:
+	void slot_update();
 };

@@ -802,7 +802,7 @@ static sqlite3_int64 integerValue(const char *zArg){
 }
 
 /*
-** A variable length string to which one can append text.
+** A variable length string to which one can Append text.
 */
 typedef struct ShellText ShellText;
 struct ShellText {
@@ -3678,7 +3678,7 @@ SQLITE_EXTENSION_INIT1
 #include <string.h>
 #include <assert.h>
 
-/* The append mark at the end of the database is:
+/* The Append mark at the end of the database is:
 **
 **     Start-Of-SQLite3-NNNNNNNN
 **     123456789 123456789 12345
@@ -3692,7 +3692,7 @@ SQLITE_EXTENSION_INIT1
 #define APND_MARK_SIZE       (APND_MARK_PREFIX_SZ+APND_MARK_FOS_SZ)
 
 /*
-** Maximum size of the combined prefix + database + append-mark.  This
+** Maximum size of the combined prefix + database + Append-mark.  This
 ** must be less than 0x40000000 to avoid locking issues on Windows.
 */
 #define APND_MAX_SIZE  (0x40000000)
@@ -3724,12 +3724,12 @@ typedef struct ApndFile ApndFile;
 ** A separate sqlite3_file object is always appended. The appended
 ** sqlite3_file object (which can be accessed using ORIGFILE()) describes
 ** the entire file, including the prefix, the database, and the
-** append-mark.
+** Append-mark.
 **
 ** The structure of an AppendVFS database is like this:
 **
 **   +-------------+---------+----------+-------------+
-**   | prefix-file | padding | database | append-mark |
+**   | prefix-file | padding | database | Append-mark |
 **   +-------------+---------+----------+-------------+
 **                           ^          ^
 **                           |          |
@@ -3740,7 +3740,7 @@ typedef struct ApndFile ApndFile;
 ** "padding"     -  zero or more bytes inserted so that "database"
 **                  starts on an APND_ROUNDUP boundary
 ** "database"    -  The SQLite database file
-** "append-mark" -  The 25-byte "Start-Of-SQLite3-NNNNNNNN" that indicates
+** "Append-mark" -  The 25-byte "Start-Of-SQLite3-NNNNNNNN" that indicates
 **                  the offset from the start of prefix-file to the start
 **                  of "database".
 **
@@ -3755,7 +3755,7 @@ typedef struct ApndFile ApndFile;
 struct ApndFile {
   sqlite3_file base;        /* Subclass.  MUST BE FIRST! */
   sqlite3_int64 iPgOne;     /* Offset to the start of the database */
-  sqlite3_int64 iMark;      /* Offset of the append mark.  -1 if unwritten */
+  sqlite3_int64 iMark;      /* Offset of the Append mark.  -1 if unwritten */
   /* Always followed by another sqlite3_file that describes the whole file */
 };
 
@@ -3871,7 +3871,7 @@ static int apndRead(
 }
 
 /*
-** Add the append-mark onto what should become the end of the file.
+** Add the Append-mark onto what should become the end of the file.
 *  If and only if this succeeds, internal ApndFile.iMark is updated.
 *  Parameter iWriteEnd is the appendvfs-relative offset of the new mark.
 */
@@ -3911,7 +3911,7 @@ static int apndWrite(
   sqlite_int64 iWriteEnd = iOfst + iAmt;
   if( iWriteEnd>=APND_MAX_SIZE ) return SQLITE_FULL;
   pFile = ORIGFILE(pFile);
-  /* If append-mark is absent or will be overwritten, write it. */
+  /* If Append-mark is absent or will be overwritten, write it. */
   if( paf->iMark < 0 || paf->iPgOne + iWriteEnd > paf->iMark ){
     int rc = apndWriteMark(paf, pFile, iWriteEnd);
     if( SQLITE_OK!=rc ) return rc;
@@ -3925,9 +3925,9 @@ static int apndWrite(
 static int apndTruncate(sqlite3_file *pFile, sqlite_int64 size){
   ApndFile *paf = (ApndFile *)pFile;
   pFile = ORIGFILE(pFile);
-  /* The append mark goes out first so truncate failure does not lose it. */
+  /* The Append mark goes out first so truncate failure does not lose it. */
   if( SQLITE_OK!=apndWriteMark(paf, pFile, size) ) return SQLITE_IOERR;
-  /* Truncate underlying file just past append mark */
+  /* Truncate underlying file just past Append mark */
   return pFile->pMethods->xTruncate(pFile, paf->iMark+APND_MARK_SIZE);
 }
 
@@ -3941,7 +3941,7 @@ static int apndSync(sqlite3_file *pFile, int flags){
 
 /*
 ** Return the current file-size of an apnd-file.
-** If the append mark is not yet there, the file-size is 0.
+** If the Append mark is not yet there, the file-size is 0.
 */
 static int apndFileSize(sqlite3_file *pFile, sqlite_int64 *pSize){
   ApndFile *paf = (ApndFile *)pFile;
@@ -4057,11 +4057,11 @@ static int apndUnfetch(sqlite3_file *pFile, sqlite3_int64 iOfst, void *pPage){
 }
 
 /*
-** Try to read the append-mark off the end of a file.  Return the
-** start of the appended database if the append-mark is present.
-** If there is no valid append-mark, return -1;
+** Try to read the Append-mark off the end of a file.  Return the
+** start of the appended database if the Append-mark is present.
+** If there is no valid Append-mark, return -1;
 **
-** An append-mark is only valid if the NNNNNNNN start-of-database offset
+** An Append-mark is only valid if the NNNNNNNN start-of-database offset
 ** indicates that the appended database contains at least one page.  The
 ** start-of-database value must be a multiple of 512.
 */
@@ -4184,7 +4184,7 @@ static int apndOpen(
   }else{
     /* Round newly added appendvfs location to #define'd page boundary. 
     ** Note that nothing has yet been written to the underlying file.
-    ** The append mark will be written along with first content write.
+    ** The Append mark will be written along with first content write.
     ** Until then, paf->iMark value indicates it is not yet written.
     */
     pApndFile->iPgOne = APND_START_ROUNDUP(sz);
@@ -12144,7 +12144,7 @@ struct ShellState {
 #define MODE_Line     0  /* One column per line.  Blank line between records */
 #define MODE_Column   1  /* One record per line in neat columns */
 #define MODE_List     2  /* One record per line with a separator */
-#define MODE_Semi     3  /* Same as MODE_List but append ";" to each line */
+#define MODE_Semi     3  /* Same as MODE_List but Append ";" to each line */
 #define MODE_Html     4  /* Generate an XHTML table */
 #define MODE_Insert   5  /* Generate SQL "insert" statements */
 #define MODE_Quote    6  /* Quote values as for SQL */
@@ -16966,7 +16966,7 @@ struct ArCommand {
   u8 bVerbose;                    /* True if --verbose */
   u8 bZip;                        /* True if the archive is a ZIP */
   u8 bDryRun;                     /* True if --dry-run */
-  u8 bAppend;                     /* True if --append */
+  u8 bAppend;                     /* True if --Append */
   u8 fromCmdLine;                 /* Run from -A instead of .archive */
   int nArg;                       /* Number of command arguments */
   char *zSrcTable;                /* "sqlar", "zipfile($file)" or "zip" */

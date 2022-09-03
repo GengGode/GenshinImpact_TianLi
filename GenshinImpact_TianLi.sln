@@ -7,9 +7,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi", "Gen
 	ProjectSection(ProjectDependencies) = postProject
 		{3B1F4292-4764-4F16-A0EF-FB7B98721EC1} = {3B1F4292-4764-4F16-A0EF-FB7B98721EC1}
 		{534B6E8D-220B-48FC-9163-DDDBA5207F89} = {534B6E8D-220B-48FC-9163-DDDBA5207F89}
+		{BAC67EE5-A634-40D5-83F8-585577F9505F} = {BAC67EE5-A634-40D5-83F8-585577F9505F}
+		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC} = {CE0FB596-E144-46AA-961C-BEF99DC6EFBC}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Setup", "GenshinImpact_TianLi_Setup\GenshinImpact_TianLi_Setup.vcxproj", "{4B8927E3-4588-42B5-9A46-B5A3CA12B4CB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9BDDB7C6-9680-4FC5-BB05-AE567E9CD227} = {9BDDB7C6-9680-4FC5-BB05-AE567E9CD227}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Sqlite", "GenshinImpact_TianLi_Sqlite\GenshinImpact_TianLi_Sqlite.vcxproj", "{3B1F4292-4764-4F16-A0EF-FB7B98721EC1}"
 EndProject
@@ -18,6 +23,17 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_GenshinImpact_TianLi_Resource", "Test_GenshinImpact_TianLi_Resource\Test_GenshinImpact_TianLi_Resource.vcxproj", "{339162FA-6846-4404-A05B-B880525EB48C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_GenshinImpact_TianLi_Sqlite", "Test_GenshinImpact_TianLi_Sqlite\Test_GenshinImpact_TianLi_Sqlite.vcxproj", "{B726525B-9D26-4B81-968F-B7DDCD267D28}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Track", "GenshinImpact_TianLi_Track\GenshinImpact_TianLi_Track.vcxproj", "{CE0FB596-E144-46AA-961C-BEF99DC6EFBC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Core", "GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.vcxproj", "{BAC67EE5-A634-40D5-83F8-585577F9505F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3B1F4292-4764-4F16-A0EF-FB7B98721EC1} = {3B1F4292-4764-4F16-A0EF-FB7B98721EC1}
+		{534B6E8D-220B-48FC-9163-DDDBA5207F89} = {534B6E8D-220B-48FC-9163-DDDBA5207F89}
+		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC} = {CE0FB596-E144-46AA-961C-BEF99DC6EFBC}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Map", "GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.vcxproj", "{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +87,30 @@ Global
 		{B726525B-9D26-4B81-968F-B7DDCD267D28}.Release|x64.Build.0 = Release|x64
 		{B726525B-9D26-4B81-968F-B7DDCD267D28}.Release|x86.ActiveCfg = Release|Win32
 		{B726525B-9D26-4B81-968F-B7DDCD267D28}.Release|x86.Build.0 = Release|Win32
+		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC}.Debug|x64.ActiveCfg = Debug|x64
+		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC}.Debug|x64.Build.0 = Debug|x64
+		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC}.Debug|x86.ActiveCfg = Debug|Win32
+		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC}.Debug|x86.Build.0 = Debug|Win32
+		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC}.Release|x64.ActiveCfg = Release|x64
+		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC}.Release|x64.Build.0 = Release|x64
+		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC}.Release|x86.ActiveCfg = Release|Win32
+		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC}.Release|x86.Build.0 = Release|Win32
+		{BAC67EE5-A634-40D5-83F8-585577F9505F}.Debug|x64.ActiveCfg = Debug|x64
+		{BAC67EE5-A634-40D5-83F8-585577F9505F}.Debug|x64.Build.0 = Debug|x64
+		{BAC67EE5-A634-40D5-83F8-585577F9505F}.Debug|x86.ActiveCfg = Debug|Win32
+		{BAC67EE5-A634-40D5-83F8-585577F9505F}.Debug|x86.Build.0 = Debug|Win32
+		{BAC67EE5-A634-40D5-83F8-585577F9505F}.Release|x64.ActiveCfg = Release|x64
+		{BAC67EE5-A634-40D5-83F8-585577F9505F}.Release|x64.Build.0 = Release|x64
+		{BAC67EE5-A634-40D5-83F8-585577F9505F}.Release|x86.ActiveCfg = Release|Win32
+		{BAC67EE5-A634-40D5-83F8-585577F9505F}.Release|x86.Build.0 = Release|Win32
+		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Debug|x64.ActiveCfg = Debug|x64
+		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Debug|x64.Build.0 = Debug|x64
+		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Debug|x86.ActiveCfg = Debug|Win32
+		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Debug|x86.Build.0 = Debug|Win32
+		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Release|x64.ActiveCfg = Release|x64
+		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Release|x64.Build.0 = Release|x64
+		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Release|x86.ActiveCfg = Release|Win32
+		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,10 +6,11 @@
 
 #include "GenshinImpact_TianLi_Resource.h"
 #include <vector>
+#include <opencv2/opencv.hpp>
 
 namespace TianLi
 {
-	const char* Temp_Sqlite_FileName = "Tamp~";
+	const char* Temp_Sqlite_FileName = "Temp~";
 	
 	HBITMAP LoadPNG_GIMAP()
 	{
@@ -60,7 +61,7 @@ namespace TianLi
 
 		{
 			std::vector<BYTE> buffer(width * height * depht);
-			bitmap_source->CopyPixels(NULL, width * depht, buffer.size(), buffer.data());
+			bitmap_source->CopyPixels(NULL, width * depht, static_cast<UINT>(buffer.size()), buffer.data());
 
 			hGIMAP = CreateBitmap(width, height, 1, 8 * depht, buffer.data());
 		}
@@ -149,3 +150,144 @@ namespace TianLi
 		return Sqlite_KYJGDB;
 	}
 }
+
+GenshinImpact_TianLi_Resource::GenshinImpact_TianLi_Resource()
+{
+	/**************************************************/
+	GINUMUID          = new cv::Mat[11];//NUM
+	/**************************************************/
+	LoadPng();
+}
+GenshinImpact_TianLi_Resource::~GenshinImpact_TianLi_Resource()
+{
+	delete[] GINUMUID;
+}
+GenshinImpact_TianLi_Resource* GenshinImpact_TianLi_Resource::GetInstance()
+{
+	// 多线程单例
+	static GenshinImpact_TianLi_Resource* pInstance = new GenshinImpact_TianLi_Resource();
+	return pInstance;
+}
+
+void GenshinImpact_TianLi_Resource::LoadPng_ID2Mat(int IDB, cv::Mat& mat)
+{
+	IWICStream* pIWICStream = NULL;
+	IWICBitmapDecoder* pIDecoder = NULL;
+	IWICBitmapFrameDecode* pIDecoderFrame = NULL;
+	IWICBitmapSource* bitmap_source = NULL;
+	HRSRC imageResHandle = NULL;
+	HGLOBAL imageResDataHandle = NULL;
+	void* pImageFile = NULL;
+	DWORD imageFileSize = 0;
+	
+	imageResHandle = FindResource(hModu, MAKEINTRESOURCE(IDB), L"PNG");
+	imageResDataHandle = LoadResource(hModu, imageResHandle);
+	pImageFile = LockResource(imageResDataHandle);
+	imageFileSize = SizeofResource(hModu, imageResHandle);
+	m_pIWICFactory->CreateStream(&pIWICStream);
+
+	pIWICStream->InitializeFromMemory(
+		reinterpret_cast<BYTE*>(pImageFile),
+		imageFileSize);
+	m_pIWICFactory->CreateDecoderFromStream(
+		pIWICStream,                   // The stream to use to create the decoder
+		NULL,                          // Do not prefer a particular vendor
+		WICDecodeMetadataCacheOnLoad,  // Cache metadata when needed
+		&pIDecoder);                   // Pointer to the decoder
+	pIDecoder->GetFrame(0, &pIDecoderFrame);
+
+	bitmap_source = pIDecoderFrame;
+
+	UINT width = 0, height = 0, depht = 4;
+	bitmap_source->GetSize(&width, &height);
+
+	{
+		std::vector<BYTE> buffer(width * height * depht);
+		bitmap_source->CopyPixels(NULL, width * depht, static_cast<UINT>(buffer.size()), buffer.data());
+		HBITMAP hPngMat = CreateBitmap(width, height, 1, 8 * depht, buffer.data());
+
+		HBitmap2MatAlpha(hPngMat, mat);
+
+		DeleteObject(hPngMat);
+	}
+
+	DeleteObject(bitmap_source);
+}
+
+void GenshinImpact_TianLi_Resource::LoadPng()
+{
+	hModu = GetModuleHandle(0);
+
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
+	CoCreateInstance(
+		CLSID_WICImagingFactory,
+		NULL,
+		CLSCTX_INPROC_SERVER,
+		IID_PPV_ARGS(&m_pIWICFactory)
+	);
+	
+	LoadPng_ID2Mat(IDB_PNG_GIMAP, GIMAP);
+	LoadPng_ID2Mat(IDB_PNG_GIPAIMON, GIPAIMON);
+	LoadPng_ID2Mat(IDB_PNG_GIAVATAR, GIAVATAR);
+	LoadPng_ID2Mat(IDB_PNG_GIUID_0, GINUMUID[0]);
+	LoadPng_ID2Mat(IDB_PNG_GIUID_1, GINUMUID[1]);
+	LoadPng_ID2Mat(IDB_PNG_GIUID_2, GINUMUID[2]);
+	LoadPng_ID2Mat(IDB_PNG_GIUID_3, GINUMUID[3]);
+	LoadPng_ID2Mat(IDB_PNG_GIUID_4, GINUMUID[4]);
+	LoadPng_ID2Mat(IDB_PNG_GIUID_5, GINUMUID[5]);
+	LoadPng_ID2Mat(IDB_PNG_GIUID_6, GINUMUID[6]);
+	LoadPng_ID2Mat(IDB_PNG_GIUID_7, GINUMUID[7]);
+	LoadPng_ID2Mat(IDB_PNG_GIUID_8, GINUMUID[8]);
+	LoadPng_ID2Mat(IDB_PNG_GIUID_9, GINUMUID[9]);
+	LoadPng_ID2Mat(IDB_PNG_GIUID__, GINUMUID[10]);
+
+	CoUninitialize();
+}
+
+bool GenshinImpact_TianLi_Resource::HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat)
+{
+	//BITMAP操作
+	BITMAP bmp;
+	GetObject(_hBmp, sizeof(BITMAP), &bmp);
+	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+	int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
+	//mat操作
+	cv::Mat v_mat;
+	v_mat.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
+	GetBitmapBits(_hBmp, bmp.bmHeight * bmp.bmWidth * nChannels, v_mat.data);
+	_mat = v_mat;
+	if (nChannels == 4)
+	{
+		cv::cvtColor(v_mat, _mat, cv::COLOR_RGBA2RGB);
+		return true;
+	}
+	return false;
+}
+
+//带Alpha通道的32位Bmp图片
+bool GenshinImpact_TianLi_Resource::HBitmap2MatAlpha(HBITMAP& _hBmp, cv::Mat& _mat)
+{
+	//BITMAP操作
+	BITMAP bmp;
+	GetObject(_hBmp, sizeof(BITMAP), &bmp);
+	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+	int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
+	//mat操作
+	cv::Mat v_mat;
+	v_mat.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
+	GetBitmapBits(_hBmp, bmp.bmHeight * bmp.bmWidth * nChannels, v_mat.data);
+	_mat = v_mat;
+	return true;
+}
+
+bool GenshinImpact_TianLi_Resource::Mat2MaskMat(cv::Mat& in, cv::Mat& out)
+{
+	std::vector<cv::Mat> mv0;
+	//通道分离
+	split(in, mv0);
+	out = mv0[0];
+
+	return false;
+}
+

@@ -9,6 +9,7 @@ class TianLiQtCommon_CardRect;
 class TianLiQtCommon_ScrollCardRect;
 class TianLiQtCommon_MapRect;
 class GenshinImpact_TianLi_Sqlite;
+class GenshinImpact_TianLi_Core;
 class GenshinImpact_TianLi : public QMainWindow
 {
     Q_OBJECT
@@ -19,7 +20,7 @@ public:
 
 private:
     Ui::GenshinImpact_TianLiClass ui;
-
+    QTimer* timer;
 private:
     // 主要阴影
     QGraphicsDropShadowEffect *mainShadow;
@@ -32,7 +33,8 @@ private:
     void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-
+private:
+    //GenshinImpact_TianLi_Core *core;
 // 加载数据库
 private:
     GenshinImpact_TianLi_Sqlite* TianLi_Sqlite;

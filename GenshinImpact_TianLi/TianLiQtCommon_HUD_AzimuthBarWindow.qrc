@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/TianLiQtCommon_HUD_AzimuthBarWindow">
+        <file>resource/TianLiCommon/HUD/AzimuthBarWindow/Base Arrow Center.png</file>
+        <file>resource/TianLiCommon/HUD/AzimuthBarWindow/Base Line.png</file>
+        <file>resource/TianLiCommon/HUD/AzimuthBarWindow/Flag E.png</file>
+        <file>resource/TianLiCommon/HUD/AzimuthBarWindow/Flag N.png</file>
+        <file>resource/TianLiCommon/HUD/AzimuthBarWindow/Flag S.png</file>
+        <file>resource/TianLiCommon/HUD/AzimuthBarWindow/Flag Star.png</file>
+        <file>resource/TianLiCommon/HUD/AzimuthBarWindow/Flag W.png</file>
+    </qresource>
+</RCC>

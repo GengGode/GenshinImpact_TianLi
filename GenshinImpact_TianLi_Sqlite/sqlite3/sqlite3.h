@@ -7932,12 +7932,12 @@ SQLITE_API char *sqlite3_str_finish(sqlite3_str*);
 **
 ** ^The [sqlite3_str_appendf(X,F,...)] and
 ** [sqlite3_str_vappendf(X,F,V)] interfaces uses the [built-in printf]
-** functionality of SQLite to append formatted text onto the end of
+** functionality of SQLite to Append formatted text onto the end of
 ** [sqlite3_str] object X.
 **
 ** ^The [sqlite3_str_append(X,S,N)] method appends exactly N bytes from string S
 ** onto the end of the [sqlite3_str] object X.  N must be non-negative.
-** S must contain at least N non-zero bytes of content.  To append a
+** S must contain at least N non-zero bytes of content.  To Append a
 ** zero-terminated string in its entirety, use the [sqlite3_str_appendall()]
 ** method instead.
 **
