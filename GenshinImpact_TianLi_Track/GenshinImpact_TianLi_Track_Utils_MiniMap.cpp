@@ -1,8 +1,5 @@
 #include "pch.h"
-#include "core_match_thread.h"
-
-#include <thread>
-#include <Windows.h>
+#include "GenshinImpact_TianLi_Track_Utils_MiniMap.h"
 
 SurfMatch::SurfMatch()
 {
@@ -45,34 +42,34 @@ void SurfMatch::match()
 {
 	cv::Point2d dp1 = hisP[1] - hisP[0];
 	cv::Point2d dp2 = hisP[2] - hisP[1];
-	
- 	bool calc_is_faile = false;
+
+	bool calc_is_faile = false;
 
 	isContinuity = false;
-	
+
 	//角色移动连续性判断
 	if (((dis(dp1) + dis(dp2)) < 2000) && (hisP[2].x > someSizeR && hisP[2].x < _mapMat.cols - someSizeR && hisP[2].y>someSizeR && hisP[2].y < _mapMat.rows - someSizeR))
 	{
 		isContinuity = true;
 	}
-	
+
 	if (isContinuity)
 	{
 		bool calc_continuity_is_faile = false;
-		
+
 		pos = match_continuity(calc_continuity_is_faile);
-		
+
 		if (calc_continuity_is_faile)
 		{
 			isContinuity = false;
 		}
 	}
-	
+
 	if (!isContinuity)
 	{
 		pos = match_no_continuity(calc_is_faile);
 	}
-	
+
 	if (calc_is_faile)
 	{
 		return;
@@ -81,7 +78,7 @@ void SurfMatch::match()
 	hisP[0] = hisP[1];
 	hisP[1] = hisP[2];
 	hisP[2] = pos;
-	
+
 }
 
 cv::Point2d  SurfMatch::match_continuity(bool& calc_continuity_is_faile)
@@ -106,7 +103,7 @@ cv::Point2d SurfMatch::match_continuity_on_city(bool& calc_continuity_is_faile)
 
 	cv::Mat img_scene(_mapMat);
 	cv::Mat img_object(_minMapMat(cv::Rect(30, 30, _minMapMat.cols - 60, _minMapMat.rows - 60)));
-	
+
 	//在城镇中
 		/***********************/
 		//重新从完整中地图取出角色周围部分地图
@@ -164,10 +161,10 @@ cv::Point2d SurfMatch::match_continuity_on_city(bool& calc_continuity_is_faile)
 cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_faile)
 {
 	cv::Point2d pos_not_on_city;
-	
+
 	cv::Mat img_scene(_mapMat);
 	cv::Mat img_object(_minMapMat(cv::Rect(30, 30, _minMapMat.cols - 60, _minMapMat.rows - 60)));
-	
+
 	//不在城镇中时
 	cv::Mat someMap(img_scene(cv::Rect(static_cast<int>(hisP[2].x - someSizeR), static_cast<int>(hisP[2].y - someSizeR), someSizeR * 2, someSizeR * 2)));
 	cv::Mat minMap(img_object);
@@ -258,18 +255,18 @@ cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_fai
 		pos_not_on_city = cv::Point2d(x + hisP[2].x, y + hisP[2].y);
 
 	}
-	
+
 	return pos_not_on_city;
 }
 
 cv::Point2d SurfMatch::match_no_continuity(bool& calc_is_faile)
 {
 	cv::Point2d pos_continuity_no;
-	
+
 	// TODO: 可优化为static
 	cv::Mat img_scene(_mapMat);
 	cv::Mat img_object(_minMapMat(cv::Rect(30, 30, _minMapMat.cols - 60, _minMapMat.rows - 60)));
-	
+
 	detector->detectAndCompute(img_object, cv::noArray(), Kp_MinMap, Dp_MinMap);
 
 	if (Kp_MinMap.size() == 0)
@@ -277,7 +274,7 @@ cv::Point2d SurfMatch::match_no_continuity(bool& calc_is_faile)
 		calc_is_faile = true;
 		return pos_continuity_no;
 	}
-	
+
 	cv::Ptr<cv::DescriptorMatcher> matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
 	std::vector< std::vector<cv::DMatch> > KNN_m;
 
@@ -295,9 +292,9 @@ cv::Point2d SurfMatch::match_no_continuity(bool& calc_is_faile)
 		calc_is_faile = true;
 		return pos_continuity_no;
 	}
-	
+
 	pos_continuity_no = SPC(lisx, sumx, lisy, sumy);
-	
+
 	return pos_continuity_no;
 }
 
@@ -425,426 +422,49 @@ double SurfMatch::var(std::vector<double> lisx, double sumx, std::vector<double>
 	return sqrt(stdevx * stdevx + stdevy * stdevy);
 }
 
-void ATM_TM_TemplatePaimon::setPaimonTemplate(cv::Mat paimonTemplateMat)
-{
-	_paimonTemplate = paimonTemplateMat;
-}
 
-void ATM_TM_TemplatePaimon::setPaimonMat(cv::Mat paimonMat)
+void get_avatar_position(const GenshinMinimap& genshin_minimap, GenshinAvatarPosition& out_genshin_position)
 {
-	_paimonMat = paimonMat;
-}
-
-void ATM_TM_TemplatePaimon::match()
-{
-	cv::Mat tmp;
-	matchTemplate(_paimonTemplate, _paimonMat, tmp, cv::TM_CCOEFF_NORMED);
-
-	double minVal, maxVal;
-	cv::Point minLoc, maxLoc;
-	//寻找最佳匹配位置
-	minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
-#ifdef _DEBUG
-	std::cout << "Match Template MinVal & MaxVal" << minVal << " , " << maxVal << std::endl;
-#endif
-	if (minVal < 0.51 || maxVal == 1)
+	static SurfMatch surf_match;
+	static bool is_init = false;
+	if (!is_init)
 	{
-		isPaimonVisible = false;
+		TianLi::XmlDbMem xml_db_mem = GenshinImpact_TianLi_Resource::GetInstance()->LoadXml_GIMAP_COMPUTE();
+		// 从内存中加载xml文件的string
+		std::string xml_str(xml_db_mem.ptr);
+		// 将xml文件的string转换为xml文件
+		cv::FileStorage fs(xml_str, cv::FileStorage::MEMORY | cv::FileStorage::READ);
+		
+		std::vector<cv::KeyPoint> gi_map_keypoints;
+		cv::Mat gi_map_descriptors;
+		// 从fs加载 keypoints 和 descriptor
+		fs["keypoints"] >> gi_map_keypoints;
+		fs["descriptors"] >> gi_map_descriptors;
+		
+		surf_match.setMap(GenshinImpact_TianLi_Resource::GetInstance()->GIMAP);
+
+		surf_match.detector = cv::xfeatures2d::SURF::create(surf_match.minHessian);
+		surf_match.detectorSomeMap = cv::xfeatures2d::SURF::create(surf_match.minHessian);
+		
+		surf_match.Init(gi_map_keypoints, gi_map_descriptors);
+		
+		is_init = true;
 	}
-	else
-	{
-		isPaimonVisible = true;
-	}
-}
+	
 
-bool ATM_TM_TemplatePaimon::getPaimonVisible()
-{
-	return isPaimonVisible;
-}
-
-void ATM_TM_ORBAvatar::setAvatarTemplate(cv::Mat avatarTemplateMat)
-{
-	_avatarTemplate = avatarTemplateMat;
-}
-
-void ATM_TM_ORBAvatar::setAvatarMat(cv::Mat avatarMat)
-{
-	_avatarMat = avatarMat;
-}
-
-void ATM_TM_ORBAvatar::Init()
-{
-	if (isInit)return;
-
-	isInit = true;
-}
-
-bool GreaterSort(cv::DMatch a, cv::DMatch b)
-{
-	return (a.distance > b.distance);
-}
-
-void ATM_TM_ORBAvatar::match()
-{
-	cv::Mat giAvatarRef = _avatarMat;
-
-	cv::resize(giAvatarRef, giAvatarRef, cv::Size(), 2, 2);
-	std::vector<cv::Mat> lis;
-	cv::split(giAvatarRef, lis);
-
-	threshold(lis[0], gray0, 240, 255, cv::THRESH_BINARY);
-	threshold(lis[1], gray1, 212, 255, cv::THRESH_BINARY);
-	threshold(lis[2], gray2, 25, 255, cv::THRESH_BINARY_INV);
-
-
-	bitwise_and(gray1, gray2, and12, gray0);
-	resize(and12, and12, cv::Size(), 2, 2, 3);
-	Canny(and12, and12, 20, 3 * 20, 3);
-	circle(and12, cv::Point(cvCeil(and12.cols / 2), cvCeil(and12.rows / 2)), cvCeil(and12.cols / 4.5), cv::Scalar(0, 0, 0), -1);
-
-	dilate(and12, and12, dilate_element);
-	erode(and12, and12, erode_element);
-
-	std::vector<std::vector<cv::Point>> contours;
-	std::vector<cv::Vec4i> hierarcy;
-
-	findContours(and12, contours, hierarcy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
-
-	std::vector<cv::Rect> boundRect(contours.size());  //定义外接矩形集合
-	//std::vector<RotatedRect> box(contours.size()); //定义最小外接矩形集合
-
-	cv::Point2f rect[4];
-
-	std::vector<cv::Point2d> AvatarKeyPoint;
-	double AvatarKeyPointLine[3] = { 0 };
-	std::vector<cv::Point2f> AvatarKeyLine;
-	cv::Point2f KeyLine;
-
-	if (contours.size() != 3)
+	if (genshin_minimap.config.is_find_paimon == false)
 	{
 		return;
 	}
 
-	for (int i = 0; i < 3; i++)
+	if (genshin_minimap.img_minimap.empty())
 	{
-		//box[i] = minAreaRect(Mat(contours[i]));  //计算每个轮廓最小外接矩形
-		boundRect[i] = cv::boundingRect(cv::Mat(contours[i]));
-		AvatarKeyPoint.push_back(cv::Point(cvRound(boundRect[i].x + boundRect[i].width / 2), cvRound(boundRect[i].y + boundRect[i].height / 2)));
+		return;
 	}
 
-	AvatarKeyPointLine[0] = dis(AvatarKeyPoint[2] - AvatarKeyPoint[1]);
-	AvatarKeyPointLine[1] = dis(AvatarKeyPoint[2] - AvatarKeyPoint[0]);
-	AvatarKeyPointLine[2] = dis(AvatarKeyPoint[1] - AvatarKeyPoint[0]);
-
-
-
-	if (AvatarKeyPointLine[0] >= AvatarKeyPointLine[2] && AvatarKeyPointLine[1] >= AvatarKeyPointLine[2])
-	{
-		AvatarKeyLine.push_back(AvatarKeyPoint[2] - AvatarKeyPoint[1]);
-		AvatarKeyLine.push_back(AvatarKeyPoint[2] - AvatarKeyPoint[0]);
-	}
-	if (AvatarKeyPointLine[0] >= AvatarKeyPointLine[1] && AvatarKeyPointLine[2] >= AvatarKeyPointLine[1])
-	{
-		AvatarKeyLine.push_back(AvatarKeyPoint[1] - AvatarKeyPoint[0]);
-		AvatarKeyLine.push_back(AvatarKeyPoint[1] - AvatarKeyPoint[2]);
-	}
-	if (AvatarKeyPointLine[1] >= AvatarKeyPointLine[0] && AvatarKeyPointLine[2] >= AvatarKeyPointLine[0])
-	{
-		AvatarKeyLine.push_back(AvatarKeyPoint[0] - AvatarKeyPoint[1]);
-		AvatarKeyLine.push_back(AvatarKeyPoint[0] - AvatarKeyPoint[2]);
-	}
-
-	AvatarKeyLine = Vector2UnitVector(AvatarKeyLine);
-	KeyLine = AvatarKeyLine[0] + AvatarKeyLine[1];
-	rotationAngle = Line2Angle(KeyLine);
-}
-
-double ATM_TM_ORBAvatar::getRotationAngle()
-{
-	return rotationAngle;
-}
-
-double ATM_TM_ORBAvatar::dis(cv::Point p)
-{
-	return sqrt(p.x * p.x + p.y * p.y);
-}
-std::vector<cv::Point2f> ATM_TM_ORBAvatar::Vector2UnitVector(std::vector<cv::Point2f> pLis)
-{
-	double length = 1;
-	std::vector<cv::Point2f> res;
-	for (int i = 0; i < pLis.size(); i++)
-	{
-		length = sqrt(pLis[i].x * pLis[i].x + pLis[i].y * pLis[i].y);
-		res.push_back(cv::Point2f((float)(pLis[i].x / length), (float)(pLis[i].y / length)));
-	}
-	return res;
-}
-
-double ATM_TM_ORBAvatar::Line2Angle(cv::Point2f p)
-{
-	const double rad2degScale = 180 / CV_PI;
-	double res = atan2(-p.y, p.x) * rad2degScale;
-	res = res - 90; //从屏幕空间左侧水平线为0度转到竖直向上为0度
-	return res;
-}
-
-//void ATM_TM_Thread::run()
-//{
-//	while (isExitThread == false)
-//	{
-//		if (isRunWork && (*ptr) != nullptr)
-//		{
-//			ptr(workInput);
-//			isRunWork = false;
-//			isEndWork = true;
-//		}
-//		else
-//		{
-//			std::this_thread::sleep_for(std::chrono::milliseconds(1));
-//		}
-//	}
-//}
-//
-//ATM_TM_Thread::ATM_TM_Thread()
-//{
-//	tLoopWork = new thread(&ATM_TM_Thread::run, this);
-//}
-//
-//ATM_TM_Thread::~ATM_TM_Thread()
-//{
-//	if (tLoopWork != nullptr)
-//	{
-//		isExitThread = true;
-//		tLoopWork->join();
-//		delete tLoopWork;
-//	}
-//}
-//
-//ATM_TM_Thread::ATM_TM_Thread(void(*funPtr)(Mat &inMat))
-//{
-//	setFunction(funPtr);
-//	tLoopWork = new thread(&ATM_TM_Thread::run, this);
-//}
-//
-//void ATM_TM_Thread::setFunction(void(*funPtr)(Mat &inMat))
-//{
-//	ptr = funPtr;
-//	isExistFunction = true;
-//}
-//
-//void ATM_TM_Thread::start(Mat & inMat)
-//{
-//	if (isExistFunction == false)
-//	{
-//		throw"Not Found Work Function";
-//	}
-//	workInput = inMat;
-//	isRunWork = true;
-//	isEndWork = false;
-//}
-//
-//bool ATM_TM_Thread::isEnd()
-//{
-//	return isEndWork;
-//}
-
-int ATM_TM_TemplateUID::getMaxID(double lis[], int len)
-{
-	int maxId = 0;
-	for (int i = 1; i < len; i++)
-	{
-		if (lis[i] > lis[maxId])
-		{
-			maxId = i;
-		}
-	}
-	return maxId;
-}
-
-void ATM_TM_TemplateUID::Init()
-{
-	if (isInit)return;
-
-	isInit = true;
-}
-
-void ATM_TM_TemplateUID::setUIDTemplate(cv::Mat* uidTemplateMat)
-{
-	for (int i = 0; i < 10; i++)
-	{
-		uidTemplateMat[i].copyTo(giNumUID.n[i]);
-	}
-	uidTemplateMat[10].copyTo(giNumUID.UID);
-
-}
-
-void ATM_TM_TemplateUID::setUIDMat(cv::Mat uidMat)
-{
-	if (uidMat.channels() == 4)
-	{
-		uidMat.copyTo(_uidMat);
-	}
-	else
-	{
-		cvtColor(uidMat, _uidMat, cv::COLOR_RGB2RGBA);
-	}
-}
-
-/// <summary>
-/// 识别UID
-/// 只针对键盘模式下的1920x1080分辨率画面适用
-/// 对于其他分辨率以及手柄模式，需要在传参前进行一定的缩放
-/// 
-/// 前置变量
-/// giNumUID : struct{ cv::Mat n[10]; cv::Mat UID; }
-/// _uidMat  : cv::Mat
-/// 输出变量
-/// uid      : int
-/// </summary>
-void ATM_TM_TemplateUID::match()
-{
-	static cv::Mat checkUID = giNumUID.UID;
+	surf_match.setMinMap(genshin_minimap.img_minimap);
 	
-	int bitCount = 1;
-	cv::Mat Roi(_uidMat);
+	surf_match.match();
 
-	cv::Mat match_result;
-	matchTemplate(Roi, checkUID, match_result, cv::TM_CCOEFF_NORMED);
-
-	double minVal_uid_, maxVal_uid_;
-	cv::Point minLoc_uid_, maxLoc_uid_;
-	
-	//寻找最佳匹配位置
-	cv::minMaxLoc(match_result, &minVal_uid_, &maxVal_uid_, &minLoc_uid_, &maxLoc_uid_);
-	if (maxVal_uid_ > 0.75)
-	{
-		int x_uid_i = maxLoc_uid_.x + checkUID.cols + 7;
-		int y_uid_i = 0;
-		double maxVal_i_list[10] = { 0 };
-		int x_i_list[10] = { 0 };
-		for (int uid_p = 8; uid_p >= 0; uid_p--)
-		{
-			_NumBit[uid_p] = 0;
-			for (int i = 0; i < giNumUID.max; i++)
-			{
-				// 180-46/9->140/9->16->16*9=90+54=144
-				// 此处的计算细节如上
-				cv::Rect r(x_uid_i, y_uid_i, giNumUID.n[i].cols + 2, giNumUID.n[i].rows);
-				if (x_uid_i + r.width > _uidMat.cols)
-				{
-					r = cv::Rect(_uidMat.cols - giNumUID.n[i].cols - 2, 0, giNumUID.n[i].cols + 2, giNumUID.n[i].rows);
-				}
-
-				cv::Mat numCheckUID = giNumUID.n[i];
-				Roi = _uidMat(r);
-
-				matchTemplate(Roi, numCheckUID, match_result, cv::TM_CCOEFF_NORMED);
-
-				double minVal_i, maxVal_i;
-				cv::Point minLoc_i, maxLoc_i;
-				//寻找最佳匹配位置
-				cv::minMaxLoc(match_result, &minVal_i, &maxVal_i, &minLoc_i, &maxLoc_i);
-
-				maxVal_i_list[i] = maxVal_i;
-				x_i_list[i] = maxLoc_i.x + numCheckUID.cols - 1;
-				if (maxVal_i > 0.85)
-				{
-					_NumBit[uid_p] = i;
-					x_uid_i = x_uid_i + maxLoc_i.x + numCheckUID.cols - 1;
-					break;
-				}
-				if (i == giNumUID.max - 1)
-				{
-					_NumBit[uid_p] = getMaxID(maxVal_i_list, 10);
-					x_uid_i = x_uid_i + x_i_list[_NumBit[uid_p]];
-				}
-			}
-		}
-	}
-	_uid = 0;
-	for (int i = 0; i < 9; i++)
-	{
-		_uid += _NumBit[i] * bitCount;
-		bitCount = bitCount * 10;
-	}
-
-}
-
-int ATM_TM_TemplateUID::getUID()
-{
-	return _uid;
-}
-
-void ATM_TM_TemplateStar::Init()
-{
-	if (isInit)return;
-
-	isInit = true;
-}
-
-void ATM_TM_TemplateStar::setStarTemplate(cv::Mat starTemplateMat)
-{
-	_starTemplate = starTemplateMat;
-}
-
-void ATM_TM_TemplateStar::setStarMat(cv::Mat starMat)
-{
-	_starMat = starMat;
-}
-
-void ATM_TM_TemplateStar::match()
-{
-	int MAXLOOP = 0;
-	bool isLoopMatch = false;
-	cv::Mat tmp;
-	double minVal, maxVal;
-	cv::Point minLoc, maxLoc;
-
-	pos.clear();
-
-	matchTemplate(_starTemplate, _starMat, tmp, cv::TM_CCOEFF_NORMED);
-	minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
-#ifdef _DEBUG
-	std::cout << "Match Star MinVal & MaxVal : " << minVal << " , " << maxVal << std::endl;
-#endif
-	if (maxVal < 0.66)
-	{
-		isStarVisible = false;
-	}
-	else
-	{
-		isLoopMatch = true;
-		isStarVisible = true;
-		pos.push_back(maxLoc - cv::Point(_starMat.cols / 2, _starMat.rows / 2) + cv::Point(_starTemplate.cols / 2, _starTemplate.rows / 2));
-	}
-
-	while (isLoopMatch)
-	{
-		_starMat(cv::Rect(maxLoc.x, maxLoc.y, _starTemplate.cols, _starTemplate.rows)) = cv::Scalar(0, 0, 0);
-		matchTemplate(_starTemplate, _starMat, tmp, cv::TM_CCOEFF_NORMED);
-		minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
-#ifdef _DEBUG
-		std::cout << "Match Star MinVal & MaxVal : " << minVal << " , " << maxVal << std::endl;
-#endif
-		if (maxVal < 0.66)
-		{
-			isLoopMatch = false;
-		}
-		else
-		{
-			pos.push_back(maxLoc - cv::Point(_starMat.cols / 2, _starMat.rows / 2) + cv::Point(_starTemplate.cols / 2, _starTemplate.rows / 2));
-		}
-
-		MAXLOOP > 10 ? isLoopMatch = false : MAXLOOP++;
-	}
-}
-
-bool ATM_TM_TemplateStar::getStar()
-{
-	return isStarVisible;
-}
-
-std::vector<cv::Point2d> ATM_TM_TemplateStar::getStarPos()
-{
-	return pos;
+	out_genshin_position.position = surf_match.getLocalPos();
 }

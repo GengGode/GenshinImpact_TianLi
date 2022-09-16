@@ -210,6 +210,9 @@
     <ClInclude Include="TianLiQtCommon_Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\GenshinImpact_TianLi_Resource\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GenshinImpact_TianLi_Logo.rc">
@@ -226,6 +229,63 @@
     <Image Include="resource\Icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIMAP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIPAIMON.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIMINIMAP_CAILB.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIMINIMAP_N.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIAVATAR.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GISTAR.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID_.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIPAIMON.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GISTARTEMPLATE.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="TianLiQtCommon_ScrollCardRect.qss">
@@ -233,5 +293,6 @@
     </None>
     <None Include="KongYingJiuGuanData.sqlite" />
     <None Include="cpp.hint" />
+    <None Include="..\GenshinImpact_TianLi_Resource\resource\KongYingJiuGuanData.sqlite" />
   </ItemGroup>
 </Project>

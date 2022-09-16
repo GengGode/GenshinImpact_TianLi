@@ -54,7 +54,13 @@ IDB_PNG_GIMAP           PNG                     "resource\\GIMAP.png"
 
 IDB_PNG_GIPAIMON        PNG                     "resource\\GIPAIMON.png"
 
+IDB_PNG_GIMINIMAP_CAILB PNG                     "resource\\GIMINIMAP_CAILB.png"
+
+IDB_PNG_GIMINIMAP_N     PNG                     "resource\\GIMINIMAP_N.png"
+
 IDB_PNG_GIAVATAR        PNG                     "resource\\GIAVATAR.png"
+
+IDB_PNG_GISTAR          PNG                     "resource\\GISTAR.png"
 
 IDB_PNG_GIUID_0         PNG                     "resource\\NumUID\\UID0.png"
 
@@ -78,6 +84,7 @@ IDB_PNG_GIUID_9         PNG                     "resource\\NumUID\\UID9.png"
 
 IDB_PNG_GIUID__         PNG                     "resource\\NumUID\\UID_.png"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
@@ -94,6 +101,14 @@ IDB_BITMAP_STARTEMPLATE BITMAP                  "resource\\GISTARTEMPLATE.bmp"
 //
 
 IDR_SQLITE_KYJG         SQLITE                  "resource\\KongYingJiuGuanData.sqlite"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// XML
+//
+
+IDR_XML_GIMAP_COMPUTE   XML                     "resource\\GIMAP_COMPUTE.xml"
 
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////

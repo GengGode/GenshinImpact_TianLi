@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QResizeEvent> 
+#include <QFontDatabase> 
 
 #include <opencv2/opencv.hpp>
 
@@ -127,12 +128,19 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 	cv::split(mapMatRect, mv);
 	mv.push_back(mapMaskMat);
 	cv::merge(mv,mapMatRect);
+	
+	auto runtime = Core.GetTrack().GetResult2().last_runtime_ms;
+	cv::putText(mapMatRect, std::to_string(runtime.count()) + "ms", cv::Point(100, 200), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 255), 1, 8, 0);
+	
 
 	mapImage =  QImage((uchar*)(mapMatRect.data), mapMatRect.cols, mapMatRect.rows, mapMatRect.cols * (mapMatRect.channels()), QImage::Format_ARGB32);
+	
 
 	//设置画面为地图
 	QPainter painter(this);
 	painter.drawImage(0, 0,mapImage);
+	// 更新label_UID控件
+
 }
 
 void TianLiQtCommon_MapRect::resizeEvent(QResizeEvent* event)
@@ -141,6 +149,7 @@ void TianLiQtCommon_MapRect::resizeEvent(QResizeEvent* event)
 	const int h = event->size().height();
 	//ui.label_Mask->setGeometry(0, 0, w, h);
 	ui.label_Render->setGeometry(0, 0, w, h);
+	ui.label_UID->setGeometry(w - 220,h- 40, 200, 24);
 	QImage Mask = TianLi::Utils::border_image(QImage(":/TianLiQtCommon_MapRect/resource/TianLiQtCommon_MapRect/TianLiQtCommon_MapRect_MapMask.png"), w, h, 30, 30, 30, 30);
 	mapMaskMat = cv::Mat(Mask.height(), Mask.width(), CV_8UC4, Mask.bits(), Mask.bytesPerLine());
 
@@ -151,9 +160,12 @@ void TianLiQtCommon_MapRect::resizeEvent(QResizeEvent* event)
 
 void TianLiQtCommon_MapRect::slot_update()
 {
-	if (Core.GetTrack().GetResult().is_paimon_visial)
+	if (Core.GetTrack().GetResult2().is_find_paimon)
 	{
-		mapPos = cv::Point(Core.GetTrack().GetResult().x, Core.GetTrack().GetResult().y);
+		//mapPos = cv::Point(Core.GetTrack().GetResult().x, Core.GetTrack().GetResult().y);
+		mapPos = Core.GetTrack().GetResult2().position;
+		ui.label_UID->setText(QString("UID: %1").arg(Core.GetTrack().GetResult2().uid, 9, 10, QLatin1Char('0')));
+		
 		update();
 	}
 }

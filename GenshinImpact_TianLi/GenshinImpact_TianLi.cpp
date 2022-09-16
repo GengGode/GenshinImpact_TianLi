@@ -15,6 +15,7 @@
 #include "TianLiQtCommon_HUD_SquareMap.h"
 #include "TianLiQtCommon_HUD_AzimuthBarWindow.h"
 
+#include <QFontDatabase>
 #include <QMouseEvent>
 #include <QTimer>
 
@@ -35,7 +36,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 
 	//this->setMouseTracking(true);
 	
-	QCursor tianli_cursor(QPixmap(":/Cursor/resource/Cursor/原神游戏鼠标指针.cur"), 0, 0);
+	QCursor tianli_cursor(QPixmap(":/Cursor/resource/Cursor/UI_Img_Cursor_PC.png"), 0, 0);
 	this->setCursor(tianli_cursor);
 
 	// TianLi_Logger.setParent(this);
@@ -53,7 +54,10 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	this->loadUIBase();
 	emit this->ui_updatePusButtonList();
 
-	GenshinImpact_TianLi_Track tianli_track;
+	//GenshinImpact_TianLi_Track tianli_track;
+	
+
+	
 	
 
 	
@@ -67,7 +71,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 GenshinImpact_TianLi::~GenshinImpact_TianLi()
 {
 	//this->TianLi_Sqlite->CloseSqlite();
-	Core.GetSqlite().CloseSqlite();
+	//Core.GetSqlite().CloseSqlite();
 	//delete core;
 }
 
@@ -437,6 +441,7 @@ void GenshinImpact_TianLi::addUI_HUDTabCardRects()
 
 			// 显示空白无边框窗口
 			page2_widget_1_2->show();
+			page2_widget_1_2->is_visible = true;
 
 		}
 		// 如果按钮文字为 已开启
@@ -449,6 +454,8 @@ void GenshinImpact_TianLi::addUI_HUDTabCardRects()
 
 			// 隐藏空白无边框窗口
 			page2_widget_1_2->hide();
+			page2_widget_1_2->is_visible = false;
+
 		}
 		});
 #endif

@@ -35,6 +35,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Core",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Map", "GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.vcxproj", "{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Build_TianLi_Resource_GIMAP_KEYPOINT", "Build_TianLi_Resource_GIMAP_KEYPOINT\Build_TianLi_Resource_GIMAP_KEYPOINT.vcxproj", "{FF5DDB6F-EFAA-498A-9395-4120B6E1BA6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -111,6 +113,14 @@ Global
 		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Release|x64.Build.0 = Release|x64
 		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Release|x86.ActiveCfg = Release|Win32
 		{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}.Release|x86.Build.0 = Release|Win32
+		{FF5DDB6F-EFAA-498A-9395-4120B6E1BA6E}.Debug|x64.ActiveCfg = Debug|x64
+		{FF5DDB6F-EFAA-498A-9395-4120B6E1BA6E}.Debug|x64.Build.0 = Debug|x64
+		{FF5DDB6F-EFAA-498A-9395-4120B6E1BA6E}.Debug|x86.ActiveCfg = Debug|Win32
+		{FF5DDB6F-EFAA-498A-9395-4120B6E1BA6E}.Debug|x86.Build.0 = Debug|Win32
+		{FF5DDB6F-EFAA-498A-9395-4120B6E1BA6E}.Release|x64.ActiveCfg = Release|x64
+		{FF5DDB6F-EFAA-498A-9395-4120B6E1BA6E}.Release|x64.Build.0 = Release|x64
+		{FF5DDB6F-EFAA-498A-9395-4120B6E1BA6E}.Release|x86.ActiveCfg = Release|Win32
+		{FF5DDB6F-EFAA-498A-9395-4120B6E1BA6E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

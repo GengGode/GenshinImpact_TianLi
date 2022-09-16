@@ -149,6 +149,82 @@ namespace TianLi
 		}
 		return Sqlite_KYJGDB;
 	}
+	XmlDbMem LoadXml_GIMAP_COMPUTE()
+	{
+		HMODULE H_Module = GetModuleHandleW(NULL);
+		HRSRC H_XML = FindResource(H_Module, MAKEINTRESOURCE(IDR_XML_GIMAP_COMPUTE), L"XML");
+		XmlDbMem Xml_GIMAP_COMPUTE = { nullptr,0 };
+#ifdef DEBUG
+		int e = GetLastError();
+		if (e != 0)
+		{
+			throw(e);
+		}
+#endif // DEBUG
+		if (H_XML == NULL)
+		{
+#ifdef DEBUG
+			e = GetLastError();
+			if (e != 0)
+			{
+				throw(e);
+			}
+#endif // DEBUG
+		}
+		else
+		{
+			HGLOBAL H_XmlDB_Handle = LoadResource(H_Module, H_XML);
+			// 判断 H_SqliteDB_Handle 是否为空
+			if (H_XmlDB_Handle == NULL)
+			{
+#ifdef DEBUG
+				e = GetLastError();
+				if (e != 0)
+				{
+					throw(e);
+				}
+#endif // DEBUG
+			}
+			else
+			{
+				LPVOID H_XmlDB_Ptr = LockResource(H_XmlDB_Handle);
+				// 判断 H_SqliteDB_Ptr 是否为空
+				if (H_XmlDB_Ptr == NULL)
+				{
+#ifdef DEBUG
+					e = GetLastError();
+					if (e != 0)
+					{
+						throw(e);
+					}
+#endif // DEBUG
+				}
+				else
+				{
+					DWORD XmlDB_Size = SizeofResource(H_Module, H_XML);
+					// 判断 SqliteDB_Size 是否为空
+					if (XmlDB_Size == NULL)
+					{
+#ifdef DEBUG
+						e = GetLastError();
+						if (e != 0)
+						{
+							throw(e);
+						}
+#endif // DEBUG
+					}
+					else
+					{
+						Xml_GIMAP_COMPUTE.ptr = static_cast<char*>(H_XmlDB_Ptr);
+						Xml_GIMAP_COMPUTE.size = XmlDB_Size;
+					}
+				}
+			}
+		}
+		return Xml_GIMAP_COMPUTE;
+		
+		
+	}
 }
 
 GenshinImpact_TianLi_Resource::GenshinImpact_TianLi_Resource()
@@ -229,7 +305,11 @@ void GenshinImpact_TianLi_Resource::LoadPng()
 	
 	LoadPng_ID2Mat(IDB_PNG_GIMAP, GIMAP);
 	LoadPng_ID2Mat(IDB_PNG_GIPAIMON, GIPAIMON);
+	LoadPng_ID2Mat(IDB_PNG_GIMINIMAP_CAILB, GIMINIMAP_CAILB);
+	LoadPng_ID2Mat(IDB_PNG_GIMINIMAP_N, GIMINIMAP_N);
 	LoadPng_ID2Mat(IDB_PNG_GIAVATAR, GIAVATAR);
+	LoadPng_ID2Mat(IDB_PNG_GISTAR, GISTAR);
+	
 	LoadPng_ID2Mat(IDB_PNG_GIUID_0, GINUMUID[0]);
 	LoadPng_ID2Mat(IDB_PNG_GIUID_1, GINUMUID[1]);
 	LoadPng_ID2Mat(IDB_PNG_GIUID_2, GINUMUID[2]);

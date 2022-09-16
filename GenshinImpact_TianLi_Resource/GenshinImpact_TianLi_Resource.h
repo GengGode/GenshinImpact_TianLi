@@ -10,12 +10,19 @@ namespace TianLi
 		__int64 size;
 	};
 
+	struct XmlDbMem
+	{
+		char* ptr;
+		__int64 size;
+	};
+
 	extern const char* Temp_Sqlite_FileName;
 
 	HBITMAP LoadPNG_GIMAP();
 	HBITMAP LoadBitmap_GIPAIMON();
 
 	SqliteDbMem LoadSqlite_KYJGDB();
+	XmlDbMem LoadXml_GIMAP_COMPUTE();
 }
 class GenshinImpact_TianLi_Resource
 {
@@ -27,18 +34,22 @@ public:
 	HBITMAP LoadPNG_GIMAP() { return TianLi::LoadPNG_GIMAP(); }
 	HBITMAP LoadBitmap_GIPAIMON() { return TianLi::LoadBitmap_GIPAIMON(); }
 	TianLi::SqliteDbMem LoadSqlite_KYJGDB() { return TianLi::LoadSqlite_KYJGDB(); }
+	TianLi::XmlDbMem LoadXml_GIMAP_COMPUTE() { return TianLi::LoadXml_GIMAP_COMPUTE(); }
 
 public:
 	cv::Mat GIMAP;
 	cv::Mat GIAVATAR;
 	cv::Mat GISTAR;
 	cv::Mat GIPAIMON;
+	cv::Mat GIMINIMAP_CAILB;
+	cv::Mat GIMINIMAP_N;
 	cv::Mat* GINUMUID;
 public:
 	const cv::Mat GiMap() { return GIMAP; }
 	const cv::Mat GiAvatar() { return GIAVATAR; }
 	const cv::Mat GiStar() { return GISTAR; }
 	const cv::Mat GiPaimon() { return GIPAIMON; }
+	const cv::Mat GiMiniMap_Cailb() { return GIMINIMAP_CAILB; }
 	const cv::Mat* GiNumUID() { return GINUMUID; }
 	
 

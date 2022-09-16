@@ -51,6 +51,7 @@ public:
 	};
 	QTimer* timer=nullptr;
 	std::map<int, AzimuthObject> object_map;
+	bool is_visible = false;	// ÊÇ·ñ¿É¼û
 public slots:
 	void slot_update();
 public:

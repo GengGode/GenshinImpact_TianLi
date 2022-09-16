@@ -2,6 +2,8 @@
 #include <QMutex>
 #include <QImage>
 #include <QPainter>
+
+#include <Windows.h>
 /*
 TianLiQtCommon_Utils::TianLiQtCommon_Utils(QObject *parent)
 	: QObject(parent)

@@ -52,5 +52,9 @@
     </qresource>
     <qresource prefix="/Cursor">
         <file>resource/Cursor/原神游戏鼠标指针.cur</file>
+        <file>resource/Cursor/UI_Img_Cursor_PC.png</file>
+    </qresource>
+    <qresource prefix="/Font">
+        <file>resource/Font/YuanShenFont.ttf</file>
     </qresource>
 </RCC>

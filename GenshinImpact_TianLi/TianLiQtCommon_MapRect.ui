@@ -35,6 +35,28 @@
     <string/>
    </property>
   </widget>
+  <widget class="QLabel" name="label_UID">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>770</y>
+     <width>180</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>HYWenHei</family>
+     <pointsize>15</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>UID: 000000000</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

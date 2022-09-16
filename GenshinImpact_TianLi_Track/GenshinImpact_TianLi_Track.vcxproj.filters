@@ -24,13 +24,25 @@
     <ClInclude Include="GenshinImpact_TianLi_Track.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="core_track.h">
+    <ClInclude Include="GenshinImpact_TianLi_Track_TaskResult.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="core_thread.h">
+    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Handle.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="core_match_thread.h">
+    <ClInclude Include="GenshinImpact_TianLi_Track_Utils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Screen.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Struct.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_MiniMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_UID.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,13 +56,13 @@
     <ClCompile Include="GenshinImpact_TianLi_Track.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="core_track.cpp">
+    <ClCompile Include="GenshinImpact_TianLi_Track_TaskResult.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="core_thread.cpp">
+    <ClCompile Include="GenshinImpact_TianLi_Track_Utils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="core_match_thread.cpp">
+    <ClCompile Include="GenshinImpact_TianLi_Track_Utils_MiniMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -14,15 +14,12 @@ TianLiQtCommon_HUD_AzimuthBarWindow::TianLiQtCommon_HUD_AzimuthBarWindow(QWidget
 	this->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow | Qt::WindowStaysOnTopHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
 	
-	QCursor tianli_cursor(QPixmap(":/Cursor/resource/Cursor/原神游戏鼠标指针.cur"), 0, 0);
-	this->setCursor(tianli_cursor);
-	
+	SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) |
+		WS_EX_TRANSPARENT | WS_EX_LAYERED );
+
 	this->setMaximumSize(680, 138);
 	this->setMinimumSize(680, 138);
 	
-	SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) |
-		WS_EX_TRANSPARENT | WS_EX_LAYERED);
-
 	timer=new QTimer;
 	timer->setInterval(42);
 	static int i = 0;
@@ -74,7 +71,7 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	double base_point_list_param = 1.0 / 180 * 674;
 	double base_point_list_N = static_cast<int>(-(-avatar_rotate_deg) + 180) * base_point_list_param;
 	double base_point_det= 30 * base_point_list_param;
-	for (int i = 0; i < 6; i += 1)
+	for (int i = 0; i < 9; i += 1)
 	{
 		if (i % 3 == 0)
 		{
@@ -99,7 +96,7 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	double det_x_S = static_cast<int>(-(-avatar_rotate_deg - 180) - 90 + 180) % 360 * param_det;
 	painter.drawImage(det_x_S, 30, flag_S);
 	
-	double det_x_W = static_cast<int>(-(-avatar_rotate_deg + 90) - 90 + 180) % 360 * param_det;
+	double det_x_W = static_cast<int>(-(-avatar_rotate_deg - 270) - 90 + 180) % 360 * param_det;
 	painter.drawImage(det_x_W, 30, flag_W);
 	
 		
@@ -201,17 +198,21 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::closeEvent(QCloseEvent* event)
 void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update()
 {
 	//avatar_rotate_deg_atom = -avatar_rotate_deg;
-	TrackResult traack_res = Core.GetTrack().GetResult();
-	if (traack_res.is_paimon_visial)
+	//TrackResult traack_res = Core.GetTrack().GetResult();
+	auto  traack_res = Core.GetTrack().GetResult2();
+	if (traack_res.is_find_paimon)
 	{
 		this->show();
-		avatar_rotate_deg_atom = traack_res.a;
-		slot_update_move(traack_res.gi_client_rect);
+		avatar_rotate_deg_atom = traack_res.viewer_angle;
+		slot_update_move(traack_res.client_rect);
 		update();
 	}
 	else
 	{
-		this->hide();
+		if (!is_visible)
+		{
+			this->hide();
+		}
 	}
 	//update();
 }

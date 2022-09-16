@@ -65,58 +65,31 @@ core_track::~core_track()
 }
 */
 
-#include <opencv2/imgproc/imgproc_c.h>
+#define DELETE_CHECK(thread) if (thread != nullptr) { thread->join(); delete thread; }
 
 TianLi_ThreadMatch::~TianLi_ThreadMatch()
 {
-	if (tSurfMapInit != nullptr)
-	{
-		tSurfMapInit->join();
-		delete tSurfMapInit;
-	}
-	if (tSurfMapMatch != nullptr)
-	{
-		tSurfMapMatch->join();
-		delete tSurfMapMatch;
-	}
-	if (tTemplatePaimonMatch != nullptr)
-	{
-		tTemplatePaimonMatch->join();
-		delete tTemplatePaimonMatch;
-	}
-	if (tOrbAvatarInit != nullptr)
-	{
-		tOrbAvatarInit->join();
-		delete tOrbAvatarInit;
-	}
-	if (tOrbAvatarMatch != nullptr)
-	{
-		tOrbAvatarMatch->join();
-		delete tOrbAvatarMatch;
-	}
-	if (tTemplateUIDInit != nullptr)
-	{
-		tTemplateUIDInit->join();
-		delete tTemplateUIDInit;
-	}
-	if (tTemplateUIDMatch != nullptr)
-	{
-		tTemplateUIDMatch->join();
-		delete tTemplateUIDMatch;
-	}
+	DELETE_CHECK(tSurfMapInit);
+	DELETE_CHECK(tSurfMapMatch);
+	DELETE_CHECK(tTemplatePaimonInit);
+	DELETE_CHECK(tTemplatePaimonMatch);
+	DELETE_CHECK(tOrbAvatarInit);
+	DELETE_CHECK(tOrbAvatarMatch);
+	DELETE_CHECK(tTemplateUIDInit);
+	DELETE_CHECK(tTemplateUIDMatch);
 }
 
 void TianLi_ThreadMatch::cThreadInit()
 {
 }
 
-void TianLi_ThreadMatch::cThreadSurfMapInit(Mat& Map)
+void TianLi_ThreadMatch::cThreadSurfMapInit(cv::Mat& Map)
 {
 	if (tSurfMapInit == nullptr && surfMap.isInit == false)
 	{
-		cvtColor(Map, mapGray, CV_RGB2GRAY);
+		cvtColor(Map, mapGray, cv::COLOR_RGB2GRAY);
 
-		tSurfMapInit = new thread(&TianLi_ThreadMatch::thread_SurfMapInit, this, ref(mapGray));
+		tSurfMapInit = new std::thread(&TianLi_ThreadMatch::thread_SurfMapInit, this, std::ref(mapGray));
 		tIsEndSurfMapInit = false;
 	}
 }
@@ -125,37 +98,46 @@ void TianLi_ThreadMatch::cThreadSurfMapMatch()
 {
 	if (tSurfMapMatch == nullptr && tIsEndSurfMapInit && isExistObjMinMap && isPaimonVisial)
 	{
-		tSurfMapMatch = new thread(&TianLi_ThreadMatch::thread_SurfMapMatch, this, ref(objMinMap));
+		tSurfMapMatch = new std::thread(&TianLi_ThreadMatch::thread_SurfMapMatch, this, std::ref(objMinMap));
 		tIsEndSurfMapMatch = false;
 	}
 }
 
-void TianLi_ThreadMatch::setSurfMap(Mat mapMat)
+void TianLi_ThreadMatch::setSurfMap(cv::Mat mapMat)
 {
 	surfMap.setMap(mapMat);
 }
 
-void TianLi_ThreadMatch::cThreadTemplatePaimonMatch(Mat& Template)
+void TianLi_ThreadMatch::cThreadTemplatePaimonInit(cv::Mat& Template)
 {
-	if (tTemplatePaimonMatch == nullptr && isExistObjPaimon)
+	if (tTemplatePaimonInit == nullptr && isExistObjPaimon)
 	{
-		cvtColor(Template, templatePaimon, CV_RGB2GRAY);
-		tTemplatePaimonMatch = new thread(&TianLi_ThreadMatch::thread_TemplatePaimonMatch, this, ref(templatePaimon), ref(objPaimon));
+		cvtColor(Template, templatePaimon, cv::COLOR_RGB2GRAY);
+		tTemplatePaimonInit = new std::thread(&TianLi_ThreadMatch::thread_TemplatePaimonInit, this, std::ref(templatePaimon));
+		tIsEndTemplatePaimonInit = false;
+	}
+}
+
+void TianLi_ThreadMatch::cThreadTemplatePaimonMatch()
+{
+	if (tTemplatePaimonMatch == nullptr && tIsEndTemplatePaimonInit && isExistObjPaimon)
+	{
+		tTemplatePaimonMatch = new std::thread(&TianLi_ThreadMatch::thread_TemplatePaimonMatch, this, std::ref(objPaimon));
 		tIsEndTemplatePaimonMatch = false;
 	}
 }
 
-void TianLi_ThreadMatch::setTemplatePaimon(Mat TemplatePaimonMat)
+void TianLi_ThreadMatch::setTemplatePaimon(cv::Mat TemplatePaimonMat)
 {
 	TemplatePaimonMat.copyTo(templatePaimon);
 }
 
-void TianLi_ThreadMatch::setPaimon(Mat PaimonMat)
+void TianLi_ThreadMatch::setPaimon(cv::Mat PaimonMat)
 {
 	PaimonMat.copyTo(objPaimon);
 }
 
-void TianLi_ThreadMatch::cThreadOrbAvatarInit(Mat& TemplateAvatar)
+void TianLi_ThreadMatch::cThreadOrbAvatarInit(cv::Mat& TemplateAvatar)
 {
 	if (tOrbAvatarInit == nullptr && orbAvatar.isInit == false)
 	{
@@ -163,8 +145,8 @@ void TianLi_ThreadMatch::cThreadOrbAvatarInit(Mat& TemplateAvatar)
 		//cvtColor(TemplateAvatar(Rect(TemplateAvatar.cols/2-16, TemplateAvatar.rows/2-16,32,32)), templateAvatar(Rect(134,134,32,32)), CV_RGB2GRAY);
 		//threshold(templateAvatar, templateAvatar, 185, 255, THRESH_TOZERO);
 		////resize(templateAvatar, templateAvatar, Size(0, 0), 1, 1, 3);//INTER_CUBIC INTER_AREAz
-		resize(TemplateAvatar, templateAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
-		tOrbAvatarInit = new thread(&TianLi_ThreadMatch::thread_OrbAvatarInit, this, ref(templateAvatar));
+		resize(TemplateAvatar, templateAvatar, cv::Size(150, 150), 0, 0, cv::INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
+		tOrbAvatarInit = new std::thread(&TianLi_ThreadMatch::thread_OrbAvatarInit, this, std::ref(templateAvatar));
 		tIsEndOrbAvatarInit = false;
 	}
 }
@@ -180,22 +162,22 @@ void TianLi_ThreadMatch::cThreadOrbAvatarMatch()
 		////resize(objAvatar, objAvatar, Size(0, 0), 1*1.3, 1*1.3, 3);//INTER_CUBIC INTER_AREAz
 
 		//resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
-		tOrbAvatarMatch = new thread(&TianLi_ThreadMatch::thread_OrbAvatarMatch, this, ref(objAvatar));
+		tOrbAvatarMatch = new std::thread(&TianLi_ThreadMatch::thread_OrbAvatarMatch, this, std::ref(objAvatar));
 		tIsEndOrbAvatarMatch = false;
 	}
 }
 
-void TianLi_ThreadMatch::setAvatat(Mat AvatarMat)
+void TianLi_ThreadMatch::setAvatat(cv::Mat AvatarMat)
 {
 	AvatarMat.copyTo(objAvatar);
 }
 
-void TianLi_ThreadMatch::cThreadTemplateUIDInit(Mat* TemplateUID)
+void TianLi_ThreadMatch::cThreadTemplateUIDInit(cv::Mat* TemplateUID)
 {
 	if (tTemplateUIDInit == nullptr && tempUID.isInit == false)
 	{
 		templateUID = TemplateUID;
-		tTemplateUIDInit = new thread(&TianLi_ThreadMatch::thread_TemplateUIDInit, this, ref(templateUID));
+		tTemplateUIDInit = new std::thread(&TianLi_ThreadMatch::thread_TemplateUIDInit, this, std::ref(templateUID));
 		tIsEndTemplateUIDInit = false;
 	}
 }
@@ -204,23 +186,23 @@ void TianLi_ThreadMatch::cThreadTemplateUIDMatch()
 {
 	if (tTemplateUIDMatch == nullptr && isExistObjUID)
 	{
-		tTemplateUIDMatch = new thread(&TianLi_ThreadMatch::thread_TemplateUIDMatch, this, ref(objUID));
+		tTemplateUIDMatch = new std::thread(&TianLi_ThreadMatch::thread_TemplateUIDMatch, this, std::ref(objUID));
 		tIsEndTemplateUIDMatch = false;
 	}
 }
 
-void TianLi_ThreadMatch::setUID(Mat UIDMat)
+void TianLi_ThreadMatch::setUID(cv::Mat UIDMat)
 {
 	UIDMat.copyTo(objUID);
 }
 
-void TianLi_ThreadMatch::cThreadTemplateStarInit(Mat& TemplateStar)
+void TianLi_ThreadMatch::cThreadTemplateStarInit(cv::Mat& TemplateStar)
 {
 	if (tTemplateStarInit == nullptr && tempStar.isInit == false)
 	{
 		//templateStar = TemplateStar;
-		cvtColor(TemplateStar, templateStar, CV_RGB2GRAY);
-		tTemplateStarInit = new thread(&TianLi_ThreadMatch::thread_TemplateStarInit, this, ref(templateStar));
+		cvtColor(TemplateStar, templateStar, cv::COLOR_RGB2GRAY);
+		tTemplateStarInit = new std::thread(&TianLi_ThreadMatch::thread_TemplateStarInit, this, std::ref(templateStar));
 		tIsEndTemplateStarInit = false;
 	}
 }
@@ -229,25 +211,25 @@ void TianLi_ThreadMatch::cThreadTemplateStarMatch()
 {
 	if (tTemplateStarMatch == nullptr && isExistObjMinMap && isStarExist)
 	{
-		tTemplateStarMatch = new thread(&TianLi_ThreadMatch::thread_TemplateStarMatch, this, ref(objStar));
+		tTemplateStarMatch = new std::thread(&TianLi_ThreadMatch::thread_TemplateStarMatch, this, std::ref(objStar));
 		tIsEndTemplateStarMatch = false;
 	}
 }
 
-void TianLi_ThreadMatch::setTemplateStar(Mat TemplateStarMat)
+void TianLi_ThreadMatch::setTemplateStar(cv::Mat TemplateStarMat)
 {
 	TemplateStarMat.copyTo(templateStar);
 }
 
-void TianLi_ThreadMatch::setStar(Mat StarMat)
+void TianLi_ThreadMatch::setStar(cv::Mat StarMat)
 {
 	StarMat.copyTo(objStar);
 }
 
-void TianLi_ThreadMatch::getObjMinMap(Mat& obj)
+void TianLi_ThreadMatch::getObjMinMap(cv::Mat& obj)
 {
 	//obj.copyTo(objMinMap);
-	cvtColor(obj, objMinMap, CV_RGB2GRAY);
+	cvtColor(obj, objMinMap, cv::COLOR_RGB2GRAY);
 	int Avatar_Rect_x = cvRound(obj.cols * 0.4);
 	int Avatar_Rect_y = cvRound(obj.rows * 0.4);
 	int Avatar_Rect_w = cvRound(obj.cols * 0.2);
@@ -257,60 +239,37 @@ void TianLi_ThreadMatch::getObjMinMap(Mat& obj)
 
 	//obj(Rect(obj.cols / 2 - 14, obj.rows / 2 - 14, 28, 28)).copyTo(objAvatar);
 	//obj(Rect(36, 36, obj.cols - 72, obj.rows - 72)).copyTo(objStar);
-	cvtColor(obj(Rect(36, 36, obj.cols - 72, obj.rows - 72)), objStar, CV_RGBA2GRAY);
+	cvtColor(obj(cv::Rect(36, 36, obj.cols - 72, obj.rows - 72)), objStar, cv::COLOR_RGBA2GRAY);
 	isExistObjMinMap = true;
 }
 
-void TianLi_ThreadMatch::getObjPaimon(Mat& obj)
+void TianLi_ThreadMatch::getObjPaimon(cv::Mat& obj)
 {
 	obj.copyTo(objPaimon);
 	isExistObjPaimon = true;
 }
 
-void TianLi_ThreadMatch::getObjUID(Mat& obj)
+void TianLi_ThreadMatch::getObjUID(cv::Mat& obj)
 {
 	obj.copyTo(objUID);
 	isExistObjUID = true;
 }
 
+#define CHECK_THREAD_END(tIsEnd,CheckThread) if (tIsEnd == false) { CheckThread(); }
+
 void TianLi_ThreadMatch::CheckThread()
 {
-	if (tIsEndSurfMapInit == false)
-	{
-		CheckThread_SurfMapInit();
-	}
-	if (tIsEndSurfMapMatch == false)
-	{
-		CheckThread_SurfMapMatch();
-	}
-	if (tIsEndTemplatePaimonMatch == false)
-	{
-		CheckThread_TemplatePaimonMatch();
-	}
-	if (tIsEndOrbAvatarInit == false)
-	{
-		CheckThread_OrbAvatarInit();
-	}
-	if (tIsEndOrbAvatarMatch == false)
-	{
-		CheckThread_OrbAvatarMatch();
-	}
-	if (tIsEndTemplateUIDInit == false)
-	{
-		CheckThread_TemplateUIDInit();
-	}
-	if (tIsEndTemplateUIDMatch == false)
-	{
-		CheckThread_TemplateUIDMatch();
-	}
-	if (tIsEndTemplateStarInit == false)
-	{
-		CheckThread_TemplateStarInit();
-	}
-	if (tIsEndTemplateStarMatch == false)
-	{
-		CheckThread_TemplateStarMatch();
-	}
+	CHECK_THREAD_END(tIsEndSurfMapInit, CheckThread_SurfMapInit);
+	CHECK_THREAD_END(tIsEndSurfMapMatch, CheckThread_SurfMapMatch);
+	CHECK_THREAD_END(tIsEndTemplatePaimonInit, CheckThread_TemplatePaimonInit);
+	CHECK_THREAD_END(tIsEndTemplatePaimonMatch, CheckThread_TemplatePaimonMatch);
+	CHECK_THREAD_END(tIsEndOrbAvatarInit, CheckThread_OrbAvatarInit);
+	CHECK_THREAD_END(tIsEndOrbAvatarMatch, CheckThread_OrbAvatarMatch);
+	CHECK_THREAD_END(tIsEndTemplateUIDInit, CheckThread_TemplateUIDInit);
+	CHECK_THREAD_END(tIsEndTemplateUIDMatch, CheckThread_TemplateUIDMatch);
+	CHECK_THREAD_END(tIsEndTemplateStarInit, CheckThread_TemplateStarInit);
+	CHECK_THREAD_END(tIsEndTemplateStarMatch, CheckThread_TemplateStarMatch);
+	
 }
 
 void TianLi_ThreadMatch::CheckThread_SurfMapInit()
@@ -328,8 +287,7 @@ void TianLi_ThreadMatch::CheckThread_SurfMapInit()
 		}
 	}
 }
-
-void TianLi_ThreadMatch::thread_SurfMapInit(Mat& tar)
+void TianLi_ThreadMatch::thread_SurfMapInit(cv::Mat& tar)
 {
 	surfMap.setMap(tar);
 	surfMap.Init();
@@ -351,15 +309,36 @@ void TianLi_ThreadMatch::CheckThread_SurfMapMatch()
 	}
 }
 
-void TianLi_ThreadMatch::thread_SurfMapMatch(Mat& Obj)
+void TianLi_ThreadMatch::thread_SurfMapMatch(cv::Mat& Obj)
 {
 	//surfMap.setMinMap(Obj);
 	if (isExistObjMinMap)
 	{
 		//surfMap.setMinMap(objMinMap);
 		surfMap.setMinMap(Obj);
-		surfMap.SURFMatch();
+		surfMap.match();
 	}
+}
+
+void TianLi_ThreadMatch::CheckThread_TemplatePaimonInit()
+{
+	DWORD exitCode;
+	if (tTemplatePaimonInit != nullptr)
+	{
+		GetExitCodeThread(tTemplatePaimonInit->native_handle(), &exitCode);
+		if (exitCode == 0)
+		{
+			tTemplatePaimonInit->join();
+			delete tTemplatePaimonInit;
+			tTemplatePaimonInit = nullptr;
+			tIsEndTemplatePaimonInit = true;
+		}
+	}
+}
+
+void TianLi_ThreadMatch::thread_TemplatePaimonInit(cv::Mat& Template)
+{
+	tempPaimon.setPaimonTemplate(Template);
 }
 
 void TianLi_ThreadMatch::CheckThread_TemplatePaimonMatch()
@@ -378,13 +357,12 @@ void TianLi_ThreadMatch::CheckThread_TemplatePaimonMatch()
 	}
 }
 
-void TianLi_ThreadMatch::thread_TemplatePaimonMatch(Mat& Template, Mat& Obj)
+void TianLi_ThreadMatch::thread_TemplatePaimonMatch(cv::Mat& Obj)
 {
 	if (isExistObjPaimon)
 	{
-		tempPaimon.setPaimonTemplate(Template);
 		tempPaimon.setPaimonMat(Obj);
-		tempPaimon.TemplatePaimon();
+		tempPaimon.match();
 	}
 }
 
@@ -404,7 +382,7 @@ void TianLi_ThreadMatch::CheckThread_OrbAvatarInit()
 	}
 }
 
-void TianLi_ThreadMatch::thread_OrbAvatarInit(Mat& tar)
+void TianLi_ThreadMatch::thread_OrbAvatarInit(cv::Mat& tar)
 {
 	//if (tar.empty());
 	assert(!tar.empty());
@@ -428,12 +406,12 @@ void TianLi_ThreadMatch::CheckThread_OrbAvatarMatch()
 	}
 }
 
-void TianLi_ThreadMatch::thread_OrbAvatarMatch(Mat& Obj)
+void TianLi_ThreadMatch::thread_OrbAvatarMatch(cv::Mat& Obj)
 {
 	if (isExistObjMinMap)
 	{
 		orbAvatar.setAvatarMat(Obj);
-		orbAvatar.ORBMatch();
+		orbAvatar.match();
 	}
 }
 
@@ -453,7 +431,7 @@ void TianLi_ThreadMatch::CheckThread_TemplateUIDInit()
 	}
 }
 
-void TianLi_ThreadMatch::thread_TemplateUIDInit(Mat* tar)
+void TianLi_ThreadMatch::thread_TemplateUIDInit(cv::Mat* tar)
 {
 	tempUID.setUIDTemplate(tar);
 	tempUID.Init();
@@ -475,13 +453,13 @@ void TianLi_ThreadMatch::CheckThread_TemplateUIDMatch()
 	}
 }
 
-void TianLi_ThreadMatch::thread_TemplateUIDMatch(Mat& Obj)
+void TianLi_ThreadMatch::thread_TemplateUIDMatch(cv::Mat& Obj)
 {
 	if (isExistObjUID)
 	{
 		//surfMap.setMinMap(objMinMap);
 		tempUID.setUIDMat(Obj);
-		tempUID.TemplateUID();
+		tempUID.match();
 	}
 }
 
@@ -501,7 +479,7 @@ void TianLi_ThreadMatch::CheckThread_TemplateStarInit()
 	}
 }
 
-void TianLi_ThreadMatch::thread_TemplateStarInit(Mat& tar)
+void TianLi_ThreadMatch::thread_TemplateStarInit(cv::Mat& tar)
 {
 	tempStar.setStarTemplate(tar);
 	tempStar.Init();
@@ -523,12 +501,12 @@ void TianLi_ThreadMatch::CheckThread_TemplateStarMatch()
 	}
 }
 
-void TianLi_ThreadMatch::thread_TemplateStarMatch(Mat& Obj)
+void TianLi_ThreadMatch::thread_TemplateStarMatch(cv::Mat& Obj)
 {
 	if (isExistObjMinMap)
 	{
 		tempStar.setStarMat(Obj);
-		tempStar.TemplateStar();
+		tempStar.match();
 	}
 }
 
@@ -661,7 +639,7 @@ int TianLi_GiState::getGiRectMode()
 
 	if (giHandle != NULL)
 	{
-		const Size size1920x1080 = Size(1920, 1080);
+		const cv::Size size1920x1080 = cv::Size(1920, 1080);
 
 		if (giFrame.cols == 1920 && giFrame.rows == 1080)
 		{
@@ -694,7 +672,7 @@ int TianLi_GiState::getGiState()
 	
 	return giRectMode;
 }
-Point TianLi_GiState::getOffset()
+cv::Point TianLi_GiState::getOffset()
 {
 	cv::Point res;
 	switch (giRectMode)
@@ -756,7 +734,7 @@ void TianLi_GiState::getAllScreen()
 	GetObject(hBmp, sizeof(BITMAP), &bmp);
 
 	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
-	int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+	int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
 
 	//mat²Ù×÷
 	giFrame.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
@@ -800,7 +778,7 @@ void TianLi_GiState::getGiScreen()
 	GetObject(hBmp, sizeof(BITMAP), &bmp);
 
 	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
-	int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+	int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
 
 	//mat²Ù×÷
 	giFrame.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
@@ -886,7 +864,7 @@ void TianLi_GiState::getGiScreen2()
 	GetObject(hBmp, sizeof(BITMAP), &bmp);
 
 	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
-	int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+	int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
 
 	//mat²Ù×÷
 	giFrame.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
@@ -895,7 +873,7 @@ void TianLi_GiState::getGiScreen2()
 
 	if (giFrame.channels() == 3)
 	{
-		cvtColor(giFrame, giFrame, CV_RGB2RGBA);
+		cvtColor(giFrame, giFrame, cv::COLOR_RGB2RGBA);
 	}
 }
 void TianLi_GiState::getGiFrame()
@@ -937,24 +915,24 @@ void TianLi_GiState::getGiFrame()
 
 void TianLi_GiState::getGiFramePaimon()
 {
-	Rect PaimonRect;
+	cv::Rect PaimonRect;
 	switch (giRectMode)
 	{
 	case FW_1920x1080:
 	{
-		PaimonRect = Rect(26, 12, 68, 77);
+		PaimonRect = cv::Rect(26, 12, 68, 77);
 		resIdPaimon = 0;
 		break;
 	}
 	default:
 	{
 
-		PaimonRect = Rect(cvCeil(giSize.width * 0.0135), cvCeil(giSize.width * 0.006075), cvCeil(giSize.width * 0.035), cvCeil(giSize.width * 0.0406));
+		PaimonRect = cv::Rect(cvCeil(giSize.width * 0.0135), cvCeil(giSize.width * 0.006075), cvCeil(giSize.width * 0.035), cvCeil(giSize.width * 0.0406));
 		resIdPaimon = 0;
 		// ÊÊÅä´øÓãÆÁ
 		if (giSize.width / giSize.height == 64 / 27)
 		{
-			PaimonRect = Rect(cvCeil(giSize.width * 0.038), cvCeil(giSize.height * 0.012), cvCeil(giSize.height / 9.0 * 16.0 * 0.035), cvCeil(giSize.height / 9.0 * 16.0 * 0.0406));
+			PaimonRect = cv::Rect(cvCeil(giSize.width * 0.038), cvCeil(giSize.height * 0.012), cvCeil(giSize.height / 9.0 * 16.0 * 0.035), cvCeil(giSize.height / 9.0 * 16.0 * 0.0406));
 		}
 		break;
 	}
@@ -965,20 +943,20 @@ void TianLi_GiState::getGiFramePaimon()
 
 void TianLi_GiState::getGiFrameMap()
 {
-	Rect mapRect;
+	cv::Rect mapRect;
 	switch (giRectMode)
 	{
 	case FW_1920x1080:
 	{
-		mapRect = Rect(62, 19, 212, 212);
+		mapRect = cv::Rect(62, 19, 212, 212);
 		break;
 	}
 	default:
 	{
-		mapRect = Rect(cvCeil(giSize.width * 0.032), cvCeil(giSize.width * 0.01), cvCeil(giSize.width * 0.11), cvCeil(giSize.width * 0.11));
+		mapRect = cv::Rect(cvCeil(giSize.width * 0.032), cvCeil(giSize.width * 0.01), cvCeil(giSize.width * 0.11), cvCeil(giSize.width * 0.11));
 		if (giSize.width / giSize.height == 64 / 27)
 		{
-			mapRect = Rect(cvCeil(giSize.width * 0.051), cvCeil(giSize.height / 9.0 * 16.0 * 0.01), cvCeil(giSize.height / 9.0 * 16.0 * 0.11), cvCeil(giSize.height / 9.0 * 16.0 * 0.11));
+			mapRect = cv::Rect(cvCeil(giSize.width * 0.051), cvCeil(giSize.height / 9.0 * 16.0 * 0.01), cvCeil(giSize.height / 9.0 * 16.0 * 0.11), cvCeil(giSize.height / 9.0 * 16.0 * 0.11));
 		}
 		break;
 	}
@@ -988,8 +966,8 @@ void TianLi_GiState::getGiFrameMap()
 
 void TianLi_GiState::getGiFrameUID()
 {
-	Rect uidRect;
-	uidRect = Rect(giFrame.cols - 240, giFrame.rows - 25, 180, 18);
+	cv::Rect uidRect;
+	uidRect = cv::Rect(giFrame.cols - 240, giFrame.rows - 25, 180, 18);
 	giFrame(uidRect).copyTo(giFrameUID);
 }
 
