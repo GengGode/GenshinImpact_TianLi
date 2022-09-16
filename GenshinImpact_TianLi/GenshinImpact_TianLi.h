@@ -8,7 +8,7 @@
 class TianLiQtCommon_CardRect;
 class TianLiQtCommon_ScrollCardRect;
 class TianLiQtCommon_MapRect;
-class GenshinImpact_TianLi_Sqlite;
+class TianLiQtCommon_HookKeyBoard;
 class GenshinImpact_TianLi_Core;
 class GenshinImpact_TianLi : public QMainWindow
 {
@@ -24,7 +24,9 @@ private:
 private:
     // 主要阴影
     QGraphicsDropShadowEffect *mainShadow;
-
+private:
+    // 快捷键对象列表
+	std::vector<TianLiQtCommon_HookKeyBoard*> hook_key_board_list;
 // 鼠标拖动
 private:
     QPoint m_Press;
@@ -37,7 +39,6 @@ private:
     //GenshinImpact_TianLi_Core *core;
 // 加载数据库
 private:
-    GenshinImpact_TianLi_Sqlite* TianLi_Sqlite;
 	void loadDataBase();
 	// 更新可选地区数据
     void updata_Country();
@@ -116,8 +117,11 @@ private slots:
     void ui_updataItemsButtonList();
 private:
 	QWidget* main_bebind_widget=nullptr;
+	bool is_show = false;
 private slots:
-
+    void slot_show_or_hide();
+	
+private:
     void slot_show();
     void slot_hide();
 	

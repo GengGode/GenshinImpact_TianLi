@@ -3,10 +3,6 @@
 // π© GenshinImpact_TianLi_Logo.rc  π”√
 //
 #define IDI_ICON1                       101
-#define IDB_PNG_GIMAP                   102
-#define IDB_BITMAP_GIPAIMON             103
-#define IDB_BITMAP_STARTEMPLATE         104
-#define IDR_SQLITE_KYJG                 105
 
 // Next default values for new objects
 // 

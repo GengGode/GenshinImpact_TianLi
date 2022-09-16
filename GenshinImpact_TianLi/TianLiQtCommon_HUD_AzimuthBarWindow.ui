@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1250</width>
-    <height>260</height>
+    <width>680</width>
+    <height>138</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>TianLiQtCommon_HUD_AzimuthBarWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: qradialgradient(spread:pad, cx:0.5, cy:0, radius:0.6, fx:0.5, fy:0, stop:0 rgba(0, 0, 0, 16), stop:1 transparent);</string>
   </property>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

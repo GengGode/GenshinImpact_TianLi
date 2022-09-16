@@ -136,6 +136,12 @@
     <ClCompile Include="TianLiQtCommon_HUD_CircularMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TianLiQtCommon_HookKeyBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="GenshinImpact_TianLi_zh.ts">
@@ -174,6 +180,9 @@
       <Filter>Header Files\TianLiQtCommon\Logger</Filter>
     </QtMoc>
     <QtMoc Include="TianLiQtCommon_HUD_CircularMap.h">
+      <Filter>Header Files\TianLiQtCommon\HUD</Filter>
+    </QtMoc>
+    <QtMoc Include="TianLiQtCommon_HookKeyBoard.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -219,10 +228,10 @@
     <ClInclude Include="TianLiQtCommon_Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\GenshinImpact_TianLi_Resource\resource.h">
+    <ClInclude Include="WindowsAttribute.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WindowsAttribute.h">
+    <ClInclude Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -241,70 +250,10 @@
     <Image Include="resource\Icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIMAP.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIPAIMON.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIMINIMAP_CAILB.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIMINIMAP_N.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIAVATAR.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GISTAR.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID0.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID3.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID4.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID5.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID6.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID7.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID8.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID9.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID_.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIPAIMON.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GISTARTEMPLATE.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="TianLiQtCommon_ScrollCardRect.qss">
       <Filter>Resource Files\TianLiQtCommon</Filter>
     </None>
-    <None Include="KongYingJiuGuanData.sqlite" />
-    <None Include="cpp.hint" />
-    <None Include="..\GenshinImpact_TianLi_Resource\resource\KongYingJiuGuanData.sqlite" />
   </ItemGroup>
 </Project>

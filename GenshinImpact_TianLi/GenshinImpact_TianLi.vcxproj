@@ -121,6 +121,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="TianLiQtCommon_CardRect.cpp" />
+    <ClCompile Include="TianLiQtCommon_HookKeyBoard.cpp" />
+    <ClCompile Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.cpp" />
     <ClCompile Include="TianLiQtCommon_HUD_AzimuthBarWindow.cpp" />
     <ClCompile Include="TianLiQtCommon_HUD_CircularMap.cpp" />
     <ClCompile Include="TianLiQtCommon_Logger.cpp" />
@@ -173,14 +175,12 @@
     <QtMoc Include="TianLiQtCommon_NearbyItemButton.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\GenshinImpact_TianLi_Resource\resource\KongYingJiuGuanData.sqlite" />
-    <None Include="cpp.hint" />
-    <None Include="KongYingJiuGuanData.sqlite" />
     <None Include="TianLiQtCommon_ScrollCardRect.qss" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\GenshinImpact_TianLi_Resource\resource.h" />
     <ClInclude Include="resource.h" />
+    <QtMoc Include="TianLiQtCommon_HookKeyBoard.h" />
+    <ClInclude Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.h" />
     <ClInclude Include="WindowsAttribute.h" />
     <QtMoc Include="TianLiQtCommon_HUD_AzimuthBarWindow.h" />
     <QtMoc Include="TianLiQtCommon_Logger.h" />
@@ -196,25 +196,6 @@
     <ResourceCompile Include="GenshinImpact_TianLi_Version.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIAVATAR.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIMAP.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIMINIMAP_CAILB.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIMINIMAP_N.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIPAIMON.bmp" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GIPAIMON.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GISTAR.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\GISTARTEMPLATE.bmp" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID0.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID1.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID2.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID3.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID4.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID5.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID6.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID7.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID8.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID9.png" />
-    <Image Include="..\GenshinImpact_TianLi_Resource\resource\NumUID\UID_.png" />
     <Image Include="resource\Icon.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -16,6 +16,10 @@
 #include "TianLiQtCommon_HUD_SquareMap.h"
 #include "TianLiQtCommon_HUD_AzimuthBarWindow.h"
 
+#include "TianLiQtCommon_HookKeyBoard.h"
+
+#include "TianLiQtCommon_Utils.h"
+
 #include <QFontDatabase>
 #include <QMouseEvent>
 #include <QTimer>
@@ -84,9 +88,13 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 
 	//GenshinImpact_TianLi_Track tianli_track;
 	
-
-	connect(this, &GenshinImpact_TianLi::showEvent, this, &GenshinImpact_TianLi::slot_show);
-	connect(this, &GenshinImpact_TianLi::hideEvent, this, &GenshinImpact_TianLi::slot_hide);
+	//添加全局快捷键
+	// F1 触发 slot_show_or_hide
+	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("F1", this));
+	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_show_or_hide);
+	
+	//connect(this, &GenshinImpact_TianLi::show, this, &GenshinImpact_TianLi::slot_show);
+	//connect(this, &GenshinImpact_TianLi::hide, this, &GenshinImpact_TianLi::slot_hide);
 	
 	//HHOOK hhkLowLevelKybd = SetWindowsHookExA(WH_KEYBOARD_LL, KeyboardProc, 0, 0);
 
@@ -107,9 +115,6 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 
 GenshinImpact_TianLi::~GenshinImpact_TianLi()
 {
-	//this->TianLi_Sqlite->CloseSqlite();
-	//Core.GetSqlite().CloseSqlite();
-	//delete core;
 }
 
 void GenshinImpact_TianLi::mousePressEvent(QMouseEvent* event)
@@ -147,10 +152,6 @@ void GenshinImpact_TianLi::mouseMoveEvent(QMouseEvent* event)
 
 void GenshinImpact_TianLi::loadDataBase()
 {
-	//this->TianLi_Sqlite= new GenshinImpact_TianLi_Sqlite();
-	//TianLi::SqliteDbMem SqliteDB_Mem= TianLi::LoadSqlite_KYJGDB();
-	//this->TianLi_Sqlite->OpenSqlite(SqliteDB_Mem.ptr, SqliteDB_Mem.size);
-	
 	TianLi::SqliteDbMem SqliteDB_Mem = Core.GetResource().LoadSqlite_KYJGDB();
 	Core.GetSqlite().OpenSqlite(SqliteDB_Mem.ptr, SqliteDB_Mem.size);
 	
@@ -739,19 +740,38 @@ void GenshinImpact_TianLi::slot_show()
 		if (main_bebind_widget == nullptr)
 		{
 			main_bebind_widget = new QWidget();
-			main_bebind_widget->setGeometry(0, 0, 1920, 1080);
+			RECT gi_client_rect = Core.GetTrack().GetResult().client_rect;
+			main_bebind_widget->setGeometry(gi_client_rect.left, gi_client_rect.top, gi_client_rect.right - gi_client_rect.left, gi_client_rect.bottom - gi_client_rect.top);
 			main_bebind_widget->setAttribute(Qt::WA_QuitOnClose, false);
-			main_bebind_widget->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow | Qt::WindowStaysOnTopHint);
+			main_bebind_widget->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow);
 			main_bebind_widget->setAttribute(Qt::WA_TranslucentBackground, true);
 
-			SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)main_bebind_widget->winId(), GWL_EXSTYLE) |
-				WS_EX_TRANSPARENT);
+			/*SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)main_bebind_widget->winId(), GWL_EXSTYLE) |
+				WS_EX_TRANSPARENT);*/
+			TianLi::Utils::set_window_blur_bebind((HWND)main_bebind_widget->winId());
 		}
 		
 		main_bebind_widget->show();
+		main_bebind_widget->activateWindow();
 	}
-	
+	this->showNormal();
 	this->show();
+	// 激活到最前面
+	this->activateWindow();	
+}
+
+void GenshinImpact_TianLi::slot_show_or_hide()
+{
+	if (is_show)
+	{
+		this->slot_hide();
+		is_show = false;
+	}
+	else
+	{
+		this->slot_show();
+		is_show = true;
+	}
 }
 
 void GenshinImpact_TianLi::slot_hide()
@@ -760,8 +780,9 @@ void GenshinImpact_TianLi::slot_hide()
 	{
 		main_bebind_widget->hide();
 	}
-	
-	this->hide();
+
+	this->showMinimized();
+	//this->hide();
 }
 
 void GenshinImpact_TianLi::setCurrentIndex_MainTabPages(int index)

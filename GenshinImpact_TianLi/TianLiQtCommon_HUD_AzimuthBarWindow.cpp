@@ -2,6 +2,7 @@
 #include <QTimer>
 #include <QPainter>
 #include <QCloseEvent>
+#include <QStyleOption>
 
 #include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
@@ -25,6 +26,8 @@ TianLiQtCommon_HUD_AzimuthBarWindow::TianLiQtCommon_HUD_AzimuthBarWindow(QWidget
 	this->setMaximumSize(680, 138);
 	this->setMinimumSize(680, 138);
 	
+	//this->setStyleSheet("background-color: qradialgradient(spread:pad, cx:0.5, cy:0, radius:0.5, fx:0.5, fy:0, stop:0 rgba(0, 0, 0, 20), stop:1 transparent);");
+
 	timer=new QTimer;
 	timer->setInterval(42);
 	static int i = 0;
@@ -96,6 +99,11 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	//painter.drawRect(QRect(0, y-x, x, x));
 	//
 	
+	QStyleOption option;
+	option.initFrom(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &option, &p, this);
+
 	painter.setRenderHint(QPainter::Antialiasing);
 
 	// 基础线条和箭头
