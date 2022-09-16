@@ -68,7 +68,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
@@ -85,7 +85,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\x64\vc16\staticlib;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
@@ -122,6 +122,7 @@
   <ItemGroup>
     <ClCompile Include="TianLiQtCommon_CardRect.cpp" />
     <ClCompile Include="TianLiQtCommon_HUD_AzimuthBarWindow.cpp" />
+    <ClCompile Include="TianLiQtCommon_HUD_CircularMap.cpp" />
     <ClCompile Include="TianLiQtCommon_Logger.cpp" />
     <ClCompile Include="TianLiQtCommon_MapRect.cpp" />
     <ClCompile Include="TianLiQtCommon_NearbyItemButton.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="main.cpp" />
     <QtUic Include="TianLiQtCommon_CardRect.ui" />
     <QtUic Include="TianLiQtCommon_HUD_AzimuthBarWindow.ui" />
+    <QtUic Include="TianLiQtCommon_HUD_CircularMap.ui" />
     <QtUic Include="TianLiQtCommon_Logger.ui" />
     <QtUic Include="TianLiQtCommon_MapRect.ui" />
     <QtUic Include="TianLiQtCommon_NearbyItemButton.ui" />
@@ -179,8 +181,10 @@
   <ItemGroup>
     <ClInclude Include="..\GenshinImpact_TianLi_Resource\resource.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="WindowsAttribute.h" />
     <QtMoc Include="TianLiQtCommon_HUD_AzimuthBarWindow.h" />
     <QtMoc Include="TianLiQtCommon_Logger.h" />
+    <QtMoc Include="TianLiQtCommon_HUD_CircularMap.h" />
     <ClInclude Include="TianLiQtCommon_Utils.h" />
     <QtMoc Include="TianLiQtCommon_HUD_SquareMap.h" />
     <QtMoc Include="TianLiQtCommon_TypeGroupButton.h" />

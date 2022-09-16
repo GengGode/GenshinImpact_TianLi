@@ -12,6 +12,7 @@
 
 #include "TianLiQtCommon_Logger.h"
 
+#include "TianLiQtCommon_HUD_CircularMap.h"
 #include "TianLiQtCommon_HUD_SquareMap.h"
 #include "TianLiQtCommon_HUD_AzimuthBarWindow.h"
 
@@ -25,6 +26,33 @@
 #pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
 
 using namespace TianLi;
+//
+//LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
+//{
+//	PKBDLLHOOKSTRUCT p = (PKBDLLHOOKSTRUCT)lParam;
+//	if (nCode == HC_ACTION) {
+//		switch (wParam) {
+//		case WM_KEYDOWN: {
+//			fmt::print("WM_KEYDOWN: {}\n", p->vkCode);
+//		} break;
+//		case WM_SYSKEYDOWN: {
+//			fmt::print("WM_SYSKEYDOWN: {}\n", p->vkCode);
+//		} break;
+//		case WM_KEYUP: {
+//			fmt::print("WM_KEYUP: {}\n", p->vkCode);
+//		} break;
+//		case WM_SYSKEYUP: {
+//			fmt::print("WM_SYSKEYUP: {}\n", p->vkCode);
+//		} break;
+//		}
+//	}
+//#if 0
+//	return 1;
+//#else
+//	return CallNextHookEx(NULL, nCode, wParam, lParam);
+//#endif
+//}
+
 
 GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
     : QMainWindow(parent)
@@ -57,9 +85,18 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	//GenshinImpact_TianLi_Track tianli_track;
 	
 
+	connect(this, &GenshinImpact_TianLi::showEvent, this, &GenshinImpact_TianLi::slot_show);
+	connect(this, &GenshinImpact_TianLi::hideEvent, this, &GenshinImpact_TianLi::slot_hide);
 	
-	
+	//HHOOK hhkLowLevelKybd = SetWindowsHookExA(WH_KEYBOARD_LL, KeyboardProc, 0, 0);
 
+	//MSG msg;
+	//while (!GetMessage(&msg, NULL, NULL, NULL)) {
+	//	TranslateMessage(&msg);
+	//	DispatchMessage(&msg);
+	//}
+
+	//UnhookWindowsHookEx(hhkLowLevelKybd);
 	
 	connect(ui.pushButton_Tab_1, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
 	connect(ui.pushButton_Tab_2, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_2_clicked);
@@ -376,7 +413,7 @@ void GenshinImpact_TianLi::addUI_HUDTabCardRects()
 		page2_button_1_1->setText("未开启");
 		// 设置按钮文字颜色为 红色
 		page2_button_1_1->setStyleSheet("color:rgb(255,0,0)");
-		
+
 		});
 	connect(page2_button_1_1, &QPushButton::clicked, [=]() {
 		// 如果按钮文字为 未开启
@@ -388,7 +425,7 @@ void GenshinImpact_TianLi::addUI_HUDTabCardRects()
 			page2_button_1_1->setStyleSheet("color:rgb(0,255,0)");
 
 			// 显示空白无边框窗口
-			page2_widget_1_1->show();
+			page2_widget_1_1->slot_show();
 
 		}
 		// 如果按钮文字为 已开启
@@ -400,19 +437,20 @@ void GenshinImpact_TianLi::addUI_HUDTabCardRects()
 			page2_button_1_1->setStyleSheet("color:rgb(255,0,0)");
 
 			// 隐藏空白无边框窗口
-			page2_widget_1_1->hide();
+			page2_widget_1_1->slot_hide();
 		}
 		});
-
+	
 	// 创建一个空白无边框窗口
-	TianLiQtCommon_HUD_AzimuthBarWindow* page2_widget_1_2 = new TianLiQtCommon_HUD_AzimuthBarWindow(NULL);
+	TianLiQtCommon_HUD_CircularMap* page2_widget_1_2 = new TianLiQtCommon_HUD_CircularMap(NULL);
 	page2_widget_1_2->hide();
 
 
-	
+
+
 	QPushButton* page2_button_1_2 = new QPushButton(this);
-	page2_button_1_2->setParent(PageTabHUD_CardRects[1]);
-	page2_button_1_2->setGeometry(10, 120, 376, 80);
+	page2_button_1_2->setParent(PageTabHUD_CardRects[0]);
+	page2_button_1_2->setGeometry(10, 300 , 376, 80);
 	page2_button_1_2->setText("未开启");
 	// 字体设置为 HYWenHei 字号为 32pt
 	page2_button_1_2->setFont(QFont("HYWenHei", 32));
@@ -423,7 +461,7 @@ void GenshinImpact_TianLi::addUI_HUDTabCardRects()
 	// 设置按钮不会获取焦点
 	page2_button_1_2->setFocusPolicy(Qt::NoFocus);
 	// 连接按钮点击事件
-	connect(page2_widget_1_2, &TianLiQtCommon_HUD_AzimuthBarWindow::signal_close_finished, page2_button_1_2, [=]() {
+	connect(page2_widget_1_2, &TianLiQtCommon_HUD_CircularMap::signal_close_finished, page2_button_1_2, [=]() {
 		// 改变按钮文字为 未开启
 		page2_button_1_2->setText("未开启");
 		// 设置按钮文字颜色为 红色
@@ -440,8 +478,7 @@ void GenshinImpact_TianLi::addUI_HUDTabCardRects()
 			page2_button_1_2->setStyleSheet("color:rgb(0,255,0)");
 
 			// 显示空白无边框窗口
-			page2_widget_1_2->show();
-			page2_widget_1_2->is_visible = true;
+			page2_widget_1_2->slot_show();
 
 		}
 		// 如果按钮文字为 已开启
@@ -453,8 +490,59 @@ void GenshinImpact_TianLi::addUI_HUDTabCardRects()
 			page2_button_1_2->setStyleSheet("color:rgb(255,0,0)");
 
 			// 隐藏空白无边框窗口
-			page2_widget_1_2->hide();
-			page2_widget_1_2->is_visible = false;
+			page2_widget_1_2->slot_hide();
+		}
+		});
+
+	// 创建一个空白无边框窗口
+	TianLiQtCommon_HUD_AzimuthBarWindow* page2_widget_1_3 = new TianLiQtCommon_HUD_AzimuthBarWindow(NULL);
+	page2_widget_1_3->hide();
+
+
+	
+	QPushButton* page2_button_1_3 = new QPushButton(this);
+	page2_button_1_3->setParent(PageTabHUD_CardRects[1]);
+	page2_button_1_3->setGeometry(10, 120, 376, 80);
+	page2_button_1_3->setText("未开启");
+	// 字体设置为 HYWenHei 字号为 32pt
+	page2_button_1_3->setFont(QFont("HYWenHei", 32));
+	// 设置文字颜色为 棕色
+	page2_button_1_3->setStyleSheet("color:rgb(153,102,0)");
+	// 设置按钮不会弹起
+	page2_button_1_3->setAttribute(Qt::WA_Hover, false);
+	// 设置按钮不会获取焦点
+	page2_button_1_3->setFocusPolicy(Qt::NoFocus);
+	// 连接按钮点击事件
+	connect(page2_widget_1_3, &TianLiQtCommon_HUD_AzimuthBarWindow::signal_close_finished, page2_button_1_3, [=]() {
+		// 改变按钮文字为 未开启
+		page2_button_1_3->setText("未开启");
+		// 设置按钮文字颜色为 红色
+		page2_button_1_3->setStyleSheet("color:rgb(255,0,0)");
+
+		});
+	connect(page2_button_1_3, &QPushButton::clicked, [=]() {
+		// 如果按钮文字为 未开启
+		if (page2_button_1_3->text() == "未开启")
+		{
+			// 改变按钮文字为 已开启
+			page2_button_1_3->setText("已开启");
+			// 设置按钮文字颜色为 绿色
+			page2_button_1_3->setStyleSheet("color:rgb(0,255,0)");
+
+			// 显示空白无边框窗口
+			page2_widget_1_3->slot_show();
+
+		}
+		// 如果按钮文字为 已开启
+		else if (page2_button_1_3->text() == "已开启")
+		{
+			// 改变按钮文字为 未开启
+			page2_button_1_3->setText("未开启");
+			// 设置按钮文字颜色为 红色
+			page2_button_1_3->setStyleSheet("color:rgb(255,0,0)");
+
+			// 隐藏空白无边框窗口
+			page2_widget_1_3->slot_hide();
 
 		}
 		});
@@ -642,6 +730,38 @@ void GenshinImpact_TianLi::ui_updataItemsButtonList()
 	//	pushButtonMap_Items[str]->show();
 	//	//connect(pushButtonMap_Items[str], &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButtonGroup_SelectItems);
 	//}
+}
+
+void GenshinImpact_TianLi::slot_show()
+{
+	if (Core.GetTrack().GetResult().is_find_paimon)
+	{
+		if (main_bebind_widget == nullptr)
+		{
+			main_bebind_widget = new QWidget();
+			main_bebind_widget->setGeometry(0, 0, 1920, 1080);
+			main_bebind_widget->setAttribute(Qt::WA_QuitOnClose, false);
+			main_bebind_widget->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow | Qt::WindowStaysOnTopHint);
+			main_bebind_widget->setAttribute(Qt::WA_TranslucentBackground, true);
+
+			SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)main_bebind_widget->winId(), GWL_EXSTYLE) |
+				WS_EX_TRANSPARENT);
+		}
+		
+		main_bebind_widget->show();
+	}
+	
+	this->show();
+}
+
+void GenshinImpact_TianLi::slot_hide()
+{
+	if (main_bebind_widget != nullptr)
+	{
+		main_bebind_widget->hide();
+	}
+	
+	this->hide();
 }
 
 void GenshinImpact_TianLi::setCurrentIndex_MainTabPages(int index)

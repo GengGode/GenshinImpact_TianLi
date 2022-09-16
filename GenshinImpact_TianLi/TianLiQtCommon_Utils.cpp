@@ -3,37 +3,15 @@
 #include <QImage>
 #include <QPainter>
 
-#include <Windows.h>
-/*
-TianLiQtCommon_Utils::TianLiQtCommon_Utils(QObject *parent)
-	: QObject(parent)
-{
-}
-
-TianLiQtCommon_Utils& TianLiQtCommon_Utils::GetInstance()
-{
-	// TODO: 在此处插入 return 语句
-	static QMutex mutex;
-	static QScopedPointer<TianLiQtCommon_Utils> instance;
-	if (instance.isNull())
-	{
-		mutex.lock();
-		if (instance.isNull())
-		{
-			instance.reset(new TianLiQtCommon_Utils(NULL));
-		}
-		mutex.unlock();
-	}
-	return *instance.data();
-}
-
-TianLiQtCommon_Utils::~TianLiQtCommon_Utils()
-{
-}
-*/
+#include "WindowsAttribute.h"
 
 namespace TianLi::Utils
 {
+	void set_window_blur_bebind(HWND handle)
+	{
+		SetWindowBlurBehind(handle);
+	}
+	
 	// 九宫格扩展图片算法
 	QImage border_image(QImage image, int w, int h, int clip_top, int clip_right, int clip_bottom, int clip_left)
 	{
@@ -163,6 +141,161 @@ namespace TianLi::Utils
 
 		resize(GIMAP(viewMapRect), viewMap, view_map_size);
 		return viewMap;
+	}
+	cv::Mat create_square_mask(int mask_width, int mask_height, double gradient_width)
+	{
+		int mask_center_size_width = mask_width - gradient_width * 2;
+		int mask_center_size_height = mask_height - gradient_width * 2;
+		int mask_small_size_width = gradient_width;
+
+		cv::Mat mask = cv::Mat::zeros(mask_height, mask_width, CV_8UC1);
+
+		/*
+			m00:m,m		m01:n,m		m02:m,m
+
+			m10:m,n		m11:n,n		m12:m,n
+
+			m20:m,m		m21:n,m		m22:m,m
+
+			m = mask_small_size_width
+			n = mask_center_size_width
+		*/
+		cv::Mat mask_00 = mask(cv::Rect(0, 0, mask_small_size_width, mask_small_size_width));
+		cv::Mat mask_01 = mask(cv::Rect(mask_small_size_width, 0, mask_center_size_width, mask_small_size_width));
+		cv::Mat mask_02 = mask(cv::Rect(mask_small_size_width + mask_center_size_width, 0, mask_small_size_width, mask_small_size_width));
+		cv::Mat mask_10 = mask(cv::Rect(0, mask_small_size_width, mask_small_size_width, mask_center_size_height));
+		cv::Mat mask_11 = mask(cv::Rect(mask_small_size_width, mask_small_size_width, mask_center_size_width, mask_center_size_height));
+		cv::Mat mask_12 = mask(cv::Rect(mask_small_size_width + mask_center_size_width, mask_small_size_width, mask_small_size_width, mask_center_size_height));
+		cv::Mat mask_20 = mask(cv::Rect(0, mask_small_size_width + mask_center_size_height, mask_small_size_width, mask_small_size_width));
+		cv::Mat mask_21 = mask(cv::Rect(mask_small_size_width, mask_small_size_width + mask_center_size_height, mask_center_size_width, mask_small_size_width));
+		cv::Mat mask_22 = mask(cv::Rect(mask_small_size_width + mask_center_size_width, mask_small_size_width + mask_center_size_height, mask_small_size_width, mask_small_size_width));
+		// 顶角四块为扇形渐变 从0到255
+		// 左上
+		for (int i = 0; i < mask_small_size_width; i++)
+		{
+			for (int j = 0; j < mask_small_size_width; j++)
+			{
+				int center_x = mask_small_size_width;
+				int center_y = mask_small_size_width;
+				int center_r = mask_small_size_width;
+
+				double distance = sqrt(pow(i - center_x, 2) + pow(j - center_y, 2));
+				if (distance <= center_r)
+				{
+					mask_00.at<uchar>(i, j) = 255 * (1 - distance / center_r);
+				}
+			}
+		}
+		// 右上
+		for (int i = 0; i < mask_small_size_width; i++)
+		{
+			for (int j = 0; j < mask_small_size_width; j++)
+			{
+				int center_x = mask_small_size_width;
+				int center_y = 0;
+				int center_r = mask_small_size_width;
+
+				double distance = sqrt(pow(i - center_x, 2) + pow(j - center_y, 2));
+				if (distance <= center_r)
+				{
+					mask_02.at<uchar>(i, j) = 255 * (1 - distance / center_r);
+				}
+			}
+		}
+		// 左下
+		for (int i = 0; i < mask_small_size_width; i++)
+		{
+			for (int j = 0; j < mask_small_size_width; j++)
+			{
+				int center_x = 0;
+				int center_y = mask_small_size_width;
+				int center_r = mask_small_size_width;
+
+				double distance = sqrt(pow(i - center_x, 2) + pow(j - center_y, 2));
+				if (distance <= center_r)
+				{
+					mask_20.at<uchar>(i, j) = 255 * (1 - distance / center_r);
+				}
+			}
+		}
+		// 右下
+		for (int i = 0; i < mask_small_size_width; i++)
+		{
+			for (int j = 0; j < mask_small_size_width; j++)
+			{
+				int center_x = 0;
+				int center_y = 0;
+				int center_r = mask_small_size_width;
+
+				double distance = sqrt(pow(i - center_x, 2) + pow(j - center_y, 2));
+				if (distance <= center_r)
+				{
+					mask_22.at<uchar>(i, j) = 255 * (1 - distance / center_r);
+				}
+			}
+		}
+		// 边角四块为线性渐变 从0到255
+		// 上
+		for (int i = 0; i < mask_small_size_width; i++)
+		{
+			for (int j = 0; j < mask_center_size_width; j++)
+			{
+				mask_01.at<uchar>(i, j) = 255 * (double)i / mask_small_size_width;
+			}
+		}
+		// 下
+		for (int i = 0; i < mask_small_size_width; i++)
+		{
+			for (int j = 0; j < mask_center_size_width; j++)
+			{
+				mask_21.at<uchar>(i, j) = 255 * (1 - (double)i / mask_small_size_width);
+			}
+		}
+		// 左
+		for (int i = 0; i < mask_center_size_height; i++)
+		{
+			for (int j = 0; j < mask_small_size_width; j++)
+			{
+				mask_10.at<uchar>(i, j) = 255 * (double)j / mask_small_size_width;
+			}
+		}
+		// 右
+		for (int i = 0; i < mask_center_size_height; i++)
+		{
+			for (int j = 0; j < mask_small_size_width; j++)
+			{
+				mask_12.at<uchar>(i, j) = 255 * (1 - (double)j / mask_small_size_width);
+			}
+		}
+
+		// 中间部分为255
+		mask_11 = cv::Scalar(255);
+
+		// 返回mask
+		return mask;
+	}
+	cv::Mat create_circular_mask(int mask_width, int mask_height, double gradient_width)
+	{
+		cv::Mat mask = cv::Mat::zeros(mask_height, mask_width, CV_8UC1);
+		cv::Point2d center(mask_width / 2, mask_height / 2);
+		double radius = min(mask_width, mask_height) / 2;
+		double gradient_radius = radius - gradient_width;
+		for (int i = 0; i < mask_height; i++)
+		{
+			for (int j = 0; j < mask_width; j++)
+			{
+				double distance = cv::norm(center - cv::Point2d(j, i));
+				if (distance < gradient_radius)
+				{
+					mask.at<uchar>(i, j) = 255;
+				}
+				else if (distance < radius)
+				{
+					mask.at<uchar>(i, j) = 255 * (radius - distance) / gradient_width;
+				}
+			}
+		}
+		return mask;
 	}
 }
 

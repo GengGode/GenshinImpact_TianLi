@@ -22,10 +22,7 @@ TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget* parent)
 	ui.label_Render->setVisible(false);
 	{
 		LogTraceFunction;
-		
-		//Core.GetResource().GiMap();
-		cv::cvtColor(Core.GetResource().GiMap(), mapMat, cv::COLOR_RGBA2RGB);
-	
+		cv::cvtColor(Core.GetResource().GiMap(), gi_map, cv::COLOR_RGBA2RGB);
 	}
 	//创建刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
@@ -35,7 +32,8 @@ TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget* parent)
 
 TianLiQtCommon_MapRect::~TianLiQtCommon_MapRect()
 {
-	//delete mapMat;
+	//delete gi_map;
+	delete mapMessageLoopTimer;
 }
 
 void TianLiQtCommon_MapRect::mousePressEvent(QMouseEvent* event)
@@ -75,7 +73,7 @@ void TianLiQtCommon_MapRect::mouseDoubleClickEvent(QMouseEvent* event)
 			
 		}
 		//leftBtnClk = false;
-		//mapScale += deltaMapScale;
+		//render_map_scale += deltaMapScale;
 	}
 }
 
@@ -83,14 +81,14 @@ void TianLiQtCommon_MapRect::mouseMoveEvent(QMouseEvent* event)
 {
 	if (leftBtnClk) {
 		m_Move = event->globalPos();
-		cv::Point map_move = cv::Point( (m_Move.x() - m_Press.x()) * mapScale,
-			(m_Move.y() - m_Press.y()) * mapScale);
-		mapPos= mapPos-map_move;
+		cv::Point map_move = cv::Point( (m_Move.x() - m_Press.x()) * render_map_scale,
+			(m_Move.y() - m_Press.y()) * render_map_scale);
+		render_map_pos= render_map_pos-map_move;
 		if (map_move.x != 0 || map_move.y != 0)
 		{
 			m_Press = m_Move;
 			update();
-			//LogInfo(QString::number(mapPos.x) + "," + QString::number(mapPos.y));
+			//LogInfo(QString::number(render_map_pos.x) + "," + QString::number(render_map_pos.y));
 		}
 	}
 
@@ -100,14 +98,14 @@ void TianLiQtCommon_MapRect::wheelEvent(QWheelEvent* event)
 {
 	//TianLi_Logger.Info(__FUNCTION__, QString::number(event->delta()));
 	//LogInfo(QString::number(event->delta() / 120));
-	//LogInfo(QString::number(mapScale));
+	//LogInfo(QString::number(render_map_scale));
 	if (event->delta() < 0) {
-		if (mapScale > 10)return;
-		mapScale += deltaMapScale;
+		if (render_map_scale > 10)return;
+		render_map_scale += deltaMapScale;
 	}
 	else if(event->delta() > 0) {
-		if (mapScale <= 0.3)return;
-		mapScale -= deltaMapScale;
+		if (render_map_scale <= 0.3)return;
+		render_map_scale -= deltaMapScale;
 	}
 	else
 	{
@@ -119,28 +117,32 @@ void TianLiQtCommon_MapRect::wheelEvent(QWheelEvent* event)
 void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 {
 	//LogTraceFunction;
-
-	cv::Mat mapMatRect;// = mapMat(mapRect);
-
-	mapMatRect = TianLi::Utils::get_view_map(mapMat, cv::Size(ui.label_Render->width(), ui.label_Render->height()), mapPos, mapScale);
-	
-	std::vector<cv::Mat> mv;
-	cv::split(mapMatRect, mv);
-	mv.push_back(mapMaskMat);
-	cv::merge(mv,mapMatRect);
-	
-	auto runtime = Core.GetTrack().GetResult2().last_runtime_ms;
-	cv::putText(mapMatRect, std::to_string(runtime.count()) + "ms", cv::Point(100, 200), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 255), 1, 8, 0);
-	
-
-	mapImage =  QImage((uchar*)(mapMatRect.data), mapMatRect.cols, mapMatRect.rows, mapMatRect.cols * (mapMatRect.channels()), QImage::Format_ARGB32);
-	
-
-	//设置画面为地图
 	QPainter painter(this);
-	painter.drawImage(0, 0,mapImage);
-	// 更新label_UID控件
 
+	static cv::Mat mapMatRect;// = gi_map(mapRect);
+	static cv::Point old_map_center_pos;
+	static double old_map_scale = 0;
+
+	// 如果 old pos 和 old scale 与当前的一样，就不用重新计算了
+	if (old_map_center_pos != render_map_pos || old_map_scale != render_map_scale || is_need_rerender)
+	{
+		is_need_rerender = false;
+		old_map_center_pos = render_map_pos;
+		old_map_scale = render_map_scale;
+
+		mapMatRect = TianLi::Utils::get_view_map(gi_map, cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale);
+
+		std::vector<cv::Mat> mv;
+		cv::split(mapMatRect, mv);
+		mv.push_back(render_map_mask);
+		cv::merge(mv, mapMatRect);
+
+		render_map_image = QImage((uchar*)(mapMatRect.data), mapMatRect.cols, mapMatRect.rows, mapMatRect.cols * (mapMatRect.channels()), QImage::Format_ARGB32);
+
+		//设置画面为地图
+
+	}
+	painter.drawImage(0, 0, render_map_image);
 }
 
 void TianLiQtCommon_MapRect::resizeEvent(QResizeEvent* event)
@@ -151,20 +153,21 @@ void TianLiQtCommon_MapRect::resizeEvent(QResizeEvent* event)
 	ui.label_Render->setGeometry(0, 0, w, h);
 	ui.label_UID->setGeometry(w - 220,h- 40, 200, 24);
 	QImage Mask = TianLi::Utils::border_image(QImage(":/TianLiQtCommon_MapRect/resource/TianLiQtCommon_MapRect/TianLiQtCommon_MapRect_MapMask.png"), w, h, 30, 30, 30, 30);
-	mapMaskMat = cv::Mat(Mask.height(), Mask.width(), CV_8UC4, Mask.bits(), Mask.bytesPerLine());
+	render_map_mask = cv::Mat(Mask.height(), Mask.width(), CV_8UC4, Mask.bits(), Mask.bytesPerLine());
 
 	std::vector<cv::Mat> mv;
-	cv::split(mapMaskMat, mv);
-	mapMaskMat = mv[3];
+	cv::split(render_map_mask, mv);
+	render_map_mask = mv[3];
+	
+	is_need_rerender = true;
 }
 
 void TianLiQtCommon_MapRect::slot_update()
 {
-	if (Core.GetTrack().GetResult2().is_find_paimon)
+	if (Core.GetTrack().GetResult().is_find_paimon)
 	{
-		//mapPos = cv::Point(Core.GetTrack().GetResult().x, Core.GetTrack().GetResult().y);
-		mapPos = Core.GetTrack().GetResult2().position;
-		ui.label_UID->setText(QString("UID: %1").arg(Core.GetTrack().GetResult2().uid, 9, 10, QLatin1Char('0')));
+		render_map_pos = cv::Point(Core.GetTrack().GetResult().position_x, Core.GetTrack().GetResult().position_y);
+		ui.label_UID->setText(QString("UID: %1").arg(Core.GetTrack().GetResult().uid, 9, 10, QLatin1Char('0')));
 		
 		update();
 	}

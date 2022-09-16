@@ -2,15 +2,10 @@
 #include "..\GenshinImpact_TianLi_Resource\GenshinImpact_TianLi_Resource.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Resource.lib")
 
+#include "GenshinImpact_TianLi_Track.h"
+
 //#define TEST_LOCAL
 
-enum ScreenType
-{
-	Window,
-	Desktop,
-	Bitblt,
-	DirectX,
-};
 
 struct GenshinHandleConfig
 {
@@ -53,7 +48,7 @@ struct GenshinHandle
 };
 struct GenshinScreenConfig
 {
-	ScreenType screen_type = Bitblt;
+	TianLi::Track::ScreenType screen_type = TianLi::Track::Bitblt;
 	cv::Rect rect_paimon_maybe;
 	cv::Rect rect_minimap_cailb_maybe;
 	cv::Rect rect_minimap_maybe;

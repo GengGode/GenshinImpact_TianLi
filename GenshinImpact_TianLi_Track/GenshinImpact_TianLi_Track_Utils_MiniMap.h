@@ -627,7 +627,7 @@ class SurfMatch
 	cv::Mat _minMapLastMat;
 
 	double ratio_thresh = 0.66;
-	double mapScale = 1.3;//1.3;
+	double render_map_scale = 1.3;//1.3;
 	int someSizeR = 106;
 	double MatchMatScale = 2.0;
 
@@ -652,7 +652,7 @@ public:
 	bool isContinuity = false;
 	bool isOnCity = false;
 
-	void setMap(cv::Mat mapMat);
+	void setMap(cv::Mat gi_map);
 	void setMinMap(cv::Mat minMapMat);
 
 	void Init();
@@ -677,4 +677,4 @@ private:
 
 void draw_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<cv::DMatch>& good_matches);
 
-void calc_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double mapScale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy);
+void calc_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double render_map_scale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy);

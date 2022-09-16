@@ -1,5 +1,4 @@
 #pragma once
-
 #include <opencv2/opencv.hpp>
 
 #include <QWidget>
@@ -31,15 +30,16 @@ private:
 	void wheelEvent(QWheelEvent* event) Q_DECL_OVERRIDE;
 
 private:
-	cv::Point mapPos=cv::Point(1428, 2937);
-	double mapScale =1.0;
+	cv::Point render_map_pos=cv::Point(1428, 2937);
+	double render_map_scale =1.0;
 	const double deltaMapScale=0.1;
 	int Fps = 42;//ms
 	QTimer* mapMessageLoopTimer;
-	QImage mapImage;
-	cv::Mat mapMat;
-	cv::Mat mapMaskMat;
-	
+	QImage render_map_image;
+	cv::Mat gi_map;
+	cv::Mat render_map_mask;
+	bool is_need_rerender = false;
+
 // UI÷ÿªÊ
 private:
 	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;

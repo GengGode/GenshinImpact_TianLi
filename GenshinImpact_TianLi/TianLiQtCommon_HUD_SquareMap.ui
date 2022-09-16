@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>TianLiQtCommon_HUD_SquareMap</string>
   </property>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="label_Render">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -24,16 +24,6 @@
    </property>
    <property name="text">
     <string/>
-   </property>
-  </widget>
-  <widget class="QWidget" name="widget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>300</width>
-     <height>300</height>
-    </rect>
    </property>
   </widget>
  </widget>

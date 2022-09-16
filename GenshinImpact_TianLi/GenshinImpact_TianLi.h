@@ -114,6 +114,12 @@ private slots:
 	void ui_updataTypeButtonList();
     void ui_updataItemButtonList();
     void ui_updataItemsButtonList();
+private:
+	QWidget* main_bebind_widget=nullptr;
+private slots:
+
+    void slot_show();
+    void slot_hide();
 	
 // UI 的间接操作函数，方便成组处理
 private:

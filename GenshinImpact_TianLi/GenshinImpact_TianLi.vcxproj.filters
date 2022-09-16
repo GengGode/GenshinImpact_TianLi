@@ -133,6 +133,9 @@
     <ClCompile Include="TianLiQtCommon_HUD_AzimuthBarWindow.cpp">
       <Filter>Source Files\TianLiQtCommon\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="TianLiQtCommon_HUD_CircularMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="GenshinImpact_TianLi_zh.ts">
@@ -170,6 +173,9 @@
     <QtMoc Include="TianLiQtCommon_Logger.h">
       <Filter>Header Files\TianLiQtCommon\Logger</Filter>
     </QtMoc>
+    <QtMoc Include="TianLiQtCommon_HUD_CircularMap.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="TianLiQtCommon_CardRect.ui">
@@ -202,6 +208,9 @@
     <QtUic Include="TianLiQtCommon_HUD_AzimuthBarWindow.ui">
       <Filter>Form Files\TianLiQtCommon\HUD</Filter>
     </QtUic>
+    <QtUic Include="TianLiQtCommon_HUD_CircularMap.ui">
+      <Filter>Form Files\TianLiQtCommon\HUD</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -211,6 +220,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\GenshinImpact_TianLi_Resource\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsAttribute.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

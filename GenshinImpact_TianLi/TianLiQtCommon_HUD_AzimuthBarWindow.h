@@ -52,11 +52,14 @@ public:
 	QTimer* timer=nullptr;
 	std::map<int, AzimuthObject> object_map;
 	bool is_visible = false;	// ÊÇ·ñ¿É¼û
+	bool is_need_rerender = false;
 public slots:
 	void slot_update();
+	void slot_show();
+	void slot_hide();
 public:
 	void slot_update_avatar_rotate(double avatar_rotate);
-	void slot_update_move(RECT gi_client_rect);
+	void slot_update_move(RECT& gi_client_rect);
 signals:
 	void signal_close_finished();
 };

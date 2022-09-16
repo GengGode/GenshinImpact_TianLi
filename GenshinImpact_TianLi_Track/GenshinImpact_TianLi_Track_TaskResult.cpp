@@ -166,16 +166,20 @@ std::map<std::string, bool> GenshinImpact_TianLi_Track_TaskResult::check_wait()
 TianLi::Track::TrackResult GenshinImpact_TianLi_Track_TaskResult::get_result()
 {
 	//=========================================================================
-	result.screen          = task_screen->get_output().img_screen;
 	result.client_rect.left = task_screen->get_output().rect_client.x;
 	result.client_rect.top = task_screen->get_output().rect_client.y;
 	result.client_rect.right = task_screen->get_output().rect_client.x + task_screen->get_output().rect_client.width;
 	result.client_rect.bottom = task_screen->get_output().rect_client.y + task_screen->get_output().rect_client.height;
 	//result.position        = task_get_avatar_direction->get_output();
-	result.position = task_get_avatar_position->get_output().position;
+	result.position_x = task_get_avatar_position->get_output().position.x;
+	result.position_y = task_get_avatar_position->get_output().position.y;
 	result.is_find_paimon  = task_is_find_paimon->get_output().is_visial;
 	result.avatar_angle    = task_get_avatar_direction->get_output().angle;
-	
+	result.minimap_rect.left = task_splite_minimap->get_output().rect_minimap.x + task_screen->get_output().rect_client.x;
+	result.minimap_rect.top = task_splite_minimap->get_output().rect_minimap.y + task_screen->get_output().rect_client.y;
+	result.minimap_rect.right = result.minimap_rect.left + task_splite_minimap->get_output().rect_minimap.width;
+	result.minimap_rect.bottom = result.minimap_rect.top + task_splite_minimap->get_output().rect_minimap.height;
+
 	result.viewer_angle = task_get_viewer_direction->get_output().angle;
 
 	result.uid = task_get_uid->get_output().uid;

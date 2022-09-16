@@ -29,7 +29,7 @@ void GenshinImpact_TianLi_Track::StopServer()
 	track_manage->Stop();
 }
 
-TianLi::Track::TrackResult& GenshinImpact_TianLi_Track::GetResult2()
+TianLi::Track::TrackResult& GenshinImpact_TianLi_Track::GetResult()
 {
 	return track_manage->GetResult();
 }

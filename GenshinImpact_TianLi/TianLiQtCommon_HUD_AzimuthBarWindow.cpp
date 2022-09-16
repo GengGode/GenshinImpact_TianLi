@@ -6,6 +6,9 @@
 #include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
 
+
+
+
 TianLiQtCommon_HUD_AzimuthBarWindow::TianLiQtCommon_HUD_AzimuthBarWindow(QWidget *parent)
 	: QWidget(parent)
 {
@@ -16,7 +19,9 @@ TianLiQtCommon_HUD_AzimuthBarWindow::TianLiQtCommon_HUD_AzimuthBarWindow(QWidget
 	
 	SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) |
 		WS_EX_TRANSPARENT | WS_EX_LAYERED );
-
+	
+	//SetWindowBlurBehind(HWND(winId()));
+	
 	this->setMaximumSize(680, 138);
 	this->setMinimumSize(680, 138);
 	
@@ -46,7 +51,8 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	
 	
 	const QRect avatar_arrow_rect(316, 90, 48, 48);
-
+	const int x = width();
+	const int y = height();
 	const int main_r = 16;
 	const int main_2r = 32;
 	const int min_r = 2;
@@ -60,8 +66,37 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	
 
 	QPainter painter(this);
-	painter.setRenderHint(QPainter::Antialiasing);
 
+	//painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+	//painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+	//// 底层椭圆渐变阴影
+	//QRadialGradient radial_gradient(x, 0, 50);
+	//radial_gradient.setColorAt(0, QColor(0, 0, 0, 0));
+	//radial_gradient.setColorAt(1, QColor(200,200, 200, 255));
+	//painter.setBrush(radial_gradient);
+	//painter.setPen(Qt::NoPen);
+	//painter.drawEllipse(QPointF(x/2, 0),100, 100);
+	
+	//	// 反走样 
+	//painter.setRenderHint(QPainter::Antialiasing, true);
+	//// 设置渐变色 qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.5 rgba(0, 0, 0, 166), stop:1 rgba(255, 255, 255, 255))
+	//QRadialGradient radial(QPointF(x/2, 0),x/2,QPointF(x/2,0));
+	//radial.setColorAt( 0, QColor(0, 0, 0, 128));
+	//radial.setColorAt(1, QColor(0, 0, 0, 0));
+
+	//// 设置显示模式
+	////radial.setSpread(QGradient::PadSpread);
+
+	//// 设置画笔颜色、宽度
+	//painter.setPen(Qt::NoPen);
+	//// 设置画刷填充
+	//painter.setBrush(radial);
+	//// 绘制椭圆
+	//painter.drawRect(QRect(0, y-x, x, x));
+	//
+	
+	painter.setRenderHint(QPainter::Antialiasing);
 
 	// 基础线条和箭头
 	painter.drawImage(0, 37, base_line);
@@ -149,36 +184,35 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	//}
 
 
-	// 北方小圆
+	// 基础自身朝向小圆
 	paint.setPen(Qt::NoPen);//设置画笔形式 
 	paint.setBrush(Qt::white);//设置画刷形式 
 	QRectF R_C_baseN(x_c - min_r, avatar_arrow_rect.y()+2, min_2r, min_2r);
 	paint.drawEllipse(R_C_baseN);
 
-	// 基础自身朝向小圆
-	double x, y;
-	paint.setPen(Qt::NoPen);//设置画笔形式 
-	paint.setBrush(QColor(57, 255, 255));//设置画刷形式 
-	x = sin(avatar_rotate_rad) * 20;
-	y = cos(avatar_rotate_rad) * 20;
-	QRectF R_C_Avatar(x_c - x - min_r, y_c - y - min_r, min_2r, min_2r);
-	paint.drawEllipse(R_C_Avatar);
+	// 北方小圆
+	//double x, y;
+	//paint.setPen(Qt::NoPen);//设置画笔形式 
+	//paint.setBrush(QColor(57, 255, 255));//设置画刷形式 
+	//x = sin(avatar_rotate_rad) * 20;
+	//y = cos(avatar_rotate_rad) * 20;
+	//QRectF R_C_Avatar(x_c - x - min_r, y_c - y - min_r, min_2r, min_2r);
+	//paint.drawEllipse(R_C_Avatar);
 
 	//QPainterPath AvatarArrow;
 
 	// 目标箭头
 	double x_a, y_a;
 	double x_b, y_b;
-	x_a = sin(avatar_rotate_rad) * 12;
-	y_a = cos(avatar_rotate_rad) * 12;
-	x_b = sin((avatar_rotate_deg + 90) / 180 * 3.14) * 4;
-	y_b = cos((avatar_rotate_deg + 90) / 180 * 3.14) * 4;
+	x_a = sin(-avatar_rotate_rad) * 12;
+	y_a = cos(-avatar_rotate_rad) * 12;
+	x_b = sin((-avatar_rotate_deg + 90) / 180 * 3.14) * 4;
+	y_b = cos((-avatar_rotate_deg + 90) / 180 * 3.14) * 4;
 
 	QVector<QPointF> AvatarArrowPoints;
 	AvatarArrowPoints.append(QPointF(x_c + x_b, y_c + y_b));
 	AvatarArrowPoints.append(QPointF(x_c + x_a, y_c + y_a));
 	AvatarArrowPoints.append(QPointF(x_c - x_b, y_c - y_b));
-	AvatarArrowPoints.append(QPointF(x_c - x_a, y_c - y_a));
 
 	paint.setPen(Qt::NoPen);
 	paint.setBrush(Qt::transparent);
@@ -186,6 +220,15 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	paint.drawPolygon(AvatarArrowPoints);
 	paint.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
+	QVector<QPointF> NorthArrowPoints;
+	NorthArrowPoints.append(QPointF(x_c + x_b, y_c + y_b));
+	NorthArrowPoints.append(QPointF(x_c - x_b, y_c - y_b));
+	NorthArrowPoints.append(QPointF(x_c - x_a, y_c - y_a));
+
+	paint.setPen(Qt::NoPen);
+	paint.setBrush(QColor(42, 255, 217));
+	paint.drawPolygon(NorthArrowPoints);
+	paint.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
 }
 
@@ -199,12 +242,12 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update()
 {
 	//avatar_rotate_deg_atom = -avatar_rotate_deg;
 	//TrackResult traack_res = Core.GetTrack().GetResult();
-	auto  traack_res = Core.GetTrack().GetResult2();
-	if (traack_res.is_find_paimon)
+	auto  track_res = Core.GetTrack().GetResult();
+	if (track_res.is_find_paimon)
 	{
 		this->show();
-		avatar_rotate_deg_atom = traack_res.viewer_angle;
-		slot_update_move(traack_res.client_rect);
+		avatar_rotate_deg_atom = track_res.viewer_angle;
+		slot_update_move(track_res.client_rect);
 		update();
 	}
 	else
@@ -217,13 +260,27 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update()
 	//update();
 }
 
+void TianLiQtCommon_HUD_AzimuthBarWindow::slot_show()
+{
+	is_visible = true;
+	this->show();
+	timer->start();
+}
+
+void TianLiQtCommon_HUD_AzimuthBarWindow::slot_hide()
+{
+	is_visible = false;
+	this->hide();
+	timer->stop();
+}
+
 void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_avatar_rotate(double avatar_rotate)
 {
 	avatar_rotate_deg_atom = avatar_rotate;
 	update();
 }
 
-void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_move(RECT gi_client_rect)
+void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_move(RECT& gi_client_rect)
 {
 	static RECT gi_client_rect_old;
 	if (gi_client_rect_old.left != gi_client_rect.left || gi_client_rect_old.top != gi_client_rect.top

@@ -92,29 +92,6 @@ public:
 	}
 };
 
-namespace TianLi::Track
-{
-	struct TrackResult
-	{
-		cv::Mat screen;
-		cv::Point2d position;
-		bool is_find_paimon = false;
-		double avatar_angle = 0.0;
-		double viewer_angle = 0.0;
-		RECT client_rect;
-		cv::Rect paimon_rect;
-		int uid = 0;
-		std::chrono::milliseconds last_runtime_ms;
-	};
-	struct TrackConfig
-	{
-
-		bool is_auto_find_genshin = true;
-		HWND genshin_handle = nullptr;
-		ScreenType screen_type = Bitblt;
-		std::map<std::string, std::pair<std::string, std::any>> extran;
-	};
-}
 struct TrackInputTemplate
 {
 	cv::Mat gi_map;
@@ -230,7 +207,7 @@ public:
 	TianLi::Track::TrackResult& GetResult()
 	{
 		std::lock_guard<std::mutex> lk(*result_m);
-		tasks_result.last_runtime_ms = last_runtime_ms;
+		tasks_result.last_runtime_ms =static_cast<int>( last_runtime_ms.count());
 		return tasks_result;
 	}
 	void SetConfig(TianLi::Track::TrackConfig& config)
@@ -245,8 +222,6 @@ private:
 		{
 			if (!is_run)
 			{
-				log("wait ...");
-
 				// is_run Îª false Ê±£¬×èÈûcvµÈ´ý1s
 				std::unique_lock<std::mutex> lk(*is_run_m);
 				is_run_cv->wait_for(lk, std::chrono::seconds(1), [this] { return is_run; });
@@ -268,11 +243,7 @@ private:
 				
 				std::unique_lock<std::mutex> lk(*is_run_m);
 				is_run_cv->wait_for(lk, track_tick_time_ms - last_runtime_ms, [this] { return false; });
-				log(std::string("wait ")
-					+ std::to_string((track_tick_time_ms - last_runtime_ms).count())
-					+ "ms");
 			}
-
 		}
 	}
 	bool check_wait_any()

@@ -22,9 +22,13 @@ public:
 */
 #include <QObject>
 #include <opencv2/opencv.hpp>
+#include <Windows.h>
 
 namespace TianLi::Utils 
 {
+	
+	void set_window_blur_bebind(HWND handle);
+	
 	// 九宫格扩展图片算法
 	 QImage border_image(QImage image, int w, int h, int clip_top, int clip_right, int clip_bottom, int clip_left);
 	/// <summary>
@@ -36,5 +40,9 @@ namespace TianLi::Utils
 	/// <param name="view_map_scale">输入地图缩放</param>
 	/// <returns></returns>
 	cv::Mat get_view_map(cv::Mat& GIMAP, cv::Size view_map_size, cv::Point2d view_map_center, double view_map_scale);
+	
+	cv::Mat create_square_mask(int mask_width, int mask_height, double gradient_width);
+	
+	cv::Mat create_circular_mask(int mask_width, int mask_height, double gradient_width);
 }
 

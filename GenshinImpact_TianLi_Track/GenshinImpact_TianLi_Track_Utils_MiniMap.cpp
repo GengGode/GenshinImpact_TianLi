@@ -12,9 +12,9 @@ SurfMatch::~SurfMatch()
 {
 }
 
-void SurfMatch::setMap(cv::Mat mapMat)
+void SurfMatch::setMap(cv::Mat gi_map)
 {
-	_mapMat = mapMat;
+	_mapMat = gi_map;
 }
 
 void SurfMatch::setMinMap(cv::Mat minMapMat)
@@ -188,7 +188,7 @@ cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_fai
 	double sumx = 0;
 	double sumy = 0;
 
-	calc_good_matches(someMap, Kp_SomeMap, img_object, Kp_MinMap, KNN_mTmp, ratio_thresh, mapScale, lisx, lisy, sumx, sumy);
+	calc_good_matches(someMap, Kp_SomeMap, img_object, Kp_MinMap, KNN_mTmp, ratio_thresh, render_map_scale, lisx, lisy, sumx, sumy);
 
 	// 如果范围内最佳匹配特征点对数量大于4，则认为不可能处于城镇之中，位于城镇之外
 	if (std::min(lisx.size(), lisy.size()) > 4)
@@ -285,7 +285,7 @@ cv::Point2d SurfMatch::match_no_continuity(bool& calc_is_faile)
 	double sumx = 0;
 	double sumy = 0;
 
-	calc_good_matches(img_scene, Kp_Map, img_object, Kp_MinMap, KNN_m, ratio_thresh, mapScale, lisx, lisy, sumx, sumy);
+	calc_good_matches(img_scene, Kp_Map, img_object, Kp_MinMap, KNN_m, ratio_thresh, render_map_scale, lisx, lisy, sumx, sumy);
 
 	if (std::min(lisx.size(), lisy.size()) == 0)
 	{
@@ -299,7 +299,7 @@ cv::Point2d SurfMatch::match_no_continuity(bool& calc_is_faile)
 }
 
 
-void calc_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double mapScale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
+void calc_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double render_map_scale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
 {
 #ifdef _DEBUG
 	std::vector<cv::DMatch> good_matches;
@@ -315,8 +315,8 @@ void calc_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_sc
 			{
 				continue;
 			}
-			lisx.push_back(((img_object.cols / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.x) * mapScale + keypoint_scene[KNN_m[i][0].trainIdx].pt.x));
-			lisy.push_back(((img_object.rows / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.y) * mapScale + keypoint_scene[KNN_m[i][0].trainIdx].pt.y));
+			lisx.push_back(((img_object.cols / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.x) * render_map_scale + keypoint_scene[KNN_m[i][0].trainIdx].pt.x));
+			lisy.push_back(((img_object.rows / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.y) * render_map_scale + keypoint_scene[KNN_m[i][0].trainIdx].pt.y));
 			sumx += lisx.back();
 			sumy += lisy.back();
 		}
