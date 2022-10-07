@@ -9,6 +9,8 @@
 - 方位条导航
 ![image](https://user-images.githubusercontent.com/47711102/194593924-21ff527f-4f99-4f7e-92c5-a6b76a51922f.png)
 ![image](https://user-images.githubusercontent.com/47711102/194593957-98efb7b4-b6f9-4db7-aef4-d1d64ab88eca.png)
+![image](https://user-images.githubusercontent.com/47711102/194597798-5a0d9bf8-ef00-44ce-827a-ea3304c1abcf.png)
+
 - 悬浮窗
 ![image](https://user-images.githubusercontent.com/47711102/194597200-21cbddc3-58e8-4984-874c-35ebe1661f4e.png)
 - 覆盖地图
