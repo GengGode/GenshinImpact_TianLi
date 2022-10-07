@@ -114,7 +114,7 @@ border-radius:5px;
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="label_Satellite_Orbit">
    <property name="geometry">
     <rect>
      <x>458</x>
@@ -130,7 +130,7 @@ border-radius:5px;
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_4">
+  <widget class="QLabel" name="label_Star">
    <property name="geometry">
     <rect>
      <x>370</x>
@@ -146,7 +146,7 @@ border-radius:5px;
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
+  <widget class="QLabel" name="label_Title">
    <property name="geometry">
     <rect>
      <x>395</x>
@@ -204,7 +204,7 @@ border-radius:5px;
     <string notr="true"/>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QPushButton" name="pushButton_FastInstall">
@@ -426,7 +426,7 @@ font-size:16px;</string>
       <string>原神天理系统 安装向导</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_Tag">
+    <widget class="QLabel" name="label_Tag_Down">
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -474,6 +474,22 @@ font-size:12px;</string>
       <enum>Qt::MarkdownText</enum>
      </property>
     </widget>
+    <widget class="QLabel" name="label_Tag_Up">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>0</y>
+       <width>16</width>
+       <height>2</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(219, 219, 219);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
     <zorder>label_CustomizeInstall_Icon</zorder>
     <zorder>label_FastInsall_Icon</zorder>
     <zorder>label_FastInstall</zorder>
@@ -481,10 +497,11 @@ font-size:12px;</string>
     <zorder>label_CustomizeInstall</zorder>
     <zorder>label_CustomizeInstall_Documentation</zorder>
     <zorder>label_Wizard_0</zorder>
-    <zorder>label_Tag</zorder>
+    <zorder>label_Tag_Down</zorder>
     <zorder>label_Readme</zorder>
     <zorder>pushButton_FastInstall</zorder>
     <zorder>pushButton_CustomizeInstall</zorder>
+    <zorder>label_Tag_Up</zorder>
    </widget>
    <widget class="QWidget" name="page_2">
     <widget class="QLabel" name="label_Wizard_1">
@@ -713,6 +730,7 @@ border-radius: 4px;</string>
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="page_4"/>
   </widget>
   <widget class="QLabel" name="label_MainShadow">
    <property name="geometry">
@@ -734,33 +752,16 @@ border-radius:5px;
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_10">
-   <property name="geometry">
-    <rect>
-     <x>396</x>
-     <y>100</y>
-     <width>16</width>
-     <height>2</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:rgb(219, 219, 219);</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <zorder>label_MainShadow</zorder>
   <zorder>label_MainShadow_A</zorder>
   <zorder>label_MainShadow_B</zorder>
-  <zorder>label_3</zorder>
+  <zorder>label_Satellite_Orbit</zorder>
   <zorder>pushButton_UI_Close</zorder>
   <zorder>pushButton_UI_Mini</zorder>
-  <zorder>label_4</zorder>
-  <zorder>label_5</zorder>
+  <zorder>label_Star</zorder>
+  <zorder>label_Title</zorder>
   <zorder>stackedWidget</zorder>
   <zorder>label_MainImage</zorder>
-  <zorder>label_10</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

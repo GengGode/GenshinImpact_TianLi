@@ -331,7 +331,7 @@ bool GenshinImpact_TianLi_Resource::HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat)
 	BITMAP bmp;
 	GetObject(_hBmp, sizeof(BITMAP), &bmp);
 	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
-	int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
+	//int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
 	//mat操作
 	cv::Mat v_mat;
 	v_mat.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
@@ -352,7 +352,7 @@ bool GenshinImpact_TianLi_Resource::HBitmap2MatAlpha(HBITMAP& _hBmp, cv::Mat& _m
 	BITMAP bmp;
 	GetObject(_hBmp, sizeof(BITMAP), &bmp);
 	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
-	int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
+	//int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
 	//mat操作
 	cv::Mat v_mat;
 	v_mat.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));

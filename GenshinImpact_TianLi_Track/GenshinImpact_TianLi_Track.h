@@ -36,8 +36,37 @@ namespace TianLi::Track
 		Bitblt,
 		DirectX,
 	};
+	struct TrackResultStarPosition
+	{
+		double x;
+		double y;
+	};
+	template<typename T>
+	struct Array
+	{
+		T* data;
+		int size;
+		
+		Array()
+		{
+			data = nullptr;
+			size = 0;
+		}
+		~Array()
+		{
+			delete data;
+		}
+		
+	};
+	struct TrackResultStar
+	{
+		bool is_exist;
+		int count;
+		Array<TrackResultStarPosition> position;
+	};
 	struct TrackResult
 	{
+		
 		double position_x;
 		double position_y;
 
@@ -67,6 +96,7 @@ public:
 public:
 	void StartServer();
 	void StopServer();
+	bool ServerState();
 	TianLi::Track::TrackResult& GetResult();
 	void SetConfig(TianLi::Track::TrackConfig &config);
 };

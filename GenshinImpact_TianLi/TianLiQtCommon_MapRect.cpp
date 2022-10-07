@@ -20,9 +20,8 @@ TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget* parent)
 	ui.setupUi(this);
 
 	ui.label_Render->setVisible(false);
-	{
-		LogTraceFunction;
-		cv::cvtColor(Core.GetResource().GiMap(), gi_map, cv::COLOR_RGBA2RGB);
+	{		
+		gi_map = Core.GetResource().GiMap();
 	}
 	//创建刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
@@ -70,7 +69,6 @@ void TianLiQtCommon_MapRect::mouseDoubleClickEvent(QMouseEvent* event)
 			LogInfo("double click down");
 			is_double_click_old = true;
 			Core.GetTrack().StartServer();
-			
 		}
 		//leftBtnClk = false;
 		//render_map_scale += deltaMapScale;
@@ -134,7 +132,7 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 
 		std::vector<cv::Mat> mv;
 		cv::split(mapMatRect, mv);
-		mv.push_back(render_map_mask);
+		mv[3] = render_map_mask;
 		cv::merge(mv, mapMatRect);
 
 		render_map_image = QImage((uchar*)(mapMatRect.data), mapMatRect.cols, mapMatRect.rows, mapMatRect.cols * (mapMatRect.channels()), QImage::Format_ARGB32);

@@ -21,8 +21,7 @@ TianLiQtCommon_HUD_CircularMap::TianLiQtCommon_HUD_CircularMap(QWidget* parent)
 		WS_EX_TRANSPARENT | WS_EX_LAYERED);
 
 	{
-		LogTraceFunction;
-		cv::cvtColor(Core.GetResource().GiMap(), gi_map, cv::COLOR_RGBA2RGB);
+		gi_map = Core.GetResource().GiMap();
 	}
 
 	timer = new QTimer;
@@ -64,7 +63,7 @@ void TianLiQtCommon_HUD_CircularMap::paintEvent(QPaintEvent* event)
 
 		std::vector<cv::Mat> mv;
 		cv::split(mapMatRect, mv);
-		mv.push_back(render_map_mask);
+		mv[3] = render_map_mask;
 		cv::merge(mv, mapMatRect);
 
 		render_map_image = QImage((uchar*)(mapMatRect.data), mapMatRect.cols, mapMatRect.rows, mapMatRect.cols * (mapMatRect.channels()), QImage::Format_ARGB32);

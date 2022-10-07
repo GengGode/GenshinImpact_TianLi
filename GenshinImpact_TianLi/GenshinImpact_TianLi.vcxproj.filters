@@ -66,6 +66,21 @@
     <Filter Include="Resource Files\TianLiQtCommon\HUD">
       <UniqueIdentifier>{13a0bd49-b0ec-48b6-b835-a6dd5a6a2777}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\TianLiQtCommon\Hook">
+      <UniqueIdentifier>{71407dd4-1f4f-4519-be3a-02fa4c1072cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TianLiQtCommon\Utils">
+      <UniqueIdentifier>{84652d6c-88a3-4717-80d3-cab5b42d1a71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\TianLiQtCommon\Common">
+      <UniqueIdentifier>{35923016-9047-4484-a5f2-cf6614071383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TianLiQtCommon\Hook">
+      <UniqueIdentifier>{423c192a-6d3b-4dfa-a43d-54f5bddcc639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TianLiQtCommon\Utils">
+      <UniqueIdentifier>{2b3b69bd-e865-4475-8af5-ad1f786cc37b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GenshinImpact_TianLi.qrc">
@@ -80,20 +95,20 @@
     <ClCompile Include="GenshinImpact_TianLi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <QtRcc Include="TianLiQtCommon_MapRect.qrc">
-      <Filter>Resource Files\TianLiQtCommon</Filter>
-    </QtRcc>
-    <QtRcc Include="TianLiQtCommon_NearbyItemButton.qrc">
-      <Filter>Resource Files\TianLiQtCommon</Filter>
-    </QtRcc>
-    <QtRcc Include="TianLiQtCommon_PickedItemButton.qrc">
-      <Filter>Resource Files\TianLiQtCommon</Filter>
-    </QtRcc>
-    <QtRcc Include="TianLiQtCommon_SelectItemButton.qrc">
-      <Filter>Resource Files\TianLiQtCommon</Filter>
-    </QtRcc>
     <QtRcc Include="TianLiQtCommon_HUD_AzimuthBarWindow.qrc">
       <Filter>Resource Files\TianLiQtCommon\HUD</Filter>
+    </QtRcc>
+    <QtRcc Include="TianLiQtCommon_MapRect.qrc">
+      <Filter>Resource Files\TianLiQtCommon\Common</Filter>
+    </QtRcc>
+    <QtRcc Include="TianLiQtCommon_NearbyItemButton.qrc">
+      <Filter>Resource Files\TianLiQtCommon\Common</Filter>
+    </QtRcc>
+    <QtRcc Include="TianLiQtCommon_PickedItemButton.qrc">
+      <Filter>Resource Files\TianLiQtCommon\Common</Filter>
+    </QtRcc>
+    <QtRcc Include="TianLiQtCommon_SelectItemButton.qrc">
+      <Filter>Resource Files\TianLiQtCommon\Common</Filter>
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
@@ -127,20 +142,20 @@
     <ClCompile Include="TianLiQtCommon_SelectedItemButton.cpp">
       <Filter>Source Files\TianLiQtCommon\Common</Filter>
     </ClCompile>
-    <ClCompile Include="TianLiQtCommon_Utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TianLiQtCommon_HUD_AzimuthBarWindow.cpp">
       <Filter>Source Files\TianLiQtCommon\HUD</Filter>
     </ClCompile>
-    <ClCompile Include="TianLiQtCommon_HUD_CircularMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TianLiQtCommon_HookKeyBoard.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\TianLiQtCommon\Hook</Filter>
     </ClCompile>
     <ClCompile Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\TianLiQtCommon\Hook</Filter>
+    </ClCompile>
+    <ClCompile Include="TianLiQtCommon_Utils.cpp">
+      <Filter>Source Files\TianLiQtCommon\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TianLiQtCommon_HUD_CircularMap.cpp">
+      <Filter>Source Files\TianLiQtCommon\HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +198,7 @@
       <Filter>Header Files\TianLiQtCommon\HUD</Filter>
     </QtMoc>
     <QtMoc Include="TianLiQtCommon_HookKeyBoard.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\TianLiQtCommon\Hook</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -225,14 +240,14 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.h">
+      <Filter>Header Files\TianLiQtCommon\Hook</Filter>
+    </ClInclude>
     <ClInclude Include="TianLiQtCommon_Utils.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\TianLiQtCommon\Utils</Filter>
     </ClInclude>
     <ClInclude Include="WindowsAttribute.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\TianLiQtCommon\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -253,7 +268,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TianLiQtCommon_ScrollCardRect.qss">
-      <Filter>Resource Files\TianLiQtCommon</Filter>
+      <Filter>Resource Files\TianLiQtCommon\Common</Filter>
     </None>
   </ItemGroup>
 </Project>

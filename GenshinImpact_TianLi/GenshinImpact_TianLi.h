@@ -9,6 +9,10 @@ class TianLiQtCommon_CardRect;
 class TianLiQtCommon_ScrollCardRect;
 class TianLiQtCommon_MapRect;
 class TianLiQtCommon_HookKeyBoard;
+class TianLiQtCommon_HUD_SquareMap;
+class TianLiQtCommon_HUD_CircularMap;
+class TianLiQtCommon_HUD_AzimuthBarWindow;
+
 class GenshinImpact_TianLi_Core;
 class GenshinImpact_TianLi : public QMainWindow
 {
@@ -117,10 +121,14 @@ private slots:
     void ui_updataItemsButtonList();
 private:
 	QWidget* main_bebind_widget=nullptr;
-	bool is_show = false;
+	bool is_visible = false;
 private slots:
     void slot_show_or_hide();
-	
+    void slot_auto_track();
+private:
+	TianLiQtCommon_HUD_SquareMap* hud_square_map = nullptr;
+	TianLiQtCommon_HUD_CircularMap* hud_circular_map = nullptr;
+	TianLiQtCommon_HUD_AzimuthBarWindow* hud_azimuth_bar_window = nullptr;
 private:
     void slot_show();
     void slot_hide();

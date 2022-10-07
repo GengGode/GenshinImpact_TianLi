@@ -204,6 +204,10 @@ public:
 	{
 		is_run = false;
 	}
+	bool GetIsRun()
+	{
+		return is_run;
+	}
 	TianLi::Track::TrackResult& GetResult()
 	{
 		std::lock_guard<std::mutex> lk(*result_m);

@@ -22,6 +22,7 @@ private:
     QGraphicsDropShadowEffect* mainShadow;
     QPropertyAnimation* mainShadowAnimation;
     QPropertyAnimation* exitAnimation;
+    QPropertyAnimation* exitAnimation_hide;
 private:
     QPoint m_Press;
     QPoint m_Move;

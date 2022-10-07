@@ -29,6 +29,11 @@ void GenshinImpact_TianLi_Track::StopServer()
 	track_manage->Stop();
 }
 
+bool GenshinImpact_TianLi_Track::ServerState()
+{
+	return track_manage->GetIsRun();
+}
+
 TianLi::Track::TrackResult& GenshinImpact_TianLi_Track::GetResult()
 {
 	return track_manage->GetResult();

@@ -9,12 +9,12 @@ inline void get_genshin_handle(GenshinHandle& genshin_handle)
 {
 	if (genshin_handle.config.is_auto_find_genshin)
 	{
-		genshin_handle.handle = FindWindowA(NULL, "窗口位置调整");
+		//genshin_handle.handle = FindWindowA(NULL, "窗口位置调整");
 		
 		auto& giHandle = genshin_handle.handle;
 		LPCWSTR giWindowName = { L"原神" };
 		/* 对原神窗口的操作 */
-		genshin_handle.handle = FindWindowA("UnityWndClass", "原神");
+		giHandle = FindWindowA("UnityWndClass", "原神");
 		if (giHandle == NULL)
 		{
 			giWindowName = L"Genshin Impact";
@@ -166,10 +166,10 @@ inline void get_genshin_handle(GenshinHandle& genshin_handle)
 			UID_mayArea_width,
 			UID_mayArea_height);
 		genshin_handle.rect_uid_maybe = Area_UID_mayArea;
-		int UID_Rect_x = cvCeil(x - x * (1.0 - 0.875));
+		int UID_Rect_x = cvCeil(x - x * (1.0 - 0.865));
 		int UID_Rect_y = cvCeil(y - 1080.0 * (1.0 - 0.9755));
-		int UID_Rect_w = cvCeil(1920 * 0.0938);
-		int UID_Rect_h = cvCeil(UID_Rect_w * 0.11);
+		int UID_Rect_w = cvCeil(1920 * 0.11);
+		int UID_Rect_h = cvCeil(1920 * 0.0938 * 0.11);
 
 
 		genshin_handle.rect_uid=cv::Rect(UID_Rect_x, UID_Rect_y, UID_Rect_w, UID_Rect_h);

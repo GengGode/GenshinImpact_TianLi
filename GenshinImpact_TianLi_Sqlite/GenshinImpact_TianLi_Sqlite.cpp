@@ -409,6 +409,36 @@ int __stdcall GenshinImpact_TianLi_Sqlite::ReadItems(const char* country, const 
 	}
 	return 0;
 }
+static int callbackTyoeImage(void* data, int argc, char** argv, char** azColName);
+int GenshinImpact_TianLi_Sqlite::GetTypeImage(const char* name, unsigned char*& data, int& size)
+{
+	if (name == NULL)
+	{
+		return -1;
+	}
+	char* errmsg = NULL;
+	// SELECT data FROM type_images WHERE name = '$0' limit 1
+	std::string sql = " SELECT data FROM type_images WHERE name = '";
+	sql += name;
+	sql += "' limit 1";
+	// TODO：此处 sqlite3_stmt 需要 delete
+	sqlite3_stmt* stmt;
+	sqlite3_prepare_v2(&impl->instance(), sql.c_str(), -1, &stmt, NULL);
+	int rc = sqlite3_step(stmt);
+	if (rc == SQLITE_ROW)
+	{
+		int len = sqlite3_column_bytes(stmt, 0);
+		// TODO：此处内存泄漏
+		data = (unsigned char*)sqlite3_column_blob(stmt, 0);
+		size = len;
+	}
+	return 0;
+}
+
+int GenshinImpact_TianLi_Sqlite::GetItemImage(const char* name, unsigned char*& data, int& size)
+{
+	return 0;
+}
 static int callback(void* data, int argc, char** argv, char** azColName) 
 {
 	TextVector& text = *(TextVector*)data;
@@ -451,6 +481,11 @@ static int callbackItems(void* data, int argc, char** argv, char** azColName)
 			argv[4]//msg
 		);
 	}
+	return 0;
+}
+
+int callbackTyoeImage(void* data, int argc, char** argv, char** azColName)
+{
 	return 0;
 }
 

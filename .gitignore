@@ -370,3 +370,6 @@ FodyWeavers.xsd
 /GenshinImpact_TianLi_Resource/resource/
 /GenshinImpact_TianLi/resource
 /Build_TianLi_Resource_GIMAP_KEYPOINT/resource
+/Build_TianLi_Resource_KongYingJiuGuanData/resource
+/Build_TianLi_Resource_KongYingJiuGuanData/download
+/Build_TianLi_Resource_KongYingJiuGuanData/test.db

@@ -79,7 +79,7 @@ extern "C"
 		int OpenSqlite(const char* dbPath);
 		int OpenSqlite(unsigned char *dbData,int size);
 		int CloseSqlite();
-
+	
 		// 读取国家地区
 		int ReadCountry(TextVector& text);
 		// 读取该国家地区下的所有类型
@@ -89,6 +89,13 @@ extern "C"
 		// 读取该国家地区类型物品种类下的所有物品
 		int ReadItems(const char* country, const char* type, const char* item, TextVector& text);
 		int ReadItems(const char* country, const char* type, const char* item, ItemsVector& items);
+
+		//===== 获取图片data相关
+	public:
+		// 根据名称获取类型对应图像数据
+		int GetTypeImage(const char* name, unsigned char*& data, int& size);
+		// 根据名称获取物品对应图像数据
+		int GetItemImage(const char* name, unsigned char*& data, int& size);
 	
 	};
 
