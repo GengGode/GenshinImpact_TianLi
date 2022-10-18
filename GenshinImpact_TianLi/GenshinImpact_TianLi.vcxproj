@@ -131,6 +131,7 @@
     <ClCompile Include="TianLiQtCommon_PickedItemButton.cpp" />
     <ClCompile Include="TianLiQtCommon_ScrollCardRect.cpp" />
     <ClCompile Include="TianLiQtCommon_SelectedItemButton.cpp" />
+    <ClCompile Include="TianLiQtCommon_SwitchButton.cpp" />
     <ClCompile Include="TianLiQtCommon_TypeGroupButton.cpp" />
     <ClCompile Include="TianLiQtCommon_HUD_SquareMap.cpp" />
     <ClCompile Include="TianLiQtCommon_Utils.cpp" />
@@ -153,6 +154,7 @@
     <QtUic Include="TianLiQtCommon_PickedItemButton.ui" />
     <QtUic Include="TianLiQtCommon_ScrollCardRect.ui" />
     <QtUic Include="TianLiQtCommon_SelectedItemButton.ui" />
+    <QtUic Include="TianLiQtCommon_SwitchButton.ui" />
     <QtUic Include="TianLiQtCommon_TypeGroupButton.ui" />
     <QtUic Include="TianLiQtCommon_HUD_SquareMap.ui" />
   </ItemGroup>
@@ -181,6 +183,7 @@
     <ClInclude Include="resource.h" />
     <QtMoc Include="TianLiQtCommon_HookKeyBoard.h" />
     <ClInclude Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.h" />
+    <QtMoc Include="TianLiQtCommon_SwitchButton.h" />
     <ClInclude Include="WindowsAttribute.h" />
     <QtMoc Include="TianLiQtCommon_HUD_AzimuthBarWindow.h" />
     <QtMoc Include="TianLiQtCommon_Logger.h" />

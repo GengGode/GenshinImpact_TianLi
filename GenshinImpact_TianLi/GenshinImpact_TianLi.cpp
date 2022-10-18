@@ -9,6 +9,7 @@
 #include "TianLiQtCommon_PickedItemButton.h"
 #include "TianLiQtCommon_NearbyItemButton.h"
 #include "TianLiQtCommon_TypeGroupButton.h"
+#include "TianLiQtCommon_SwitchButton.h"
 
 #include "TianLiQtCommon_Logger.h"
 
@@ -342,6 +343,10 @@ void GenshinImpact_TianLi::addUI_MapTabMapRect()
 	PageTabMap_MapRect.append(new TianLiQtCommon_MapRect(this));
 	PageTabMap_MapRect[0]->setParent(ui.widget_MapTab_Right);
 	PageTabMap_MapRect[0]->setGeometry(10, 10, ui.widget_MapMask->width() - 20, ui.widget_MapMask->height() - 20);
+
+	PageTabMap_RightCard_Buttons.append(new TianLiQtCommon_SwitchButton(this,"定位"));
+	PageTabMap_RightCard_Buttons[0]->setParent(ui.widget_MapTab_Right);
+	PageTabMap_RightCard_Buttons[0]->move(30, PageTabMap_MapRect[0]->height() - 35);
 }
 
 void GenshinImpact_TianLi::addUI_HUDTabCardRects()

@@ -81,6 +81,9 @@
     <Filter Include="Source Files\TianLiQtCommon\Utils">
       <UniqueIdentifier>{2b3b69bd-e865-4475-8af5-ad1f786cc37b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\TianLiQtCommon\Common\SwitchButton">
+      <UniqueIdentifier>{7e660365-bafd-4670-9e0a-4b98a1c69270}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GenshinImpact_TianLi.qrc">
@@ -157,6 +160,9 @@
     <ClCompile Include="TianLiQtCommon_HUD_CircularMap.cpp">
       <Filter>Source Files\TianLiQtCommon\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="TianLiQtCommon_SwitchButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="GenshinImpact_TianLi_zh.ts">
@@ -200,6 +206,9 @@
     <QtMoc Include="TianLiQtCommon_HookKeyBoard.h">
       <Filter>Header Files\TianLiQtCommon\Hook</Filter>
     </QtMoc>
+    <QtMoc Include="TianLiQtCommon_SwitchButton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="TianLiQtCommon_CardRect.ui">
@@ -234,6 +243,9 @@
     </QtUic>
     <QtUic Include="TianLiQtCommon_HUD_CircularMap.ui">
       <Filter>Form Files\TianLiQtCommon\HUD</Filter>
+    </QtUic>
+    <QtUic Include="TianLiQtCommon_SwitchButton.ui">
+      <Filter>Form Files\TianLiQtCommon\Common</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@
 class TianLiQtCommon_CardRect;
 class TianLiQtCommon_ScrollCardRect;
 class TianLiQtCommon_MapRect;
+class TianLiQtCommon_SwitchButton;
 class TianLiQtCommon_HookKeyBoard;
 class TianLiQtCommon_HUD_SquareMap;
 class TianLiQtCommon_HUD_CircularMap;
@@ -93,6 +94,8 @@ private:
 	// HUD页卡片区域
     QVector<TianLiQtCommon_CardRect*> PageTabHUD_CardRects;
 
+    // 按钮相关
+    QVector<QPushButton*> PageTabMap_RightCard_Buttons;
     void addUI_Tab_Map();
 	void addUI_Tab_HUD();
 	void addUI_Tab_3();
