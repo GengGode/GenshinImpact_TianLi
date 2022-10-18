@@ -39,7 +39,7 @@ namespace TianLi::Utils
 	/// <param name="view_map_center">输入视口中心坐标</param>
 	/// <param name="view_map_scale">输入地图缩放</param>
 	/// <returns></returns>
-	cv::Mat get_view_map(cv::Mat& GIMAP, cv::Size view_map_size, cv::Point2d view_map_center, double view_map_scale);
+	cv::Mat get_view_map(const cv::Mat& GIMAP, cv::Size view_map_size, cv::Point2d view_map_center, double view_map_scale);
 	
 	cv::Mat create_square_mask(int mask_width, int mask_height, double gradient_width);
 	
