@@ -36,7 +36,7 @@ private:
 	int Fps = 42;//ms
 	QTimer* mapMessageLoopTimer;
 	QImage render_map_image;
-	cv::Mat gi_map;
+	// cv::Mat gi_map;
 	cv::Mat render_map_mask;
 	bool is_need_rerender = false;
 
