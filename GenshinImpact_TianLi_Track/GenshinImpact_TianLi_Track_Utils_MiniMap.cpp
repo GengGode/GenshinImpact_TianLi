@@ -47,6 +47,8 @@ void SurfMatch::match()
 
 	isContinuity = false;
 
+	int someSizeR = 200;// (img_object.cols + img_object.rows) / 4;
+
 	//角色移动连续性判断
 	if (((dis(dp1) + dis(dp2)) < 2000) && (hisP[2].x > someSizeR && hisP[2].x < _mapMat.cols - someSizeR && hisP[2].y>someSizeR && hisP[2].y < _mapMat.rows - someSizeR))
 	{
@@ -103,6 +105,8 @@ cv::Point2d SurfMatch::match_continuity_on_city(bool& calc_continuity_is_faile)
 
 	cv::Mat img_scene(_mapMat);
 	cv::Mat img_object(_minMapMat(cv::Rect(30, 30, _minMapMat.cols - 60, _minMapMat.rows - 60)));
+	
+	int someSizeR = (img_object.cols + img_object.rows) / 4;
 
 	//在城镇中
 		/***********************/
@@ -164,6 +168,8 @@ cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_fai
 
 	cv::Mat img_scene(_mapMat);
 	cv::Mat img_object(_minMapMat(cv::Rect(30, 30, _minMapMat.cols - 60, _minMapMat.rows - 60)));
+	
+	int someSizeR = (img_object.cols + img_object.rows) / 4;
 
 	//不在城镇中时
 	cv::Mat someMap(img_scene(cv::Rect(static_cast<int>(hisP[2].x - someSizeR), static_cast<int>(hisP[2].y - someSizeR), someSizeR * 2, someSizeR * 2)));

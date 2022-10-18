@@ -628,7 +628,7 @@ class SurfMatch
 
 	double ratio_thresh = 0.66;
 	double render_map_scale = 1.3;//1.3;
-	int someSizeR = 106;
+	//int someSizeR = 106;
 	double MatchMatScale = 2.0;
 
 
