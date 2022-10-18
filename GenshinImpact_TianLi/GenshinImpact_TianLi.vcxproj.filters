@@ -84,6 +84,9 @@
     <Filter Include="Source Files\TianLiQtCommon\Common\SwitchButton">
       <UniqueIdentifier>{7e660365-bafd-4670-9e0a-4b98a1c69270}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\TianLiQtCommon\Listen">
+      <UniqueIdentifier>{c5c45c37-0997-4072-ba46-05941972e18d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GenshinImpact_TianLi.qrc">
@@ -161,6 +164,9 @@
       <Filter>Source Files\TianLiQtCommon\HUD</Filter>
     </ClCompile>
     <ClCompile Include="TianLiQtCommon_SwitchButton.cpp">
+      <Filter>Source Files\TianLiQtCommon\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="TianLiQtCommon_ListenKeyBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -207,6 +213,9 @@
       <Filter>Header Files\TianLiQtCommon\Hook</Filter>
     </QtMoc>
     <QtMoc Include="TianLiQtCommon_SwitchButton.h">
+      <Filter>Header Files\TianLiQtCommon\Common</Filter>
+    </QtMoc>
+    <QtMoc Include="TianLiQtCommon_ListenKeyBoard.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

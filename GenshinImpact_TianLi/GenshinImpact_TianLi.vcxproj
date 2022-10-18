@@ -125,6 +125,7 @@
     <ClCompile Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.cpp" />
     <ClCompile Include="TianLiQtCommon_HUD_AzimuthBarWindow.cpp" />
     <ClCompile Include="TianLiQtCommon_HUD_CircularMap.cpp" />
+    <ClCompile Include="TianLiQtCommon_ListenKeyBoard.cpp" />
     <ClCompile Include="TianLiQtCommon_Logger.cpp" />
     <ClCompile Include="TianLiQtCommon_MapRect.cpp" />
     <ClCompile Include="TianLiQtCommon_NearbyItemButton.cpp" />
@@ -184,6 +185,7 @@
     <QtMoc Include="TianLiQtCommon_HookKeyBoard.h" />
     <ClInclude Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.h" />
     <QtMoc Include="TianLiQtCommon_SwitchButton.h" />
+    <QtMoc Include="TianLiQtCommon_ListenKeyBoard.h" />
     <ClInclude Include="WindowsAttribute.h" />
     <QtMoc Include="TianLiQtCommon_HUD_AzimuthBarWindow.h" />
     <QtMoc Include="TianLiQtCommon_Logger.h" />

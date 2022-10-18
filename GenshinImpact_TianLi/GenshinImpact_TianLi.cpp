@@ -25,39 +25,12 @@
 #include <QMouseEvent>
 #include <QTimer>
 
-
+#include "TianLiQtCommon_ListenKeyBoard.h"
 
 #include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
 
 using namespace TianLi;
-//
-//LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
-//{
-//	PKBDLLHOOKSTRUCT p = (PKBDLLHOOKSTRUCT)lParam;
-//	if (nCode == HC_ACTION) {
-//		switch (wParam) {
-//		case WM_KEYDOWN: {
-//			fmt::print("WM_KEYDOWN: {}\n", p->vkCode);
-//		} break;
-//		case WM_SYSKEYDOWN: {
-//			fmt::print("WM_SYSKEYDOWN: {}\n", p->vkCode);
-//		} break;
-//		case WM_KEYUP: {
-//			fmt::print("WM_KEYUP: {}\n", p->vkCode);
-//		} break;
-//		case WM_SYSKEYUP: {
-//			fmt::print("WM_SYSKEYUP: {}\n", p->vkCode);
-//		} break;
-//		}
-//	}
-//#if 0
-//	return 1;
-//#else
-//	return CallNextHookEx(NULL, nCode, wParam, lParam);
-//#endif
-//}
-
 
 GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
     : QMainWindow(parent)
@@ -97,8 +70,9 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("Alt+T", this));
 	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_auto_track);
-
-	
+	// listen TianLiQtCommon_ListenKeyBoard
+	TianLiQtCommon_ListenKeyBoard* listen_key_board = new TianLiQtCommon_ListenKeyBoard(this);
+	listen_key_board->work();
 	//connect(this, &GenshinImpact_TianLi::show, this, &GenshinImpact_TianLi::slot_show);
 	//connect(this, &GenshinImpact_TianLi::hide, this, &GenshinImpact_TianLi::slot_hide);
 	
