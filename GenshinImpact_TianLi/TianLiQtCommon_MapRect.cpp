@@ -135,6 +135,9 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 		mv[3] = render_map_mask;
 		cv::merge(mv, mapMatRect);
 
+		// 地图中心绘制环形光标
+		cv::circle(mapMatRect, cv::Point(mapMatRect.cols / 2, mapMatRect.rows / 2), 5, cv::Scalar(0, 128, 255, 128), 1,cv::LINE_AA);
+
 		render_map_image = QImage((uchar*)(mapMatRect.data), mapMatRect.cols, mapMatRect.rows, mapMatRect.cols * (mapMatRect.channels()), QImage::Format_ARGB32);
 
 		//设置画面为地图
