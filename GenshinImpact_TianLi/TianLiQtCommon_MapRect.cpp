@@ -18,7 +18,7 @@ TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget* parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-
+		
 	ui.label_Render->setVisible(false);
 	{		
 		//gi_map = Core.GetResource().GiMap();
@@ -61,14 +61,15 @@ void TianLiQtCommon_MapRect::mouseDoubleClickEvent(QMouseEvent* event)
 		{
 			LogInfo("double click up");
 			is_double_click_old = false;
-			Core.GetTrack().StopServer();
-
+			//Core.GetTrack().StopServer();
+			emit signal_double_click(false);
 		}
 		else
 		{
 			LogInfo("double click down");
 			is_double_click_old = true;
-			Core.GetTrack().StartServer();
+			//Core.GetTrack().StartServer();
+			emit signal_double_click(true);
 		}
 		//leftBtnClk = false;
 		//render_map_scale += deltaMapScale;

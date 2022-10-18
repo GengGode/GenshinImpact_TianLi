@@ -28,7 +28,7 @@ private:
 	void mouseDoubleClickEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 	void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 	void wheelEvent(QWheelEvent* event) Q_DECL_OVERRIDE;
-
+	
 private:
 	cv::Point render_map_pos=cv::Point(1428, 2937);
 	double render_map_scale =1.0;
@@ -47,4 +47,7 @@ private:
 	
 public slots:
 	void slot_update();
+	
+signals:
+	void signal_double_click(bool is_checked);
 };
