@@ -39,6 +39,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Build_TianLi_Resource_GIMAP
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Build_TianLi_Resource_KongYingJiuGuanData", "Build_TianLi_Resource_KongYingJiuGuanData\Build_TianLi_Resource_KongYingJiuGuanData.vcxproj", "{CD321B7D-54F9-4890-9280-5BB8DE643570}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{29614384-E608-44DF-8C12-39C93EFE2D1E}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
