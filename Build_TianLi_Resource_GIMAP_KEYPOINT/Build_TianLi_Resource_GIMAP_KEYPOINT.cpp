@@ -31,6 +31,12 @@ int main()
 	fs2["keypoints"] >> keypoints;
 	fs2["descriptors"] >> descriptors;
 	fs2.release();
+	
+	// 画出关键点
+	cv::Mat img_keypoints;
+	cv::drawKeypoints(map, keypoints, img_keypoints, cv::Scalar::all(-1), cv::DrawMatchesFlags::DEFAULT);
+	cv::imshow("keypoint", img_keypoints);
+	cv::waitKey(1000);
 
 	if (Kp_Map.size() == keypoints.size())
 	{
