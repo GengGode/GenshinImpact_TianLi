@@ -65,8 +65,8 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	//添加全局快捷键
 	// F1 触发 slot_show_or_hide
-	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("F1", this));
-	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_show_or_hide);
+	//hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("F1", this));
+	//connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_show_or_hide);
 	
 	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("Alt+T", this));
 	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_auto_track);
@@ -74,7 +74,12 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	TianLiQtCommon_ListenKeyBoard* listen_key_board = new TianLiQtCommon_ListenKeyBoard(this);
 	
-
+	
+	listen_key_board->register_key_signal(0x41, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
+	// F1 触发 slot_show_or_hide
+	listen_key_board->register_key(0x70, this, &GenshinImpact_TianLi::slot_show_or_hide);
+	
+	
 	
 	//connect(this, &GenshinImpact_TianLi::show, this, &GenshinImpact_TianLi::slot_show);
 	//connect(this, &GenshinImpact_TianLi::hide, this, &GenshinImpact_TianLi::slot_hide);
