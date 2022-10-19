@@ -260,7 +260,12 @@ void GenshinImpact_TianLi::addUI_Tab_3()
 }
 void GenshinImpact_TianLi::addUI_Tab_4()
 {
+	auto button = new TianLiQtCommon_SwitchButton(ui.page_4, "最小化");
+	
+	button->setParent(ui.page_4);
+	button->move(30, ui.page_4->height() - 35);
 
+	//connect(PageTabMap_MapRect[0], &TianLiQtCommon_MapRect::signal_double_click, dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::slot_clicked);
 }
 
 
@@ -744,6 +749,7 @@ void GenshinImpact_TianLi::slot_auto_track()
 
 void GenshinImpact_TianLi::slot_show()
 {
+	LogInfo("显示主窗口");
 	if (Core.GetTrack().GetResult().is_find_paimon)
 	{
 		if (main_bebind_widget == nullptr)
@@ -767,30 +773,32 @@ void GenshinImpact_TianLi::slot_show()
 	this->show();
 	// 激活到最前面
 	this->activateWindow();	
+	is_visible = true;
 }
 
 void GenshinImpact_TianLi::slot_show_or_hide()
 {
+	
 	if (is_visible)
 	{
 		this->slot_hide();
-		is_visible = false;
 	}
 	else
 	{
 		this->slot_show();
-		is_visible = true;
 	}
 }
 
 void GenshinImpact_TianLi::slot_hide()
 {
+	LogInfo("隐藏主窗口");
 	if (main_bebind_widget != nullptr)
 	{
 		main_bebind_widget->hide();
 	}
 
 	this->showMinimized();
+	is_visible = false;
 	//this->hide();
 }
 

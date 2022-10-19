@@ -97,6 +97,7 @@ private:
 
     // ∞¥≈•œ‡πÿ
     QVector<QPushButton*> PageTabMap_RightCard_Buttons;
+	QVector<QPushButton*> PageTabMap_ScrollCard_Buttons;
     void addUI_Tab_Map();
 	void addUI_Tab_HUD();
 	void addUI_Tab_3();
