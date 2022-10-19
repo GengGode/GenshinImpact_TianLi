@@ -24,8 +24,8 @@ inline void get_genshin_screen(const GenshinHandle& genshin_handle, GenshinScree
 	HDC hCompDC = CreateCompatibleDC(hScreen);
 
 	//获取目标句柄的宽度和高度
-	int	nWidth = static_cast<int>(std::round((giRectClient.right - giRectClient.left) / giScale));
-	int	nHeight = static_cast<int>(std::round((giRectClient.bottom - giRectClient.top) / giScale));
+	int	nWidth = static_cast<int>(std::round((giRectClient.right - giRectClient.left)));
+	int	nHeight = static_cast<int>(std::round((giRectClient.bottom - giRectClient.top)));
 
 	DeleteObject(hBmp);
 
