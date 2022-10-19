@@ -40,7 +40,8 @@ void TianLiQtCommon_SwitchButton::clicked_switch(bool is_checked)
 		change_animation->start();
 		// Core.GetTrack().StartServer();
 		connect(change_animation, &QPropertyAnimation::finished, [=] {
-			Core.GetTrack().StartServer();
+			emit signal_clicked(is_checked);
+			
 			ui.label_Background->setStyleSheet(QString::fromUtf8(".QLabel\n"
 				"{\n"
 				"background-color:rgb(120, 222, 222);\n"
@@ -59,7 +60,8 @@ void TianLiQtCommon_SwitchButton::clicked_switch(bool is_checked)
 		change_animation->start();
 		// Core.GetTrack().StartServer();
 		connect(change_animation, &QPropertyAnimation::finished, [=] {
-			Core.GetTrack().StopServer();
+			emit signal_clicked(is_checked);
+			
 			ui.label_Background->setStyleSheet(QString::fromUtf8(".QLabel\n"
 				"{\n"
 				"background-color:rgb(222, 222, 222);\n"

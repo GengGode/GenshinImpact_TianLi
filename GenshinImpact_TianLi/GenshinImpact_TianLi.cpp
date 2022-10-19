@@ -324,7 +324,20 @@ void GenshinImpact_TianLi::addUI_MapTabMapRect()
 	PageTabMap_RightCard_Buttons[0]->setParent(ui.widget_MapTab_Right);
 	PageTabMap_RightCard_Buttons[0]->move(30, PageTabMap_MapRect[0]->height() - 35);
 
+	
+	
+	connect(dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::signal_clicked, [](bool is_checked){
+		if (is_checked)
+		{
+			Core.GetTrack().StartServer();
+		}
+		else
+		{
+			Core.GetTrack().StopServer();
+		}
+		});
 	connect(PageTabMap_MapRect[0], &TianLiQtCommon_MapRect::signal_double_click, dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::slot_clicked);
+	
 }
 
 void GenshinImpact_TianLi::addUI_HUDTabCardRects()

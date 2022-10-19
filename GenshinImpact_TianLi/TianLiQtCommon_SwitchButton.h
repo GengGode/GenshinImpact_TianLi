@@ -20,4 +20,6 @@ public slots:
 	void slot_clicked(bool is_checked);
 private:
 	void clicked_switch(bool is_checked);
+signals:
+	void signal_clicked(bool is_checked);
 };
