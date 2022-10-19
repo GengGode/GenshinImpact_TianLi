@@ -14,5 +14,6 @@ public:
 public:
 	void work();
 private:
-	LRESULT keyboard_proc(int nCode, WPARAM wParam, LPARAM lParam);
+	HHOOK handle_hook_keyboard;
+	LRESULT CALLBACK keyboard_proc(int nCode, WPARAM wParam, LPARAM lParam);
 };
