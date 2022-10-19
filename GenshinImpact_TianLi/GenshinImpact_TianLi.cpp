@@ -125,6 +125,13 @@ void GenshinImpact_TianLi::mouseMoveEvent(QMouseEvent* event)
 	//event->ignore();
 }
 
+void GenshinImpact_TianLi::closeEvent(QCloseEvent* event)
+{
+	//event->ignore();
+	slot_hide();
+	event->ignore();
+}
+
 void GenshinImpact_TianLi::loadDataBase()
 {
 	TianLi::SqliteDbMem SqliteDB_Mem = Core.GetResource().LoadSqlite_KYJGDB();
