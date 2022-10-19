@@ -38,15 +38,21 @@ TianLiQtCommon_Logger::TianLiQtCommon_Logger(QWidget *parent)
 	ui.tableWidget->resizeColumnToContents(0);                               
 	ui.tableWidget->setColumnCount(4);                                       
 	ui.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+	QFont font = ui.tableWidget->font();
+	font.setPointSize(9);
+	ui.tableWidget->setFont(font);
+	
 	QHeaderView* widthlist = ui.tableWidget->horizontalHeader();             
 	widthlist->setStyleSheet("QHeaderView::section{border:0px;background-color:#f2f1f7;color:#7f7f7f;}");
-	widthlist->resizeSection(0, 180);		
+	widthlist->resizeSection(0, 120);		
 	widthlist->resizeSection(1, 80);
-	widthlist->resizeSection(2, 300);
-	widthlist->resizeSection(3, 300);
+	widthlist->resizeSection(2, 600);
+	widthlist->resizeSection(3, 100);
 	widthlist->setStretchLastSection(true);
 	QStringList list;                                                     
-	list << "Timekey" << "LogType" << "FuncAddr" << "Message" ;
+	// list << "时间戳" << "类型" << "函数" << "消息" ;
+	list << QString::fromLocal8Bit("时间戳") << QString::fromLocal8Bit("类型") << QString::fromLocal8Bit("函数") << QString::fromLocal8Bit("消息");
 	ui.tableWidget->setHorizontalHeaderLabels(list);
 	ui.tableWidget->show();
 	this->show();
@@ -97,7 +103,7 @@ void TianLiQtCommon_Logger::append(QString time, QString type, QString func, QSt
 void TianLiQtCommon_Logger::log(QString type, QString func, QString msg)
 {
 	QDateTime time = QDateTime::currentDateTime();  
-	QString timestr = time.toString("yyyy-MM-dd hh:mm:ss:ms");             //设置显示格式
+	QString timestr = time.toString("hh:mm:ss:ms");             //设置显示格式
 	append(timestr, type, func, msg);
 }
 

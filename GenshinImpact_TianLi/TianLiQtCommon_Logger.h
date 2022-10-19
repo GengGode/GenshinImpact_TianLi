@@ -111,8 +111,18 @@ private:
 #define LogTraceFunction LogTraceScope(__FUNCTION__)
 #define LogTraceFunctionWithArgs  // how to do this?, like LogTraceScope(__FUNCTION__, __FUNCTION_ALL_ARGS__)
 #define TianLi_Logger TianLiQtCommon_Logger::GetInstance() 
-#define LogInfo( x) TianLi_Logger.Info(#x,x)
+#define LogInfo(x) TianLi_Logger.Info(__FUNCTION__, x)
+#define LogDebug(x) TianLi_Logger.Debug(__FUNCTION__, x)
+#define LogTrace(x) TianLi_Logger.Trace(__FUNCTION__, x)
+#define LogWarn(x) TianLi_Logger.Warn(__FUNCTION__, x)
+#define LogError(x) TianLi_Logger.Error(__FUNCTION__, x)
+
+//#define LogInfo( x) TianLi_Logger.Info(#x,x)
 #else
 #define LogTraceFunction ;
 #define LogInfo(x) ;
+#define LogDebug(x) ;
+#define LogTrace(x) ;
+#define LogWarn(x) ;
+#define LogError(x) ;
 #endif // _DEBUG
