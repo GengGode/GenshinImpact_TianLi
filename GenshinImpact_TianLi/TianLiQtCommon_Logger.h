@@ -102,6 +102,7 @@ private:
     std::string m_func_name;
     std::chrono::time_point<std::chrono::steady_clock> m_start_time;
 };
+
 #ifdef _DEBUG
 #define _Cat_(a, b) a ## b
 #define _Cat(a, b) _Cat_(a, b)
@@ -109,15 +110,13 @@ private:
 #define Log Logger::get_instance()
 #define LogTraceScope LoggerAux _CatVarNameWithLine(_func_aux_)
 #define LogTraceFunction LogTraceScope(__FUNCTION__)
-#define LogTraceFunctionWithArgs  // how to do this?, like LogTraceScope(__FUNCTION__, __FUNCTION_ALL_ARGS__)
+#define LogTraceFunctionWithArgs 
 #define TianLi_Logger TianLiQtCommon_Logger::GetInstance() 
 #define LogInfo(x) TianLi_Logger.Info(__FUNCTION__, x)
 #define LogDebug(x) TianLi_Logger.Debug(__FUNCTION__, x)
 #define LogTrace(x) TianLi_Logger.Trace(__FUNCTION__, x)
 #define LogWarn(x) TianLi_Logger.Warn(__FUNCTION__, x)
 #define LogError(x) TianLi_Logger.Error(__FUNCTION__, x)
-
-//#define LogInfo( x) TianLi_Logger.Info(#x,x)
 #else
 #define LogTraceFunction ;
 #define LogInfo(x) ;

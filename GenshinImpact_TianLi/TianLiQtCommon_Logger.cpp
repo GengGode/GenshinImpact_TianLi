@@ -28,7 +28,7 @@ TianLiQtCommon_Logger::TianLiQtCommon_Logger(QWidget *parent)
 {
 	ui.setupUi(this);
 	this->setAttribute(Qt::WA_QuitOnClose, false);
-	this->setWindowFlags(Qt::Tool);
+	//this->setWindowFlags(Qt::Tool);
 
 	ui.tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);     
 	ui.tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);    
@@ -40,7 +40,7 @@ TianLiQtCommon_Logger::TianLiQtCommon_Logger(QWidget *parent)
 	ui.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 	QFont font = ui.tableWidget->font();
-	font.setPointSize(9);
+	font.setPointSize(7);
 	ui.tableWidget->setFont(font);
 	
 	QHeaderView* widthlist = ui.tableWidget->horizontalHeader();             
@@ -72,27 +72,27 @@ void TianLiQtCommon_Logger::append(QString time, QString type, QString func, QSt
 	// blue red orange yellow green
 	if (type == "Info")
 	{
-		item_type->setBackgroundColor(QColor(0, 0, 255, 100));
+		item_type->setBackground(QColor(0, 0, 255, 100));
 	}
 	else if (type == "Error")
 	{
-		item_type->setBackgroundColor(QColor(255, 0, 0, 100));
+		item_type->setBackground(QColor(255, 0, 0, 100));
 	}
 	else if (type == "Warning")
 	{
-		item_type->setBackgroundColor(QColor(255, 255, 0, 100));
+		item_type->setBackground(QColor(255, 255, 0, 100));
 	}
 	else if (type == "Debug")
 	{
-		item_type->setBackgroundColor(QColor(0, 255, 0, 100));
+		item_type->setBackground(QColor(0, 255, 0, 100));
 	}
 	else if(type=="Track")
 	{
-		item_type->setBackgroundColor(QColor(255, 255, 0,100));
+		item_type->setBackground(QColor(255, 255, 0,100));
 	}
 	else
 	{
-		item_type->setBackgroundColor(QColor(0, 255, 255, 100));
+		item_type->setBackground(QColor(0, 255, 255, 100));
 	}
 	
 	ui.tableWidget->setItem(rowcount, 1, item_type);
