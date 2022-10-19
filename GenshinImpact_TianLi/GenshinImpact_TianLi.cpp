@@ -71,23 +71,13 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("Alt+T", this));
 	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_auto_track);
 	// listen TianLiQtCommon_ListenKeyBoard
+	
 	TianLiQtCommon_ListenKeyBoard* listen_key_board = new TianLiQtCommon_ListenKeyBoard(this);
-	listen_key_board->work();
+	
+
+	
 	//connect(this, &GenshinImpact_TianLi::show, this, &GenshinImpact_TianLi::slot_show);
 	//connect(this, &GenshinImpact_TianLi::hide, this, &GenshinImpact_TianLi::slot_hide);
-	
-	//HHOOK hhkLowLevelKybd = SetWindowsHookExA(WH_KEYBOARD_LL, KeyboardProc, 0, 0);
-
-	//MSG msg;
-	//while (!GetMessage(&msg, NULL, NULL, NULL)) {
-	//	TranslateMessage(&msg);
-	//	DispatchMessage(&msg);
-	//}
-
-	//UnhookWindowsHookEx(hhkLowLevelKybd);
-	
-
-	
 	
 	connect(ui.pushButton_Tab_1, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
 	connect(ui.pushButton_Tab_2, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_2_clicked);
