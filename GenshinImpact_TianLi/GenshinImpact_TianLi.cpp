@@ -237,10 +237,24 @@ void GenshinImpact_TianLi::updata_ItemsList()
 	{
 		return;
 	}
+	BadgeInfo::BadgeBlock legend_block;
+	legend_block.name = itemsItemsVector[0].name;
+	legend_block.image = cv::Mat(cv::Size(64, 64), CV_8UC4,cv::Scalar(100,200,200,128));//itemsItemsVector[0].image;
 	for (int i = 0; i < itemsItemsVector.size; i++)
 	{
+		BadgeInfo::BadgeBlock::Badge legend;
+		legend.x = itemsItemsVector[i].x;
+		legend.y = itemsItemsVector[i].x;
+		legend.z = itemsItemsVector[i].x;
+		legend.message = itemsItemsVector[i].msg;
+		
 		strList_Items << itemsItemsVector[i].name;
+		// LogTrace(itemsItemsVector[i].msg);
+		
+		legend_block.badge_list.push_back(legend);
 	}
+	Core.GetMap().badge_info.badge_block_list.push_back(legend_block);
+	
 }
 
 void GenshinImpact_TianLi::addUI_Tab_Map()

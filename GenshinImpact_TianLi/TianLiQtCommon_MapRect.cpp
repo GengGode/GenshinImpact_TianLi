@@ -133,6 +133,11 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 		cv::Rect viewer_rect;
 		mapMatRect = TianLi::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, viewer_rect);
 
+		Core.GetMap().map_info.viewer_rect = viewer_rect;
+		// 渲染图例
+		Core.GetMap().render_legend(mapMatRect);
+		//***
+
 
 		std::vector<cv::Mat> mv;
 		cv::split(mapMatRect, mv);
