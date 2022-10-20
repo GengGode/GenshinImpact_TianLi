@@ -134,7 +134,7 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 		mapMatRect = TianLi::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, viewer_rect);
 
 		Core.GetMap().map_info.viewer_rect = viewer_rect;
-		// æ¸²æŸ“å›¾ä¾‹
+		// äÖÈ¾Í¼Àı
 		Core.GetMap().render_legend(mapMatRect);
 		//***
 
