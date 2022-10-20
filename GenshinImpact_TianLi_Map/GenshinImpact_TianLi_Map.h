@@ -1,9 +1,74 @@
 #pragma once
+#ifndef _LIB
+#ifdef GENSHINIMPACTTIANLIMAP_EXPORTS
+#define GENSHINIMPACTTIANLIMAP_API __declspec(dllexport)
+#else
+//#define GENSHINIMPACTTIANLIMAP_API __declspec(dllimport)
+#define GENSHINIMPACTTIANLIMAP_API /* No thing */
+#endif
+
+#define APICALL __stdcall
+#ifndef DLLAPI
+#define DLLAPI GENSHINIMPACTTIANLIMAP_API
+#endif // DLLAPI
+
+#else
+#ifndef DLLAPI
+#define DLLAPI
+#endif // DLLAPI
+#endif
+
+#include <vector>
+#include <string>
+#include <opencv2/opencv.hpp>
+
 struct MapBlock 
 {
 	
 };
-
+struct AvatarInfo
+{
+	double x=0;
+	double y=0;
+	double z=0; // æ ¹æ®åœ°å›¾æ‰€åœ¨ä½ç½®ï¼Œå¤§è‡´åˆ¤å®šé«˜åº¦åŒºé—´
+	double a=0;
+	double r=0;
+};
+struct MapInfo
+{
+	int center_x=0;
+	int center_y=0;
+	int viewer_width=0;
+	int viewer_height=0;
+	cv::Rect viewer_rect;
+	double scale_form_gimap=1.0;
+	int scale_width=0;
+	int scale_height=0;
+};
+struct BadgeInfo
+{
+	struct BadgeBlock
+	{
+		std::string name;
+		cv::Mat image=cv::Mat::zeros(cv::Size(64,64),CV_8UC4);
+		struct Badge
+		{
+			std::string message;
+			
+			double x=0;
+			double y=0;
+			double z=0;
+					
+			int map_id=0;
+			bool operator& (const cv::Rect& rect)
+			{
+				return rect.contains(cv::Point2d(x,y));			
+			}
+		};
+		std::vector<Badge> badge_list;
+	};
+	std::vector<BadgeBlock> badge_block_list;
+};
 //
 //class object
 //{
@@ -60,7 +125,7 @@ struct MapBlock
 //		objects* objects;
 //		int index;
 //	};
-//	// ÊµÏÖforµü´ú
+//	// Êµï¿½ï¿½forï¿½ï¿½ï¿½ï¿½
 //	objects::iterator begin()
 //	{
 //		return objects::iterator(this, 0);
@@ -136,7 +201,7 @@ namespace TianLi
 			objects* objects;
 			int index;
 		};
-		// ÊµÏÖforµü´ú
+		// Êµï¿½ï¿½forï¿½ï¿½ï¿½ï¿½
 		objects::iterator begin()
 		{
 			return objects::iterator(this, 0);
@@ -149,40 +214,29 @@ namespace TianLi
 	
 }
 
-class GenshinImpact_TianLi_Map
+class DLLAPI GenshinImpact_TianLi_Map
 {
-//	int X = 0;
-//	int Y = 0;
-//	int x0 = 0;
-//	int y0 = 0;
-//	int x1 = 0;
-//	int y1 = 0;
-//	int dx = 0;
-//	int dy = 0;
+//	GenshinImpact_TianLi_Map();
 //public:
-//
-//	Point p0 = Point(0, 0);
-//	Point p1 = Point(0, 0);
-//	double value = 0.0;
-//	double scale = 1.0;
-//
-//	//×ó¼üµ¥»÷±êÖ¾
-//	bool bLCD = false;
-//	bool bLCU = false;
-//	//ÖĞ¼üµ¥»÷
-//	bool bMCD = false;
-//	bool bMCU = false;
-//	Point2d zerosMinMap;
-//	Point offGiMinMap;
-//	void setMouseLeftDownPos(int x, int y);
-//	void setMouseLeftUpPos(int x, int y);
-//	void setMouseLeftMovePos(int x, int y);
-//
-//	void setMouseMidDownPos(int x, int y);
-//	void setMouseMidUpPos(int x, int y);
-//	void setMouseMidMovePos(int x, int y);
-//
-//	void normalizationZerosMinMap(Rect rangeRect);
+//	~GenshinImpact_TianLi_Map();
+//	static GenshinImpact_TianLi_Map* GetInstance();
+	
+public:
+	GenshinImpact_TianLi_Map();
+	~GenshinImpact_TianLi_Map();
+	
+public:
+	AvatarInfo avatar_info;
+	MapInfo map_info;
+	BadgeInfo badge_info;
+	//cv::Mat viewer_mat;
+	//cv::Mat viewer_draw_badge_mat;
+	
+	void render_legend(cv::Mat& map);
+	
+	BadgeInfo search(const char* country, const char* type, const char* item);
+	
 	TianLi::objects& search(const char* name, double x = 0, double y = 0, double r = 0);
 };
 
+//#define Map GenshinImpact_TianLi_Map::GetInstance()
