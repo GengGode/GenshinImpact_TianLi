@@ -88,7 +88,7 @@ namespace TianLi::Utils
 		return new_image;
 	}
 
-	cv::Mat get_view_map(const cv::Mat& GIMAP, cv::Size view_map_size, cv::Point2d view_map_center, double view_map_scale)
+	cv::Mat get_view_map(const cv::Mat& GIMAP, cv::Size view_map_size, cv::Point2d view_map_center, double view_map_scale, cv::Rect& viewer_rect)
 	{
 		static cv::Mat viewMap;
 		static cv::Rect viewMapRect;
@@ -138,7 +138,7 @@ namespace TianLi::Utils
 			minMapPoint.y = mapSizeHeight - reMapSize.height;
 		}
 		viewMapRect = cv::Rect(minMapPoint, reMapSize);
-
+		viewer_rect = viewMapRect;
 		resize(GIMAP(viewMapRect), viewMap, view_map_size);
 		return viewMap;
 	}

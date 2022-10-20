@@ -59,7 +59,8 @@ void TianLiQtCommon_HUD_CircularMap::paintEvent(QPaintEvent* event)
 		old_map_center_pos = render_map_pos;
 		old_map_scale = render_map_scale;
 
-		mapMatRect = TianLi::Utils::get_view_map(gi_map, cv::Size(width(), height()), render_map_pos, render_map_scale);
+		cv::Rect viewer_rect;
+		mapMatRect = TianLi::Utils::get_view_map(gi_map, cv::Size(width(), height()), render_map_pos, render_map_scale, viewer_rect);
 
 		std::vector<cv::Mat> mv;
 		cv::split(mapMatRect, mv);

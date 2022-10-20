@@ -128,8 +128,11 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 		is_need_rerender = false;
 		old_map_center_pos = render_map_pos;
 		old_map_scale = render_map_scale;
+		
+		//---
+		cv::Rect viewer_rect;
+		mapMatRect = TianLi::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, viewer_rect);
 
-		mapMatRect = TianLi::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale);
 
 		std::vector<cv::Mat> mv;
 		cv::split(mapMatRect, mv);
