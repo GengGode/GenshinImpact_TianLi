@@ -95,9 +95,6 @@ void TianLiQtCommon_MapRect::mouseMoveEvent(QMouseEvent* event)
 
 void TianLiQtCommon_MapRect::wheelEvent(QWheelEvent* event)
 {
-	//TianLi_Logger.Info(__FUNCTION__, QString::number(event->delta()));
-	//LogInfo(QString::number(event->delta() / 120));
-	//LogInfo(QString::number(render_map_scale));
 	if (event->delta() < 0) {
 		if (render_map_scale > 10)return;
 		render_map_scale += deltaMapScale;

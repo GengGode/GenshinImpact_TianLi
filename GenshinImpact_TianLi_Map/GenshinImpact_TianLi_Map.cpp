@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GenshinImpact_TianLi_Map.h"
 
+#include "GenshinImpact_TianLi_Map_Utils.h"
 
 #include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
@@ -34,28 +35,25 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 		cv::Mat img = info.image;
 		for (auto& legend : info.badge_list)
 		{
+			// 取交集
 			if (legend & map_info.viewer_rect)
 			{
 				// 绘制在map中Rect
 				cv::Rect r_img = cv::Rect(cv::Point(std::round(legend.x- img.cols/2.0), std::round(legend.y- img.rows/2.0)), img.size());
 				
+				// 取交集
 				cv::Rect r = r_img & map_info.viewer_rect;
 				
 				// 获取相对于地图图片的范围
 				cv::Rect r1 = r - map_info.viewer_rect.tl();
 				// 获取相对于区块图片的范围
 				cv::Rect r2 = r - r_img.tl();
-				// 取交集
-				
-				img(r2).copyTo(map(r1));
-				
+				//img(r2).copyTo(map(r1));
+				cv::Mat map_roi = map(r1);
+				TianLi::Map::Utils::add_rgba_image(map(r1).clone(), img(r2), map_roi);
 			}
 		}
-		
 	}
-
-	
-	
 }
 
 BadgeInfo GenshinImpact_TianLi_Map::search(const char* country, const char* type, const char* item)
