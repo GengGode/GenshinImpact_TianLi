@@ -24,6 +24,9 @@
     <ClInclude Include="GenshinImpact_TianLi_Map.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GenshinImpact_TianLi_Map_Utils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -33,6 +36,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GenshinImpact_TianLi_Map.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GenshinImpact_TianLi_Map_Utils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
