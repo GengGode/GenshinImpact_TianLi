@@ -88,7 +88,7 @@ namespace TianLi::Utils
 		return new_image;
 	}
 
-	cv::Mat get_view_map(const cv::Mat& GIMAP, cv::Size view_map_size, cv::Point2d view_map_center, double view_map_scale, cv::Rect& viewer_rect)
+	cv::Mat get_view_map(const cv::Mat& GIMAP, cv::Size view_size, cv::Point2d view_center, double view_map_scale, cv::Rect& map_rect)
 	{
 		static cv::Mat viewMap;
 		static cv::Rect viewMapRect;
@@ -101,9 +101,9 @@ namespace TianLi::Utils
 
 		cv::Point minMapPoint = cv::Point(0, 0);
 
-		cv::Size reMapSize = view_map_size;
-		cv::Point2d reMapCenter = cv::Point(view_map_size.width / 2, view_map_size.height / 2) * view_map_scale;
-		//cv::Point2d reAutoMapCenter = view_map_center;
+		cv::Size reMapSize = view_size;
+		cv::Point2d reMapCenter = cv::Point(view_size.width / 2, view_size.height / 2) * view_map_scale;
+		//cv::Point2d reAutoMapCenter = view_center;
 		reMapSize.width = (reMapSize.width * view_map_scale);
 		reMapSize.height = (reMapSize.height * view_map_scale);
 		if (reMapSize.width > mapSizeWidth)
@@ -116,8 +116,8 @@ namespace TianLi::Utils
 		}
 
 
-		cv::Point2d LT = view_map_center - reMapCenter;
-		cv::Point2d RB = view_map_center + cv::Point2d(reMapSize) - reMapCenter;
+		cv::Point2d LT = view_center - reMapCenter;
+		cv::Point2d RB = view_center + cv::Point2d(reMapSize) - reMapCenter;
 
 		minMapPoint = LT;
 
@@ -138,8 +138,8 @@ namespace TianLi::Utils
 			minMapPoint.y = mapSizeHeight - reMapSize.height;
 		}
 		viewMapRect = cv::Rect(minMapPoint, reMapSize);
-		viewer_rect = viewMapRect;
-		resize(GIMAP(viewMapRect), viewMap, view_map_size);
+		map_rect = viewMapRect;
+		resize(GIMAP(viewMapRect), viewMap, view_size);
 		return viewMap;
 	}
 	cv::Mat create_square_mask(int mask_width, int mask_height, double gradient_width)
