@@ -33,4 +33,9 @@ private:
 	QMap<int, std::pair<std::pair<bool, bool>, std::function<void(bool)>>> key_signal_map;
 	HHOOK handle_hook_keyboard;
 	LRESULT CALLBACK keyboard_proc(int nCode, WPARAM wParam, LPARAM lParam);
+	int key_system = -1;
+	bool key_alt = false;
+	bool key_ctrl = false;
+	bool key_win = false;
+	bool key_shift = false;
 };

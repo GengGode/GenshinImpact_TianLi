@@ -96,7 +96,24 @@ LRESULT CALLBACK TianLiQtCommon_ListenKeyBoard::keyboard_proc(int nCode, WPARAM 
 			}
 		} break;
 		case WM_SYSKEYDOWN: {
-			//LogInfo(QString::fromStdString(std::format("WM_SYSKEYDOWN: {}\n", p->vkCode)));
+			LogInfo(QString::fromStdString(std::format("WM_SYSKEYDOWN: {}\n", p->vkCode)));
+			key_system = p->vkCode;
+			if (key_system == 164 || key_system == 165)
+			{
+				key_alt = true;
+			}
+			else if (key_system == 162 || key_system == 163)
+			{
+				key_ctrl = true;
+			}
+			else if (key_system == 160 || key_system == 161)
+			{
+				key_shift = true;
+			}
+			else if (key_system == 91 || key_system == 92)
+			{
+				key_win = true;
+			}
 			
 		} break;
 		case WM_KEYUP: {
@@ -113,8 +130,23 @@ LRESULT CALLBACK TianLiQtCommon_ListenKeyBoard::keyboard_proc(int nCode, WPARAM 
 			}
 		} break;
 		case WM_SYSKEYUP: {
-			//LogInfo(QString::fromStdString(std::format("WM_SYSKEYUP: {}\n", p->vkCode)));
-			
+			key_system = -1;
+			if (p->vkCode == 164 || p->vkCode == 165)
+			{
+				key_alt = false;
+			}
+			else if (p->vkCode == 162 || p->vkCode == 163)
+			{
+				key_ctrl = false;
+			}
+			else if (p->vkCode == 160 || p->vkCode == 161)
+			{
+				key_shift = false;
+			}
+			else if (p->vkCode == 91 || p->vkCode == 92)
+			{
+				key_win = false;
+			}
 		} break;
 		}
 	}

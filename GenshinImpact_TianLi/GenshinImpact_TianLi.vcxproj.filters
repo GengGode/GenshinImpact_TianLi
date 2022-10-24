@@ -167,7 +167,7 @@
       <Filter>Source Files\TianLiQtCommon\Common</Filter>
     </ClCompile>
     <ClCompile Include="TianLiQtCommon_ListenKeyBoard.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\TianLiQtCommon\Listen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -216,7 +216,7 @@
       <Filter>Header Files\TianLiQtCommon\Common</Filter>
     </QtMoc>
     <QtMoc Include="TianLiQtCommon_ListenKeyBoard.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\TianLiQtCommon</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
