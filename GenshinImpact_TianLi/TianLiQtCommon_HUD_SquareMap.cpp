@@ -69,7 +69,7 @@ void TianLiQtCommon_HUD_SquareMap::paintEvent(QPaintEvent* event)
 
 		//Core.GetMap().map_info.map_rect = map_rect;
 		Core.GetMap().map_info.scale_form_gimap = render_map_scale;
-		// æ¸²æŸ“å›¾ä¾‹
+		// äÖÈ¾Í¼Àý
 		Core.GetMap().render_legend(mapMatRect);
 
 
@@ -106,7 +106,8 @@ void TianLiQtCommon_HUD_SquareMap::slot_update()
 		{
 			render_map_pos = cv::Point(Core.GetTrack().GetResult().position_x, Core.GetTrack().GetResult().position_y);
 			RECT gi_minimap_rect = Core.GetTrack().GetResult().minimap_rect;
-			slot_update_move(gi_minimap_rect);
+			slot_update_move(gi_minimap_rect); 
+			update();
 		}
 		else
 		{
@@ -142,8 +143,6 @@ void TianLiQtCommon_HUD_SquareMap::slot_update_move(RECT& gi_minimap_rect)
 		int resize_w = (gi_minimap_rect.right - gi_minimap_rect.left)*1.5;
 		int resize_h = (gi_minimap_rect.bottom - gi_minimap_rect.top)*1.5;
 		this->setGeometry(move_x, move_y, resize_w, resize_h);
-		
-		update();
 	}
 }
 

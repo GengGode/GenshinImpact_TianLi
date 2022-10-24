@@ -69,7 +69,7 @@ void TianLiQtCommon_HUD_CircularMap::paintEvent(QPaintEvent* event)
 
 		//Core.GetMap().map_info.map_rect = map_rect;
 		Core.GetMap().map_info.scale_form_gimap = 1.0;
-		// æ¸²æŸ“å›¾ä¾‹
+		// äÖÈ¾Í¼Àý
 		Core.GetMap().render_legend(mapMatRect);
 		
 		std::vector<cv::Mat> mv;
@@ -109,6 +109,7 @@ void TianLiQtCommon_HUD_CircularMap::slot_update()
 
 			RECT gi_minimap_rect = Core.GetTrack().GetResult().minimap_rect;
 			slot_update_move(gi_minimap_rect);
+			update();
 		}
 		else
 		{
@@ -148,7 +149,6 @@ void TianLiQtCommon_HUD_CircularMap::slot_update_move(RECT& gi_minimap_rect)
 		int resize_h = gi_minimap_rect.bottom - gi_minimap_rect.top;
 		this->setGeometry(move_x, move_y, resize_w, resize_h);
 
-		update();
 	}
 }
 
