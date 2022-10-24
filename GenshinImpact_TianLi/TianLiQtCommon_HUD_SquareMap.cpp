@@ -21,14 +21,9 @@ TianLiQtCommon_HUD_SquareMap::TianLiQtCommon_HUD_SquareMap(QWidget *parent)
 	SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) |
 		WS_EX_TRANSPARENT | WS_EX_LAYERED);
 	
-	{
-		LogTraceFunction;
-		gi_map = Core.GetResource().GiMap();
-	}
 	
 	timer = new QTimer;
 	timer->setInterval(42);
-	static int i = 0;
 	connect(timer, &QTimer::timeout, this, &TianLiQtCommon_HUD_SquareMap::slot_update);
 	timer->start();
 }

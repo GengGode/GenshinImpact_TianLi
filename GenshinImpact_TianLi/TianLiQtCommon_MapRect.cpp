@@ -19,10 +19,6 @@ TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget* parent)
 {
 	ui.setupUi(this);
 		
-	ui.label_Render->setVisible(false);
-	{		
-		//gi_map = Core.GetResource().GiMap();
-	}
 	//创建刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
 	mapMessageLoopTimer->start(Fps);//1000/30=33.3,1000/24=42

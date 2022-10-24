@@ -20,13 +20,8 @@ TianLiQtCommon_HUD_CircularMap::TianLiQtCommon_HUD_CircularMap(QWidget* parent)
 	SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) |
 		WS_EX_TRANSPARENT | WS_EX_LAYERED);
 
-	{
-		gi_map = Core.GetResource().GiMap();
-	}
-
 	timer = new QTimer;
 	timer->setInterval(42);
-	static int i = 0;
 	connect(timer, &QTimer::timeout, this, &TianLiQtCommon_HUD_CircularMap::slot_update);
 	timer->start();
 }
