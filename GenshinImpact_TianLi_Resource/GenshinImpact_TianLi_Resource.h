@@ -44,6 +44,10 @@ public:
 	cv::Mat GIMINIMAP_CAILB;
 	cv::Mat GIMINIMAP_N;
 	cv::Mat* GINUMUID;
+	
+	// overlay
+	cv::Mat GIMAP_OVERLAY;
+	cv::Rect GIMAP_OVERLAY_RECT = cv::Rect(0, 3482, 1844,1622);
 public:
 	const cv::Mat GiMap() { return GIMAP; }
 	const cv::Mat GiAvatar() { return GIAVATAR; }
@@ -51,6 +55,9 @@ public:
 	const cv::Mat GiPaimon() { return GIPAIMON; }
 	const cv::Mat GiMiniMap_Cailb() { return GIMINIMAP_CAILB; }
 	const cv::Mat* GiNumUID() { return GINUMUID; }
+	
+	// overlay
+	const cv::Mat GiMap_Overlay() { return GIMAP_OVERLAY; }
 	
 
 private:

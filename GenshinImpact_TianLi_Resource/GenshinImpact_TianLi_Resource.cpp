@@ -322,6 +322,8 @@ void GenshinImpact_TianLi_Resource::LoadPng()
 	LoadPng_ID2Mat(IDB_PNG_GIUID_9, GINUMUID[9]);
 	LoadPng_ID2Mat(IDB_PNG_GIUID__, GINUMUID[10]);
 
+	LoadPng_ID2Mat(IDB_PNG_GIMAP_OVERLAY, GIMAP_OVERLAY);
+
 	CoUninitialize();
 }
 

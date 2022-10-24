@@ -20,6 +20,18 @@ GenshinImpact_TianLi_Map::~GenshinImpact_TianLi_Map()
 //	return instance;
 //}
 
+void GenshinImpact_TianLi_Map::render_overlay(cv::Mat& map)
+{
+	if (map_info.viewer_rect.area() == 0)
+	{
+		return;
+	}
+	auto map_rect_overlay = TianLi::Map::Utils::get_view_map_overlay(Core.GetResource().GiMap_Overlay(), map_info.viewer_rect);
+	cv::resize(map_rect_overlay, map_rect_overlay,map.size());
+	
+	TianLi::Map::Utils::add_rgba_image(map.clone(), map_rect_overlay, map);
+}
+
 void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 {
 	// 地图中心绘制环形光标
@@ -30,6 +42,11 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 		return;
 	}
 	
+	if (map_info.is_overlay)
+	{
+		render_overlay(map);
+	}
+
 	for (auto& info : badge_info.badge_block_list)
 	{
 		cv::Mat img = info.image;

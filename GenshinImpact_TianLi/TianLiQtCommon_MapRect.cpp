@@ -61,18 +61,14 @@ void TianLiQtCommon_MapRect::mouseDoubleClickEvent(QMouseEvent* event)
 		{
 			LogInfo("double click up");
 			is_double_click_old = false;
-			//Core.GetTrack().StopServer();
 			emit signal_double_click(false);
 		}
 		else
 		{
 			LogInfo("double click down");
 			is_double_click_old = true;
-			//Core.GetTrack().StartServer();
 			emit signal_double_click(true);
 		}
-		//leftBtnClk = false;
-		//render_map_scale += deltaMapScale;
 	}
 }
 
@@ -87,7 +83,6 @@ void TianLiQtCommon_MapRect::mouseMoveEvent(QMouseEvent* event)
 		{
 			m_Press = m_Move;
 			update();
-			//LogInfo(QString::number(render_map_pos.x) + "," + QString::number(render_map_pos.y));
 		}
 	}
 
@@ -129,8 +124,11 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 		//---
 		cv::Rect viewer_rect;
 		mapMatRect = TianLi::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, viewer_rect);
+		
+		Core.GetMap().map_info.is_overlay = true;
 
 		Core.GetMap().map_info.viewer_rect = viewer_rect;
+		Core.GetMap().map_info.scale_form_gimap = render_map_scale;
 		// äÖÈ¾Í¼Àý
 		Core.GetMap().render_legend(mapMatRect);
 		//***

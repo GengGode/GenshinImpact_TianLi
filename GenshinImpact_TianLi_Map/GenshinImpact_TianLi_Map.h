@@ -44,6 +44,7 @@ struct MapInfo
 	double scale_form_gimap=1.0;
 	int scale_width=0;
 	int scale_height=0;
+	bool is_overlay = false;
 };
 struct BadgeInfo
 {
@@ -232,6 +233,7 @@ public:
 	//cv::Mat viewer_mat;
 	//cv::Mat viewer_draw_badge_mat;
 	
+	void render_overlay(cv::Mat& map);
 	void render_legend(cv::Mat& map);
 	
 	BadgeInfo search(const char* country, const char* type, const char* item);

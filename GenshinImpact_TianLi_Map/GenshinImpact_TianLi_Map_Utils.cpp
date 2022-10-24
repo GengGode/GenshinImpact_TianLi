@@ -1,6 +1,12 @@
 #include "pch.h"
 #include "GenshinImpact_TianLi_Map_Utils.h"
 
+cv::Mat TianLi::Map::Utils::get_view_map_overlay(const cv::Mat& GIMAP_OVERLAY, cv::Rect& viewer_rect)
+{
+	cv::Mat map_rect_overlay = GIMAP_OVERLAY(viewer_rect);
+	return map_rect_overlay;
+}
+
 /// <summary>
 /// 叠加 RGBA 图像，以 正片叠底 的方式
 /// </summary>

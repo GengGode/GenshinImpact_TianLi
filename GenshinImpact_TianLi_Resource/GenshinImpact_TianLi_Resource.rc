@@ -84,6 +84,7 @@ IDB_PNG_GIUID_9         PNG                     "resource\\NumUID\\UID9.png"
 
 IDB_PNG_GIUID__         PNG                     "resource\\NumUID\\UID_.png"
 
+IDB_PNG_GIMAP_OVERLAY   PNG                     "resource\\GIMAP_OVERLAY.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //

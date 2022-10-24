@@ -28,6 +28,7 @@
 #define IDR_SQLITE_KYJG                 1200
 #define IDR_XML_GIMAP_COMPUTE           1300
 
+#define IDB_PNG_GIMAP_OVERLAY           1401
 
 // Next default values for new objects
 // 
