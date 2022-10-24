@@ -18,6 +18,7 @@
 #include "TianLiQtCommon_HUD_AzimuthBarWindow.h"
 
 #include "TianLiQtCommon_HookKeyBoard.h"
+#include "TianLiQtCommon_ListenKeyBoard.h"
 
 #include "TianLiQtCommon_Utils.h"
 
@@ -25,7 +26,9 @@
 #include <QMouseEvent>
 #include <QTimer>
 
-#include "TianLiQtCommon_ListenKeyBoard.h"
+#include <QNetworkReply>
+#include <QNetworkAccessManager>
+
 
 #include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
@@ -62,6 +65,28 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	emit this->ui_updatePusButtonList();
 
 	//GenshinImpact_TianLi_Track tianli_track;
+	
+
+	//httplib::Client cli("http://download.api.weixitianli.com");
+	//auto res = cli.Get("/GenshinImpactTianLi/Version/Latest");
+	//LogInfo(res->body.c_str());
+	
+	// Qt HttpGet
+	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+	connect(manager, &QNetworkAccessManager::finished, [=](QNetworkReply* reply) {
+		if (reply->error() == QNetworkReply::NoError) {
+			QByteArray bytes = reply->readAll();
+			QString result(bytes);
+			LogInfo(result.toStdString().c_str());
+		}
+		else {
+			LogError("HttpGet Error");
+		}
+		reply->deleteLater();
+		});
+	manager->get(QNetworkRequest(QUrl("http://download.api.weixitianli.com/GenshinImpactTianLi/Version/Latest")));
+	
+
 	
 	//添加全局快捷键
 	// F1 触发 slot_show_or_hide
