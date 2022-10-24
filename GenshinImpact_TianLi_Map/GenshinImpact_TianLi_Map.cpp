@@ -22,27 +22,39 @@ GenshinImpact_TianLi_Map::~GenshinImpact_TianLi_Map()
 
 void GenshinImpact_TianLi_Map::render_overlay(cv::Mat& map)
 {
-	if (map_info.viewer_rect.area() == 0)
+	if (map_info.map_rect.area() == 0)
 	{
 		return;
 	}
-	auto map_rect_overlay = TianLi::Map::Utils::get_view_map_overlay(Core.GetResource().GiMap_Overlay(), map_info.viewer_rect);
+	auto map_rect_overlay = TianLi::Map::Utils::get_view_map_overlay(Core.GetResource().GiMap_Overlay(), map_info.map_rect);
 	cv::resize(map_rect_overlay, map_rect_overlay,map.size());
 	
-	TianLi::Map::Utils::add_rgba_image(map.clone(), map_rect_overlay, map);
+	TianLi::Map::Utils::add_rgba_image(map, map_rect_overlay, map);
 }
 
 void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 {
 	// 地图中心绘制环形光标
 	cv::circle(map, cv::Point(map.cols / 2, map.rows / 2), 5, cv::Scalar(0, 128, 255, 128), 1, cv::LINE_AA);
-	
-	if (map_info.viewer_rect.area() == 0)
+
+	cv::Rect viewer_rect = cv::Rect(cv::Point(map_info.center_x, map_info.center_y),cv::Size(map_info.viewer_width, map_info.viewer_height));
+	if (map_info.is_show_map)
+	{
+		map = TianLi::Map::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(map_info.viewer_width, map_info.viewer_height), cv::Point(map_info.center_x, map_info.center_y), map_info.scale_form_gimap, map_info.map_rect);
+	}
+	else
+	{
+		// map = cv::Mat(map_info.viewer_width, map_info.viewer_height, CV_8UC4, cv::Scalar(255,255,255, 0));
+		map = TianLi::Map::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(map_info.viewer_width, map_info.viewer_height), cv::Point(map_info.center_x, map_info.center_y), map_info.scale_form_gimap, map_info.map_rect);
+		map = TianLi::Map::Utils::get_view_map_overlay(Core.GetResource().GiMap_Overlay(), map_info.map_rect).clone();
+	}
+
+	if (map_info.map_rect.area() == 0)
 	{
 		return;
 	}
 	
-	if (map_info.is_overlay)
+	if (map_info.is_overlay&& map_info.is_show_map)
 	{
 		render_overlay(map);
 	}
@@ -50,24 +62,27 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 	for (auto& info : badge_info.badge_block_list)
 	{
 		cv::Mat img = info.image;
+		cv::resize(img, img, cv::Size(), 1.0/map_info.scale_form_gimap, 1.0/map_info.scale_form_gimap);
 		for (auto& legend : info.badge_list)
 		{
 			// 取交集
-			if (legend & map_info.viewer_rect)
+			if (legend & map_info.map_rect)
 			{
 				// 绘制在map中Rect
 				cv::Rect r_img = cv::Rect(cv::Point(std::round(legend.x- img.cols/2.0), std::round(legend.y- img.rows/2.0)), img.size());
 				
 				// 取交集
-				cv::Rect r = r_img & map_info.viewer_rect;
+				cv::Rect r = (r_img & map_info.map_rect);
 				
 				// 获取相对于地图图片的范围
-				cv::Rect r1 = r - map_info.viewer_rect.tl();
+				cv::Rect r1 = r - map_info.map_rect.tl();
 				// 获取相对于区块图片的范围
 				cv::Rect r2 = r - r_img.tl();
 				//img(r2).copyTo(map(r1));
-				cv::Mat map_roi = map(r1);
-				TianLi::Map::Utils::add_rgba_image(map(r1).clone(), img(r2), map_roi);
+				auto map_roi = map(r1);
+				auto img_roi = img(r2);
+				
+				TianLi::Map::Utils::add_rgba_image(map_roi, img_roi, map_roi);
 			}
 		}
 	}
@@ -96,7 +111,7 @@ BadgeInfo GenshinImpact_TianLi_Map::search(const char* country, const char* type
 		badge.z = item.z;
 		
 		
-		if (badge & map_info.viewer_rect)
+		if (badge & map_info.map_rect)
 		{
 			badge_block.badge_list.push_back(badge);
 		}

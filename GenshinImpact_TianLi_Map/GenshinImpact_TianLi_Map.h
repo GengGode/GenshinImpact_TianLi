@@ -40,11 +40,12 @@ struct MapInfo
 	int center_y=0;
 	int viewer_width=0;
 	int viewer_height=0;
-	cv::Rect viewer_rect;
+	cv::Rect map_rect;
 	double scale_form_gimap=1.0;
 	int scale_width=0;
 	int scale_height=0;
 	bool is_overlay = false;
+	bool is_show_map = true;
 };
 struct BadgeInfo
 {
