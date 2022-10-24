@@ -74,7 +74,7 @@ void TianLiQtCommon_HUD_CircularMap::paintEvent(QPaintEvent* event)
 		
 		std::vector<cv::Mat> mv;
 		cv::split(mapMatRect, mv);
-		mv[3] = render_map_mask;
+		mv[3] = render_map_mask&mv[3];
 		cv::merge(mv, mapMatRect);
 
 		render_map_image = QImage((uchar*)(mapMatRect.data), mapMatRect.cols, mapMatRect.rows, mapMatRect.cols * (mapMatRect.channels()), QImage::Format_ARGB32);
