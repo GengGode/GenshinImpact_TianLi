@@ -54,9 +54,24 @@ void TianLiQtCommon_HUD_CircularMap::paintEvent(QPaintEvent* event)
 		old_map_center_pos = render_map_pos;
 		old_map_scale = render_map_scale;
 
-		cv::Rect viewer_rect;
-		mapMatRect = TianLi::Utils::get_view_map(gi_map, cv::Size(width(), height()), render_map_pos, render_map_scale, viewer_rect);
+		//cv::Rect viewer_rect;
+		//mapMatRect = TianLi::Utils::get_view_map(gi_map, cv::Size(width(), height()), render_map_pos, render_map_scale, viewer_rect);
+		Core.GetMap().map_info.is_overlay = true;
 
+		if (Core.GetResource().GIMAP_OVERLAY_RECT.contains(render_map_pos))
+		{
+			Core.GetMap().map_info.is_show_map = false;
+		}
+		Core.GetMap().map_info.center_x = render_map_pos.x;
+		Core.GetMap().map_info.center_y = render_map_pos.y;
+		Core.GetMap().map_info.viewer_width = this->width();
+		Core.GetMap().map_info.viewer_height = this->height();
+
+		//Core.GetMap().map_info.map_rect = map_rect;
+		Core.GetMap().map_info.scale_form_gimap = 1.0;
+		// 渲染图例
+		Core.GetMap().render_legend(mapMatRect);
+		
 		std::vector<cv::Mat> mv;
 		cv::split(mapMatRect, mv);
 		mv[3] = render_map_mask;
@@ -90,7 +105,8 @@ void TianLiQtCommon_HUD_CircularMap::slot_update()
 		{
 			this->show();
 			render_map_pos = cv::Point(Core.GetTrack().GetResult().position_x, Core.GetTrack().GetResult().position_y);
-			
+			//LogInfo(std::to_string(render_map_pos.x).c_str());
+
 			RECT gi_minimap_rect = Core.GetTrack().GetResult().minimap_rect;
 			slot_update_move(gi_minimap_rect);
 		}

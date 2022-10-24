@@ -118,12 +118,18 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 		old_map_scale = render_map_scale;
 		
 		//---
-		cv::Rect viewer_rect;
-		mapMatRect = TianLi::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, viewer_rect);
+		//cv::Rect map_rect;
+		//mapMatRect = TianLi::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, map_rect);
 		
 		Core.GetMap().map_info.is_overlay = true;
+		Core.GetMap().map_info.is_show_map = true;
 
-		Core.GetMap().map_info.viewer_rect = viewer_rect;
+		Core.GetMap().map_info.center_x = render_map_pos.x;
+		Core.GetMap().map_info.center_y = render_map_pos.y;
+		Core.GetMap().map_info.viewer_width = ui.label_Render->width();
+		Core.GetMap().map_info.viewer_height = ui.label_Render->height();
+
+		//Core.GetMap().map_info.map_rect = map_rect;
 		Core.GetMap().map_info.scale_form_gimap = render_map_scale;
 		// äÖÈ¾Í¼Àı
 		Core.GetMap().render_legend(mapMatRect);
