@@ -1,7 +1,6 @@
 #pragma once
 #include "GenshinImpact_TianLi_Track_Utils_Struct.h"
 
-#include <opencv2/xfeatures2d.hpp>
 
 inline void check_paimon(const GenshinScreen& genshin_screen, GenshinPaimon& out_genshin_paimon)
 {
@@ -183,26 +182,29 @@ inline void splite_minimap(const GenshinScreen& genshin_screen, GenshinMinimap& 
 
 inline double dis(cv::Point p)
 {
-	return sqrt(p.x * p.x + p.y * p.y);
+	return std::sqrt(p.x * p.x + p.y * p.y);
 }
+
 inline std::vector<cv::Point2f> Vector2UnitVector(std::vector<cv::Point2f> pLis)
 {
 	double length = 1;
 	std::vector<cv::Point2f> res;
 	for (int i = 0; i < pLis.size(); i++)
 	{
-		length = sqrt(pLis[i].x * pLis[i].x + pLis[i].y * pLis[i].y);
+		length = std::sqrt(pLis[i].x * pLis[i].x + pLis[i].y * pLis[i].y);
 		res.push_back(cv::Point2f((float)(pLis[i].x / length), (float)(pLis[i].y / length)));
 	}
 	return res;
 }
+
 inline double Line2Angle(cv::Point2f p)
 {
-	const double rad2degScale = 180 / CV_PI;
-	double res = atan2(-p.y, p.x) * rad2degScale;
+	const double rad2deg_scale = 180 / CV_PI;
+	double res = std::atan2(-p.y, p.x) * rad2deg_scale;
 	res = res - 90; //从屏幕空间左侧水平线为0度转到竖直向上为0度
 	return res;
 }
+
 
 inline void get_avatar_direction(const GenshinMinimap& genshin_minimap, GenshinAvatarDirection& out_genshin_direction)
 {
@@ -300,8 +302,8 @@ inline void get_viewer_direction(const GenshinMinimap& genshin_minimap, GenshinV
 	std::vector<cv::Mat>scr_channels;
 
 	auto& giViewerRef = genshin_minimap.img_viewer;
-	
-	split(giViewerRef, scr_channels);
+
+	cv::split(giViewerRef, scr_channels);
 
 	cv::Mat Alpha = scr_channels[3];
 
@@ -313,9 +315,11 @@ inline void get_viewer_direction(const GenshinMinimap& genshin_minimap, GenshinV
 	cv::threshold(Alpha, Alpha, 50, 0, cv::THRESH_TOZERO);
 	cv::threshold(Alpha, Alpha, 50, 255, cv::THRESH_BINARY);
 
-	cv::circle(Alpha, cv::Point(Alpha.cols / 2, Alpha.rows / 2), static_cast<int>(std::min(Alpha.cols / 2, Alpha.rows / 2) * 1.21), cv::Scalar(0, 0, 0), static_cast<int>(std::min(Alpha.cols / 2, Alpha.rows / 2) * 0.42));
-	cv::circle(Alpha, cv::Point(Alpha.cols / 2, Alpha.rows / 2), static_cast<int>(std::min(Alpha.cols / 2, Alpha.rows / 2) * 0.3), cv::Scalar(0, 0, 0), -1);
+	double min_r = std::min(Alpha.cols / 2.0, Alpha.rows / 2.0);
+	cv::Point center_p = cv::Point(Alpha.cols / 2, Alpha.rows / 2.0);
 
+	cv::circle(Alpha, center_p, static_cast<int>(min_r * 1.21), cv::Scalar(0, 0, 0), static_cast<int>(min_r * 0.42));
+	cv::circle(Alpha, center_p, static_cast<int>(min_r * 0.3), cv::Scalar(0, 0, 0), -1);
 
 	cv::Mat dilate_element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(4, 4));
 	cv::dilate(Alpha, Alpha, dilate_element);
@@ -341,7 +345,7 @@ inline void get_viewer_direction(const GenshinMinimap& genshin_minimap, GenshinV
 	{
 		return;
 	}
-	
+
 	int maxBlack = 0;
 	int maxId = 0;
 
@@ -379,14 +383,14 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 		is_first = false;
 	}
 
-	
+
 	auto& giMinimapRef = genshin_minimap.img_minimap;
 
 	if (giMinimapRef.empty()) return;
 
 	std::vector<cv::Mat> split_gi_frame;
 	split(giMinimapRef, split_gi_frame);
-	
+
 	cv::Mat giMinimapRef_A = split_gi_frame[3];
 
 	cv::Point2d minimap_center = cv::Point(giMinimapRef.cols / 2, giMinimapRef.rows / 2);
@@ -401,7 +405,7 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 
 	// 在边缘图中心绘制半径为80的黑色遮罩
 	cv::circle(canny, minimap_center, circle_mask_r0, cv::Scalar(0), -1);
-	
+
 	if (mask_circle.size() != giMinimapRef.size())
 	{
 		mask_circle = cv::Mat::zeros(giMinimapRef.size(), CV_8UC1);
@@ -425,13 +429,13 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 	cv::Mat sum_mask;
 
 	giMinimapRef_A.copyTo(test_roi_gray);
-	
+
 	cv::threshold(test_roi_gray, test_roi_binary, 83, 255, cv::THRESH_BINARY);
 
 	cv::circle(test_roi_binary, minimap_center, 86, cv::Scalar(255), 5);
 
 	cv::threshold(test_roi_gray, test_roi_binary_inv, 194, 255, cv::THRESH_BINARY_INV);
-	
+
 	cv::circle(test_roi_binary_inv, minimap_center, circle_mask_r0, cv::Scalar(0), -1);
 
 	cv::bitwise_and(test_roi_binary, test_roi_binary_inv, test_roi_binary_final);
@@ -457,7 +461,7 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 			// 搜索区域为test_roi中以sum_mask_erode为遮罩的部分
 	cv::Mat test_roi_mask;
 	giMinimapRef.copyTo(test_roi_mask, sum_mask_erode);
-	
+
 
 	// 拆分被匹配图片，只要它的透明通道 test_roi_mask
 	std::vector<cv::Mat> test_roi_mask_channels;
@@ -467,7 +471,7 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 	// 查找色块轮廓
 	std::vector<std::vector<cv::Point>> N_contours;
 	cv::findContours(sum_mask, N_contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-	
+
 	if (N_contours.size() == 0)
 	{
 		return;
@@ -489,7 +493,7 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 		cv::Mat N_template_rotate_binary;
 		cv::threshold(N_template_rotate, N_template_rotate_binary, 1, 255, cv::THRESH_BINARY);
 		cv::Mat N_template_rotate_binary2 = N_template_rotate_binary * 255;
-		
+
 		// 匹配模板
 		cv::Mat result;
 		cv::matchTemplate(test_roi_mask_mask, N_template_rotate, result, cv::TM_CCOEFF_NORMED, N_template_rotate_binary);
@@ -500,7 +504,7 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 		{
 			for (int j = 0; j < result2.cols; j++)
 			{
-				if (result2.at<float>(i, j) >1)
+				if (result2.at<float>(i, j) > 1)
 				{
 					result2.at<float>(i, j) = 0;
 				}
@@ -514,7 +518,7 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 
 		angle_maxVal_list.push_back({ angle,maxVal });
 	}
-	
+
 	if (angle_maxVal_list.size() > 1)
 	{
 		// 从匹配结果中找到最大值
@@ -534,7 +538,7 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 	{
 		out_genshin_direction.angle = angle_maxVal_list[0].first;
 	}
-	
+
 }
 
 inline void get_stars(const GenshinMinimap& genshin_minimap, GenshinStars& out_genshin_stars)
@@ -549,38 +553,38 @@ inline void get_stars(const GenshinMinimap& genshin_minimap, GenshinStars& out_g
 		star_template = GenshinImpact_TianLi_Resource::GetInstance()->GISTAR;
 		cv::split(star_template, star_template_channels);
 		star_template = star_template_channels[3];
-		
+
 		star_template_center = cv::Point2d(star_template.cols / 2, star_template.rows / 2);
 		is_first = false;
 	}
-	
+
 	int MAXLOOP = 0;
 	bool isLoopMatch = false;
-	
+
 	double minVal, maxVal;
 	cv::Point minLoc, maxLoc;
-	
+
 	std::vector<cv::Point2d> pos;
-	
+
 	double scale = 1.3;
 
-	
+
 	auto& giMinimapRef = genshin_minimap.img_stars;
 	if (giMinimapRef.empty()) return;
-	
+
 	cv::Point2d minimap_center = cv::Point(giMinimapRef.cols / 2, giMinimapRef.rows / 2);
 	cv::Mat minimap_bary;
-	
+
 	//一个bug 未开游戏而先开应用，开游戏时触发
-	cv::cvtColor(giMinimapRef,minimap_bary, cv::COLOR_RGBA2GRAY);
+	cv::cvtColor(giMinimapRef, minimap_bary, cv::COLOR_RGBA2GRAY);
 
 	bool is_star_visible;
-	
+
 	cv::Mat result;
-	
+
 	matchTemplate(star_template, minimap_bary, result, cv::TM_CCOEFF_NORMED);
 	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc);
-	
+
 	if (maxVal < 0.66)
 	{
 		is_star_visible = false;
@@ -589,7 +593,7 @@ inline void get_stars(const GenshinMinimap& genshin_minimap, GenshinStars& out_g
 	{
 		isLoopMatch = true;
 		is_star_visible = true;
-		pos.push_back(cv::Point2d(maxLoc) -minimap_center +star_template_center);
+		pos.push_back(cv::Point2d(maxLoc) - minimap_center + star_template_center);
 	}
 
 	while (isLoopMatch)

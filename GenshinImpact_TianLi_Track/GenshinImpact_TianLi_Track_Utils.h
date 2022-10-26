@@ -18,6 +18,7 @@ GenshinAvatarPosition func_get_avatar_position(GenshinMinimap& in);
 GenshinViewerDirection func_get_viewer_direction(GenshinMinimap& in);
 
 GenshinMinimapDirection func_get_minimap_direction(GenshinMinimap& in);
+
 GenshinStars func_get_stars(GenshinMinimap& in);
 
 GenshinTagflags func_get_tagflags(GenshinMinimap& in);

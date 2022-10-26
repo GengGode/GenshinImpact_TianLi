@@ -10,6 +10,8 @@
 // 添加要在此处预编译的标头
 #include "framework.h"
 #include <opencv2/opencv.hpp>
+#include <opencv2/xfeatures2d.hpp>
+
 
 #include <string>
 #include <chrono>
