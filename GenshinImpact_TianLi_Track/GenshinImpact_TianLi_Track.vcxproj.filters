@@ -65,5 +65,8 @@
     <ClCompile Include="GenshinImpact_TianLi_Track_Utils_MiniMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="GenshinImpact_TianLi_Track_Utils_Struct.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

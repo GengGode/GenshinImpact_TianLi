@@ -167,6 +167,7 @@
     <ClCompile Include="GenshinImpact_TianLi_Track_TaskResult.cpp" />
     <ClCompile Include="GenshinImpact_TianLi_Track_Utils.cpp" />
     <ClCompile Include="GenshinImpact_TianLi_Track_Utils_MiniMap.cpp" />
+    <ClCompile Include="GenshinImpact_TianLi_Track_Utils_Struct.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
