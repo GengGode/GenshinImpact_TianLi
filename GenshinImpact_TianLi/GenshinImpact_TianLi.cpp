@@ -100,7 +100,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	TianLiQtCommon_ListenKeyBoard* listen_key_board = new TianLiQtCommon_ListenKeyBoard(this);
 	
 	
-	listen_key_board->register_key_signal(0x41, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
+	// listen_key_board->register_key_signal(0x41, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
 	// F1 触发 slot_show_or_hide
 	listen_key_board->register_key(0x70, this, &GenshinImpact_TianLi::slot_show_or_hide);
 	
