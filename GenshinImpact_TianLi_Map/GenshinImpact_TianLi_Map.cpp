@@ -20,6 +20,10 @@ GenshinImpact_TianLi_Map::~GenshinImpact_TianLi_Map()
 //	return instance;
 //}
 
+/// <summary>
+/// 渲染覆盖透明层
+/// </summary>
+/// <param name="map"></param>
 void GenshinImpact_TianLi_Map::render_overlay(cv::Mat& map)
 {
 	if (map_info.map_rect.area() == 0)

@@ -428,15 +428,22 @@ double SurfMatch::var(std::vector<double> lisx, double sumx, std::vector<double>
 	return sqrt(stdevx * stdevx + stdevy * stdevy);
 }
 
-bool func_test_diff_match(const cv::Mat now_minimap_mat)
+bool func_test_diff_match(const cv::Mat minimap, double& dx, double& dy)
 {
 	static cv::Mat last_minimap_mat;
 	static cv::Point2d pos_minimap = { 0,0 };
-	if (now_minimap_mat.empty())
+	if (minimap.empty())
 	{
 		std::cout << "frame is empty" << std::endl;
 		return false;
 	}
+
+	int x = minimap.cols * 0.1;
+	int y = minimap.cols * 0.1;
+	int w = minimap.cols * 0.8;
+	int h = minimap.cols * 0.8;
+
+	auto now_minimap_mat = minimap(cv::Rect(x, y, w, h));
 
 	if (last_minimap_mat.empty())
 	{
@@ -450,6 +457,7 @@ bool func_test_diff_match(const cv::Mat now_minimap_mat)
 		std::cout << "last_minimap_mat.size != now_minimap_mat.size" << std::endl;
 		return false;
 	}
+	
 
 	cv::Mat  now_minimap_mat_gray;
 	cv::Mat last_minimap_mat_gray;
@@ -461,64 +469,67 @@ bool func_test_diff_match(const cv::Mat now_minimap_mat)
 	last_minimap_mat_gray.convertTo(last_minimap_mat_f64, CV_64FC1);
 
 	auto diff_pos = cv::phaseCorrelate(now_minimap_mat_f64, last_minimap_mat_f64);
-	diff_pos = diff_pos - cv::Point2d(0.5, 0.5);
+	
+	dx = diff_pos.x;
+	dy = diff_pos.y;
+
+	//diff_pos = diff_pos - cv::Point2d(0.5, 0.5);
 
 	//auto diff_pos = calc_diff_pos_match_surf(now_minimap_mat_gray, last_minimap_mat_gray);
 	//auto diff_pos = calc_diff_pos(now_minimap_mat_f64, last_minimap_mat_f64);
 
+	std::cout << "diff = " << dx << " , " << dy << std::endl;
 
 	last_minimap_mat = now_minimap_mat.clone();
-
-	//if (diff_pos.x != 0 || diff_pos.y != 0)
+	
+	//
+	//pos_minimap += diff_pos;
+	//std::cout << "pos_minimap = " << pos_minimap.x << " , " << pos_minimap.y << std::endl;c
+	//// 小地图叠加绘制展示
+	//static cv::Mat minimap_mat(500, 500, CV_8UC4, cv::Scalar(0, 0, 0, 0));
+	//static cv::Point center(250, 250);
+	//static bool is_frist = true;
+	//if (is_frist)
 	//{
-		// std::cout << "diff_pos.x = " << diff_pos.x << " diff_pos.y = " << diff_pos.y << std::endl;
-	pos_minimap += diff_pos;
-	std::cout << "pos_minimap = " << pos_minimap.x << " , " << pos_minimap.y << std::endl;
-	// 小地图叠加绘制展示
-	static cv::Mat minimap_mat(500, 500, CV_8UC4, cv::Scalar(0, 0, 0, 0));
-	static cv::Point center(250, 250);
-	static bool is_frist = true;
-	if (is_frist)
-	{
-		is_frist = false;
-		// 拷贝小地图到偏移位置
-		cv::Mat minimap_mat_roi = minimap_mat(cv::Rect(static_cast<int>(250 - now_minimap_mat.cols / 2), static_cast<int>(250 - now_minimap_mat.rows / 2), now_minimap_mat.cols, now_minimap_mat.rows));
-		now_minimap_mat.copyTo(minimap_mat_roi);
-	}
+	//	is_frist = false;
+	//	// 拷贝小地图到偏移位置
+	//	cv::Mat minimap_mat_roi = minimap_mat(cv::Rect(static_cast<int>(250 - now_minimap_mat.cols / 2), static_cast<int>(250 - now_minimap_mat.rows / 2), now_minimap_mat.cols, now_minimap_mat.rows));
+	//	now_minimap_mat.copyTo(minimap_mat_roi);
+	//}
 
-	cv::Point2d pos_minimap_draw = pos_minimap + cv::Point2d(center);
-	static std::vector<cv::Point2d> pos_history_draw;
-	static int count = 0;
-	count++;
-	if (count == 10)
-	{
-		count = 0;
-		pos_history_draw.push_back(pos_minimap_draw);
-		if (pos_history_draw.size() > 100)
-		{
-			pos_history_draw.erase(pos_history_draw.begin());
-		}
-	}
+	//cv::Point2d pos_minimap_draw = pos_minimap + cv::Point2d(center);
+	//static std::vector<cv::Point2d> pos_history_draw;
+	//static int count = 0;
+	//count++;
+	//if (count == 10)
+	//{
+	//	count = 0;
+	//	pos_history_draw.push_back(pos_minimap_draw);
+	//	if (pos_history_draw.size() > 100)
+	//	{
+	//		pos_history_draw.erase(pos_history_draw.begin());
+	//	}
+	//}
 
-	try {
+	//try {
 
-		// 绘制偏移位置
-		cv::Mat minimap_mat_roi = minimap_mat(cv::Rect(static_cast<int>(pos_minimap_draw.x - now_minimap_mat.cols / 2), static_cast<int>(pos_minimap_draw.y - now_minimap_mat.rows / 2), now_minimap_mat.cols, now_minimap_mat.rows));
-		cv::addWeighted(minimap_mat_roi, 0.5, now_minimap_mat, 0.5, 0, minimap_mat_roi);
+	//	// 绘制偏移位置
+	//	cv::Mat minimap_mat_roi = minimap_mat(cv::Rect(static_cast<int>(pos_minimap_draw.x - now_minimap_mat.cols / 2), static_cast<int>(pos_minimap_draw.y - now_minimap_mat.rows / 2), now_minimap_mat.cols, now_minimap_mat.rows));
+	//	cv::addWeighted(minimap_mat_roi, 0.5, now_minimap_mat, 0.5, 0, minimap_mat_roi);
 
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
-	//cv::line(minimap_mat, center, pos_minimap_draw, cv::Scalar(0, 0, 255), 2);
-	for (auto pos : pos_history_draw)
-	{
-		//cv::line(minimap_mat, center, pos, cv::Scalar(0, 0, 255), 2);
-		cv::circle(minimap_mat, pos, 2, cv::Scalar(0, 255, 255), 2);
-	}
-	cv::imshow("minimap_mat", minimap_mat);
-	cv::waitKey(1);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << e.what() << std::endl;
+	//}
+	////cv::line(minimap_mat, center, pos_minimap_draw, cv::Scalar(0, 0, 255), 2);
+	//for (auto pos : pos_history_draw)
+	//{
+	//	//cv::line(minimap_mat, center, pos, cv::Scalar(0, 0, 255), 2);
+	//	cv::circle(minimap_mat, pos, 2, cv::Scalar(0, 255, 255), 2);
+	//}
+	//cv::imshow("minimap_mat", minimap_mat);
+	//cv::waitKey(1);
 
 
 	return true;
@@ -545,28 +556,7 @@ struct Pos
 	}
 };
 
-struct INS
-{
-	double x;
-	double y;
-	double dx;
-	double dy;
-};
-struct GPS
-{
-	double x;
-	double y;
-	double dx;
-	double dy;
-};
-struct FUSION
-{
-	double x;
-	double y;
-	double dx;
-	double dy;
-};
-bool ins_gps_data_fusion(const INS& ins, const GPS& gps, double& x, double& y)
+bool ins_gps_data_fusion(const Pos& ins, const Pos& gps, double& x, double& y)
 {
 	//x = ins.x + ins.dx - gps.x - gps.dx;
 	//y = ins.y + ins.dy - gps.y - gps.dy;
@@ -588,10 +578,10 @@ bool ins_gps_data_fusion(const INS& ins, const GPS& gps, double& x, double& y)
 	{
 		ins_kf_init = true;
 		ins_filter = new Kalman();
-		auto ins_pos_d = ins_filter->filterting(cv::Point(ins.dx, ins.dy));
+		auto ins_pos_d = ins_filter->filterting(ins.pos_t0);
 
 	}
-	auto ins_pos_d = ins_filter->filterting(cv::Point(ins.dx, ins.dy));
+	auto ins_pos = ins_filter->filterting(ins.pos_t);
 
 	// gps数据滤波
 	static Filter* gps_filter = nullptr;
@@ -600,16 +590,12 @@ bool ins_gps_data_fusion(const INS& ins, const GPS& gps, double& x, double& y)
 	{
 		gps_kf_init = true;
 		gps_filter = new Kalman();
-		auto gps_pos = gps_filter->filterting(cv::Point(ins.x, ins.y));
+		auto gps_pos = gps_filter->filterting(gps.pos_t0);
 	}
-	auto gps_pos = gps_filter->filterting(cv::Point(ins.x, ins.y));
-
+	auto gps_pos = gps_filter->filterting(gps.pos_t);
 
 	// ins和gps数据融合
-	//x = ins_correct.at<float>(0) + ins_correct.at<float>(2) - gps_correct.at<float>(0) - gps_correct.at<float>(2);
-	//y = ins_correct.at<float>(1) + ins_correct.at<float>(3) - gps_correct.at<float>(1) - gps_correct.at<float>(3);
-
-	auto pos = gps_pos + ins_pos_d;
+	auto pos = (gps_pos + ins_pos);
 
 	// 融合后的数据进行滤波
 	static Filter* fusion_filter = nullptr;
@@ -617,16 +603,19 @@ bool ins_gps_data_fusion(const INS& ins, const GPS& gps, double& x, double& y)
 	if (!fusion_kf_init)
 	{
 		fusion_kf_init = true;
-
 		fusion_filter = new Kalman();
-		auto fusion_pos = fusion_filter->filterting(cv::Point(x, y));
+		auto fusion_pos = fusion_filter->filterting(pos);
 
 	}
-	auto fusion_pos = fusion_filter->filterting(cv::Point(x, y));
+	auto fusion_pos = fusion_filter->filterting(pos);
 
 	x = fusion_pos.x;
 	y = fusion_pos.y;
-
+	
+	std::cout << "ins = " << ins_pos.x << " , " << ins_pos.y<<" | ";
+	std::cout << "gps = " << gps_pos.x << " , " << gps_pos.y<<" | ";
+	std::cout << "fus = " << fusion_pos.x << " , " << fusion_pos.y<< "\n";
+	
 	return true;
 }
 
@@ -671,9 +660,26 @@ void get_avatar_position(const GenshinMinimap& genshin_minimap, GenshinAvatarPos
 
 	surf_match.setMinMap(genshin_minimap.img_minimap);
 	
-	func_test_diff_match(genshin_minimap.img_minimap);
-	
 	surf_match.match();
-
+	// GPS数据获取
 	out_genshin_position.position = surf_match.getLocalPos();
+
+	//static Pos ins_pos;
+	//static Pos gps_pos;
+	//static Pos fusion_pos;
+	//double dx = 0;
+	//double dy = 0;
+	//// INS数据获取
+	//func_test_diff_match(genshin_minimap.img_minimap, dx, dy);
+	//// 从GPS获取绝对位置
+	//ins_pos.pos_t = ins_pos.pos_t;
+	//ins_pos.updata(dx/2.0, dy/2.0);
+	//// GPS数据获取
+	//gps_pos.updata(out_genshin_position.position);
+	//// INS和GPS数据融合
+	//double x = 0;
+	//double y = 0;
+	//ins_gps_data_fusion(ins_pos, gps_pos, x, y);
+	//out_genshin_position.position.x = x;
+	//out_genshin_position.position.y = y;
 }
