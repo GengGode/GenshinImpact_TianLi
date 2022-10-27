@@ -21,7 +21,7 @@ GenshinImpact_TianLi_Map::~GenshinImpact_TianLi_Map()
 //}
 
 /// <summary>
-/// æ¸²æŸ“è¦†ç›–é€æ˜å±‚
+/// äÖÈ¾¸²¸ÇÍ¸Ã÷²ã
 /// </summary>
 /// <param name="map"></param>
 void GenshinImpact_TianLi_Map::render_overlay(cv::Mat& map)
@@ -33,7 +33,7 @@ void GenshinImpact_TianLi_Map::render_overlay(cv::Mat& map)
 	auto map_rect_overlay = TianLi::Map::Utils::get_view_map_overlay(Core.GetResource().GiMap_Overlay(), map_info.map_rect);
 	cv::resize(map_rect_overlay, map_rect_overlay,map.size());
 	
-	TianLi::Map::Utils::add_rgba_image(map, map_rect_overlay, map);
+	TianLi::Map::Utils::add_rgba_image(map, map_rect_overlay, map,0.5);
 }
 
 void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
