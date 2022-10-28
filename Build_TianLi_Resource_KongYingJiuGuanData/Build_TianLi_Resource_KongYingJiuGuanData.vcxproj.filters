@@ -44,5 +44,11 @@
     <ClInclude Include="load.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="LoadJson.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\type\DataJsonApi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

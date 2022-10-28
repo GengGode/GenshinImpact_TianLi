@@ -1,6 +1,7 @@
 #include "kyjg_to_tianli.h"
 
 #include "load.h"
+#include <cassert>
 
 sqlite3* db;
 
@@ -10,18 +11,6 @@ void open_build_sqlite()
 	// ∆Ù”√Õ‚º¸‘º ¯
 	sqlite3_exec(db, "PRAGMA foreign_keys = ON;", NULL, NULL, NULL);
 	
-	//sqlite3_exec(db, "PRAGMA synchronous = OFF", NULL, NULL, NULL);
-	//sqlite3_exec(db, "PRAGMA journal_mode = MEMORY", NULL, NULL, NULL);
-	//sqlite3_exec(db, "PRAGMA temp_store = MEMORY", NULL, NULL, NULL);
-	//sqlite3_exec(db, "PRAGMA cache_size = 10000", NULL, NULL, NULL);
-	//sqlite3_exec(db, "PRAGMA count_changes = OFF", NULL, NULL, NULL);
-	//sqlite3_exec(db, "PRAGMA page_size = 4096", NULL, NULL, NULL);
-	//sqlite3_exec(db, "PRAGMA locking_mode = EXCLUSIVE", NULL, NULL, NULL);
-	//sqlite3_exec(db, "PRAGMA auto_vacuum = FULL", NULL, NULL, NULL);
-	//sqlite3_exec(db, "PRAGMA encoding = \"UTF-8\"", NULL, NULL, NULL);
-	//
-	//sqlite3_stmt* stmt;
-	//sqlite3_prepare_v2(db, "SELECT * FROM kongyingjiuguan", -1, &stmt, NULL);
 }
 
 void close_build_sqlite()
@@ -500,23 +489,49 @@ void test_icon()
 	}
 
 }
+
+#include "LoadJson.h"
 int to_tianli()
 {
-	cont_area();
-	cont_type();
-	cont_icon();
-	cont_item();
-	cont_items();
-	cont_object();
-	
-	if(0)
-	{
-		test_icon();
+	//cont_area();
+	//cont_type();
+	//cont_icon();
+	//cont_item();
+	//cont_items();
+	//cont_object();
+	//
+	//if(0)
+	//{
+	//	test_icon();
 
-	}
+	//}
+	//
+	auto data = load_json();
+	
+	//cv::FileStorage fs("/resource/DataJson.xml", cv::FileStorage::WRITE);
+	//fs << "data" << data;
+	//fs.release();
+	//// ≤‚ ‘
+	//cv::FileStorage fs_test("/resource/DataJson.xml", cv::FileStorage::READ);
+	//DataJsonApi data_test;
+	//fs["data"] >> data_test;
+	//fs_test.release();
+	//
+	//if (data.objects.size() == data_test.objects.size())
+	//{
+	//	return 0;
+	//}
+	//else
+	//{
+	//	return -1;
+	//}
+	
+	
+	
 	
 	return 0;
 }
+
 //void test()
 //{	
 //	objects stars;
