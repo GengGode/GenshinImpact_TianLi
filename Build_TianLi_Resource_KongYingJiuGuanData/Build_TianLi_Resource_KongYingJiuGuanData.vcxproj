@@ -153,6 +153,9 @@
     <ClInclude Include="sqlite3\sqlite3ext.h" />
     <ClInclude Include="src\type\DataJsonApi.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Data.sqlite" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

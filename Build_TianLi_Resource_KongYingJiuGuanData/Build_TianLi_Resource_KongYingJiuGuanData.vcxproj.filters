@@ -51,4 +51,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Data.sqlite">
+      <Filter>资源文件</Filter>
+    </None>
+  </ItemGroup>
 </Project>

@@ -14,8 +14,32 @@ struct DataJsonApi_ItemId
     int count;
     std::string iconTag;
     int itemId;
+	
+    std::string to_json()
+    {
+		std::string json = "{";
+		json += "\"count\":" + std::to_string(count) + ",";
+		json += "\"iconTag\":\"" + iconTag + "\",";
+		json += "\"itemId\":" + std::to_string(itemId) + "";
+		json += "}";
+        return "{}";// json;
+    }
 };
 typedef std::vector<DataJsonApi_ItemId> DataJsonApi_ItemIdList;
+std::string to_json(DataJsonApi_ItemIdList & list)
+{
+	std::string json = "[";
+	for (int i = 0; i < list.size(); i++)
+	{
+		json += list.at(i).to_json();
+		if (i < list.size() - 1)
+		{
+			json += ",";
+		}
+	}
+	json += "]";
+	return json;
+}
 struct DataJsonApi_ObjectPosition
 {
     std::string position;
@@ -56,6 +80,28 @@ struct DataJsonApi_Object
     int refreshTime;
     int version;
     std::string videoPath;
+    static std::string sql_create_str()
+    {
+		std::string sql = "CREATE TABLE IF NOT EXISTS Object (";
+		sql += "UUID INTEGER PRIMARY KEY,";
+		sql += "content TEXT,";
+		sql += "hiddenFlag INTEGER,";
+		sql += "id INTEGER,";
+		sql += "itemList TEXT,";
+		sql += "markerCreatorId INTEGER,";
+		sql += "markerTitle TEXT,";
+		sql += "picture TEXT,";
+		sql += "position TEXT,";
+		sql += "refreshTime INTEGER,";
+		sql += "version INTEGER,";
+		sql += "videoPath TEXT";
+		sql += ")";
+		return sql;
+    }
+    std::string sql_insert_str()
+    {
+		return "INSERT INTO Object (content, hiddenFlag, id, itemList, markerCreatorId, markerTitle, picture, position, refreshTime, version, videoPath) VALUES (\"" + content + "\", " + std::to_string(hiddenFlag) + ", " + std::to_string(id) + ", \"" + to_json(itemList) + "\", " + std::to_string(markerCreatorId) + ", \"" + markerTitle + "\", \"" + picture + "\", \"" + position.position + "\", " + std::to_string(refreshTime) + ", " + std::to_string(version) + ", \"" + videoPath + "\");";
+    }
 };
 
 /* Area
@@ -84,10 +130,45 @@ struct DataJsonApi_Area
     bool isFinal;
     int hiddenFlag;
     int sortIndex;
+    static std::string sql_create_str()
+    {
+		std::string sql = "CREATE TABLE IF NOT EXISTS Area (";
+		sql += "UUID INTEGER PRIMARY KEY,";
+		sql += "version INTEGER,";
+		sql += "areaId INTEGER,";
+		sql += "name TEXT,";
+		sql += "code TEXT,";
+		sql += "content TEXT,";
+		sql += "iconTag TEXT,";
+		sql += "parentId INTEGER,";
+		sql += "isFinal INTEGER,";
+		sql += "hiddenFlag INTEGER,";
+		sql += "sortIndex INTEGER";
+		sql += ")";
+		return sql;
+    }
+    std::string sql_insert_str()
+    {
+		return "INSERT INTO Area (version, areaId, name, code, content, iconTag, parentId, isFinal, hiddenFlag, sortIndex) VALUES (" + std::to_string(version) + ", " + std::to_string(areaId) + ", \"" + name + "\", \"" + code + "\", \"" + content + "\", \"" + iconTag + "\", " + std::to_string(parentId) + ", " + std::to_string(isFinal) + ", " + std::to_string(hiddenFlag) + ", " + std::to_string(sortIndex) + ");";
+    }
 };
 
 typedef int DataJsonApi_TypeId;
 typedef std::vector<DataJsonApi_TypeId> DataJsonApi_TypeIdList;
+std::string to_json(DataJsonApi_TypeIdList& list)
+{
+	std::string json = "[";
+	for (int i = 0; i < list.size(); i++)
+	{
+		json += std::to_string(list.at(i));
+		if (i < list.size() - 1)
+		{
+			json += ",";
+		}
+	}
+	json += "]";
+	return json;
+}
 /* Item
 {
     "areaId": 6,
@@ -123,6 +204,30 @@ struct DataJsonApi_Item
     int sortIndex;
     DataJsonApi_TypeIdList typeIdList;
     int version;
+    static std::string sql_create_str()
+    {
+		std::string sql = "CREATE TABLE IF NOT EXISTS Item (";
+		sql += "UUID INTEGER PRIMARY KEY,";
+		sql += "areaId INTEGER,";
+		sql += "count INTEGER,";
+		sql += "defaultContent TEXT,";
+		sql += "defaultCount INTEGER,";
+		sql += "defaultRefreshTime INTEGER,";
+		sql += "hiddenFlag INTEGER,";
+		sql += "iconStyleType INTEGER,";
+		sql += "iconTag TEXT,";
+		sql += "itemId INTEGER,";
+		sql += "name TEXT,";
+		sql += "sortIndex INTEGER,";
+		sql += "typeIdList TEXT,";
+		sql += "version INTEGER";
+		sql += ")";
+		return sql;
+    }
+    std::string sql_insert_str()
+    {
+		return "INSERT INTO Item (areaId, count, defaultContent, defaultCount, defaultRefreshTime, hiddenFlag, iconStyleType, iconTag, itemId, name, sortIndex, typeIdList, version) VALUES (" + std::to_string(areaId) + ", " + std::to_string(count) + ", \"" + defaultContent + "\", " + std::to_string(defaultCount) + ", " + std::to_string(defaultRefreshTime) + ", " + std::to_string(hiddenFlag) + ", " + std::to_string(iconStyleType) + ", \"" + iconTag + "\", " + std::to_string(itemId) + ", \"" + name + "\", " + std::to_string(sortIndex) + ", \"" + to_json(typeIdList) + "\", " + std::to_string(version) + ");";
+    }
 };
 
 /* Icon
@@ -141,6 +246,22 @@ struct DataJsonApi_Icon
     DataJsonApi_TypeIdList typeIdList;
     std::string url;
     int version;
+    static std::string sql_create_str()
+    {
+		std::string sql = "CREATE TABLE IF NOT EXISTS Icon (";
+		sql += "UUID INTEGER PRIMARY KEY,";
+		sql += "iconId INTEGER,";
+		sql += "tag TEXT,";
+		sql += "typeIdList TEXT,";
+		sql += "url TEXT,";
+		sql += "version INTEGER";
+		sql += ")";
+		return sql;
+    }
+    std::string sql_insert_str()
+    {
+		return "INSERT INTO Icon (iconId, tag, typeIdList, url, version) VALUES (" + std::to_string(iconId) + ", \"" + tag + "\", \"" + to_json(typeIdList) + "\", \"" + url + "\", " + std::to_string(version) + ");";
+    }
 };
 
 /* Type
@@ -167,4 +288,24 @@ struct DataJsonApi_Type
     bool isFinal;
     int hiddenFlag;
     int sortIndex;
+    static std::string sql_create_str()
+    {
+		std::string sql = "CREATE TABLE IF NOT EXISTS Type (";
+		sql += "UUID INTEGER PRIMARY KEY,";
+		sql += "version INTEGER,";
+		sql += "typeId INTEGER,";
+		sql += "iconTag TEXT,";
+		sql += "name TEXT,";
+		sql += "content TEXT,";
+		sql += "parentId INTEGER,";
+		sql += "isFinal INTEGER,";
+		sql += "hiddenFlag INTEGER,";
+		sql += "sortIndex INTEGER";
+		sql += ")";
+		return sql;
+    }
+    std::string sql_insert_str()
+    {
+		return "INSERT INTO Type (version, typeId, iconTag, name, content, parentId, isFinal, hiddenFlag, sortIndex) VALUES (" + std::to_string(version) + ", " + std::to_string(typeId) + ", \"" + iconTag + "\", \"" + name + "\", \"" + content + "\", " + std::to_string(parentId) + ", " + std::to_string(isFinal) + ", " + std::to_string(hiddenFlag) + ", " + std::to_string(sortIndex) + ");";
+    }
 };

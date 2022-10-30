@@ -1,15 +1,26 @@
 #pragma once
-
-#include "meojson/json.hpp"
-#include "meojson/json5.hpp"
-
-#include "src/type/DataJsonApi.h"
 #include <iostream>
 #include <filesystem>
 #include <regex>
+// 第三方库 Opencv
+#include <opencv2/opencv.hpp>
+// 第三方库 MeoJson
+#include "meojson/json.hpp"
+#include "meojson/json5.hpp"
+// 第三方库 Sqlite3
+#include "sqlite3/sqlite3.h"
+// src
+#include "src/type/DataJsonApi.h"
 
+// 本地资源文件依赖
 const std::string root = "C:/Users/GengG/source/repos/GenshinImpact_TianLi/Build_TianLi_Resource_KongYingJiuGuanData/resource";
 const std::string dir_name = "/POI_JSON_API";
+const std::string sql_db_dir_root = "C:/Users/GengG/source/repos/GenshinImpact_TianLi/Build_TianLi_Resource_KongYingJiuGuanData";
+const std::string sql_db_name = "Data.sqlite";
+const std::string sql_db_dir = sql_db_dir_root + "/" + sql_db_name;
+const std::string download_tmp_dir = "C:/Users/GengG/source/repos/GenshinImpact_TianLi/Build_TianLi_Resource_KongYingJiuGuanData/tmp";
+
+
 namespace utils {
 	auto get_all_file_names(const std::string& path)
 	{
@@ -38,8 +49,63 @@ namespace utils {
 		}
 		return tokens;
 	}
-}
+	bool is_file_exist(const std::string& path)
+	{
+		return std::filesystem::exists(path);
+	}
+	void delete_file(const std::string& path)
+	{
+		std::filesystem::remove(path);
+	}
+	std::string get_file_name(const std::string& url)
+	{
+		std::regex reg(R"(([^/]+)\.png)");
+		std::smatch sm;
+		std::regex_search(url, sm, reg);
+		return sm[1].str();
+		
+	}
+	bool download_file(const std::string& url, const std::string& path)
+	{
+		std::string cmd = "curl -o " + path + " " + url;
+		return system(cmd.c_str()) == 0;		
+	}
+	struct Data {
+		const char* data;
+		int size;
+	};
+	Data read_file_data(std::string path)
+	{
+		std::ifstream file(path, std::ios::binary);
+		if (!file.is_open()) {
+			cv::Mat img = cv::imread("C:/Users/GengG/source/repos/GenshinImpact_TianLi/Build_TianLi_Resource_KongYingJiuGuanData/resource/问号.png");
+			cv::imwrite(path, img);
+			file.open(path, std::ios::binary);
+		}
+		file.seekg(0, std::ios::end);
+		int size = file.tellg();
+		file.seekg(0, std::ios::beg);
+		char* data = new char[size];
+		file.read(data, size);
+		file.close();
+		return { data, size };
+	}
+	cv::Mat read_png(std::string path)
+	{
+		cv::Mat img = cv::imread(path, cv::IMREAD_UNCHANGED);
+		return img;
 
+	}
+}
+static int test(void* data, int argc, char** argv, char** azColName) 
+{
+		for (int i = 0; i < argc; i++)
+		{
+			std::cout << azColName[i] << " = " << (argv[i] ? argv[i] : "NULL") << '\n';
+		}
+		std::cout << '\n';
+		return 0;
+}
 struct DataJsonApi
 {
 	std::vector<DataJsonApi_Object> objects;
@@ -47,6 +113,66 @@ struct DataJsonApi
 	std::vector<DataJsonApi_Icon> icons;
 	std::vector<DataJsonApi_Item> items;
 	std::vector<DataJsonApi_Type> types;
+	template<typename Type>
+	void insert_object(sqlite3* sql_db, std::vector<Type>& objects)
+	{
+		for (auto& object : objects)
+		{
+			sqlite3_exec(sql_db, object.sql_insert_str().c_str(), NULL, NULL, NULL);
+		}
+		std::cout << objects.back().sql_insert_str() << '\n';
+
+	}
+	void insert_objects(sqlite3* sql_db, std::vector<DataJsonApi_Object>& objects)
+	{
+		for (auto& object : objects)
+		{
+			sqlite3_exec(sql_db, object.sql_insert_str().c_str(), NULL, NULL, NULL);
+		}
+	}
+	void insert_areas(sqlite3* sql_db, std::vector<DataJsonApi_Area>& objects)
+	{
+		for (auto& object : objects)
+		{
+			sqlite3_exec(sql_db, object.sql_insert_str().c_str(), NULL, NULL, NULL);
+		}
+	}
+	void insert_icons(sqlite3* sql_db, std::vector<DataJsonApi_Icon>& objects)
+	{
+		for (auto& object : objects)
+		{
+			sqlite3_exec(sql_db, object.sql_insert_str().c_str(), NULL, NULL, NULL);
+		}
+	}
+	void insert_items(sqlite3* sql_db, std::vector<DataJsonApi_Item>& objects)
+	{
+		for (auto& object : objects)
+		{
+			sqlite3_exec(sql_db, object.sql_insert_str().c_str(), NULL, NULL, NULL);
+		}
+	}
+	void insert_types(sqlite3* sql_db, std::vector<DataJsonApi_Type>& objects)
+	{
+		for (auto& object : objects)
+		{
+			sqlite3_exec(sql_db, object.sql_insert_str().c_str(), NULL, NULL, NULL);
+		}
+	}
+
+	
+	void insert_db(sqlite3* sql_db)
+	{
+		insert_object<DataJsonApi_Object>(sql_db, objects);
+		insert_object<DataJsonApi_Area>(sql_db, areas);
+		insert_object<DataJsonApi_Icon>(sql_db, icons);
+		insert_object<DataJsonApi_Item>(sql_db, items);
+		insert_object<DataJsonApi_Type>(sql_db, types);
+		//insert_objects(sql_db, objects);
+		//insert_areas(sql_db, areas);
+		//insert_icons(sql_db, icons);
+		//insert_items(sql_db, items);
+		//insert_types(sql_db, types);
+	}
 };
 
 json::array load_json_api(std::string file_name)
@@ -212,4 +338,103 @@ auto load_json()
 	load_json_api_type(data_json_api);
 	load_json_api_object(data_json_api);
 	return data_json_api;
+}
+
+auto create_sql_str()
+{
+	std::vector<std::string> sqls;
+	sqls.push_back(DataJsonApi_Object::sql_create_str());
+	sqls.push_back(DataJsonApi_Area::sql_create_str());
+	sqls.push_back(DataJsonApi_Item::sql_create_str());
+	sqls.push_back(DataJsonApi_Icon::sql_create_str());
+	sqls.push_back(DataJsonApi_Type::sql_create_str());
+	return sqls;
+}
+
+void create_sql_db()
+{
+	sqlite3* sql_db;
+	sqlite3_open(sql_db_dir.c_str(),&sql_db);
+	
+	auto sql_create_str_list = create_sql_str();
+	for (auto& sql_create_str : sql_create_str_list)
+	{
+		sqlite3_exec(sql_db, sql_create_str.c_str(), NULL, NULL, NULL);
+	}
+	
+	sqlite3_close(sql_db);
+}
+
+void insert_sql_db(DataJsonApi& data_json_api)
+{
+	sqlite3* sql_db;
+	sqlite3_open(sql_db_dir.c_str(), &sql_db);
+	
+	data_json_api.insert_db(sql_db);
+	
+	sqlite3_close(sql_db);
+}
+
+void delete_sql_db()
+{
+	// 判断sql文件是否存在
+	if (utils::is_file_exist(sql_db_dir))
+	{
+		// 删除sql文件
+		utils::delete_file(sql_db_dir);
+	}
+}
+
+void alter_png_sql_db(DataJsonApi& data_json_api)
+{
+	sqlite3* sql_db;
+	sqlite3_open(sql_db_dir.c_str(), &sql_db);
+	
+	auto& icons = data_json_api.icons;
+	
+	// ALTER 
+	// Icon 表中插入一列data是图片的二进制
+	auto sql = "ALTER TABLE Icon ADD COLUMN data BLOB";
+	sqlite3_exec(sql_db, sql, NULL, NULL, NULL);
+
+	for (auto icon : icons)
+	{
+		auto url = icon.url;
+		
+		// 下载url到download_tmp_dir
+		auto file_name = utils::get_file_name(url);
+		auto file_path = download_tmp_dir + file_name;
+		if (utils::download_file(url, file_path))
+		{
+			// 读取图片二进制
+			auto data = utils::read_file_data(file_path);
+			// 删除图片
+			utils::delete_file(file_path);
+			// 更新数据库
+			sql = "UPDATE Icon SET data = ? WHERE url = ?";
+			sqlite3_stmt* stmt;
+			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, NULL);
+			sqlite3_bind_blob(stmt, 1, data.data, data.size, SQLITE_STATIC);
+			sqlite3_bind_text(stmt, 2, url.c_str(), url.size(), SQLITE_STATIC);
+			sqlite3_step(stmt);
+			sqlite3_finalize(stmt);
+		}
+		//{
+		//	// 读取图片二进制
+		//	auto img = utils::read_png(file_path);
+		//	if (img.empty()) continue;
+		//	// 插入数据库
+		//	auto sql = "UPDATE Icon SET data = ? WHERE url = ?";
+		//	sqlite3_stmt* stmt;
+		//	sqlite3_prepare_v2(sql_db, sql, -1, &stmt, NULL);
+		//	sqlite3_bind_blob(stmt, 1, img.data, img.total() * img.elemSize(), SQLITE_STATIC);
+		//	sqlite3_bind_text(stmt, 2, url.c_str(), url.size(), SQLITE_STATIC);
+		//	sqlite3_step(stmt);
+		//	sqlite3_finalize(stmt);
+
+		//	// 删除download_tmp_dir中的图片
+		//	utils::delete_file(file_path);
+		//}
+		
+	}
 }

@@ -506,32 +506,24 @@ int to_tianli()
 
 	//}
 	//
-	auto data = load_json();
 	
-	//cv::FileStorage fs("/resource/DataJson.xml", cv::FileStorage::WRITE);
-	//fs << "data" << data;
-	//fs.release();
-	//// ²âÊÔ
-	//cv::FileStorage fs_test("/resource/DataJson.xml", cv::FileStorage::READ);
-	//DataJsonApi data_test;
-	//fs["data"] >> data_test;
-	//fs_test.release();
-	//
-	//if (data.objects.size() == data_test.objects.size())
-	//{
-	//	return 0;
-	//}
-	//else
-	//{
-	//	return -1;
-	//}
+	system("chcp 65001");
+
+	auto data = load_json();
+	//delete_sql_db();
+	//create_sql_db();
+	//insert_sql_db(data);
+	alter_png_sql_db(data);
+
+	
+	
 	
 	
 	
 	
 	return 0;
 }
-
+//
 //void test()
 //{	
 //	objects stars;
