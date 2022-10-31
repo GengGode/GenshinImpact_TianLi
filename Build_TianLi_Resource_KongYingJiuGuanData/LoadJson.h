@@ -22,9 +22,13 @@ struct DataJsonApi
 	template<typename Type>
 	void insert_object(sqlite3* sql_db, std::vector<Type>& objects)
 	{
+		int it = 0;
+		int end = objects.size();
 		for (auto& object : objects)
 		{
 			sqlite3_exec(sql_db, object.sql_insert_str().c_str(), NULL, NULL, NULL);
+			// 控制台输出运行进度条
+			std::cout << "\r" << "insert object: " << (it++) << "/" << end << std::flush;
 		}
 		std::cout << "objects load finish!" << '\n';
 	}
