@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
+
+#include "src/utils/utils.h"
+
 namespace KYJGData
 {
     /* ItemId
@@ -41,14 +44,21 @@ namespace KYJGData
         json += "]";
         return json;
     }
-    struct O2M_Object_2_Item
+    struct O2M_Object_2_Item_One
     {
-        int id;
         int objectId;
         int itemId;
-
         int count;
         std::string iconTag;
+		
+        std::string sql_insert_str()
+        {
+            return "INSERT INTO O2M_Object_2_Item (objectId, itemId, count, iconTag) VALUES (" + std::to_string(objectId) + ", " + std::to_string(itemId) + ", " + std::to_string(count) + ", '" + iconTag + "');";
+        }
+    };
+    struct O2M_Object_2_Item
+    {
+		std::vector<O2M_Object_2_Item_One> list;
         static std::string sql_create_str()
         {
             std::string sql = "CREATE TABLE IF NOT EXISTS O2M_Object_2_Item (";
@@ -62,9 +72,14 @@ namespace KYJGData
         }
         std::string sql_insert_str()
         {
-            std::string sql = "INSERT INTO O2M_Object_2_Item (objectId, itemId, count, iconTag) VALUES (" + std::to_string(objectId) + ", " + std::to_string(itemId) + ", " + std::to_string(count) + ", '" + iconTag + "');";
-            return sql;
+			std::string sql;
+			for (auto& one : list)
+			{
+				sql += one.sql_insert_str();
+			}
+			return sql;
         }
+        
     };
     struct ObjectPosition
     {
@@ -72,6 +87,7 @@ namespace KYJGData
         double x;
         double y;
     };
+	
     /* Object
     {
         "content": "此处【风龙废墟顶部】有一个【散失的风神瞳】",
@@ -107,6 +123,12 @@ namespace KYJGData
         int refreshTime;
         int version;
         std::string videoPath;
+		
+        Object() = default;
+        Object(json::value& json)
+        {
+            from_json(json);
+        }
         static std::string sql_create_str()
         {
             std::string sql = "CREATE TABLE IF NOT EXISTS Object (";
@@ -130,9 +152,37 @@ namespace KYJGData
         }
         std::string sql_insert_str()
         {
-            std::string sql = "INSERT INTO Object (content, hiddenFlag, objectId, itemList, markerCreatorId, markerTitle, picture, position, position_x ,position_y , refreshTime, version, videoPath) VALUES ('" + content + "', " + std::to_string(hiddenFlag) + ", " + std::to_string(objectId) + ", '" + to_json(itemList) + "', " + std::to_string(markerCreatorId) + ", '" + markerTitle + "', '" + picture + "', '" + position.position + "', " + std::to_string(position.x) + ", " + std::to_string(position.y) + ", " + std::to_string(refreshTime) + ", " + std::to_string(version) + ", '" + videoPath + "');";
-            sql += itemList_O2M.sql_insert_str();
-            return sql;
+            return "INSERT INTO Object (content, hiddenFlag, objectId, itemList, markerCreatorId, markerTitle, picture, position, position_x ,position_y , refreshTime, version, videoPath) VALUES ('" + content + "', " + std::to_string(hiddenFlag) + ", " + std::to_string(objectId) + ", '" + to_json(itemList) + "', " + std::to_string(markerCreatorId) + ", '" + markerTitle + "', '" + picture + "', '" + position.position + "', " + std::to_string(position.x) + ", " + std::to_string(position.y) + ", " + std::to_string(refreshTime) + ", " + std::to_string(version) + ", '" + videoPath + "');" + itemList_O2M.sql_insert_str();
+        }
+        void from_json(json::value& json)
+        {
+            content = json["content"].as_string();
+            hiddenFlag = json["hiddenFlag"].as_integer();
+            objectId = json["id"].as_integer();
+            markerCreatorId = json["markerCreatorId"].as_integer();
+            markerTitle = json["markerTitle"].as_string();
+            picture = json["picture"].as_string();
+            refreshTime = json["refreshTime"].as_integer();
+            version = json["version"].as_integer();
+            videoPath = json["videoPath"].as_string();
+            position.position = json["position"].as_string();
+            auto position_list = utils::split(position.position, ",");
+            position.x = std::stod(position_list[0]);
+            position.y = std::stod(position_list[1]);
+            for (auto& item : json["itemList"].as_array())
+            {
+                Object_ItemList_One item_;
+                item_.count = item["count"].as_integer();
+                item_.iconTag = item["iconTag"].as_string();
+                item_.itemId = item["itemId"].as_integer();
+                itemList.push_back(item_);
+				O2M_Object_2_Item_One one;
+				one.objectId = objectId;
+				one.itemId = item_.itemId;
+				one.count = item_.count;
+				one.iconTag = item_.iconTag;
+				itemList_O2M.list.push_back(one);
+            }
         }
     };
 
@@ -219,11 +269,18 @@ namespace KYJGData
         json += "]";
         return json;
     }
-    struct O2M_Item_2_Type
+    struct O2M_Item_2_Type_One
     {
-        int id;
         int itemId;
         int typeId;
+        std::string sql_insert_str()
+        {
+            return "INSERT INTO O2M_Item_2_Type (itemId, typeId) VALUES (" + std::to_string(itemId) + ", " + std::to_string(typeId) + ");";
+        }
+    };
+    struct O2M_Item_2_Type
+    {
+        std::vector<O2M_Item_2_Type_One> list;
         static std::string sql_create_str()
         {
             std::string sql = "CREATE TABLE IF NOT EXISTS O2M_Item_2_Type (";
@@ -235,8 +292,12 @@ namespace KYJGData
         }
         std::string sql_insert_str()
         {
-            std::string sql = "INSERT INTO O2M_Object_2_Item (itemId, typeId) VALUES (" + std::to_string(itemId) + ", " + std::to_string(typeId) + ");";
-            return sql;
+			std::string sql;
+			for (auto& one : list)
+			{
+				sql += one.sql_insert_str();
+			}
+			return sql;
         }
     };
     /* Item
@@ -275,6 +336,12 @@ namespace KYJGData
         TypeIdList typeIdList;
         O2M_Item_2_Type typeIdList_O2M;
         int version;
+
+		Item() = default;
+		Item(json::value& json)
+		{
+			from_json(json);
+		}
         static std::string sql_create_str()
         {
             std::string sql = "CREATE TABLE IF NOT EXISTS Item (";
@@ -300,6 +367,31 @@ namespace KYJGData
         {
             return "INSERT INTO Item (areaId, count, defaultContent, defaultCount, defaultRefreshTime, hiddenFlag, iconStyleType, iconTag, itemId, name, sortIndex, typeIdList, version) VALUES (" + std::to_string(areaId) + ", " + std::to_string(count) + ", '" + defaultContent + "', " + std::to_string(defaultCount) + ", " + std::to_string(defaultRefreshTime) + ", " + std::to_string(hiddenFlag) + ", " + std::to_string(iconStyleType) + ", '" + iconTag + "', " + std::to_string(itemId) + ", '" + name + "', " + std::to_string(sortIndex) + ", '" + to_json(typeIdList) + "', " + std::to_string(version) + ");" + typeIdList_O2M.sql_insert_str();
         }
+        void from_json(json::value& json)
+        {
+            areaId = json["areaId"].as_integer();
+            count = json["count"].as_integer();
+            defaultContent = json["defaultContent"].as_string();
+            defaultCount = json["defaultCount"].as_integer();
+            defaultRefreshTime = json["defaultRefreshTime"].as_integer();
+            hiddenFlag = json["hiddenFlag"].as_integer();
+            iconStyleType = json["iconStyleType"].as_integer();
+            iconTag = json["iconTag"].as_string();
+            itemId = json["itemId"].as_integer();
+            name = json["name"].as_string();
+            sortIndex = json["sortIndex"].as_integer();
+            version = json["version"].as_integer();
+            for (auto& type_id : json["typeIdList"].as_array())
+            {
+                TypeId type_ = type_id.as_integer();
+                typeIdList.push_back(type_);
+				O2M_Item_2_Type_One one;
+				one.itemId = itemId;
+				one.typeId = type_;
+				typeIdList_O2M.list.push_back(one);		
+
+            }
+        }
     };
 
     /* Icon
@@ -311,11 +403,18 @@ namespace KYJGData
         "version": 1
     }
     */    
-    struct O2M_Icon_2_Type
+    struct O2M_Icon_2_Type_One
     {
-        int id;
         int iconId;
         int typeId;
+        std::string sql_insert_str()
+        {
+            return "INSERT INTO O2M_Icon_2_Type (iconId, typeId) VALUES (" + std::to_string(iconId) + ", " + std::to_string(typeId) + ");";
+        }
+    };
+    struct O2M_Icon_2_Type
+    {
+		std::vector<O2M_Icon_2_Type_One> list;
         static std::string sql_create_str()
         {
             std::string sql = "CREATE TABLE IF NOT EXISTS O2M_Icon_2_Type (";
@@ -327,8 +426,12 @@ namespace KYJGData
         }
         std::string sql_insert_str()
         {
-            std::string sql = "INSERT INTO O2M_Object_2_Item (iconId, typeId) VALUES (" + std::to_string(iconId) + ", " + std::to_string(typeId) + ");";
-            return sql;
+			std::string sql;
+			for (auto& one : list)
+			{
+				sql += one.sql_insert_str();
+			}
+			return sql;
         }
     };
     struct Icon
@@ -339,6 +442,12 @@ namespace KYJGData
         O2M_Icon_2_Type typeIdList_O2M;
         std::string url;
         int version;
+
+		Icon() = default;
+        Icon(json::value& json)
+        {
+			from_json(json);
+        }
         static std::string sql_create_str()
         {
             std::string sql = "CREATE TABLE IF NOT EXISTS Icon (";
@@ -355,6 +464,22 @@ namespace KYJGData
         std::string sql_insert_str()
         {
             return "INSERT INTO Icon (iconId, tag, typeIdList, url, version) VALUES (" + std::to_string(iconId) + ", '" + tag + "', '" + to_json(typeIdList) + "', '" + url + "', " + std::to_string(version) + ");" + typeIdList_O2M.sql_insert_str();
+        }
+        void from_json(json::value& json)
+        {
+            iconId = json["iconId"].as_integer();
+            tag = json["tag"].as_string();
+            url = json["url"].as_string();
+            version = json["version"].as_integer();
+            for (auto& type_id : json["typeIdList"].as_array())
+            {
+                TypeId type_ = type_id.as_integer();
+                typeIdList.push_back(type_);
+				O2M_Icon_2_Type_One one;
+				one.iconId = iconId;
+				one.typeId = type_;
+				typeIdList_O2M.list.push_back(one);				
+            }
         }
     };
 
@@ -382,6 +507,7 @@ namespace KYJGData
         bool isFinal;
         int hiddenFlag;
         int sortIndex;
+		
         Type() = default;
         Type(json::value& json)
         {
