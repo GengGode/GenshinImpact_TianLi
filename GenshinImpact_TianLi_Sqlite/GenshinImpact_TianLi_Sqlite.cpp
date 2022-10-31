@@ -322,17 +322,17 @@ int __stdcall GenshinImpact_TianLi_Sqlite::ReadCountry(TextVector &text)
 	return 0;
 }
 static int callback_type(void* data, int argc, char** argv, char** azColName);
-int __stdcall GenshinImpact_TianLi_Sqlite::ReadType(const char* country, TextVector& text)
+int __stdcall GenshinImpact_TianLi_Sqlite::ReadType(const char* area, TextVector& text)
 {
-	//if (country == NULL)
-	//{
-	//	return -1;
-	//}
+	if (area == NULL)
+	{
+		return -1;
+	}
 	char* errmsg = NULL;
 	
 	//============================================================================
 	// SELECT distinct layer_type FROM monoLayer WHERE layer_addr= '%s'
-	std::string sql = "SELECT distinct name, content FROM Type WHERE hiddenFlag = 0 AND parentId = -1 ORDER BY sortIndex DESC;";
+	std::string sql = "SELECT distinct name, content FROM Type WHERE isFinal = 1 AND hiddenFlag = 0 ORDER BY sortIndex DESC;";
 	//============================================================================
 
 	int rc = impl->exec(sql.c_str(), callback_type, (void*)&text, &errmsg);
@@ -341,16 +341,24 @@ int __stdcall GenshinImpact_TianLi_Sqlite::ReadType(const char* country, TextVec
 	}
 	return 0;
 }
-int __stdcall GenshinImpact_TianLi_Sqlite::ReadItem(const char* country, const char* type, TextVector& text)
+int __stdcall GenshinImpact_TianLi_Sqlite::ReadItem(const char* area, const char* type, TextVector& text)
 {
-	//if (country == NULL || type == NULL)
-	//{
-	//	return -1;
-	//}
+	if (area == NULL || type == NULL)
+	{
+		return -1;
+	}
 	char* errmsg = NULL;
 
 	//============================================================================
-	std::string sql = "SELECT distinct name FROM Item ;";
+	//SELECT distinct areaId FROM Area WHERE name = 'area';
+	//SELECT distinct typeId FROM Type WHERE name = 'type';
+	//SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = 'type');
+	//SELECT distinct name FROM Item WHERE areaId in (SELECT distinct areaId FROM Area WHERE name = 'area') AND itemId in (SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = 'type'));
+	std::string sql = "SELECT distinct name FROM Item WHERE areaId in (SELECT distinct areaId FROM Area WHERE name = '";
+	sql += area;
+	sql += "') AND itemId in (SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = '";
+	sql += type;
+	sql += "'));";
 	//sql += country;
 	//sql += "' AND layer_type = '";
 	//sql += type;
@@ -364,24 +372,29 @@ int __stdcall GenshinImpact_TianLi_Sqlite::ReadItem(const char* country, const c
 	return 0;
 }
 
-int __stdcall GenshinImpact_TianLi_Sqlite::ReadItems(const char* country, const char* type, const char* item, TextVector& text)
+int __stdcall GenshinImpact_TianLi_Sqlite::ReadItems(const char* area, const char* type, const char* item, TextVector& text)
 {
 	//if (country == NULL || type == NULL || item == NULL)
-	if (item == NULL)
+	if (area == NULL || type == NULL || item == NULL)
 	{
 		return -1;
 	}
 
 	char* errmsg = NULL;
 	//============================================================================
-	// SELECT * FROM items WHERE itemid in (SELECT itemid FROM itemsIndex WHERE kyjgid in (SELECT layer_id FROM monoLayer WHERE layer_addr='$0' AND layer_type = '$1' AND layer_name = '$2'))
-	std::string sql = " SELECT markerTitle FROM Object WHERE markerTitle ='";
-	//sql += country;
-	//sql += "' AND layer_type = '";
-	//sql += type;
-	//sql += "' AND layer_name = '";
+	//SELECT distinct areaId FROM Area WHERE name = 'area';
+	//SELECT distinct typeId FROM Type WHERE name = 'type';
+	// SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = 'type');
+	//SELECT distinct itemId FROM Item WHERE name = 'item' AND areaId in (SELECT distinct areaId FROM Area WHERE name = 'area') AND itemId in (SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = 'type'));
+	// SELECT distinct objectId FROM O2M_Object_2_Item WHERE itemId in (SELECT distinct itemId FROM Item WHERE name = 'item' AND areaId in (SELECT distinct areaId FROM Area WHERE name = 'area') AND itemId in (SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = 'type')));
+	// SELECT distinct name FROM Object WHERE objectId in (SELECT distinct objectId FROM O2M_Object_2_Item WHERE itemId in (SELECT distinct itemId FROM Item WHERE name = 'item' AND areaId in (SELECT distinct areaId FROM Area WHERE name = 'area') AND itemId in (SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = 'type'))));
+	std::string sql = "SELECT distinct name FROM Object WHERE objectId in (SELECT distinct objectId FROM O2M_Object_2_Item WHERE itemId in (SELECT distinct itemId FROM Item WHERE name = '";
 	sql += item;
-	sql += "'))";
+	sql += "' AND areaId in (SELECT distinct areaId FROM Area WHERE name = '";
+	sql += area;
+	sql += "') AND itemId in (SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = '";
+	sql += type;
+	sql += "'))));";
 	//============================================================================
 
 	int rc = impl->exec(sql.c_str(), callback_country, (void*)&text, &errmsg);
@@ -391,24 +404,29 @@ int __stdcall GenshinImpact_TianLi_Sqlite::ReadItems(const char* country, const 
 	return 0;
 }
 static int callback_items(void* data, int argc, char** argv, char** azColName);
-int __stdcall GenshinImpact_TianLi_Sqlite::ReadItems(const char* country, const char* type, const char* item, ItemsVector& items)
+int __stdcall GenshinImpact_TianLi_Sqlite::ReadItems(const char* area, const char* type, const char* item, ItemsVector& items)
 {
 	//if (country == NULL || type == NULL || item == NULL)
-	if (item == NULL)
+	if (area == NULL || type == NULL || item == NULL)
 	{
 		return -1;
 	}
 
 	char* errmsg = NULL;
 	//============================================================================
-	// SELECT * FROM items WHERE itemid in (SELECT itemid FROM itemsIndex WHERE kyjgid in (SELECT layer_id FROM monoLayer WHERE layer_addr='$0' AND layer_type = '$1' AND layer_name = '$2'))
-	std::string sql = " SELECT * FROM Object WHERE markerTitle ='";
-	//sql += country;
-	//sql += "' AND layer_type = '";
-	//sql += type;
-	//sql += "' AND layer_name = '";
+	//SELECT distinct areaId FROM Area WHERE name = 'area';
+	//SELECT distinct typeId FROM Type WHERE name = 'type';
+	// SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = 'type');
+	//SELECT distinct itemId FROM Item WHERE name = 'item' AND areaId in (SELECT distinct areaId FROM Area WHERE name = 'area') AND itemId in (SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = 'type'));
+	// SELECT distinct objectId FROM O2M_Object_2_Item WHERE itemId in (SELECT distinct itemId FROM Item WHERE name = 'item' AND areaId in (SELECT distinct areaId FROM Area WHERE name = 'area') AND itemId in (SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = 'type')));
+	// SELECT distinct name FROM Object WHERE objectId in (SELECT distinct objectId FROM O2M_Object_2_Item WHERE itemId in (SELECT distinct itemId FROM Item WHERE name = 'item' AND areaId in (SELECT distinct areaId FROM Area WHERE name = 'area') AND itemId in (SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = 'type'))));
+	std::string sql = "SELECT distinct * FROM Object WHERE objectId in (SELECT distinct objectId FROM O2M_Object_2_Item WHERE itemId in (SELECT distinct itemId FROM Item WHERE name = '";
 	sql += item;
-	sql += "';";
+	sql += "' AND areaId in (SELECT distinct areaId FROM Area WHERE name = '";
+	sql += area;
+	sql += "') AND itemId in (SELECT distinct itemId FROM O2M_Item_2_Type WHERE typeId in (SELECT distinct typeId FROM Type WHERE name = '";
+	sql += type;
+	sql += "'))));";
 	//============================================================================
 
 	int rc = impl->exec(sql.c_str(), callback_items, (void*)&items, &errmsg);
@@ -418,7 +436,7 @@ int __stdcall GenshinImpact_TianLi_Sqlite::ReadItems(const char* country, const 
 	return 0;
 }
 static int callbackTyoeImage(void* data, int argc, char** argv, char** azColName);
-int GenshinImpact_TianLi_Sqlite::GetTypeImage(const char* name, unsigned char*& data, int& size)
+int GenshinImpact_TianLi_Sqlite::GetTypeImage(const char* name, unsigned char* data, int& size)
 {
 	if (name == NULL)
 	{
@@ -426,12 +444,12 @@ int GenshinImpact_TianLi_Sqlite::GetTypeImage(const char* name, unsigned char*& 
 	}
 	char* errmsg = NULL;
 	//============================================================================
-	// SELECT data FROM type_images WHERE name = '$0' limit 1
-	std::string sql = " SELECT data FROM type_images WHERE name = '";
+	// SELECT iconTag FROM Type WHERE name = 'name';
+	// SELECT data FROM Icon WHERE tag = 'iconTag' limit 1;
+	std::string sql = "SELECT data FROM Icon WHERE tag = (SELECT iconTag FROM Type WHERE name = '";
 	sql += name;
-	sql += "' limit 1";
+	sql += "') limit 1;";
 	//============================================================================
-	// 
 	// TODO：此处 sqlite3_stmt 需要 delete
 	sqlite3_stmt* stmt;
 	sqlite3_prepare_v2(&impl->instance(), sql.c_str(), -1, &stmt, NULL);
@@ -448,6 +466,28 @@ int GenshinImpact_TianLi_Sqlite::GetTypeImage(const char* name, unsigned char*& 
 
 int GenshinImpact_TianLi_Sqlite::GetItemImage(const char* name, unsigned char*& data, int& size)
 {
+	if (name == NULL)
+	{
+		return -1;
+	}
+	char* errmsg = NULL;
+	//============================================================================
+	// SELECT iconTag FROM item_images WHERE name = '$0' limit 1
+	std::string sql = " SELECT data FROM Icon WHERE tag = '";
+	sql += name;
+	sql += "';";
+	//============================================================================
+	// TODO：此处 sqlite3_stmt 需要 delete
+	sqlite3_stmt* stmt;
+	sqlite3_prepare_v2(&impl->instance(), sql.c_str(), -1, &stmt, NULL);
+	int rc = sqlite3_step(stmt);
+	if (rc == SQLITE_ROW)
+	{
+		int len = sqlite3_column_bytes(stmt, 0);
+		// TODO：此处内存泄漏
+		data = (unsigned char*)sqlite3_column_blob(stmt, 0);
+		size = len;
+	}
 	return 0;
 }
 

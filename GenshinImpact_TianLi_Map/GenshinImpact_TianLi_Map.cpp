@@ -83,10 +83,17 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 				// 获取相对于区块图片的范围
 				cv::Rect r2 = r - r_img.tl();
 				//img(r2).copyTo(map(r1));
-				auto map_roi = map(r1);
-				auto img_roi = img(r2);
-				
-				TianLi::Map::Utils::add_rgba_image(map_roi, img_roi, map_roi);
+				try {
+
+					auto map_roi = map(r1);
+					auto img_roi = img(r2);
+
+					TianLi::Map::Utils::add_rgba_image(map_roi, img_roi, map_roi);
+				}
+				catch (...)
+				{
+					//std::cout << "error" << std::endl;
+				}
 			}
 		}
 	}

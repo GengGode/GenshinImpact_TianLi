@@ -262,19 +262,38 @@ void GenshinImpact_TianLi::updata_ItemsList()
 	{
 		return;
 	}
+
 	BadgeInfo::BadgeBlock legend_block;
 	legend_block.name = itemsItemsVector[0].name;
 	legend_block.image = cv::Mat(cv::Size(64, 64), CV_8UC4,cv::Scalar(100,200,200,128));//itemsItemsVector[0].image;
+
+	unsigned char* image = nullptr;
+	int size = 0;
+	Core.GetSqlite().GetItemImage(itemsItemsVector[0].name, image, size);
+	LogTrace(itemsItemsVector[0].name);
+	if (image != nullptr)
+	{
+		legend_block.image = cv::imdecode(cv::Mat(1, size, CV_8UC1, image), cv::IMREAD_UNCHANGED);
+		if (legend_block.image.empty())
+		{
+			legend_block.image = cv::Mat(cv::Size(64, 64), CV_8UC4, cv::Scalar(100, 200, 200, 128));
+		}
+		if (legend_block.image.rows >= 64 || legend_block.image.cols >= 64)
+		{
+			cv::resize(legend_block.image, legend_block.image, cv::Size(64, 64));
+		}
+	}
+	
 	for (int i = 0; i < itemsItemsVector.size; i++)
 	{
 		BadgeInfo::BadgeBlock::Badge legend;
 		legend.x = itemsItemsVector[i].x;
-		legend.y = itemsItemsVector[i].x;
-		legend.z = itemsItemsVector[i].x;
+		legend.y = itemsItemsVector[i].y;
+		legend.z = itemsItemsVector[i].z;
 		legend.message = itemsItemsVector[i].msg;
 		
 		strList_Items << itemsItemsVector[i].name;
-		// LogTrace(itemsItemsVector[i].msg);
+		//LogTrace(itemsItemsVector[i].msg);
 		
 		legend_block.badge_list.push_back(legend);
 	}

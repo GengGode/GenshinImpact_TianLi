@@ -16,40 +16,46 @@ TEST(SqliteRead, SqliteReadCountry)
 	genshinImpact_TianLi_Sqlite.ReadCountry(VecCountry);
 	
 	EXPECT_EQ(VecCountry.size, 17);
-	//for (int it = 0; it < VecCountry.size; it++)
-	//{
-	//	std::cout << VecCountry[it] << "\n";
-	//}
+	for (int it = 0; it < VecCountry.size; it++)
+	{
+		std::cout << VecCountry[it] << "\n";
+	}
 	
 	TextVector VecType;
 	//genshinImpact_TianLi_Sqlite.ReadType(VecCountry[0], VecType);
-	genshinImpact_TianLi_Sqlite.ReadType(NULL, VecType);
+	genshinImpact_TianLi_Sqlite.ReadType(VecCountry[0], VecType);
 	
-	EXPECT_EQ(VecType.size, 9);
-	//for (int it = 0; it < VecType.size; it++)
-	//{
-	//	std::cout << VecType[it] << "\n";
-	//}
+	EXPECT_EQ(VecType.size, 10);
+	for (int it = 0; it < VecType.size; it++)
+	{
+		std::cout << VecType[it] << " ";
+	}
+	std::cout << VecCountry[0] << "\n";
 
 	
 	TextVector VecItem;
 	//genshinImpact_TianLi_Sqlite.ReadItem(VecCountry[0], VecType[0], VecItem);
-	genshinImpact_TianLi_Sqlite.ReadItem(NULL,NULL, VecItem);
+	genshinImpact_TianLi_Sqlite.ReadItem(VecCountry[0], VecType[2], VecItem);
 	
-	EXPECT_EQ(VecItem.size, 432);
+	//EXPECT_NE(VecItem.size, 0);
 
 	for (int it = 0; it < VecItem.size; it++)
 	{
-		std::cout << VecItem[it] << "\n";
+		std::cout << VecItem[it] << " ";
 	}
+	if (VecItem.size == 0)return;
+	
+	std::cout <<  "\n";
 
 	ItemsVector VecObjects;
 	//genshinImpact_TianLi_Sqlite.ReadItem(VecCountry[0], VecType[0], VecItem);
-	genshinImpact_TianLi_Sqlite.ReadItems(NULL, NULL, VecItem[2], VecObjects);
+	genshinImpact_TianLi_Sqlite.ReadItems(VecCountry[0], VecType[2], VecItem[1], VecObjects);
 	
+	std::cout << VecCountry[0] << "\n";
+	std::cout << VecType[2] << "\n";
 	std::cout << VecItem[1] << "\n";
 	
-	EXPECT_EQ(VecObjects.size, 432);
+	EXPECT_EQ(VecObjects.size, 66);
 
 	for (int it = 0; it < VecObjects.size; it++)
 	{
