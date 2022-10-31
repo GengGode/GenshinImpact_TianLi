@@ -39,9 +39,6 @@
     <ClInclude Include="SqliteImpl.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Sqlite_RCVFS.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -60,9 +57,6 @@
       <Filter>源文件\sqlite3</Filter>
     </ClCompile>
     <ClCompile Include="SqliteImpl.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Sqlite_RCVFS.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
