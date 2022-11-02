@@ -515,6 +515,11 @@ static int callback_type(void* data, int argc, char** argv, char** azColName)
 	}
 	return 0;
 }
+inline void tranfrom_kyjg_2_tl(double& x, double& y)
+{
+	x = x / 1.7 + 4480;
+	y = y / 1.7 + 3015.5;
+}
 static int callback_items(void* data, int argc, char** argv, char** azColName) 
 {
 	ItemsVector& items = *(ItemsVector*)data;
@@ -543,11 +548,14 @@ static int callback_items(void* data, int argc, char** argv, char** azColName)
 		// z
 		// uuid
 		// msg
+		double x = atof(argv[9]);
+		double y = atof(argv[10]);
+		tranfrom_kyjg_2_tl(x, y);
 		items.Append(
 			argv[6],//name
 			atoi(argv[3]),//index
-			atof(argv[9]),//x
-			atof(argv[10]),//y
+			x,//x
+			y,//y
 			atoi(argv[12]),//z
 			atoi(argv[0]),//uuid
 			argv[1]//msg
