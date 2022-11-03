@@ -950,9 +950,13 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 			
 			QImage im;
 			im.load(":/Test/resource/Test/Tex_0537_0.png");
+			auto img = Core.GetResource().GetImageBuffer("", "", "",str.toStdString());
+			auto img_qimage = TianLi::Utils::mat_2_qimage(img);
 
+			auto img_type = Core.GetResource().GetImageBuffer("", selectedStr_Type.toStdString(),"", "");
+			auto img_type_qimage = TianLi::Utils::mat_2_qimage(img_type);
 			// 创建按钮到 物品按钮QMap 中
-			pushButtonMap_Items.insert(str, new TianLiQtCommon_SelectedItemButton(str,selectedStr_Addr, im,im, PageTabMap_ScrollCardRect[0]));
+			pushButtonMap_Items.insert(str, new TianLiQtCommon_SelectedItemButton(str,selectedStr_Addr, img_qimage, img_type_qimage, PageTabMap_ScrollCardRect[0]));
 			// 设置按钮父对象
 			pushButtonMap_Items[str]->setParent(PageTabMap_ScrollCardRect[0]);
 			PageTabMap_ScrollCardRect[0]->addWidget(pushButtonMap_Items[str]);
