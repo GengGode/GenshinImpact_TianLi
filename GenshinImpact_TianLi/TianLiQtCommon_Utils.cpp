@@ -297,5 +297,19 @@ namespace TianLi::Utils
 		}
 		return mask;
 	}
+	QImage mat_2_qimage(cv::Mat const& src)
+	{
+		QImage dest((const uchar*)(src.data), src.cols, src.rows, src.cols * (src.channels()), QImage::Format_ARGB32);
+		dest.bits(); // enforce deep copy, see documentation 
+		// of QImage::QImage ( const uchar * data, int width, int height, Format format )
+		return dest;
+	}
+	cv::Mat qimage_2_mat(QImage const& src)
+	{
+		cv::Mat tmp(src.height(), src.width(), CV_8UC4, (uchar*)src.bits(), src.bytesPerLine());
+		cv::Mat result; // deep copy just in case (my lack of knowledge with open cv)
+		result = tmp.clone();
+		return result;
+	}
 }
 

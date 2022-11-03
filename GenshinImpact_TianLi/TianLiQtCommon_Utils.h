@@ -44,5 +44,9 @@ namespace TianLi::Utils
 	cv::Mat create_square_mask(int mask_width, int mask_height, double gradient_width);
 	
 	cv::Mat create_circular_mask(int mask_width, int mask_height, double gradient_width);
+
+	QImage mat_2_qimage(cv::Mat const& src);
+	
+	cv::Mat qimage_2_mat(QImage const& src);
 }
 
