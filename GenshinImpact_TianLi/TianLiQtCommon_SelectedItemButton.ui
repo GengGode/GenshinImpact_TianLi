@@ -181,13 +181,13 @@ border-radius:1px;
     <string/>
    </property>
   </widget>
+  <zorder>label_LabelImage</zorder>
   <zorder>label_Image</zorder>
   <zorder>label_Title</zorder>
   <zorder>label_Region</zorder>
   <zorder>label_Progress_Bg</zorder>
   <zorder>label_Progress_B</zorder>
   <zorder>label_Progress_A</zorder>
-  <zorder>label_LabelImage</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
