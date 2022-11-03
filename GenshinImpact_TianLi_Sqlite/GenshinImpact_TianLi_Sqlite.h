@@ -93,7 +93,7 @@ extern "C"
 		//===== 获取图片data相关
 	public:
 		// 根据名称获取类型对应图像数据
-		int GetTypeImage(const char* name, unsigned char* data, int& size);
+		int GetTypeImage(const char* name, unsigned char*& data, int& size);
 		// 根据名称获取物品对应图像数据
 		int GetItemImage(const char* name, unsigned char*& data, int& size);
 	

@@ -436,7 +436,7 @@ int __stdcall GenshinImpact_TianLi_Sqlite::ReadItems(const char* area, const cha
 	return 0;
 }
 static int callbackTyoeImage(void* data, int argc, char** argv, char** azColName);
-int GenshinImpact_TianLi_Sqlite::GetTypeImage(const char* name, unsigned char* data, int& size)
+int GenshinImpact_TianLi_Sqlite::GetTypeImage(const char* name, unsigned char*& data, int& size)
 {
 	if (name == NULL)
 	{
