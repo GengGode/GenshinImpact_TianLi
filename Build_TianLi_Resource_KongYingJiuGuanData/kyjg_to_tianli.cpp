@@ -5,11 +5,14 @@ int to_tianli()
 {
 	system("chcp 65001");
 
-	auto data = load_json();
-	delete_sql_db();
-	create_sql_db();
-	insert_sql_db(data);
-	alter_png_sql_db(data);
+	//auto data = load_json();
+	//delete_sql_db();
+	//create_sql_db();
+	//insert_sql_db(data);
+	//alter_png_sql_db(data);
+
+	
+	update_png_sql_db();
 	
 	return 0;
 }

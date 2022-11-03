@@ -189,6 +189,8 @@ void alter_png_sql_db(DataJsonApi& data_json_api)
 		
 		// 下载url到download_tmp_dir
 		auto file_name = utils::get_file_name(url);
+		auto name = utils::url_decode(file_name);
+		std::cout << name << std::endl;
 		auto file_path = config::download_tmp_dir + file_name;
 		if (utils::download_file(url, file_path))
 		{
@@ -226,10 +228,73 @@ void alter_png_sql_db(DataJsonApi& data_json_api)
 				
 			}
 			// 删除图片
-			utils::delete_file(file_path);
+			//utils::delete_file(file_path);
 		}
 		
 	}
 	
+	sqlite3_close(sql_db);
+}
+
+
+void update_png_sql_db()
+{
+	sqlite3* sql_db;
+	sqlite3_open(config::sql_db_dir.c_str(), &sql_db);
+
+	std::string sql;
+	// Select Icon
+	sql = "SELECT url FROM Icon";
+	sqlite3_stmt* stmt;
+	sqlite3_prepare_v2(sql_db, sql.c_str(), -1, &stmt, NULL);
+	
+	while (sqlite3_step(stmt) == SQLITE_ROW)
+	{
+		auto url = (const char*)sqlite3_column_text(stmt, 0);
+		// 下载url到download_tmp_dir
+		auto file_name = utils::get_file_name(url);
+		auto name = utils::url_decode(file_name);
+		std::cout << name << " ";
+		std::cout <<"[ "<< url <<" ]"<< std::endl;
+		auto file_path = config::download_tmp_dir + file_name;
+		if (utils::download_file(url, file_path))
+		{
+			// 读取图片二进制
+			auto data = utils::read_file_data(file_path);
+			auto mat = cv::imread(file_path, cv::IMREAD_UNCHANGED);
+			const char* sql = "";
+			// 更新数据库
+			sql = "UPDATE Icon SET data = ?, x = ?, y = ? WHERE url = ?";
+			sqlite3_stmt* stmt;
+			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, NULL);
+			sqlite3_bind_blob(stmt, 1, data.data, data.size, SQLITE_STATIC);
+			sqlite3_bind_int(stmt, 2, mat.cols);
+			sqlite3_bind_int(stmt, 3, mat.rows);
+			sqlite3_bind_text(stmt, 4, url, strlen(url), SQLITE_STATIC);
+			sqlite3_step(stmt);
+			sqlite3_finalize(stmt);
+			// 测试从数据库读取图片
+			sql = "SELECT data FROM Icon WHERE url = ?";
+			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, NULL);
+			sqlite3_bind_text(stmt, 1, url, strlen(url), SQLITE_STATIC);
+			if (sqlite3_step(stmt) == SQLITE_ROW)
+			{
+				auto data = sqlite3_column_blob(stmt, 0);
+				auto size = sqlite3_column_bytes(stmt, 0);
+				// 转为cv::Mat
+				auto mat = cv::imdecode(cv::Mat(1, size, CV_8UC1, (void*)data), cv::IMREAD_COLOR);
+				if (mat.empty()) continue;
+				// 显示图片
+				cv::imshow("test", mat);
+				cv::waitKey(100);
+			}
+			else
+			{
+
+			}
+			// 删除图片
+			//utils::delete_file(file_path);
+		}
+	}
 	sqlite3_close(sql_db);
 }
