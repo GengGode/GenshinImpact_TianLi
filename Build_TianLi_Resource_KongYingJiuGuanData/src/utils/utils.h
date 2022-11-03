@@ -79,7 +79,8 @@ namespace utils {
 	}
 	bool download_file(const std::string& url, const std::string& path)
 	{
-		std::string cmd = "curl -o " + path + " " + url + " -s";
+		std::string cmd = "curl -o " + path + " -L " + url +" -s";
+		std::cout << cmd << std::endl;
 		return system(cmd.c_str()) == 0;
 	}
 	struct Data {
