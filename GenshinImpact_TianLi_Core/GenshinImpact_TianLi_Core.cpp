@@ -20,6 +20,10 @@ GenshinImpact_TianLi_Core::GenshinImpact_TianLi_Core()
 	sqlite = new GenshinImpact_TianLi_Sqlite();
 	track = new GenshinImpact_TianLi_Track();
 	map = new GenshinImpact_TianLi_Map();
+
+	// init
+	std::function<cv::Mat(std::string area, std::string type, std::string item, std::string object)> map_get_image_callback = std::bind(&GenshinImpact_TianLi_Map::get_image_tag, map, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+	resource->SetGetImageBufferCallback(map_get_image_callback);
 }
 
 GenshinImpact_TianLi_Core::~GenshinImpact_TianLi_Core()
