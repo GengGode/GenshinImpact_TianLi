@@ -42,6 +42,8 @@ private:
     void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
     void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
 private:
+	bool close_is_mini = false;
+private:
     //GenshinImpact_TianLi_Core *core;
 // º”‘ÿ ˝æ›ø‚
 private:

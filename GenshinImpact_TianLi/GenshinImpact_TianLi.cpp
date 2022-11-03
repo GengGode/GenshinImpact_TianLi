@@ -152,9 +152,16 @@ void GenshinImpact_TianLi::mouseMoveEvent(QMouseEvent* event)
 
 void GenshinImpact_TianLi::closeEvent(QCloseEvent* event)
 {
-	//event->ignore();
-	slot_hide();
-	event->ignore();
+	if (close_is_mini)
+	{
+		slot_hide();
+		//this->hide();
+		event->ignore();
+	}
+	else
+	{
+		event->accept();
+	}
 }
 
 void GenshinImpact_TianLi::loadDataBase()
@@ -322,7 +329,17 @@ void GenshinImpact_TianLi::addUI_Tab_4()
 	
 	button->setParent(ui.page_4);
 	button->move(30, ui.page_4->height() - 35);
-
+	
+	connect(dynamic_cast<TianLiQtCommon_SwitchButton*>(button), &TianLiQtCommon_SwitchButton::signal_clicked, [=](bool is_checked) {
+		if (is_checked)
+		{
+			this->close_is_mini = true;
+		}
+		else
+		{
+			this->close_is_mini = false;
+		}
+		});
 	//connect(PageTabMap_MapRect[0], &TianLiQtCommon_MapRect::signal_double_click, dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::slot_clicked);
 }
 
