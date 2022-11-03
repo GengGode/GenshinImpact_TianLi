@@ -32,6 +32,10 @@ TianLiQtCommon_SelectedItemButton::TianLiQtCommon_SelectedItemButton(QString tit
 	ui.label_Progress_B->setGraphicsEffect(progressBShadow);
 
 	ui.label_Image->setScaledContents(true);
+	
+	QGraphicsOpacityEffect* opacity = new QGraphicsOpacityEffect;
+	opacity->setOpacity(0.2); 
+	ui.label_LabelImage->setGraphicsEffect(opacity);
 }
 
 TianLiQtCommon_SelectedItemButton::~TianLiQtCommon_SelectedItemButton()
