@@ -1,5 +1,7 @@
 # 原神天理 GenshinImpact_TianLi
 
+## 内测版本下载地址(不定时更新) [维系天理](http://download.weixitianli.com/)
+
 还在制作中
 
 ![image](https://user-images.githubusercontent.com/47711102/170855510-ff9a355a-41c1-4a27-b6ed-4cd75da14304.png)
