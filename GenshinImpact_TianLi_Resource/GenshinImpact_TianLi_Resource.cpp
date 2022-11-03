@@ -245,6 +245,42 @@ GenshinImpact_TianLi_Resource* GenshinImpact_TianLi_Resource::GetInstance()
 	return pInstance;
 }
 
+cv::Mat GenshinImpact_TianLi_Resource::GetImageBuffer(std::string area, std::string type, std::string item, std::string object)
+{
+	auto key = std::make_tuple(area, type, item, object);
+	if (ImageBuffer.find(key) != ImageBuffer.end())
+	{
+		return ImageBuffer[key];
+	}
+	else
+	{
+		if (ImageBuffer_Callback != nullptr)
+		{
+			auto img = ImageBuffer_Callback(area, type, item, object);
+			if (!img.empty())
+			{
+				SetImageBuffer(area, type, item, object, img);
+			}
+			return img;
+		}
+		else
+		{
+			return cv::Mat();
+		}
+	}
+}
+
+void GenshinImpact_TianLi_Resource::SetImageBuffer(std::string area, std::string type, std::string item, std::string object, cv::Mat mat)
+{
+	auto key = std::make_tuple(area, type, item, object);
+	ImageBuffer[key] = mat;
+}
+
+void GenshinImpact_TianLi_Resource::SetGetImageBufferCallback(std::function<cv::Mat(std::string area, std::string type, std::string item, std::string object)> callback)
+{
+	ImageBuffer_Callback = callback;
+}
+
 void GenshinImpact_TianLi_Resource::LoadPng_ID2Mat(int IDB, cv::Mat& mat)
 {
 	IWICStream* pIWICStream = NULL;

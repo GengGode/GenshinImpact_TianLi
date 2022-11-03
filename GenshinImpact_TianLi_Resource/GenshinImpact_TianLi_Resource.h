@@ -44,7 +44,6 @@ public:
 	cv::Mat GIMINIMAP_CAILB;
 	cv::Mat GIMINIMAP_N;
 	cv::Mat* GINUMUID;
-	
 	// overlay
 	cv::Mat GIMAP_OVERLAY;
 	cv::Rect GIMAP_OVERLAY_RECT = cv::Rect(0, 3482, 1844,1622);
@@ -58,7 +57,13 @@ public:
 	
 	// overlay
 	const cv::Mat GiMap_Overlay() { return GIMAP_OVERLAY; }
-	
+private:
+	std::map<std::tuple<std::string, std::string, std::string, std::string>, cv::Mat> ImageBuffer;
+	std::function<cv::Mat(std::string area, std::string type, std::string item, std::string object)> ImageBuffer_Callback;
+public:
+	cv::Mat GetImageBuffer(std::string area, std::string type, std::string item, std::string object);
+	void SetImageBuffer(std::string area, std::string type, std::string item, std::string object, cv::Mat mat);
+	void SetGetImageBufferCallback(std::function<cv::Mat(std::string area, std::string type, std::string item, std::string object)> callback);
 
 private:
 	IWICImagingFactory* m_pIWICFactory = NULL;
