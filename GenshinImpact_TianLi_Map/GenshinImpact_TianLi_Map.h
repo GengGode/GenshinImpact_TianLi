@@ -240,6 +240,9 @@ public:
 	BadgeInfo search(const char* country, const char* type, const char* item);
 	
 	TianLi::objects& search(const char* name, double x = 0, double y = 0, double r = 0);
+public:
+	// std::function<cv::Mat(std::string area, std::string type, std::string item, std::string object)> get_image;
+	cv::Mat get_image_tag(const std::string& area, const std::string& type, const std::string& item, const std::string& object);
 };
 
 //#define Map GenshinImpact_TianLi_Map::GetInstance()

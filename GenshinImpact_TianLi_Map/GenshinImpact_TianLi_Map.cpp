@@ -138,3 +138,46 @@ TianLi::objects& GenshinImpact_TianLi_Map::search(const char* name, double x, do
 	static TianLi::objects objs;
 	return objs;
 }
+cv::Mat GenshinImpact_TianLi_Map::get_image_tag(const std::string& area, const std::string& type, const std::string& item, const std::string& object)
+{
+	static cv::Mat empty_object_image;//itemsItemsVector[0].image;
+	static bool is_frist = true;
+	if (is_frist)
+	{
+		empty_object_image = cv::Mat(cv::Size(32, 32), CV_8UC4, cv::Scalar(200, 200, 200, 0));
+		// 以42为直径绘制宽度为3的白色圆环
+		cv::circle(empty_object_image, cv::Point(16, 16), 12, cv::Scalar(255, 255, 255, 128), 3, cv::LINE_AA);
+
+		is_frist = false;
+	}
+	
+	cv::Mat image_mat;
+	unsigned char* image_buffer = nullptr;
+	int size = 0;
+	if (!type.empty() && object.empty())
+	{
+		Core.GetSqlite().GetTypeImage(type.c_str(), image_buffer, size);
+	}
+	if (type.empty() && !object.empty())
+	{
+		Core.GetSqlite().GetItemImage(object.c_str(), image_buffer, size);
+	}
+	if (image_buffer != nullptr)
+	{
+		image_mat = cv::imdecode(cv::Mat(1, size, CV_8UC1, image_buffer), cv::IMREAD_UNCHANGED);
+		if (image_mat.empty())
+		{
+			image_mat = empty_object_image;
+		}
+		//if (image_mat.rows >= 32 || image_mat.cols >= 32)
+		//{
+		//	// image_mat = empty_object_image;
+		//	cv::resize(image_mat, image_mat, cv::Size(32, 32));
+		//}
+	}
+	else
+	{
+		image_mat = empty_object_image;
+	}
+	return image_mat;
+}
