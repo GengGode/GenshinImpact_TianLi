@@ -60,16 +60,20 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 
 	//core = Core;
 	
-	this->loadDataBase();
-	this->loadUIBase();
-	emit this->ui_updatePusButtonList();
 
-	//GenshinImpact_TianLi_Track tianli_track;
+	updata_Country();
+	updata_TypeList();
+	updata_ItemList();
+	updata_ItemsList();
+
+	this->addUI_Tab_Map();
+	this->addUI_Tab_HUD();
+	this->addUI_Tab_3();
+	this->addUI_Tab_4();
+	this->setCurrentIndex_MainTabPages(0);
 	
-
-	//httplib::Client cli("http://download.api.weixitianli.com");
-	//auto res = cli.Get("/GenshinImpactTianLi/Version/Latest");
-	//LogInfo(res->body.c_str());
+	emit this->ui_updatePusButtonList();
+	
 	
 	// Qt HttpGet
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
@@ -166,17 +170,6 @@ void GenshinImpact_TianLi::closeEvent(QCloseEvent* event)
 
 void GenshinImpact_TianLi::loadDataBase()
 {
-	TianLi::SqliteDbMem SqliteDB_Mem = Core.GetResource().LoadSqlite_KYJGDB();
-	Core.GetSqlite().OpenSqlite(SqliteDB_Mem.ptr, SqliteDB_Mem.size);
-	
-
-	updata_Country();
-	
-	updata_TypeList();
-	
-	updata_ItemList();
-	
-	updata_ItemsList();
 }
 
 
@@ -331,11 +324,6 @@ void GenshinImpact_TianLi::addUI_Tab_4()
 
 void GenshinImpact_TianLi::loadUIBase()
 {
-	this->addUI_Tab_Map();
-	this->addUI_Tab_HUD();
-	this->addUI_Tab_3();
-	this->addUI_Tab_4();
-	this->setCurrentIndex_MainTabPages(0);
 }
 
 void GenshinImpact_TianLi::addUI_MapTabCardRects()
