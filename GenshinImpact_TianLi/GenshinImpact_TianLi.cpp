@@ -347,11 +347,11 @@ void GenshinImpact_TianLi::addUI_MapTabCardRects()
 
 	PageTabMap_LeftCardRects.append(new TianLiQtCommon_CardRect(this));
 	PageTabMap_LeftCardRects[1]->setParent(ui.widget_MapTab_Left);
-	PageTabMap_LeftCardRects[1]->setGeometry(36, 112, 302, 397);
+	PageTabMap_LeftCardRects[1]->setGeometry(36, 112, 302, 200);
 	
 	PageTabMap_LeftCardRects.append(new TianLiQtCommon_CardRect(this));
 	PageTabMap_LeftCardRects[2]->setParent(ui.widget_MapTab_Left);
-	PageTabMap_LeftCardRects[2]->setGeometry(36, 352, 302, 355); 
+	PageTabMap_LeftCardRects[2]->setGeometry(36, 200, 302, 507); 
 	
 	// 对地图页面左侧的左栏上的卡片进行遮盖排序
 	PageTabMap_LeftCardRects[2]->raise();
@@ -948,8 +948,6 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 			// 更新 物品按钮QMap
 			// ui_updataItemsButtonList();
 			
-			QImage im;
-			im.load(":/Test/resource/Test/Tex_0537_0.png");
 			auto img = Core.GetResource().GetImageBuffer("", "", "",str.toStdString());
 			auto img_qimage = TianLi::Utils::mat_2_qimage(img);
 
