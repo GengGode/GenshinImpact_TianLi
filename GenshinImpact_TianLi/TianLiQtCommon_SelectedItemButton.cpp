@@ -42,6 +42,11 @@ TianLiQtCommon_SelectedItemButton::~TianLiQtCommon_SelectedItemButton()
 {
 }
 
+void TianLiQtCommon_SelectedItemButton::mouseDoubleClickEvent(QMouseEvent* event)
+{
+	emit signal_double_click(isChecked());
+}
+
 void TianLiQtCommon_SelectedItemButton::setTitle(QString title)
 {
 	ui.label_Title->setText(title);
