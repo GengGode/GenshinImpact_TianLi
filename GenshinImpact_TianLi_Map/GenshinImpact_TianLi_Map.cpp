@@ -73,7 +73,8 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 			if (legend & map_info.map_rect)
 			{
 				// »æÖÆÔÚmapÖÐRect
-				cv::Rect r_img = cv::Rect(cv::Point(std::round(legend.x- img.cols/2.0), std::round(legend.y- img.rows/2.0)), img.size());
+				// TODO:
+				cv::Rect r_img = cv::Rect(cv::Point(std::round((legend.x- img.cols/2.0) / map_info.scale_form_gimap), std::round((legend.y- img.rows/2.0)) / map_info.scale_form_gimap), img.size());
 				
 				// È¡½»¼¯
 				cv::Rect r = (r_img & map_info.map_rect);
@@ -145,7 +146,7 @@ cv::Mat GenshinImpact_TianLi_Map::get_image_tag(const std::string& area, const s
 	if (is_frist)
 	{
 		empty_object_image = cv::Mat(cv::Size(32, 32), CV_8UC4, cv::Scalar(200, 200, 200, 0));
-		// ä»¥42ä¸ºç›´å¾„ç»˜åˆ¶å®½åº¦ä¸º3çš„ç™½è‰²åœ†çŽ¯
+		// ä»?2ä¸ºç›´å¾„ç»˜åˆ¶å®½åº¦ä¸º3çš„ç™½è‰²åœ†çŽ?
 		cv::circle(empty_object_image, cv::Point(16, 16), 12, cv::Scalar(255, 255, 255, 128), 3, cv::LINE_AA);
 
 		is_frist = false;
