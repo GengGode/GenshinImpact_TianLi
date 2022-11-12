@@ -216,16 +216,22 @@ namespace TianLi
 	
 }
 
+#include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
+
+class GenshinImpact_TianLi_Core;
 class DLLAPI GenshinImpact_TianLi_Map
 {
-//	GenshinImpact_TianLi_Map();
-//public:
-//	~GenshinImpact_TianLi_Map();
-//	static GenshinImpact_TianLi_Map* GetInstance();
+	GenshinImpact_TianLi_Core* core;
 	
-public:
 	GenshinImpact_TianLi_Map();
+public:
 	~GenshinImpact_TianLi_Map();
+	static GenshinImpact_TianLi_Map& GetInstance();
+	
+//public:
+//	GenshinImpact_TianLi_Map();
+//	~GenshinImpact_TianLi_Map();
 	
 public:
 	AvatarInfo avatar_info;
@@ -233,6 +239,7 @@ public:
 	BadgeInfo badge_info;
 	//cv::Mat viewer_mat;
 	//cv::Mat viewer_draw_badge_mat;
+	GenshinImpact_TianLi_Core& Core() { return *core; }
 	
 	void render_overlay(cv::Mat& map);
 	void render_legend(cv::Mat& map);
@@ -245,4 +252,5 @@ public:
 	cv::Mat get_image_tag(const std::string& area, const std::string& type, const std::string& item, const std::string& object);
 };
 
-//#define Map GenshinImpact_TianLi_Map::GetInstance()
+#define CoreMap GenshinImpact_TianLi_Map::GetInstance()
+#define Core GenshinImpact_TianLi_Map::GetInstance().Core()

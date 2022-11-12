@@ -36,7 +36,7 @@
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>5.14.2_msvc2017_64_static</QtInstall>
+    <QtInstall>5.14.2_msvc2017_64</QtInstall>
     <QtModules>core;network;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -59,6 +59,7 @@
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <TargetName>天理</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -85,11 +86,11 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\opencv\opencv_460\install\build_Shared_World_NoCuda\install\include;D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include/off;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\x64\vc16\staticlib;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ade.lib;IlmImf.lib;ippicvmt.lib;ippiw.lib;ittnotify.lib;libjpeg-turbo.lib;libopenjp2.lib;libpng.lib;libprotobuf.lib;libtiff.lib;libwebp.lib;opencv_aruco455.lib;opencv_barcode455.lib;opencv_bgsegm455.lib;opencv_bioinspired455.lib;opencv_calib3d455.lib;opencv_ccalib455.lib;opencv_core455.lib;opencv_datasets455.lib;opencv_dnn455.lib;opencv_dnn_objdetect455.lib;opencv_dnn_superres455.lib;opencv_dpm455.lib;opencv_face455.lib;opencv_features2d455.lib;opencv_flann455.lib;opencv_fuzzy455.lib;opencv_gapi455.lib;opencv_hfs455.lib;opencv_highgui455.lib;opencv_imgcodecs455.lib;opencv_imgproc455.lib;opencv_img_hash455.lib;opencv_intensity_transform455.lib;opencv_line_descriptor455.lib;opencv_mcc455.lib;opencv_ml455.lib;opencv_objdetect455.lib;opencv_optflow455.lib;opencv_phase_unwrapping455.lib;opencv_photo455.lib;opencv_plot455.lib;opencv_quality455.lib;opencv_rapid455.lib;opencv_reg455.lib;opencv_rgbd455.lib;opencv_saliency455.lib;opencv_shape455.lib;opencv_stereo455.lib;opencv_stitching455.lib;opencv_structured_light455.lib;opencv_superres455.lib;opencv_surface_matching455.lib;opencv_text455.lib;opencv_tracking455.lib;opencv_video455.lib;opencv_videoio455.lib;opencv_videostab455.lib;opencv_wechat_qrcode455.lib;opencv_xfeatures2d455.lib;opencv_ximgproc455.lib;opencv_xobjdetect455.lib;opencv_xphoto455.lib;quirc.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\opencv\opencv_460\install\build_Shared_World_NoCuda\install\x64\vc17\lib;D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\x64\vc16\staticlib/off;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world460.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkStatus>false</LinkStatus>
     </Link>
   </ItemDefinitionGroup>
@@ -112,7 +113,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -198,7 +199,6 @@
     <QtMoc Include="TianLiQtCommon_SelectedItemButton.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\GenshinImpact_TianLi_Resource\GenshinImpact_TianLi_Resource.rc" />
     <ResourceCompile Include="GenshinImpact_TianLi_Logo.rc" />
     <ResourceCompile Include="GenshinImpact_TianLi_Version.rc" />
   </ItemGroup>

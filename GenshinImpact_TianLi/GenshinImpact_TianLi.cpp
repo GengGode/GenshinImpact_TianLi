@@ -30,8 +30,8 @@
 #include <QNetworkAccessManager>
 
 
-#include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
-#pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
+#include "..\GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Map.lib")
 
 using namespace TianLi;
 
@@ -282,7 +282,7 @@ void GenshinImpact_TianLi::updata_ItemsList()
 		
 		legend_block.badge_list.push_back(legend);
 	}
-	Core.GetMap().badge_info.badge_block_list.push_back(legend_block);
+	CoreMap.badge_info.badge_block_list.push_back(legend_block);
 	
 }
 

@@ -1,30 +1,48 @@
 #pragma once
+#ifndef _LIB
+#ifdef GENSHINIMPACTTIANLIRESOURCE_EXPORTS
+#define GENSHINIMPACTTIANLIRESOURCE_API __declspec(dllexport)
+#else
+//#define GENSHINIMPACTTIANLIRESOURCE_API __declspec(dllimport)
+#define GENSHINIMPACTTIANLIRESOURCE_API /* No thing */
+#endif
+
+#define APICALL __stdcall
+#ifndef DLLAPI
+#define DLLAPI GENSHINIMPACTTIANLIRESOURCE_API
+#endif // DLLAPI
+
+#else
+#ifndef DLLAPI
+#define DLLAPI
+#endif // DLLAPI
+#endif
+
+
 #include "resource.h"
 #include <wincodec.h>
 #include <opencv2/opencv.hpp>
 
 namespace TianLi 
 {	
-	struct SqliteDbMem {
+	struct DLLAPI SqliteDbMem {
 		unsigned char *ptr;
 		__int64 size;
 	};
 
-	struct XmlDbMem
+	struct DLLAPI XmlDbMem
 	{
 		char* ptr;
 		__int64 size;
 	};
 
-	extern const char* Temp_Sqlite_FileName;
+	HBITMAP DLLAPI LoadPNG_GIMAP();
+	HBITMAP DLLAPI LoadBitmap_GIPAIMON();
 
-	HBITMAP LoadPNG_GIMAP();
-	HBITMAP LoadBitmap_GIPAIMON();
-
-	SqliteDbMem LoadSqlite_KYJGDB();
-	XmlDbMem LoadXml_GIMAP_COMPUTE();
+	SqliteDbMem DLLAPI LoadSqlite_KYJGDB();
+	XmlDbMem DLLAPI LoadXml_GIMAP_COMPUTE();
 }
-class GenshinImpact_TianLi_Resource
+class DLLAPI GenshinImpact_TianLi_Resource
 {
 	GenshinImpact_TianLi_Resource();
 public:
@@ -64,6 +82,7 @@ public:
 	cv::Mat GetImageBuffer(std::string area, std::string type, std::string item, std::string object);
 	void SetImageBuffer(std::string area, std::string type, std::string item, std::string object, cv::Mat mat);
 	void SetGetImageBufferCallback(std::function<cv::Mat(std::string area, std::string type, std::string item, std::string object)> callback);
+
 
 private:
 	IWICImagingFactory* m_pIWICFactory = NULL;

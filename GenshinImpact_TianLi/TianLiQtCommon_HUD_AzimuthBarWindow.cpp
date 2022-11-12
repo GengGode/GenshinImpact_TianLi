@@ -4,11 +4,8 @@
 #include <QCloseEvent>
 #include <QStyleOption>
 
-#include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
-#pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
-
-
-
+#include "..\GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Map.lib")
 
 TianLiQtCommon_HUD_AzimuthBarWindow::TianLiQtCommon_HUD_AzimuthBarWindow(QWidget *parent)
 	: QWidget(parent)
@@ -250,7 +247,7 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update()
 {
 	//avatar_rotate_deg_atom = -avatar_rotate_deg;
 	//TrackResult traack_res = Core.GetTrack().GetResult();
-	auto  track_res = Core.GetTrack().GetResult();
+	auto  track_res = CoreMap.Core.GetTrack().GetResult();
 	if (track_res.is_find_paimon)
 	{
 		this->show();

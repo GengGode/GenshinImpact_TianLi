@@ -11,8 +11,8 @@
 #include "TianLiQtCommon_Logger.h"
 #include "TianLiQtCommon_Utils.h"
 
-#include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
-#pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
+#include "..\GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Map.lib")
 
 TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget* parent)
 	: QWidget(parent)
@@ -119,20 +119,20 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 		
 		//---
 		//cv::Rect map_rect;
-		//mapMatRect = TianLi::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, map_rect);
+		//mapMatRect = TianLi::Utils::get_view_map(CoreMap.Core().GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, map_rect);
 		
-		Core.GetMap().map_info.is_overlay = true;
-		Core.GetMap().map_info.is_show_map = true;
+		CoreMap.map_info.is_overlay = true;
+		CoreMap.map_info.is_show_map = true;
 
-		Core.GetMap().map_info.center_x = render_map_pos.x;
-		Core.GetMap().map_info.center_y = render_map_pos.y;
-		Core.GetMap().map_info.viewer_width = ui.label_Render->width();
-		Core.GetMap().map_info.viewer_height = ui.label_Render->height();
+		CoreMap.map_info.center_x = render_map_pos.x;
+		CoreMap.map_info.center_y = render_map_pos.y;
+		CoreMap.map_info.viewer_width = ui.label_Render->width();
+		CoreMap.map_info.viewer_height = ui.label_Render->height();
 
-		//Core.GetMap().map_info.map_rect = map_rect;
-		Core.GetMap().map_info.scale_form_gimap = render_map_scale;
+		//CoreMap.map_info.map_rect = map_rect;
+		CoreMap.map_info.scale_form_gimap = render_map_scale;
 		// äÖÈ¾Í¼Àý
-		Core.GetMap().render_legend(mapMatRect);
+		CoreMap.render_legend(mapMatRect);
 		//***
 
 
@@ -168,10 +168,10 @@ void TianLiQtCommon_MapRect::resizeEvent(QResizeEvent* event)
 
 void TianLiQtCommon_MapRect::slot_update()
 {
-	if (Core.GetTrack().GetResult().is_find_paimon)
+	if (CoreMap.Core.GetTrack().GetResult().is_find_paimon)
 	{
-		render_map_pos = cv::Point(Core.GetTrack().GetResult().position_x, Core.GetTrack().GetResult().position_y);
-		ui.label_UID->setText(QString("UID: %1").arg(Core.GetTrack().GetResult().uid, 9, 10, QLatin1Char('0')));
+		render_map_pos = cv::Point(CoreMap.Core.GetTrack().GetResult().position_x, CoreMap.Core.GetTrack().GetResult().position_y);
+		ui.label_UID->setText(QString("UID: %1").arg(CoreMap.Core.GetTrack().GetResult().uid, 9, 10, QLatin1Char('0')));
 		
 		update();
 	}

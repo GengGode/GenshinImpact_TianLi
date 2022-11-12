@@ -10,7 +10,6 @@
 
 namespace TianLi
 {
-	const char* Temp_Sqlite_FileName = "Temp~";
 	
 	HBITMAP LoadPNG_GIMAP()
 	{
@@ -26,9 +25,12 @@ namespace TianLi
 		DWORD imageFileSize = 0;
 		
 		HBITMAP hGIMAP;
-		
+#ifdef _LIB
 		hModu = GetModuleHandle(0);
-
+#else
+		hModu = GetModuleHandle(L"GenshinImpact_TianLi_Resource.dll");
+#endif
+		
 		CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
 		CoCreateInstance(
@@ -71,13 +73,22 @@ namespace TianLi
 	// 加载 Bitmap 图片 ID_GIPAIMON
 	HBITMAP LoadBitmap_GIPAIMON()
 	{
+#ifdef _LIB
 		HMODULE H_Module = GetModuleHandleW(NULL);
+#else
+		HMODULE H_Module = GetModuleHandle(L"GenshinImpact_TianLi_Resource.dll");
+#endif
+		
 		HBITMAP H_GIPAIMON = LoadBitmap(H_Module, MAKEINTRESOURCE(IDB_BITMAP_GIPAIMON));
 		return H_GIPAIMON;
 	}
 	SqliteDbMem LoadSqlite_KYJGDB()
 	{
-		HMODULE H_Module = GetModuleHandleW(NULL);
+#ifdef _LIB
+			HMODULE H_Module = GetModuleHandleW(NULL);
+#else
+		HMODULE H_Module = GetModuleHandle(L"GenshinImpact_TianLi_Resource.dll");
+#endif
 		HRSRC H_SQLITE = FindResource(H_Module, MAKEINTRESOURCE(IDR_SQLITE_KYJG), L"SQLITE");
 		SqliteDbMem Sqlite_KYJGDB = { nullptr,0 };
 #ifdef DEBUG
@@ -151,7 +162,11 @@ namespace TianLi
 	}
 	XmlDbMem LoadXml_GIMAP_COMPUTE()
 	{
+#ifdef _LIB
 		HMODULE H_Module = GetModuleHandleW(NULL);
+#else
+		HMODULE H_Module = GetModuleHandle(L"GenshinImpact_TianLi_Resource.dll");
+#endif
 		HRSRC H_XML = FindResource(H_Module, MAKEINTRESOURCE(IDR_XML_GIMAP_COMPUTE), L"XML");
 		XmlDbMem Xml_GIMAP_COMPUTE = { nullptr,0 };
 #ifdef DEBUG
@@ -328,7 +343,12 @@ void GenshinImpact_TianLi_Resource::LoadPng_ID2Mat(int IDB, cv::Mat& mat)
 
 void GenshinImpact_TianLi_Resource::LoadPng()
 {
-	hModu = GetModuleHandle(0);
+#ifdef _LIB
+	HMODULE H_Module = GetModuleHandleW(NULL);
+#else
+	HMODULE H_Module = GetModuleHandle(L"GenshinImpact_TianLi_Resource.dll");
+#endif
+	hModu = H_Module;
 
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
