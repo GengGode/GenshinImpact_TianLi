@@ -136,6 +136,7 @@
     <ClCompile Include="TianLiQtCommon_TypeGroupButton.cpp" />
     <ClCompile Include="TianLiQtCommon_HUD_SquareMap.cpp" />
     <ClCompile Include="TianLiQtCommon_Utils.cpp" />
+    <ClCompile Include="TianLiQtCommon_Utils_Sqlite.cpp" />
     <QtRcc Include="GenshinImpact_TianLi.qrc" />
     <QtRcc Include="TianLiQtCommon_HUD_AzimuthBarWindow.qrc" />
     <QtRcc Include="TianLiQtCommon_MapRect.qrc" />
@@ -186,6 +187,7 @@
     <ClInclude Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.h" />
     <QtMoc Include="TianLiQtCommon_SwitchButton.h" />
     <QtMoc Include="TianLiQtCommon_ListenKeyBoard.h" />
+    <ClInclude Include="TianLiQtCommon_Utils_Sqlite.h" />
     <ClInclude Include="WindowsAttribute.h" />
     <QtMoc Include="TianLiQtCommon_HUD_AzimuthBarWindow.h" />
     <QtMoc Include="TianLiQtCommon_Logger.h" />

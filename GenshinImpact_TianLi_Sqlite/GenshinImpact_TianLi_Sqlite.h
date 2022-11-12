@@ -72,6 +72,7 @@ extern "C"
 	};
 	class  DLLAPI GenshinImpact_TianLi_Sqlite
 	{
+	public:
 		SqliteImpl* impl = nullptr;
 	public:
 		GenshinImpact_TianLi_Sqlite();
@@ -79,7 +80,9 @@ extern "C"
 		int OpenSqlite(const char* dbPath);
 		int OpenSqlite(unsigned char *dbData,int size);
 		int CloseSqlite();
-	
+	public:
+		//std::vector<std::pair<std::string, int>> get_area_map();
+	public:
 		// 读取国家地区
 		int ReadCountry(TextVector& text);
 		// 读取该国家地区下的所有类型
@@ -89,7 +92,7 @@ extern "C"
 		// 读取该国家地区类型物品种类下的所有物品
 		int ReadItems(const char* area, const char* type, const char* item, TextVector& text);
 		int ReadItems(const char* area, const char* type, const char* item, ItemsVector& items);
-
+		
 		//===== 获取图片data相关
 	public:
 		// 根据名称获取类型对应图像数据
@@ -100,3 +103,33 @@ extern "C"
 	};
 
 }
+
+#include<map>
+#include<vector>
+#include<string>
+struct Tag
+{
+	enum TagType 
+	{
+		Area,
+		Type,
+		Item,
+		Object
+	};
+	TagType tag_type;
+	int id;
+	std::string name;
+	std::string icon_tag;
+
+	Tag() = default;
+	~Tag() = default;
+	
+};
+namespace v1
+{
+	std::map<std::pair<int, std::string>, std::vector<std::pair<int, std::string>> > get_area_map(GenshinImpact_TianLi_Sqlite* sqlite);
+	std::map<std::pair<std::pair<int, std::string>, std::string>, std::vector<std::pair<std::pair<int, std::string>, std::string>> >  get_type_map(GenshinImpact_TianLi_Sqlite* sqlite);
+
+}
+std::map<Tag, std::vector<Tag> > get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
+std::map<Tag, std::vector<Tag> > get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
