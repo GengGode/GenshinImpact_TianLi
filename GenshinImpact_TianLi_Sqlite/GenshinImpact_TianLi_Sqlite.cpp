@@ -5,6 +5,8 @@
 #include "framework.h"
 #include "GenshinImpact_TianLi_Sqlite.h"
 #include "SqliteImpl.h"
+#include <vector>
+#include <map>
 #include <string>
 #include <format>
 #include <algorithm>
@@ -306,6 +308,7 @@ int __stdcall GenshinImpact_TianLi_Sqlite::CloseSqlite()
 	impl->close();
 	return 0;
 }
+
 static int callback_country(void* data, int argc, char** argv, char** azColName);
 int __stdcall GenshinImpact_TianLi_Sqlite::ReadCountry(TextVector &text)
 {
@@ -321,6 +324,69 @@ int __stdcall GenshinImpact_TianLi_Sqlite::ReadCountry(TextVector &text)
 	}
 	return 0;
 }
+//std::vector<std::pair<std::string, int>> GenshinImpact_TianLi_Sqlite::get_area_map()
+//{
+//	std::map<int, std::string> area_parent;
+//	auto sql_get_parent = "SELECT areaId, name FROM Area WHERE parent = -1 AND hiddenFlag = 0;";
+//	impl->exec(sql_get_parent, [](void* data, int argc, char** argv, char** azColName) -> int {
+//		auto area_parent = (std::map<int, std::string>*)data;
+//		int areaId = atoi(argv[0]);
+//		std::string name = argv[1];
+//		area_parent->insert(std::make_pair(areaId, name));
+//		return 0;
+//		}, &area_parent, nullptr);
+//	
+//	std::vector<std::tuple<std::string, int>> area_map;
+//	auto sql_get_area = "SELECT areaId, name FROM Area WHERE parent =";
+//	for (auto& [areaId, name] : area_parent)
+//	{
+//		std::string sql = sql_get_area + std::to_string(areaId) + " AND hiddenFlag = 0;";
+//		impl->exec(sql.c_str(), [](void* data, int argc, char** argv, char** azColName) -> int {
+//			auto area_map = (std::vector<std::tuple<std::string, int>>*)data;
+//			int areaId = atoi(argv[0]);
+//			std::string name = argv[1];
+//			area_map->push_back(std::make_tuple(name, areaId));
+//			return 0;
+//			}, &area_map, nullptr);
+//	}
+//	
+//	
+//	
+//
+//
+//	std::vector<std::tuple<std::string, int, int, std::string >> ret;
+//	{
+//		auto sql = "SELECT name, areaId, parentId, iconTag FROM Area ORDER BY sortIndex DESC;";
+//		auto callback = [](void* data, int argc, char** argv, char** azColName)->int {
+//			auto ret = (std::vector<std::tuple<std::string, int, int, std::string >>*)data;
+//			ret->push_back(std::make_tuple(argv[0], atoi(argv[1]), atoi(argv[2]), argv[3]));
+//			return 0;
+//		};
+//		char* errmsg = NULL;
+//		impl->exec(sql, callback, (void*)&ret, &errmsg);
+//	}
+//	
+//
+//
+//
+//
+//	//// areaId : name, iconTag, parentId
+//	//std::map<int, std::tuple<std::string, std::string, int>> area_map;
+//	//for (auto& item : ret)
+//	//{
+//	//	area_map[std::get<1>(item)] = std::make_tuple(std::get<0>(item), std::get<3>(item), std::get<2>(item));
+//	//}
+//	//// parent area name : name, iconTag, areaId
+//	//std::map<std::string, std::vector<std::tuple<std::string, std::string, int>>> ret2;
+//	//for (auto& item : area_map)
+//	//{
+//	//	auto parent_name = std::get<0>(area_map[std::get<2>(item.second)]);
+//	//	ret2[parent_name].push_back(std::make_tuple(std::get<0>(item.second), std::get<1>(item.second), item.first));
+//	//}
+//	
+//	return std::vector<std::pair<std::string, int>>();
+//}
+
 static int callback_type(void* data, int argc, char** argv, char** azColName);
 int __stdcall GenshinImpact_TianLi_Sqlite::ReadType(const char* area, TextVector& text)
 {
@@ -568,4 +634,156 @@ int callbackTyoeImage(void* data, int argc, char** argv, char** azColName)
 {
 	return 0;
 }
+namespace v1 
+{
+	std::map<std::pair<int, std::string>, std::vector<std::pair<int, std::string>> > get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite)
+	{
+		std::map<int, std::string> area_parent;
+		auto sql_get_parent = "SELECT areaId, name FROM Area WHERE parentId = -1 AND hiddenFlag = 0;";
+		sqlite->impl->exec(sql_get_parent, [](void* data, int argc, char** argv, char** azColName) -> int {
+			auto area_parent = (std::map<int, std::string>*)data;
+			int areaId = atoi(argv[0]);
+			std::string name = argv[1];
+			area_parent->insert(std::make_pair(areaId, name));
+			return 0;
+			}, &area_parent, nullptr);
+		std::map<std::pair<int, std::string>, std::vector<std::pair<int, std::string>> > area_map;
+		for (auto& area : area_parent)
+		{
+			std::vector<std::pair<int, std::string>> area_child;
+			std::string sql_get_child = "SELECT areaId, name FROM Area WHERE parentId = " + std::to_string(area.first) + " ORDER BY sortIndex DESC;";
+			sqlite->impl->exec(sql_get_child.c_str(), [](void* data, int argc, char** argv, char** azColName) -> int {
+				auto area_child = (std::vector<std::pair<int, std::string>>*)data;
+				int areaId = atoi(argv[0]);
+				std::string name = argv[1];
+				area_child->push_back(std::make_pair(areaId, name));
+				return 0;
+				}, &area_child, nullptr);
+			area_map.insert(std::make_pair(area, area_child));
+		}
 
+		return area_map;
+	}
+	
+	std::map<std::pair<std::pair<int, std::string>, std::string>, std::vector<std::pair<std::pair<int, std::string>, std::string>> > get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite)
+	{
+		std::vector<std::pair<std::pair<int, std::string>, std::string>> type_parent;
+		auto sql_get_parent = "SELECT typeId, name, iconTag FROM Type WHERE parentId = -1 AND hiddenFlag = 0;";
+		sqlite->impl->exec(sql_get_parent, [](void* data, int argc, char** argv, char** azColName) -> int {
+			auto type_parent = (std::vector<std::pair<std::pair<int, std::string>, std::string>>*)data;
+			int typeId = atoi(argv[0]);
+			std::string name = argv[1];
+			std::string icon = argv[2];
+			type_parent->push_back(std::make_pair(std::make_pair(typeId, name), icon));
+			return 0;
+			}, &type_parent, nullptr);
+		std::map<std::pair<std::pair<int, std::string>, std::string>, std::vector<std::pair<std::pair<int, std::string>, std::string>>> type_map;
+		for (auto& type : type_parent)
+		{
+			std::vector<std::pair<std::pair<int, std::string>, std::string>> type_child;
+			std::string sql_get_child = "SELECT typeId, name, iconTag FROM Type WHERE parentId = " + std::to_string(type.first.first) + " ORDER BY sortIndex DESC;";
+			sqlite->impl->exec(sql_get_child.c_str(), [](void* data, int argc, char** argv, char** azColName) -> int {
+				auto type_child = (std::vector<std::pair<std::pair<int, std::string>, std::string>>*)data;
+				int typeId = atoi(argv[0]);
+				std::string name = argv[1];
+				std::string icon = argv[2];
+				type_child->push_back(std::make_pair(std::make_pair(typeId, name), icon));
+				return 0;
+				}, &type_child, nullptr);
+			type_map.insert(std::make_pair(type, type_child));
+		}
+
+
+		return type_map;
+	}
+}
+
+std::map<Tag, std::vector<Tag> > get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite)
+{
+	std::map<Tag, std::vector<Tag>> area_map;
+	auto sql_get_parent = "SELECT areaId, name, iconTag FROM Area WHERE parentId = -1 AND hiddenFlag = 0;";
+	sqlite->impl->exec(sql_get_parent, [](void* data, int argc, char** argv, char** azColName) -> int {
+		auto area_map = (std::map<Tag, std::vector<Tag>>*)data;
+		int areaId = atoi(argv[0]);
+		std::string name = argv[1];
+		std::string iconTag = argv[2];
+		
+		//c= { Tag::TagType::Area , areaId, name, iconTag };
+		Tag tag;
+		tag.tag_type = Tag::TagType::Area;
+		tag.id = areaId;
+		tag.name = name;
+		tag.icon_tag = iconTag;
+		
+		area_map->insert(std::make_pair(tag, std::vector<Tag>()));
+		return 0;
+		}, &area_map, nullptr);
+	for (auto& area : area_map)
+	{
+		std::string sql_get_child = "SELECT areaId, name, iconTag FROM Area WHERE parentId = " + std::to_string(area.first.id) + " ORDER BY sortIndex DESC;";
+		sqlite->impl->exec(sql_get_child.c_str(), [](void* data, int argc, char** argv, char** azColName) -> int {
+			auto area_map = (std::map<Tag, std::vector<Tag>>*)data;
+			int areaId = atoi(argv[0]);
+			std::string name = argv[1];
+			std::string iconTag = argv[2];
+			
+			//Tag tag = { Tag::TagType::Area , areaId, name, iconTag };
+			Tag tag;
+			tag.tag_type = Tag::TagType::Area;
+			tag.id = areaId;
+			tag.name = name;
+			tag.icon_tag = iconTag;
+			
+			area_map->insert(std::make_pair(tag, std::vector<Tag>()));
+			return 0;
+			}, &area_map, nullptr);
+	}
+
+	return area_map;
+}
+
+
+std::map<Tag, std::vector<Tag> > get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite)
+{
+	std::map<Tag, std::vector<Tag>> type_map;
+	auto sql_get_parent = "SELECT typeId, name, iconTag FROM Type WHERE parentId = -1 AND hiddenFlag = 0;";
+	sqlite->impl->exec(sql_get_parent, [](void* data, int argc, char** argv, char** azColName) -> int {
+		auto type_map = (std::map<Tag, std::vector<Tag>>*)data;
+		int typeId = atoi(argv[0]);
+		std::string name = argv[1];
+		std::string iconTag = argv[2];
+
+		//Tag tag = { Tag::TagType::Type , typeId, name, iconTag };
+		Tag tag;
+		tag.tag_type = Tag::TagType::Type;
+		tag.id = typeId;
+		tag.name = name;
+		tag.icon_tag = iconTag;
+		
+
+		type_map->insert(std::make_pair(tag, std::vector<Tag>()));
+		return 0;
+		}, &type_map, nullptr);
+	for (auto& type : type_map)
+	{
+		std::string sql_get_child = "SELECT typeId, name, iconTag FROM Type WHERE parentId = " + std::to_string(type.first.id) + " ORDER BY sortIndex DESC;";
+		sqlite->impl->exec(sql_get_child.c_str(), [](void* data, int argc, char** argv, char** azColName) -> int {
+			auto type_map = (std::map<Tag, std::vector<Tag>>*)data;
+			int typeId = atoi(argv[0]);
+			std::string name = argv[1];
+			std::string iconTag = argv[2];
+
+			//Tag tag = { Tag::TagType::Type , typeId, name, iconTag };
+			Tag tag;
+			tag.tag_type = Tag::TagType::Type;
+			tag.id = typeId;
+			tag.name = name;
+			tag.icon_tag = iconTag;
+
+			type_map->insert(std::make_pair(tag, std::vector<Tag>()));
+			return 0;
+			}, &type_map, nullptr);
+	}
+
+	return type_map;
+}

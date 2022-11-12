@@ -169,6 +169,9 @@
     <ClCompile Include="TianLiQtCommon_ListenKeyBoard.cpp">
       <Filter>Source Files\TianLiQtCommon\Listen</Filter>
     </ClCompile>
+    <ClCompile Include="TianLiQtCommon_Utils_Sqlite.cpp">
+      <Filter>Source Files\TianLiQtCommon\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="GenshinImpact_TianLi_zh.ts">
@@ -268,6 +271,9 @@
       <Filter>Header Files\TianLiQtCommon\Utils</Filter>
     </ClInclude>
     <ClInclude Include="WindowsAttribute.h">
+      <Filter>Header Files\TianLiQtCommon\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TianLiQtCommon_Utils_Sqlite.h">
       <Filter>Header Files\TianLiQtCommon\Utils</Filter>
     </ClInclude>
   </ItemGroup>
