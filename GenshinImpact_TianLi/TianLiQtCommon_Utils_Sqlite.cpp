@@ -10,9 +10,20 @@ namespace TianLi::Utils::Sqlite
 		std::map<std::string, int> area_map;
 		//std::vector<std::tuple<std::string, int>> area_list = sqlite->GetAreaList();
 		auto map = get_area_group_map(sqlite);
-		for (auto& [key, value] : map)
+		for (auto& [tag, tag_child] : map)
 		{
-			area_map[key.name] = key.id;
+			// v2 area_map[key.name] = key.id;
+			if (tag_child.size() == 0)
+			{
+				area_map[tag.first.second] = tag.first.first;
+			}
+			else
+			{
+				for (auto& tag : tag_child)
+				{
+					area_map[tag.first.second] = tag.first.first;
+				}
+			}
 		}
 		return area_map;
 	}

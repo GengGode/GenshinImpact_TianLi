@@ -107,29 +107,41 @@ extern "C"
 #include<map>
 #include<vector>
 #include<string>
-struct Tag
-{
-	enum TagType 
-	{
-		Area,
-		Type,
-		Item,
-		Object
-	};
-	TagType tag_type;
-	int id;
-	std::string name;
-	std::string icon_tag;
 
-	Tag() = default;
-	~Tag() = default;
-	
-};
 namespace v1
 {
-	std::map<std::pair<int, std::string>, std::vector<std::pair<int, std::string>> > get_area_map(GenshinImpact_TianLi_Sqlite* sqlite);
-	std::map<std::pair<std::pair<int, std::string>, std::string>, std::vector<std::pair<std::pair<int, std::string>, std::string>> >  get_type_map(GenshinImpact_TianLi_Sqlite* sqlite);
+	std::map<std::pair<int, std::string>, std::vector<std::pair<int, std::string>> > get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
+	std::map<std::pair<std::pair<int, std::string>, std::string>, std::vector<std::pair<std::pair<int, std::string>, std::string>> >  get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
 
 }
+#ifdef _DEF_V2
+namespace v2
+{
+	struct Tag
+	{
+		enum TagType
+		{
+			Area,
+			Type,
+			Item,
+			Object
+		};
+		TagType tag_type = Area;
+		int id = -1;
+		std::string name="";
+		std::string icon_tag="";
+
+		//Tag() = default;
+		//~Tag() = default;
+		//
+	};
+
+	std::map<Tag, std::vector<Tag> > get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
+	std::map<Tag, std::vector<Tag> > get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
+}
+#endif
+
+typedef std::pair<std::pair<int, std::string>, std::string > Tag;
+
 std::map<Tag, std::vector<Tag> > get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
 std::map<Tag, std::vector<Tag> > get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite);

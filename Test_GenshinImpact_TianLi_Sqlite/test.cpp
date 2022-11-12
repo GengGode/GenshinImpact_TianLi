@@ -2,6 +2,19 @@
 
 #include "..\GenshinImpact_TianLi_Sqlite\GenshinImpact_TianLi_Sqlite.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Sqlite.lib")
+//TEST(Std_TUPLE, Std)
+//{
+//	std::vector<std::tuple<int, std::string, std::string>> v1;
+//	for (int i = 0; i < 10; i++)
+//	{
+//		v1.push_back(std::make_tuple(i, std::to_string(i), std::to_string(i)));
+//	}
+//
+//	for(auto &[id,name,icon]:v1)
+//	{
+//		std::cout << id << " " << name << " " << icon << std::endl;
+//	}
+//}
 
 TEST(SqliteRead, Std_V1)
 {
@@ -10,8 +23,8 @@ TEST(SqliteRead, Std_V1)
 
 	system("chcp 65001");
 
-	auto areas = v1::get_area_map(&sqlite);
-	
+	auto areas = v1::get_area_group_map(&sqlite);
+
 	for (auto& area : areas)
 	{
 		auto& area_parent = area.first;
@@ -25,7 +38,7 @@ TEST(SqliteRead, Std_V1)
 		}
 	}
 
-	auto types = v1::get_type_map(&sqlite);
+	auto types = v1::get_type_group_map(&sqlite);
 	for (auto& type : types)
 	{
 		auto& type_parent = type.first;
@@ -40,14 +53,15 @@ TEST(SqliteRead, Std_V1)
 		}
 	}
 }
-TEST(SqliteRead, Std)
+#ifdef _DEF_V2
+TEST(SqliteRead, Std_V2)
 {
 	GenshinImpact_TianLi_Sqlite sqlite;
 	sqlite.OpenSqlite("C:/Users/GengG/source/repos/GenshinImpact_TianLi/Build_TianLi_Resource_KongYingJiuGuanData/Data.sqlite");
 
 	system("chcp 65001");
 
-	auto areas = get_area_group_map(&sqlite);
+	auto areas = v2::get_area_group_map(&sqlite);
 
 	for (auto& area : areas)
 	{
@@ -62,7 +76,7 @@ TEST(SqliteRead, Std)
 		}
 	}
 
-	auto types = get_type_group_map(&sqlite);
+	auto types = v2::get_type_group_map(&sqlite);
 	for (auto& type : types)
 	{
 		auto& type_parent = type.first;
@@ -73,6 +87,45 @@ TEST(SqliteRead, Std)
 			auto& id = type_child.name;
 			auto& name = type_child.id;
 			auto& type = type_child.icon_tag;
+			std::cout << "\t" << id << " " << name << " " << type << std::endl;
+		}
+	}
+}
+#endif
+
+TEST(SqliteRead, Std)
+{
+	GenshinImpact_TianLi_Sqlite sqlite;
+	sqlite.OpenSqlite("C:/Users/GengG/source/repos/GenshinImpact_TianLi/Build_TianLi_Resource_KongYingJiuGuanData/Data.sqlite");
+
+	system("chcp 65001");
+
+	auto areas = get_area_group_map(&sqlite);
+
+	for (auto& area : areas)
+	{
+		auto& area_parent = area.first;
+		auto& area_childs = area.second;
+		std::cout << area_parent.first.second << " " << area_parent.first.first << std::endl;
+		for (auto& area_child : area_childs)
+		{
+			auto& id = area_child.first.second;
+			auto& name = area_child.first.first;
+			std::cout << "\t" << id << " " << name << std::endl;
+		}
+	}
+
+	auto types = get_type_group_map(&sqlite);
+	for (auto& type : types)
+	{
+		auto& type_parent = type.first;
+		auto& type_childs = type.second;
+		std::cout << type_parent.first.second << " " << type_parent.first.first << " " << type_parent.second << std::endl;
+		for (auto& type_child : type_childs)
+		{
+			auto& id = type_child.first.second;
+			auto& name = type_child.first.first;
+			auto& type = type_child.second;
 			std::cout << "\t" << id << " " << name << " " << type << std::endl;
 		}
 	}
