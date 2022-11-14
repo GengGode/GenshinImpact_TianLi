@@ -130,6 +130,9 @@ class GenshinImpact_TianLi_Track_TaskResult
 	
 	// 从屏幕画面获取UID
 	TrackTask<GenshinScreen, GenshinUID>* task_get_uid = nullptr;
+	
+	// 从屏幕画面获取右侧可捡取物品列表
+	TrackTask<GenshinScreen, GenshinPickableItems>* task_get_pickable_items = nullptr;
 
 	
 	TianLi::Track::TrackResult result;

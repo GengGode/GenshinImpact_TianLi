@@ -18,6 +18,8 @@ GenshinImpact_TianLi_Track_TaskResult::GenshinImpact_TianLi_Track_TaskResult()
 	task_get_stars              = new TrackTask<GenshinMinimap, GenshinStars>                    (func_get_stars             );
 	task_get_tagflags           = new TrackTask<GenshinMinimap, GenshinTagflags>                 (func_get_tagflags          );
 	task_get_uid                = new TrackTask<GenshinScreen, GenshinUID>                       (func_get_uid               );
+	task_get_pickable_items     = new TrackTask<GenshinScreen, GenshinPickableItems>             (func_get_pickable_items    );
+	
 	//=========================================================================
 }
 
@@ -36,6 +38,7 @@ GenshinImpact_TianLi_Track_TaskResult::~GenshinImpact_TianLi_Track_TaskResult()
 	delete task_get_stars;
 	delete task_get_tagflags;
 	delete task_get_uid;
+	delete task_get_pickable_items;
 	//=========================================================================
 }
 
@@ -56,6 +59,7 @@ std::map<std::string, bool> GenshinImpact_TianLi_Track_TaskResult::check_wait()
 	static GenshinStars stars_out;
 	static GenshinTagflags tagflags_out;
 	static GenshinUID uid_out;
+	static GenshinPickableItems pickable_items_out;
 	
 	if (task_handle->check_wait())
 	{
@@ -157,6 +161,14 @@ std::map<std::string, bool> GenshinImpact_TianLi_Track_TaskResult::check_wait()
 		wait_map["task_get_uid"] = true;
 
 	}
+	if (task_get_pickable_items->check_wait())
+	{
+		pickable_items_out = task_get_pickable_items->get_output();
+		task_get_pickable_items->set_input(screen_out);
+		task_get_pickable_items->work();
+		wait_map["task_get_pickable_items"] = true;
+
+	}
 
 	//=========================================================================
 
@@ -183,7 +195,7 @@ TianLi::Track::TrackResult GenshinImpact_TianLi_Track_TaskResult::get_result()
 	result.viewer_angle = task_get_viewer_direction->get_output().angle;
 
 	result.uid = task_get_uid->get_output().uid;
-
+	result.item_tags = task_get_pickable_items->get_output().item_tags;
 	
 	//=========================================================================
 
