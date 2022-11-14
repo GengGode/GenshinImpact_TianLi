@@ -120,14 +120,5 @@ inline void get_pickable_items(const GenshinScreen& genshin_screen, GenshinPicka
 			Sleep(100);
 		}
 	}
-
-	// ocr
-	//auto res = ocr_call(roi_vec);
-	//for (int i = 0; i < res.size(); i++)
-	//{
-	//	out_genshin_pickable_items.item_tags.push_back(res[i]);
-	//}
-	// Sleep
 	
-	//Sleep(3000);
 }
