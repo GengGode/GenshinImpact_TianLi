@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -116,7 +116,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
@@ -159,6 +159,7 @@
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Handle.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_MiniMap.h" />
+    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_PickItem.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Screen.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Struct.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_UID.h" />

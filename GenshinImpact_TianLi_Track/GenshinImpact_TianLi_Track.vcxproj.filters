@@ -45,6 +45,9 @@
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_UID.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_PickItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
