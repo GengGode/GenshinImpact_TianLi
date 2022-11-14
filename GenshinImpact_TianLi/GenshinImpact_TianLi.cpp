@@ -72,7 +72,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	this->addUI_Tab_4();
 	this->setCurrentIndex_MainTabPages(0);
 	
-	emit this->ui_updatePusButtonList();
+	ui_updataCountryButtonList();
 	
 	//auto Data = GenshinImpact_TianLi_Data();
 	//Data.init(&Core.GetSqlite());
@@ -141,7 +141,6 @@ void GenshinImpact_TianLi::mousePressEvent(QMouseEvent* event)
 		ui.label_Main->frameRect().contains(event->globalPos() - this->frameGeometry().topLeft()))
 	{
 		{
-
 			m_Press = event->globalPos();
 			leftBtnClk = true;
 		}
@@ -179,13 +178,9 @@ void GenshinImpact_TianLi::closeEvent(QCloseEvent* event)
 	}
 }
 
-void GenshinImpact_TianLi::loadDataBase()
-{
-}
-
-
 void GenshinImpact_TianLi::updata_Country()
 {
+
 	TextVector countryTextVector;
 	
 	// 清空 可选地区
@@ -330,11 +325,6 @@ void GenshinImpact_TianLi::addUI_Tab_4()
 		}
 		});
 	//connect(PageTabMap_MapRect[0], &TianLiQtCommon_MapRect::signal_double_click, dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::slot_clicked);
-}
-
-
-void GenshinImpact_TianLi::loadUIBase()
-{
 }
 
 void GenshinImpact_TianLi::addUI_MapTabCardRects()
@@ -680,35 +670,6 @@ void GenshinImpact_TianLi::pushButton_Tab_4_clicked(bool checked)
 	}
 }
 
-void GenshinImpact_TianLi::ui_updatePusButtonList()
-{
-	emit ui_updataCountryButtonList();
-
-	for (int i = 0; i < 5; i++)
-	{
-		//TianLiQtCommon_SelectedItemButton* asd = new TianLiQtCommon_SelectedItemButton("test", QImage(":/Test/resource/Test/Tex_0537_0.png"));
-		//PageTabMap_ScrollCardRect[0]->addWidget(asd);
-	}
-	
-	for (int i = 0; i < 2; i++)
-	{
-		QImage im;
-		im.load(":/Test/resource/Test/Tex_0537_0.png");
-		TianLiQtCommon_NearbyItemButton* asd = new TianLiQtCommon_NearbyItemButton(QString::number(i) + "号物品xxx", im);
-
-		PageTabMap_ScrollCardRect[1]->addWidget(asd);
-	}
-	
-	for (int i = 0; i < 2; i++)
-	{
-		QImage im;
-		im.load(":/Test/resource/Test/Tex_0537_0.png");
-		TianLiQtCommon_PickedItemButton* asd = new TianLiQtCommon_PickedItemButton(QString::number(i) + "号物品xxx", im);
-		PageTabMap_ScrollCardRect[2]->addWidget(asd);
-	}
-
-
-}
 
 void GenshinImpact_TianLi::ui_updataCountryButtonList()
 {

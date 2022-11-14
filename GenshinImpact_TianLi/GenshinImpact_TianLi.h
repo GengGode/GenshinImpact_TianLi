@@ -47,7 +47,6 @@ private:
     //GenshinImpact_TianLi_Core *core;
 // 加载数据库
 private:
-	void loadDataBase();
 	// 更新可选地区数据
     void updata_Country();
     // 更新可选类型数据
@@ -107,7 +106,6 @@ private:
 
 // 添加 UI 部分
 private:
-	void loadUIBase();
 	// 添加地图页的卡片区域
     void addUI_MapTabCardRects();
     // 添加地图页的大地图
@@ -115,17 +113,17 @@ private:
 	// 添加界面页的卡片区域
 	void addUI_HUDTabCardRects();
 
+    void ui_updataCountryButtonList();
+    void ui_updataTypeButtonList();
+    void ui_updataItemButtonList();
+    void ui_updataItemsButtonList();
+	
 // UI 的直接对应槽函数
 private slots:
     void pushButton_Tab_1_clicked(bool checked = false);
     void pushButton_Tab_2_clicked(bool checked = false);
     void pushButton_Tab_3_clicked(bool checked = false);
     void pushButton_Tab_4_clicked(bool checked = false);
-    void ui_updatePusButtonList();
-    void ui_updataCountryButtonList();
-	void ui_updataTypeButtonList();
-    void ui_updataItemButtonList();
-    void ui_updataItemsButtonList();
 private:
 	QWidget* main_bebind_widget=nullptr;
 	bool is_visible = false;
