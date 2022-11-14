@@ -41,6 +41,7 @@ struct MapInfo
 	int viewer_width=0;
 	int viewer_height=0;
 	cv::Rect map_rect;
+	cv::Rect map_rect_tianli;
 	double scale_form_gimap=1.0;
 	int scale_width=0;
 	int scale_height=0;
@@ -52,10 +53,11 @@ struct BadgeInfo
 	struct BadgeBlock
 	{
 		std::string name;
-		cv::Mat image=cv::Mat::zeros(cv::Size(64,64),CV_8UC4);
+		cv::Mat image;
 		struct Badge
 		{
 			std::string message;
+			std::string picture_url;
 			
 			double x=0;
 			double y=0;
@@ -216,16 +218,26 @@ namespace TianLi
 	
 }
 
+#include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
+#include "..\GenshinImpact_TianLi_Data\GenshinImpact_TianLi_Data.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Data.lib")
+
+class GenshinImpact_TianLi_Core;
+class GenshinImpact_TianLi_Data;
 class DLLAPI GenshinImpact_TianLi_Map
 {
-//	GenshinImpact_TianLi_Map();
-//public:
-//	~GenshinImpact_TianLi_Map();
-//	static GenshinImpact_TianLi_Map* GetInstance();
+	GenshinImpact_TianLi_Core* core;
+	GenshinImpact_TianLi_Data* data;
 	
-public:
 	GenshinImpact_TianLi_Map();
+public:
 	~GenshinImpact_TianLi_Map();
+	static GenshinImpact_TianLi_Map& GetInstance();
+	
+//public:
+//	GenshinImpact_TianLi_Map();
+//	~GenshinImpact_TianLi_Map();
 	
 public:
 	AvatarInfo avatar_info;
@@ -233,6 +245,8 @@ public:
 	BadgeInfo badge_info;
 	//cv::Mat viewer_mat;
 	//cv::Mat viewer_draw_badge_mat;
+	GenshinImpact_TianLi_Core& Core() { return *core; }
+	GenshinImpact_TianLi_Data& Data() { return *data; }
 	
 	void render_overlay(cv::Mat& map);
 	void render_legend(cv::Mat& map);
@@ -245,4 +259,6 @@ public:
 	cv::Mat get_image_tag(const std::string& area, const std::string& type, const std::string& item, const std::string& object);
 };
 
-//#define Map GenshinImpact_TianLi_Map::GetInstance()
+#define CoreMap GenshinImpact_TianLi_Map::GetInstance()
+#define Core GenshinImpact_TianLi_Map::GetInstance().Core()
+#define Data GenshinImpact_TianLi_Map::GetInstance().Data()

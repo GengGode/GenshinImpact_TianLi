@@ -26,6 +26,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_GenshinImpact_TianLi_Sqlite", "Test_GenshinImpact_TianLi_Sqlite\Test_GenshinImpact_TianLi_Sqlite.vcxproj", "{B726525B-9D26-4B81-968F-B7DDCD267D28}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Track", "GenshinImpact_TianLi_Track\GenshinImpact_TianLi_Track.vcxproj", "{CE0FB596-E144-46AA-961C-BEF99DC6EFBC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{534B6E8D-220B-48FC-9163-DDDBA5207F89} = {534B6E8D-220B-48FC-9163-DDDBA5207F89}
+		{53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C} = {53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Core", "GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.vcxproj", "{BAC67EE5-A634-40D5-83F8-585577F9505F}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -36,9 +40,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Core",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Map", "GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.vcxproj", "{A5B73DBC-CE21-4A9D-92F1-0B90CA960A4C}"
 	ProjectSection(ProjectDependencies) = postProject
-		{3B1F4292-4764-4F16-A0EF-FB7B98721EC1} = {3B1F4292-4764-4F16-A0EF-FB7B98721EC1}
-		{534B6E8D-220B-48FC-9163-DDDBA5207F89} = {534B6E8D-220B-48FC-9163-DDDBA5207F89}
-		{CE0FB596-E144-46AA-961C-BEF99DC6EFBC} = {CE0FB596-E144-46AA-961C-BEF99DC6EFBC}
+		{AB34B28C-7701-45FA-8342-02847DD92771} = {AB34B28C-7701-45FA-8342-02847DD92771}
+		{BAC67EE5-A634-40D5-83F8-585577F9505F} = {BAC67EE5-A634-40D5-83F8-585577F9505F}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Build_TianLi_Resource_GIMAP_KEYPOINT", "Build_TianLi_Resource_GIMAP_KEYPOINT\Build_TianLi_Resource_GIMAP_KEYPOINT.vcxproj", "{FF5DDB6F-EFAA-498A-9395-4120B6E1BA6E}"
@@ -48,6 +51,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{29614384-E608-44DF-8C12-39C93EFE2D1E}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Ocr", "GenshinImpact_TianLi_Ocr\GenshinImpact_TianLi_Ocr.vcxproj", "{53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Data", "GenshinImpact_TianLi_Data\GenshinImpact_TianLi_Data.vcxproj", "{AB34B28C-7701-45FA-8342-02847DD92771}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3B1F4292-4764-4F16-A0EF-FB7B98721EC1} = {3B1F4292-4764-4F16-A0EF-FB7B98721EC1}
 	EndProjectSection
 EndProject
 Global
@@ -142,6 +152,22 @@ Global
 		{CD321B7D-54F9-4890-9280-5BB8DE643570}.Release|x64.Build.0 = Release|x64
 		{CD321B7D-54F9-4890-9280-5BB8DE643570}.Release|x86.ActiveCfg = Release|Win32
 		{CD321B7D-54F9-4890-9280-5BB8DE643570}.Release|x86.Build.0 = Release|Win32
+		{53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C}.Debug|x64.ActiveCfg = Debug|x64
+		{53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C}.Debug|x64.Build.0 = Debug|x64
+		{53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C}.Debug|x86.ActiveCfg = Debug|Win32
+		{53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C}.Debug|x86.Build.0 = Debug|Win32
+		{53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C}.Release|x64.ActiveCfg = Release|x64
+		{53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C}.Release|x64.Build.0 = Release|x64
+		{53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C}.Release|x86.ActiveCfg = Release|Win32
+		{53CAE291-90BA-43AF-94D5-5AC9BC7DBB5C}.Release|x86.Build.0 = Release|Win32
+		{AB34B28C-7701-45FA-8342-02847DD92771}.Debug|x64.ActiveCfg = Debug|x64
+		{AB34B28C-7701-45FA-8342-02847DD92771}.Debug|x64.Build.0 = Debug|x64
+		{AB34B28C-7701-45FA-8342-02847DD92771}.Debug|x86.ActiveCfg = Debug|Win32
+		{AB34B28C-7701-45FA-8342-02847DD92771}.Debug|x86.Build.0 = Debug|Win32
+		{AB34B28C-7701-45FA-8342-02847DD92771}.Release|x64.ActiveCfg = Release|x64
+		{AB34B28C-7701-45FA-8342-02847DD92771}.Release|x64.Build.0 = Release|x64
+		{AB34B28C-7701-45FA-8342-02847DD92771}.Release|x86.ActiveCfg = Release|Win32
+		{AB34B28C-7701-45FA-8342-02847DD92771}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

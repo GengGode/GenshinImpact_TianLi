@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="3rdparty">
+      <UniqueIdentifier>{b54d7977-ecf9-47d5-b0c9-3b633f5d0bd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\libocr">
+      <UniqueIdentifier>{495cebf5-e254-40e2-b0d2-b459e25dbcac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\libocr\include">
+      <UniqueIdentifier>{dc2a94a1-50a5-4e72-9b5c-c7e44df0f54e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -21,31 +30,13 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GenshinImpact_TianLi_Track.h">
+    <ClInclude Include="3rdparty\libocr\include\libocr.h">
+      <Filter>3rdparty\libocr\include</Filter>
+    </ClInclude>
+    <ClInclude Include="GenshinImpact_TianLi_Ocr.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GenshinImpact_TianLi_Track_TaskResult.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Handle.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GenshinImpact_TianLi_Track_Utils.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Screen.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Struct.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_MiniMap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_UID.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_PickItem.h">
+    <ClInclude Include="GenshinImpact_TianLi_Ocr_Task.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,19 +47,10 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GenshinImpact_TianLi_Track.cpp">
+    <ClCompile Include="GenshinImpact_TianLi_Ocr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GenshinImpact_TianLi_Track_TaskResult.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GenshinImpact_TianLi_Track_Utils.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GenshinImpact_TianLi_Track_Utils_MiniMap.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GenshinImpact_TianLi_Track_Utils_Struct.cpp">
+    <ClCompile Include="GenshinImpact_TianLi_Ocr_Task.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

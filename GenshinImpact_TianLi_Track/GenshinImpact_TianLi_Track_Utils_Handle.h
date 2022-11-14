@@ -175,10 +175,10 @@ inline void get_genshin_handle(GenshinHandle& genshin_handle)
 		genshin_handle.rect_uid=cv::Rect(UID_Rect_x, UID_Rect_y, UID_Rect_w, UID_Rect_h);
 
 		// 左侧已获取物品可能性区域计算参数
-		int leftGetItems_mayArea_left = static_cast<int>(x * 0.570);
-		int leftGetItems_mayArea_top = static_cast<int>(y * 0.250);
-		int leftGetItems_mayArea_width = static_cast<int>(x * 0.225);
-		int leftGetItems_mayArea_height = static_cast<int>(y * 0.500);
+		int leftGetItems_mayArea_left   = static_cast<int>(x * 0.050);
+		int leftGetItems_mayArea_top    = static_cast<int>(y * 0.460);
+		int leftGetItems_mayArea_width  = static_cast<int>(x * 0.160);
+		int leftGetItems_mayArea_height = static_cast<int>(y * 0.480);
 		// 左侧已获取物品可能性区域
 		cv::Rect Area_LeftGetItems_mayArea(
 			leftGetItems_mayArea_left,
@@ -186,12 +186,37 @@ inline void get_genshin_handle(GenshinHandle& genshin_handle)
 			leftGetItems_mayArea_width,
 			leftGetItems_mayArea_height);
 		genshin_handle.rect_left_give_items_maybe = Area_LeftGetItems_mayArea;
-
+		/*
+		auto left_rect(const cv::Mat& frame)
+{
+	auto rect = cv::Rect(static_cast<int>(frame.cols / 20.0), static_cast<int>(frame.rows / 2.0), static_cast<int>(frame.cols / 6.0), static_cast<int>(frame.rows / 3.0));
+	return rect;
+}
+auto right_rect(const cv::Mat& frame)
+{
+	auto rect = cv::Rect(static_cast<int>(frame.cols / 5.0 * 3.0), static_cast<int>(frame.rows / 4.0), static_cast<int>(frame.cols / 6.0), static_cast<int>(frame.rows / 2.0));
+	return rect;
+}
+		*/
+		// 左侧已获取物品区域计算参数
+		int leftGetItems_Area_left    = static_cast<int>(x * 0.050);
+		int leftGetItems_Area_top     = static_cast<int>(y * 0.500);
+		int leftGetItems_Area_width   = static_cast<int>(x * 0.166);
+		int leftGetItems_Area_height  = static_cast<int>(y * 0.333);
+		// 左侧已获取物品区域
+		cv::Rect Area_LeftGetItems_Rect(
+			leftGetItems_Area_left   ,
+			leftGetItems_Area_top    ,
+			leftGetItems_Area_width  ,
+			leftGetItems_Area_height );
+		genshin_handle.rect_left_give_items = Area_LeftGetItems_Rect;
+		
+		
 		// 右侧可捡取物品可能性区域计算参数
-		int rightGetItems_mayArea_left = static_cast<int>(x * 0.050);
-		int rightGetItems_mayArea_top = static_cast<int>(y * 0.460);
-		int rightGetItems_mayArea_width = static_cast<int>(x * 0.160);
-		int rightGetItems_mayArea_height = static_cast<int>(y * 0.480);
+		int rightGetItems_mayArea_left   = static_cast<int>(x * 0.570);
+		int rightGetItems_mayArea_top    = static_cast<int>(y * 0.250);
+		int rightGetItems_mayArea_width  = static_cast<int>(x * 0.225);
+		int rightGetItems_mayArea_height = static_cast<int>(y * 0.500);
 		// 右侧可捡取物品可能性区域
 		cv::Rect Area_RightGetItems_mayArea(
 			rightGetItems_mayArea_left,
@@ -199,6 +224,19 @@ inline void get_genshin_handle(GenshinHandle& genshin_handle)
 			rightGetItems_mayArea_width,
 			rightGetItems_mayArea_height);
 		genshin_handle.rect_right_pick_items_maybe = Area_RightGetItems_mayArea;
+		// 右侧可捡取物品区域计算参数
+		int rightGetItems_Area_left = static_cast<int>(x * 0.600);
+		int rightGetItems_Area_top = static_cast<int>(y * 0.250);
+		int rightGetItems_Area_width = static_cast<int>(x * 0.166);
+		int rightGetItems_Area_height = static_cast<int>(y * 0.500);
+		// 右侧可捡取物品区域
+		cv::Rect Area_RightGetItems_Rect(
+			rightGetItems_Area_left,
+			rightGetItems_Area_top,
+			rightGetItems_Area_width,
+			rightGetItems_Area_height);
+		genshin_handle.rect_right_pick_items = Area_RightGetItems_Rect;
+		
 	}
 }
 

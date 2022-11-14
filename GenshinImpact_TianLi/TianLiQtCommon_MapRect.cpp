@@ -11,15 +11,15 @@
 #include "TianLiQtCommon_Logger.h"
 #include "TianLiQtCommon_Utils.h"
 
-#include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
-#pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
+#include "..\GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Map.lib")
 
 TianLiQtCommon_MapRect::TianLiQtCommon_MapRect(QWidget* parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
 		
-	//´´½¨Ë¢ÐÂ¶¨Ê±Æ÷
+	//åˆ›å»ºåˆ·æ–°å®šæ—¶å™¨
 	mapMessageLoopTimer = new QTimer(this);
 	mapMessageLoopTimer->start(Fps);//1000/30=33.3,1000/24=42
 	connect(mapMessageLoopTimer, SIGNAL(timeout()), this, SLOT(slot_update()));
@@ -109,30 +109,33 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 	static cv::Mat mapMatRect;// = gi_map(mapRect);
 	static cv::Point old_map_center_pos;
 	static double old_map_scale = 0;
+	
+	// LogInfo(QString("è¿›å…¥ é‡ç»˜åœ°å›¾ state: ")+QString::number(is_need_rerender));
 
-	// Èç¹û old pos ºÍ old scale Óëµ±Ç°µÄÒ»Ñù£¬¾Í²»ÓÃÖØÐÂ¼ÆËãÁË
+	// å¦‚æžœ old pos å’Œ old scale ä¸Žå½“å‰çš„ä¸€æ ·ï¼Œå°±ä¸ç”¨é‡æ–°è®¡ç®—äº†
 	if (old_map_center_pos != render_map_pos || old_map_scale != render_map_scale || is_need_rerender)
 	{
+
 		is_need_rerender = false;
 		old_map_center_pos = render_map_pos;
 		old_map_scale = render_map_scale;
 		
 		//---
 		//cv::Rect map_rect;
-		//mapMatRect = TianLi::Utils::get_view_map(Core.GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, map_rect);
+		//mapMatRect = TianLi::Utils::get_view_map(CoreMap.Core().GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, map_rect);
 		
-		Core.GetMap().map_info.is_overlay = true;
-		Core.GetMap().map_info.is_show_map = true;
+		//CoreMap.map_info.is_overlay = true;
+		CoreMap.map_info.is_show_map = true;
 
-		Core.GetMap().map_info.center_x = render_map_pos.x;
-		Core.GetMap().map_info.center_y = render_map_pos.y;
-		Core.GetMap().map_info.viewer_width = ui.label_Render->width();
-		Core.GetMap().map_info.viewer_height = ui.label_Render->height();
+		CoreMap.map_info.center_x = render_map_pos.x;
+		CoreMap.map_info.center_y = render_map_pos.y;
+		CoreMap.map_info.viewer_width = ui.label_Render->width();
+		CoreMap.map_info.viewer_height = ui.label_Render->height();
 
-		//Core.GetMap().map_info.map_rect = map_rect;
-		Core.GetMap().map_info.scale_form_gimap = render_map_scale;
-		// äÖÈ¾Í¼Àý
-		Core.GetMap().render_legend(mapMatRect);
+		//CoreMap.map_info.map_rect = map_rect;
+		CoreMap.map_info.scale_form_gimap = render_map_scale;
+		// æ¸²æŸ“å›¾ä¾‹
+		CoreMap.render_legend(mapMatRect);
 		//***
 
 
@@ -143,7 +146,7 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 
 		render_map_image = QImage((uchar*)(mapMatRect.data), mapMatRect.cols, mapMatRect.rows, mapMatRect.cols * (mapMatRect.channels()), QImage::Format_ARGB32);
 
-		//ÉèÖÃ»­ÃæÎªµØÍ¼
+		//è®¾ç½®ç”»é¢ä¸ºåœ°å›¾
 
 	}
 	painter.drawImage(0, 0, render_map_image);
@@ -155,7 +158,7 @@ void TianLiQtCommon_MapRect::resizeEvent(QResizeEvent* event)
 	const int h = event->size().height();
 	//ui.label_Mask->setGeometry(0, 0, w, h);
 	ui.label_Render->setGeometry(0, 0, w, h);
-	ui.label_UID->setGeometry(w - 220,h- 40, 200, 24);
+	ui.label_UID->setGeometry(w - 230,h- 40, 200, 24);
 	QImage Mask = TianLi::Utils::border_image(QImage(":/TianLiQtCommon_MapRect/resource/TianLiQtCommon_MapRect/TianLiQtCommon_MapRect_MapMask.png"), w, h, 30, 30, 30, 30);
 	render_map_mask = cv::Mat(Mask.height(), Mask.width(), CV_8UC4, Mask.bits(), Mask.bytesPerLine());
 
@@ -168,11 +171,25 @@ void TianLiQtCommon_MapRect::resizeEvent(QResizeEvent* event)
 
 void TianLiQtCommon_MapRect::slot_update()
 {
-	if (Core.GetTrack().GetResult().is_find_paimon)
+	if (CoreMap.Core.GetTrack().GetResult().is_find_paimon)
 	{
-		render_map_pos = cv::Point(Core.GetTrack().GetResult().position_x, Core.GetTrack().GetResult().position_y);
-		ui.label_UID->setText(QString("UID: %1").arg(Core.GetTrack().GetResult().uid, 9, 10, QLatin1Char('0')));
+		render_map_pos = cv::Point(CoreMap.Core.GetTrack().GetResult().position_x, CoreMap.Core.GetTrack().GetResult().position_y);
+		ui.label_UID->setText(QString("UID: %1").arg(CoreMap.Core.GetTrack().GetResult().uid, 9, 10, QLatin1Char('0')));
+
+		static std::vector<std::string> item_tags_buf;
+		auto item_tags = CoreMap.Core.GetTrack().GetResult().item_tags;
+		if (item_tags_buf != item_tags)
+		{
+			item_tags_buf = item_tags;
+			emit singal_updata_pickable_items(item_tags);
+		}
 		
 		update();
 	}
+}
+
+void TianLiQtCommon_MapRect::slot_force_update()
+{
+	is_need_rerender = true;
+	update();
 }

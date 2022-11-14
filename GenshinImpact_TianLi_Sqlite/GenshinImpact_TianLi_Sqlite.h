@@ -1,13 +1,4 @@
 #pragma once
-// 下列 ifdef 块是创建使从 DLL 导出更简单的
-// 宏的标准方式。此 DLL 中的所有文件都是用命令行上定义的 GENSHINIMPACT_TIANLI_SQLITE_DLL_EXPORTS
-// 符号编译的。在使用此 DLL 的
-// 任何项目上不应定义此符号。这样，源文件中包含此文件的任何其他项目都会将
-// GENSHINIMPACT_TIANLI_SQLITE_DLL_API 函数视为是从 DLL 导入的，而此 DLL 则将用此宏定义的
-// 符号视为是被导出的。
-// GENSHINIMPACTTIANLISQLITE_EXPORTS
-// _WINDOWS
-// _USRDLL
 #ifndef _LIB
 #ifdef GENSHINIMPACTTIANLISQLITE_EXPORTS
 #define GENSHINIMPACTTIANLISQLITE_API __declspec(dllexport)
@@ -108,12 +99,15 @@ extern "C"
 #include<vector>
 #include<string>
 
+#ifdef _DEF_V1
 namespace v1
 {
 	std::map<std::pair<int, std::string>, std::vector<std::pair<int, std::string>> > get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
 	std::map<std::pair<std::pair<int, std::string>, std::string>, std::vector<std::pair<std::pair<int, std::string>, std::string>> >  get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
 
 }
+#endif
+
 #ifdef _DEF_V2
 namespace v2
 {
@@ -141,7 +135,8 @@ namespace v2
 }
 #endif
 
-typedef std::pair<std::pair<int, std::string>, std::string > Tag;
+typedef std::pair<std::pair<int, std::string>, std::string > DLLAPI Tag;
 
-std::map<Tag, std::vector<Tag> > get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
-std::map<Tag, std::vector<Tag> > get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
+std::map<Tag, std::vector<Tag> > DLLAPI get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
+std::map<Tag, std::vector<Tag> > DLLAPI get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
+std::map<std::pair<Tag, Tag>, std::vector<Tag>> DLLAPI get_item_group_map(GenshinImpact_TianLi_Sqlite* sqlite);

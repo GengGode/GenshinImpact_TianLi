@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,6 +70,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -113,7 +116,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
@@ -135,8 +138,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>D:\opencv\opencv_460\install\build_Shared_World_NoCuda\install\include;D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include/off</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -146,8 +149,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\x64\vc16\staticlib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ade.lib;IlmImf.lib;ippicvmt.lib;ippiw.lib;ittnotify.lib;libjpeg-turbo.lib;libopenjp2.lib;libpng.lib;libprotobuf.lib;libtiff.lib;libwebp.lib;opencv_aruco455.lib;opencv_barcode455.lib;opencv_bgsegm455.lib;opencv_bioinspired455.lib;opencv_calib3d455.lib;opencv_ccalib455.lib;opencv_core455.lib;opencv_datasets455.lib;opencv_dnn455.lib;opencv_dnn_objdetect455.lib;opencv_dnn_superres455.lib;opencv_dpm455.lib;opencv_face455.lib;opencv_features2d455.lib;opencv_flann455.lib;opencv_fuzzy455.lib;opencv_gapi455.lib;opencv_hfs455.lib;opencv_highgui455.lib;opencv_imgcodecs455.lib;opencv_imgproc455.lib;opencv_img_hash455.lib;opencv_intensity_transform455.lib;opencv_line_descriptor455.lib;opencv_mcc455.lib;opencv_ml455.lib;opencv_objdetect455.lib;opencv_optflow455.lib;opencv_phase_unwrapping455.lib;opencv_photo455.lib;opencv_plot455.lib;opencv_quality455.lib;opencv_rapid455.lib;opencv_reg455.lib;opencv_rgbd455.lib;opencv_saliency455.lib;opencv_shape455.lib;opencv_stereo455.lib;opencv_stitching455.lib;opencv_structured_light455.lib;opencv_superres455.lib;opencv_surface_matching455.lib;opencv_text455.lib;opencv_tracking455.lib;opencv_video455.lib;opencv_videoio455.lib;opencv_videostab455.lib;opencv_wechat_qrcode455.lib;opencv_xfeatures2d455.lib;opencv_ximgproc455.lib;opencv_xobjdetect455.lib;opencv_xphoto455.lib;quirc.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\opencv\opencv_460\install\build_Shared_World_NoCuda\install\x64\vc17\lib;D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\x64\vc16\staticlib/off;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world460.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -156,6 +159,7 @@
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Handle.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_MiniMap.h" />
+    <ClInclude Include="GenshinImpact_TianLi_Track_Utils_PickItem.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Screen.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_Struct.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_UID.h" />

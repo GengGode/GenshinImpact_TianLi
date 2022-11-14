@@ -77,6 +77,9 @@ namespace TianLi::Track
 		RECT minimap_rect;
 		int uid = 0;
 		int last_runtime_ms;
+		
+		std::vector<std::string> item_tags;
+
 	};
 	struct TrackConfig
 	{

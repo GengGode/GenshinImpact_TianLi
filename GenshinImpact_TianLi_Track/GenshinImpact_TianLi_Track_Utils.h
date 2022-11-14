@@ -24,3 +24,5 @@ GenshinStars func_get_stars(GenshinMinimap& in);
 GenshinTagflags func_get_tagflags(GenshinMinimap& in);
 
 GenshinUID func_get_uid(GenshinScreen& in);
+
+GenshinPickableItems func_get_pickable_items(GenshinScreen& in);

@@ -4,6 +4,7 @@
 #include "GenshinImpact_TianLi_Track_Utils_Screen.h"
 #include "GenshinImpact_TianLi_Track_Utils_MiniMap.h"
 #include "GenshinImpact_TianLi_Track_Utils_UID.h"
+#include "GenshinImpact_TianLi_Track_Utils_PickItem.h"
 
 GenshinHandle func_get_handle(HWND& in)
 {
@@ -92,5 +93,12 @@ GenshinUID func_get_uid(GenshinScreen& in)
 {
 	static GenshinUID out;
 	get_uid(in, out);
+	return out;
+}
+
+GenshinPickableItems func_get_pickable_items(GenshinScreen& in)
+{
+	static GenshinPickableItems out;
+	get_pickable_items(in, out);
 	return out;
 }

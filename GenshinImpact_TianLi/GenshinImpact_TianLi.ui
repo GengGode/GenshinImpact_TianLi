@@ -166,6 +166,75 @@ background-image:url(:/GenshinImpact_TianLi/resource/书册.png);
         <string/>
        </property>
       </widget>
+	  <widget class="QPushButton" name="pushButton_Tab_1">
+       <property name="geometry">
+        <rect>
+         <x>14</x>
+         <y>74</y>
+         <width>165</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>165</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>165</width>
+         <height>91</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>HYWenHei</family>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">.QPushButton{
+border:none;
+background-repeat:no-repeat;
+background-origin:content;
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签一.png);
+
+padding-left: 9px;
+padding-right: 21px;
+font-size:25px;
+color:rgb(226, 210, 191);
+}
+.QPushButton:hover{
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签一_变亮.png);
+
+padding-left: 9px;
+
+padding-right: 21px;
+
+}
+.QPushButton:checked{
+background-image:url(:/TianLi_Tab/resource/TianLi_Tab/Tab_地图_selected.png);
+
+padding-left: 0px;
+
+padding-right: -9px;
+color:rgb(134, 99, 67);
+}</string>
+       </property>
+       <property name="text">
+        <string>地图</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">Tab_ButtonGroup</string>
+       </attribute>
+      </widget>
       <widget class="QPushButton" name="pushButton_Tab_2">
        <property name="geometry">
         <rect>
@@ -403,75 +472,6 @@ color:rgb(134, 99, 67);
        <widget class="QWidget" name="page_3"/>
        <widget class="QWidget" name="page_4"/>
       </widget>
-      <widget class="QPushButton" name="pushButton_Tab_1">
-       <property name="geometry">
-        <rect>
-         <x>14</x>
-         <y>74</y>
-         <width>165</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>165</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>165</width>
-         <height>91</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>HYWenHei</family>
-         <pointsize>-1</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">.QPushButton{
-border:none;
-background-repeat:no-repeat;
-background-origin:content;
-background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签一.png);
-
-padding-left: 9px;
-padding-right: 21px;
-font-size:25px;
-color:rgb(226, 210, 191);
-}
-.QPushButton:hover{
-background-image:url(:/TianLi_Tab/resource/TianLi_Tab/冒险手册_标签一_变亮.png);
-
-padding-left: 9px;
-
-padding-right: 21px;
-
-}
-.QPushButton:checked{
-background-image:url(:/TianLi_Tab/resource/TianLi_Tab/Tab_地图_selected.png);
-
-padding-left: 0px;
-
-padding-right: -9px;
-color:rgb(134, 99, 67);
-}</string>
-       </property>
-       <property name="text">
-        <string>地图</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-       <attribute name="buttonGroup">
-        <string notr="true">Tab_ButtonGroup</string>
-       </attribute>
-      </widget>
       <widget class="QWidget" name="verticalLayoutWidget">
        <property name="geometry">
         <rect>
@@ -491,17 +491,24 @@ color:rgb(134, 99, 67);
       <zorder>pushButton_Exit</zorder>
       <zorder>label_MainPage</zorder>
       <zorder>stackedWidget_MainTabPages</zorder>
+      <zorder>verticalLayoutWidget</zorder>
+      <zorder>pushButton_Tab_1</zorder>
       <zorder>pushButton_Tab_2</zorder>
       <zorder>pushButton_Tab_3</zorder>
       <zorder>pushButton_Tab_4</zorder>
-      <zorder>pushButton_Tab_1</zorder>
-      <zorder>verticalLayoutWidget</zorder>
      </widget>
     </item>
    </layout>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>pushButton_Tab_1</tabstop>
+  <tabstop>pushButton_Tab_2</tabstop>
+  <tabstop>pushButton_Tab_3</tabstop>
+  <tabstop>pushButton_Tab_4</tabstop>
+  <tabstop>pushButton_Exit</tabstop>
+ </tabstops>
  <resources>
   <include location="GenshinImpact_TianLi.qrc"/>
  </resources>
@@ -513,8 +520,8 @@ color:rgb(134, 99, 67);
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1445</x>
-     <y>138</y>
+     <x>1470</x>
+     <y>140</y>
     </hint>
     <hint type="destinationlabel">
      <x>786</x>

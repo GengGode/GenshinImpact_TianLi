@@ -66,3 +66,48 @@ void TianLiQtCommon_SelectedItemButton::setLabelImage(QImage image)
 {
 	ui.label_LabelImage->setPixmap(QPixmap::fromImage(image));
 }
+
+void TianLiQtCommon_SelectedItemButton::setProgressCount(int number)
+{
+	if(number<0)
+	{
+		progress_count = 0;
+	}
+	else if (number > progress_max_number)
+	{
+		progress_count = progress_max_number;
+	}
+	else
+	{
+		progress_count = number;
+	}
+	const int w = 85;
+	double i = (double)progress_count / (double)progress_max_number;
+	
+	ui.label_Progress_A->setGeometry(133, 18, static_cast<int>(w * i), 2);
+	ui.label_Progress_B->setGeometry(133, 18, static_cast<int>(w * i), 2);
+}
+
+void TianLiQtCommon_SelectedItemButton::setProgressMaxNumber(int number)
+{
+	if (number <= 0)
+	{
+		progress_max_number = 1;
+	}
+	else if (progress_count > number)
+	{
+		progress_count = number;
+		progress_max_number = number;
+	}
+	else
+	{
+		progress_max_number = number;
+	}
+	const int w = 85;
+
+	double i = (double)progress_count / (double)progress_max_number;
+
+	ui.label_Progress_A->setGeometry(133, 18, static_cast<int>(w * i), 2);
+	ui.label_Progress_B->setGeometry(133, 18, static_cast<int>(w * i), 2);
+}
+

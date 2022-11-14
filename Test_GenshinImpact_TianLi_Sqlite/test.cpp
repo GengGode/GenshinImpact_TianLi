@@ -15,7 +15,7 @@
 //		std::cout << id << " " << name << " " << icon << std::endl;
 //	}
 //}
-
+#ifdef _DEF_V1
 TEST(SqliteRead, Std_V1)
 {
 	GenshinImpact_TianLi_Sqlite sqlite;
@@ -53,6 +53,7 @@ TEST(SqliteRead, Std_V1)
 		}
 	}
 }
+#endif
 #ifdef _DEF_V2
 TEST(SqliteRead, Std_V2)
 {
@@ -128,6 +129,19 @@ TEST(SqliteRead, Std)
 			auto& type = type_child.second;
 			std::cout << "\t" << id << " " << name << " " << type << std::endl;
 		}
+	}
+
+	auto items = get_item_group_map(&sqlite);
+	for (auto& [area_type_key, item] : items)
+	{
+		auto& [area, type] = area_type_key;
+		int size = item.size();
+		auto& area_name = area.first.second;
+		auto& area_id = area.first.first;
+		auto& type_name = type.first.second;
+		auto& type_id = type.first.first;
+		
+		std::cout << area_name << " " << area_id << " > " << type_name << " " << type_id << " > count: " << size << std::endl;
 	}
 }
 

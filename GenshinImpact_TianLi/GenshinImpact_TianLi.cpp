@@ -26,12 +26,12 @@
 #include <QMouseEvent>
 #include <QTimer>
 
-#include <QNetworkReply>
-#include <QNetworkAccessManager>
 
+#include "..\GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Map.lib")
 
-#include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
-#pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
+#include "..\GenshinImpact_TianLi_Data\GenshinImpact_TianLi_Data.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Data.lib")
 
 using namespace TianLi;
 
@@ -57,40 +57,40 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	hud_circular_map->hide();
 	hud_azimuth_bar_window = new TianLiQtCommon_HUD_AzimuthBarWindow(NULL);
 	hud_azimuth_bar_window->hide();
-
-	//core = Core;
 	
-
-	updata_Country();
-	updata_TypeList();
-	updata_ItemList();
-	updata_ItemsList();
 
 	this->addUI_Tab_Map();
 	this->addUI_Tab_HUD();
 	this->addUI_Tab_3();
 	this->addUI_Tab_4();
-	this->setCurrentIndex_MainTabPages(0);
+	ui.stackedWidget_MainTabPages->setCurrentIndex(0);
 	
-	emit this->ui_updatePusButtonList();
-	
-	
-	// Qt HttpGet
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-	connect(manager, &QNetworkAccessManager::finished, [=](QNetworkReply* reply) {
-		if (reply->error() == QNetworkReply::NoError) {
-			QByteArray bytes = reply->readAll();
-			QString result(bytes);
-			LogInfo(result.toStdString().c_str());
-		}
-		else {
-			LogError("HttpGet Error");
-		}
-		reply->deleteLater();
-		});
-	manager->get(QNetworkRequest(QUrl("http://download.api.weixitianli.com/GenshinImpactTianLi/Version/Latest")));
-	
+	init_area_list();
+	init_type_list();
 
+	// 测试
+	{
+		if (area_button_index_map.contains("诸法丛林"))
+		{
+			int id = area_button_index_map["诸法丛林"];
+			area_button_group.button(id)->setChecked(true);
+			LogInfo(area_button_group.button(id)->text() + " 被选中");
+		}
+		if (type_button_index_map.contains("特产"))
+		{
+			int id = type_button_index_map["特产"];
+			type_button_group.button(id)->setChecked(true);
+			LogInfo(type_button_group.button(id)->text() + " 被选中");
+			type_button_group.button(id)->clicked(true);
+		}
+		if (item_button_index_map.contains("劫波莲"))
+		{
+			int id = item_button_index_map["劫波莲"];
+			item_button_group.button(id)->setChecked(true);
+			LogInfo(item_button_group.button(id)->text() + " 被选中");
+			item_button_group.button(id)->clicked(true);
+		}
+	}
 	
 	//添加全局快捷键
 	// F1 触发 slot_show_or_hide
@@ -112,12 +112,14 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	//connect(this, &GenshinImpact_TianLi::show, this, &GenshinImpact_TianLi::slot_show);
 	//connect(this, &GenshinImpact_TianLi::hide, this, &GenshinImpact_TianLi::slot_hide);
-	
-	connect(ui.pushButton_Tab_1, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
-	connect(ui.pushButton_Tab_2, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_2_clicked);
-	connect(ui.pushButton_Tab_3, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_3_clicked);
-	connect(ui.pushButton_Tab_4, &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButton_Tab_4_clicked);
-
+	//ui.Tab_ButtonGroup->setId();
+	connect(ui.Tab_ButtonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [=](int id) {
+		if (ui.Tab_ButtonGroup->button(id)->isChecked())
+		{
+			ui.stackedWidget_MainTabPages->setCurrentIndex(-2-id);
+			LogInfo(QString::number(id)+" -=> "+ QString::number(-2-id));
+		}
+		});
 }
 
 GenshinImpact_TianLi::~GenshinImpact_TianLi()
@@ -130,7 +132,6 @@ void GenshinImpact_TianLi::mousePressEvent(QMouseEvent* event)
 		ui.label_Main->frameRect().contains(event->globalPos() - this->frameGeometry().topLeft()))
 	{
 		{
-
 			m_Press = event->globalPos();
 			leftBtnClk = true;
 		}
@@ -168,86 +169,141 @@ void GenshinImpact_TianLi::closeEvent(QCloseEvent* event)
 	}
 }
 
-void GenshinImpact_TianLi::loadDataBase()
+void GenshinImpact_TianLi::init_area_list()
 {
+	auto widget_ptr = PageTabMap_LeftCardRects[0];
+	auto& area = Data.area_group;
+	for (auto& [parent_name, childs] : area)
+	{
+		for (std::string& child_name : childs)
+		{
+			TianLiQtCommon_TypeGroupButton* new_child_button = new TianLiQtCommon_TypeGroupButton(child_name.c_str(), widget_ptr);
+			new_child_button->setParent(widget_ptr);
+
+			// 添加至按钮组
+			area_button_group.addButton(new_child_button);
+			int button_id = area_button_group.id(new_child_button);
+			// 记录在按钮组中的id
+			area_button_index_map.insert({ child_name, button_id });
+
+			new_child_button->setGeometry((area_button_index_map.size()-1) % 5 * 60, (area_button_index_map.size()-1) / 5 * 40, 60, 30);
+
+			// 显示按钮
+			new_child_button->show();
+
+			//connect(new_child_button, &TianLiQtCommon_TypeGroupButton::clicked, this, &GenshinImpact_TianLi::pushButtonGroup_SelectCountry);
+			connect(new_child_button, &TianLiQtCommon_TypeGroupButton::clicked, [=](bool checked) {
+				if (checked == true)
+				{
+					updata_selectable_item(get_selected_area().toStdString(), get_selected_type().toStdString());
+				}
+				});
+		}
+	}
 }
 
-
-void GenshinImpact_TianLi::updata_Country()
+QString GenshinImpact_TianLi::get_selected_area()
 {
-	TextVector countryTextVector;
-	
-	// 清空 可选地区
-	strList_Addr.clear();
-
-	// 加载国家地区
-	Core.GetSqlite().ReadCountry(countryTextVector);
-	// 如果读取到的数据是空的
-	if (countryTextVector.size == 0)
+	auto button = area_button_group.checkedButton();
+	if (button == nullptr)
 	{
-		return;
+		button = area_button_group.button(0);
 	}
-	for (int i = 0; i < countryTextVector.size; i++)
-	{
-		strList_Addr << countryTextVector[i];
-	}
-	
-
-	// 选中第一个国家地区
-	selectedStr_Addr = strList_Addr[0];
+	return button->text();
 }
 
-void GenshinImpact_TianLi::updata_TypeList()
+void GenshinImpact_TianLi::init_type_list()
 {
-	TextVector typeTextVector;
-	
-	// 清空 可选类型
-	strList_Type.clear();
+	auto widget_ptr = PageTabMap_LeftCardRects[1];
+	auto& type = Data.type_group;
+	for (auto& [parent_name, childs] : type)
+	{
+		for (std::string& child_name : childs)
+		{
+			TianLiQtCommon_TypeGroupButton* new_child_button = new TianLiQtCommon_TypeGroupButton(child_name.c_str(), widget_ptr);
+			new_child_button->setParent(widget_ptr);
 
-	if (selectedStr_Addr == "")
-	{
-		selectedStr_Type = "";
-		return;
-	}
-	// 加载该国家地区下的类型
-	Core.GetSqlite().ReadType(selectedStr_Addr.toStdString().c_str(), typeTextVector);
-	// 如果读取到的数据是空的
-	if (typeTextVector.size == 0)
-	{
-		return;
-	}
-	for (int i = 0; i < typeTextVector.size; i++)
-	{
-		strList_Type << typeTextVector[i];
-	}
+			// 添加至按钮组
+			type_button_group.addButton(new_child_button);
+			int button_id = type_button_group.id(new_child_button);
+			// 记录在按钮组中的id
+			type_button_index_map.insert({ child_name, button_id });
 
-	// 选中第一个类型
-	selectedStr_Type = strList_Type[0];
+			new_child_button->setGeometry(type_button_index_map.size() % 5 * 60, 80 + type_button_index_map.size() / 5 * 40, 60, 30);
+
+			// 显示按钮
+			new_child_button->show();
+
+			//connect(new_child_button, &TianLiQtCommon_TypeGroupButton::clicked, this, &GenshinImpact_TianLi::pushButtonGroup_SelectType);
+			connect(new_child_button, &TianLiQtCommon_TypeGroupButton::clicked, [=](bool checked) {
+				if (checked == true)
+				{
+					updata_selectable_item(get_selected_area().toStdString(), get_selected_type().toStdString());
+				}
+				});
+		}
+	}
 }
 
-void GenshinImpact_TianLi::updata_ItemList()
+QString GenshinImpact_TianLi::get_selected_type()
 {
-	TextVector itemTextVector;
-	
-	// 清空 可选种类
-	strList_Item.clear();
-
-	// 加载该类型下的种类
-	Core.GetSqlite().ReadItem(selectedStr_Addr.toStdString().c_str(), selectedStr_Type.toStdString().c_str(), itemTextVector);
-	// 如果读取到的数据是空的
-	if (itemTextVector.size == 0)
+	auto button = type_button_group.checkedButton();
+	if (button == nullptr)
 	{
-		return;
+		button = type_button_group.button(0);
 	}
-	for (int i = 0; i < itemTextVector.size; i++)
-	{
-		strList_Item << itemTextVector[i];
-	}
-
-	// 选中第一个种类
-	selectedStr_Item = strList_Item[0];
+	return button->text();
 }
 
+void GenshinImpact_TianLi::updata_selectable_item(std::string area, std::string type)
+{
+	// using namespace std;
+	auto widget_ptr = PageTabMap_LeftCardRects[2];
+	auto& items = Data.item_group;
+	if (items.contains({ area,type }))
+	{
+		// 清空原有按钮组
+		auto buttonList = item_button_group.buttons();
+		for (int i = 0; i < buttonList.size(); ++i)
+		{
+			buttonList[i]->hide();
+			item_button_group.removeButton(buttonList[i]);
+		}
+		// 清空按钮组id目录
+		item_button_index_map.clear();
+		
+		for (auto& item : items[{ area, type }])
+		{			
+			item_button_group.setExclusive(false);
+			
+			TianLiQtCommon_TypeGroupButton* new_child_button = new TianLiQtCommon_TypeGroupButton(item.c_str(), widget_ptr);
+			new_child_button->setParent(widget_ptr);
+
+			// 添加至按钮组
+			item_button_group.addButton(new_child_button);
+			int button_id = item_button_group.id(new_child_button);
+			// 记录在按钮组中的id
+			item_button_index_map.insert({ item, button_id });
+
+			new_child_button->setGeometry(item_button_index_map.size() % 5 * 60, 130 + item_button_index_map.size() / 5 * 40, 60, 30);
+			
+			// 显示按钮
+			new_child_button->show();
+			connect(new_child_button, &TianLiQtCommon_TypeGroupButton::clicked, this, &GenshinImpact_TianLi::pushButtonGroup_SelectItem);
+
+			// 同步按钮状态
+			if (item_button_checked_map.contains({ area,type,item }))
+			{
+				new_child_button->setChecked(item_button_checked_map[{ area, type, item }]);
+			}
+			else
+			{
+				item_button_checked_map.insert({ { area, type, item } , false });
+			}
+		}
+	}
+
+}
 void GenshinImpact_TianLi::updata_ItemsList()
 {
 	ItemsVector itemsItemsVector;
@@ -256,7 +312,7 @@ void GenshinImpact_TianLi::updata_ItemsList()
 	strList_Items.clear();
 
 	// 加载该种类下的物品
-	Core.GetSqlite().ReadItems(selectedStr_Addr.toStdString().c_str(), selectedStr_Type.toStdString().c_str(), selectedStr_Item.toStdString().c_str(), itemsItemsVector);
+	Core.GetSqlite().ReadItems(get_selected_area().toStdString().c_str(), get_selected_type().toStdString().c_str(), selectedStr_Item.toStdString().c_str(), itemsItemsVector);
 	// 如果读取到的数据是空的
 	if (itemsItemsVector.size == 0)
 	{
@@ -268,6 +324,10 @@ void GenshinImpact_TianLi::updata_ItemsList()
 	legend_block.name = itemsItemsVector[0].name;
 
 	legend_block.image = Core.GetResource().GetImageBuffer("", "", "", itemsItemsVector[0].name);
+	cv::resize(legend_block.image, legend_block.image, cv::Size(32, 32));
+	// 绘制半透明圆环
+	cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 3, cv::Scalar(255, 255, 255, 200), 3, cv::LINE_AA);
+	cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2-1, cv::Scalar(0, 0, 0,250), 1,cv::LINE_AA);
 	
 	for (int i = 0; i < itemsItemsVector.size; i++)
 	{
@@ -282,7 +342,7 @@ void GenshinImpact_TianLi::updata_ItemsList()
 		
 		legend_block.badge_list.push_back(legend);
 	}
-	Core.GetMap().badge_info.badge_block_list.push_back(legend_block);
+	CoreMap.badge_info.badge_block_list.push_back(legend_block);
 	
 }
 
@@ -319,11 +379,6 @@ void GenshinImpact_TianLi::addUI_Tab_4()
 		}
 		});
 	//connect(PageTabMap_MapRect[0], &TianLiQtCommon_MapRect::signal_double_click, dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::slot_clicked);
-}
-
-
-void GenshinImpact_TianLi::loadUIBase()
-{
 }
 
 void GenshinImpact_TianLi::addUI_MapTabCardRects()
@@ -369,16 +424,16 @@ void GenshinImpact_TianLi::addUI_MapTabCardRects()
 void GenshinImpact_TianLi::addUI_MapTabMapRect()
 {
 	// 地图页面右侧的地图区域
-	PageTabMap_MapRect.append(new TianLiQtCommon_MapRect(this));
-	PageTabMap_MapRect[0]->setParent(ui.widget_MapTab_Right);
-	PageTabMap_MapRect[0]->setGeometry(10, 10, ui.widget_MapMask->width() - 20, ui.widget_MapMask->height() - 20);
-
+	PageTabMap_MapRect=new TianLiQtCommon_MapRect(this);
+	PageTabMap_MapRect->setParent(ui.widget_MapTab_Right);
+	PageTabMap_MapRect->setGeometry(10, 10, ui.widget_MapMask->width() - 20, ui.widget_MapMask->height() - 20);
+	connect(PageTabMap_MapRect, &TianLiQtCommon_MapRect::singal_updata_pickable_items, this, &GenshinImpact_TianLi::slot_updata_pickable_items);
+	
+	// 添加地图页面 地图区域中 的 定位启用切换开关
 	PageTabMap_RightCard_Buttons.append(new TianLiQtCommon_SwitchButton(this,"定位"));
 	PageTabMap_RightCard_Buttons[0]->setParent(ui.widget_MapTab_Right);
-	PageTabMap_RightCard_Buttons[0]->move(30, PageTabMap_MapRect[0]->height() - 35);
-
-	
-	
+	PageTabMap_RightCard_Buttons[0]->move(30, PageTabMap_MapRect->height() - 35);
+	// 定位启用切换事件
 	connect(dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::signal_clicked, [](bool is_checked){
 		if (is_checked)
 		{
@@ -389,7 +444,30 @@ void GenshinImpact_TianLi::addUI_MapTabMapRect()
 			Core.GetTrack().StopServer();
 		}
 		});
-	connect(PageTabMap_MapRect[0], &TianLiQtCommon_MapRect::signal_double_click, dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::slot_clicked);
+	// 定位切换按钮与地图双击切换绑定同步
+	connect(PageTabMap_MapRect, &TianLiQtCommon_MapRect::signal_double_click, dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::slot_clicked);
+	
+	// 添加地图页面 地图区域中 的 地下显示切换开关
+	PageTabMap_RightCard_Buttons.append(new TianLiQtCommon_SwitchButton(this, "地下"));
+	PageTabMap_RightCard_Buttons[1]->setParent(ui.widget_MapTab_Right);
+	PageTabMap_RightCard_Buttons[1]->move(30, PageTabMap_MapRect->height() - 35 - 25 - 3);
+	// 地下显示切换事件
+	connect(dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[1]), &TianLiQtCommon_SwitchButton::signal_clicked, [=](bool is_checked) {
+		if (is_checked)
+		{
+			CoreMap.map_info.is_overlay = true;
+			LogInfo("显示地下");
+		}
+		else
+		{
+			CoreMap.map_info.is_overlay = false;
+			LogInfo("隐藏地下");
+		}
+		// 切换后要触发MapRect的强制重绘
+		PageTabMap_MapRect->slot_force_update();
+		LogInfo("触发重绘地图");
+		});
+	
 	
 }
 
@@ -614,172 +692,6 @@ void GenshinImpact_TianLi::addUI_HUDTabCardRects()
 	
 }
 
-void GenshinImpact_TianLi::pushButton_Tab_1_clicked(bool checked)
-{
-	if (checked == true)
-	{
-		this->setCurrentIndex_MainTabPages(0);
-	}
-}
-
-void GenshinImpact_TianLi::pushButton_Tab_2_clicked(bool checked)
-{
-	if (checked == true)
-	{
-		this->setCurrentIndex_MainTabPages(1);
-	}
-}
-
-void GenshinImpact_TianLi::pushButton_Tab_3_clicked(bool checked)
-{
-	if (checked == true)
-	{
-		this->setCurrentIndex_MainTabPages(2);
-	}
-}
-
-void GenshinImpact_TianLi::pushButton_Tab_4_clicked(bool checked)
-{
-	if (checked == true)
-	{
-		this->setCurrentIndex_MainTabPages(3);
-	}
-}
-
-void GenshinImpact_TianLi::ui_updatePusButtonList()
-{
-	emit ui_updataCountryButtonList();
-
-	for (int i = 0; i < 5; i++)
-	{
-		//TianLiQtCommon_SelectedItemButton* asd = new TianLiQtCommon_SelectedItemButton("test", QImage(":/Test/resource/Test/Tex_0537_0.png"));
-		//PageTabMap_ScrollCardRect[0]->addWidget(asd);
-	}
-	
-	for (int i = 0; i < 2; i++)
-	{
-		QImage im;
-		im.load(":/Test/resource/Test/Tex_0537_0.png");
-		TianLiQtCommon_NearbyItemButton* asd = new TianLiQtCommon_NearbyItemButton(QString::number(i) + "号物品xxx", im);
-
-		PageTabMap_ScrollCardRect[1]->addWidget(asd);
-	}
-	
-	for (int i = 0; i < 2; i++)
-	{
-		QImage im;
-		im.load(":/Test/resource/Test/Tex_0537_0.png");
-		TianLiQtCommon_PickedItemButton* asd = new TianLiQtCommon_PickedItemButton(QString::number(i) + "号物品xxx", im);
-		PageTabMap_ScrollCardRect[2]->addWidget(asd);
-	}
-
-
-}
-
-void GenshinImpact_TianLi::ui_updataCountryButtonList()
-{
-	// 清空地区按钮QMap
-	for (auto btn : pushButtonMap_Addr)
-	{
-		// 删除按钮
-		delete btn;
-	}
-	pushButtonMap_Addr.clear();
-	
-	// 根据 字符串列表 可选地区 创建 地区按钮QMap
-	for (auto str : strList_Addr)
-	{
-		// 创建按钮到 地区按钮QMap 中
-		pushButtonMap_Addr.insert(str, new TianLiQtCommon_TypeGroupButton(str, PageTabMap_LeftCardRects[0]));
-		// 设置按钮父对象
-		pushButtonMap_Addr[str]->setParent(PageTabMap_LeftCardRects[0]);
-		// 设置按钮位置
-		pushButtonMap_Addr[str]->setGeometry(pushButtonMap_Addr.size() % 5 * 60, pushButtonMap_Addr.size() / 5 * 40, 60, 30);
-		// 显示按钮
-		pushButtonMap_Addr[str]->show();
-		connect(pushButtonMap_Addr[str], &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButtonGroup_SelectCountry);
-		
-	}
-}
-
-void GenshinImpact_TianLi::ui_updataTypeButtonList()
-{
-	// 清空 类型按钮QMap
-	for (auto btn : pushButtonMap_Type)
-	{
-		// 删除按钮
-		delete btn;
-	}
-	pushButtonMap_Type.clear();
-	
-	// 根据 字符串列表 可选类型 创建 类型按钮QMap
-	for (auto str : strList_Type)
-	{
-		// 创建按钮到 类型按钮QMap 中
-		pushButtonMap_Type.insert(str, new TianLiQtCommon_TypeGroupButton(str, PageTabMap_LeftCardRects[1]));
-		// 设置按钮父对象
-		pushButtonMap_Type[str]->setParent(PageTabMap_LeftCardRects[1]);
-		// 设置按钮位置
-		pushButtonMap_Type[str]->setGeometry(pushButtonMap_Type.size() % 5 * 60, 120+pushButtonMap_Type.size() / 5 * 40, 60, 30);
-		// 显示按钮
-		pushButtonMap_Type[str]->show();
-		connect(pushButtonMap_Type[str], &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButtonGroup_SelectType);
-	}
-}
-
-void GenshinImpact_TianLi::ui_updataItemButtonList()
-{
-	// 清空 种类按钮QMap
-	for (auto btn : pushButtonMap_Item)
-	{
-		// 删除按钮
-		delete btn;
-	}
-	pushButtonMap_Item.clear();
-
-	// 根据 字符串列表 可选种类 创建 种类按钮QMap
-	for (auto str : strList_Item)
-	{
-		// 创建按钮到 种类按钮QMap 中
-		pushButtonMap_Item.insert(str, new TianLiQtCommon_TypeGroupButton(str, PageTabMap_LeftCardRects[2]));
-		// 设置按钮父对象
-		pushButtonMap_Item[str]->setParent(PageTabMap_LeftCardRects[2]);
-		// 设置按钮位置
-		pushButtonMap_Item[str]->setGeometry(pushButtonMap_Item.size() % 5 * 60, 200+pushButtonMap_Item.size() / 5 * 40, 60, 30);
-		// 显示按钮
-		pushButtonMap_Item[str]->show();
-		connect(pushButtonMap_Item[str], &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButtonGroup_SelectItem);
-	}
-}
-
-void GenshinImpact_TianLi::ui_updataItemsButtonList()
-{
-	// 清空 物品按钮QMap
-	//for (auto btn : pushButtonMap_Items)
-	//{
-	//	// 删除按钮
-	//	delete btn;
-	//}
-	//pushButtonMap_Items.clear();
-	
-	// 根据 字符串列表 可选物品 创建 物品按钮QMap
-	//for (auto str : strList_Items)
-	//{
-	//	QImage im;
-	//	im.load(":/Test/resource/Test/Tex_0537_0.png");
-	//	
-	//	// 创建按钮到 物品按钮QMap 中
-	//	pushButtonMap_Items.insert(str, new TianLiQtCommon_SelectedItemButton(str,im, PageTabMap_ScrollCardRect[0]));
-	//	// 设置按钮父对象
-	//	pushButtonMap_Items[str]->setParent(PageTabMap_ScrollCardRect[0]);
-	//	PageTabMap_ScrollCardRect[0]->addWidget(pushButtonMap_Items[str]);
-	//	// 设置按钮位置
-	//	pushButtonMap_Items[str]->setGeometry(pushButtonMap_Items.size() % 5 * 60, 280 + pushButtonMap_Items.size() / 5 * 40, 60, 30);
-	//	// 显示按钮
-	//	pushButtonMap_Items[str]->show();
-	//	//connect(pushButtonMap_Items[str], &QPushButton::clicked, this, &GenshinImpact_TianLi::pushButtonGroup_SelectItems);
-	//}
-}
 
 void GenshinImpact_TianLi::slot_auto_track()
 {
@@ -793,6 +705,65 @@ void GenshinImpact_TianLi::slot_auto_track()
 		LogInfo("Track状态为未运行，执行启动");
 		Core.GetTrack().StartServer();
 	}
+}
+
+QImage get_image(std::string item)
+{
+	auto img = Core.GetResource().GetImageBuffer("", "", "", item);
+	auto img_qimage = TianLi::Utils::mat_2_qimage(img);
+	return img_qimage;
+}
+
+void GenshinImpact_TianLi::slot_updata_pickable_items(std::vector<std::string> item_tags)
+{
+	static std::map<std::string, cv::Mat> item_tags_buf;
+	static std::map<std::string, TianLiQtCommon_NearbyItemButton* > item_button_buf;
+
+	std::map<std::string, bool> check_state_map;
+	
+	for (auto& item : item_tags)
+	{
+		if (item.size() <= 1)
+		{
+			continue;
+		}
+		
+		check_state_map[item] = true;
+		if (item_tags_buf.contains(item))
+		{
+			continue;
+		}
+		auto im = get_image(item);
+		TianLiQtCommon_NearbyItemButton* new_pickable_tag = new TianLiQtCommon_NearbyItemButton(QString::fromStdString(item), im);
+		PageTabMap_ScrollCardRect[1]->addWidget(new_pickable_tag);
+		item_tags_buf[item] = Core.GetResource().GetImageBuffer("", "", "", item);
+		item_button_buf[item] = new_pickable_tag;
+	}
+	for (auto& [item, state] : check_state_map)
+	{
+		auto is_find = item_tags_buf.contains(item);
+		if (is_find)
+		{
+			continue;
+		}
+		item_tags_buf.erase(item);
+		auto btn = item_button_buf[item];
+		// delete
+		btn->deleteLater();
+		item_button_buf.erase(item);
+		
+		//LogInfo(item);
+	}
+	
+
+	
+	//for (int i = 0; i < 2; i++)
+	//{
+	//	QImage im;
+	//	im.load(":/Test/resource/Test/Tex_0537_0.png");
+	//	TianLiQtCommon_PickedItemButton* asd = new TianLiQtCommon_PickedItemButton(QString::number(i) + "号物品xxx", im);
+	//	PageTabMap_ScrollCardRect[2]->addWidget(asd);
+	//}
 }
 
 void GenshinImpact_TianLi::slot_show()
@@ -850,69 +821,8 @@ void GenshinImpact_TianLi::slot_hide()
 	//this->hide();
 }
 
-void GenshinImpact_TianLi::setCurrentIndex_MainTabPages(int index)
-{
-	ui.stackedWidget_MainTabPages->setCurrentIndex(index);
-}
 
-void GenshinImpact_TianLi::pushButtonGroup_SelectCountry(bool checked)
-{
-	if (checked == true)
-	{
-		// 自身sender
-		QPushButton *button = qobject_cast<QPushButton *>(sender());
-		// 获取 选中地区文字
-		QString str = button->text();
-		// 检查 选中地区文字 是否与之前 选中地区 一致
-		if (str == selectedStr_Addr)
-		{
-			// 如果一致 则清除下一级按钮
-			selectedStr_Addr = "";
-			
-			return;
-		}
-		else
-		{
-			// 如果不一致 则更新 选中地区
-			selectedStr_Addr = str;
-		}
-
-		// 更新当前地区可选类型数据
-		updata_TypeList();
-		// 更新 地区按钮QMap
-		ui_updataTypeButtonList();
-		
-		
-	}
-}
-
-void GenshinImpact_TianLi::pushButtonGroup_SelectType(bool checked)
-{
-	if (checked == true)
-	{
-		// 自身sender
-		QPushButton *button = qobject_cast<QPushButton *>(sender());
-		// 获取 选中类型文字
-		QString str = button->text();
-		// 检查 选中类型文字 是否与之前 选中类型 一致
-		if (str == selectedStr_Type)
-		{
-			// 如果一致 则什么都不做
-			return;
-		}
-		else
-		{
-			// 如果不一致 则更新 选中类型
-			selectedStr_Type = str;
-			// 更新当前类型可选种类数据
-			updata_ItemList();
-			// 更新 类型按钮QMap
-			ui_updataItemButtonList();
-		}
-
-	}
-}
-
+#include<QRandomGenerator>
 void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 {
 	if (checked == true)
@@ -933,44 +843,80 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 			selectedStr_Item = str;
 			// 更新当前种类可选物品数据
 			updata_ItemsList();
-			// 更新 物品按钮QMap
-			// ui_updataItemsButtonList();
+
+			if (item_button_checked_map.contains({ get_selected_area().toStdString(),get_selected_type().toStdString(),selectedStr_Item.toStdString()}))
+			{
+				item_button_checked_map[{ get_selected_area().toStdString(), get_selected_type().toStdString(), selectedStr_Item.toStdString()}] = true;
+			}
+			else
+			{
+				item_button_checked_map.insert({ { get_selected_area().toStdString(), get_selected_type().toStdString(), selectedStr_Item.toStdString()},true });
+			}
+
 			
 			auto img = Core.GetResource().GetImageBuffer("", "", "",str.toStdString());
 			auto img_qimage = TianLi::Utils::mat_2_qimage(img);
 
-			auto img_type = Core.GetResource().GetImageBuffer("", selectedStr_Type.toStdString(),"", "");
+			auto img_type = Core.GetResource().GetImageBuffer("", get_selected_type().toStdString(),"", "");
 			auto img_type_qimage = TianLi::Utils::mat_2_qimage(img_type);
+
+			
+			auto button = new TianLiQtCommon_SelectedItemButton(str, get_selected_area(), img_qimage, img_type_qimage, PageTabMap_ScrollCardRect[0]);
 			// 创建按钮到 物品按钮QMap 中
-			pushButtonMap_Items.insert(str, new TianLiQtCommon_SelectedItemButton(str,selectedStr_Addr, img_qimage, img_type_qimage, PageTabMap_ScrollCardRect[0]));
+			pushButtonMap_Items.insert(str, button);
 			// 设置按钮父对象
 			pushButtonMap_Items[str]->setParent(PageTabMap_ScrollCardRect[0]);
 			PageTabMap_ScrollCardRect[0]->addWidget(pushButtonMap_Items[str]);
 			
+		
+			//connect(button, &TianLiQtCommon_SelectedItemButton::signal_double_click, this,&GenshinImpact_TianLi::slot_delete_object);
 			
 			// 显示按钮
 			pushButtonMap_Items[str]->show();
-		}
-	}
-}
+			// 生成1-100的随机数
+			int rand_num = QRandomGenerator::global()->bounded(100);
+			button->setProgressMaxNumber(50);
+			button->setProgressCount(rand_num);
 
-void GenshinImpact_TianLi::pushButtonGroup_SelectItems(bool checked)
-{
-	if (checked == true)
-	{
-		// 自身sender
-		QPushButton* button = qobject_cast<QPushButton*>(sender());
-		// 获取 选中种类文字
-		QString str = button->text();
-		
-			//selectedStr_Item = str;
-			// 更新当前种类可选物品数据
-			//updata_ItemList();
-			// 更新 物品按钮QMap
-			//ui_updataItemsButtonList();
+			// 强制重绘MapRect
+			// 切换后要触发MapRect的强制重绘
+			PageTabMap_MapRect->slot_force_update();
+		}
 	}
 	else
 	{
-		// 删除对应按钮
+		emit slot_delete_object();
 	}
+}
+
+void GenshinImpact_TianLi::slot_delete_object()
+{
+	// 自身sender
+	QPushButton* button = qobject_cast<QPushButton*>(sender());
+	// 获取 选中种类文字
+	QString str = button->text();
+
+	auto name = str.toStdString();
+	int delete_id = -1;
+	for (int i = 0; i < CoreMap.badge_info.badge_block_list.size(); i++)
+	{
+		if (CoreMap.badge_info.badge_block_list[i].name == name)
+		{
+			delete_id = i;
+			break;
+		}
+	}
+	if (delete_id != -1)
+	{
+		// 删除id元素
+		CoreMap.badge_info.badge_block_list.erase(CoreMap.badge_info.badge_block_list.begin() + delete_id);
+	}
+	// 删除按钮
+	if (pushButtonMap_Items.contains(str))
+	{
+		pushButtonMap_Items[str]->deleteLater();
+		pushButtonMap_Items.remove(str);
+	}
+	// 切换后要触发MapRect的强制重绘
+	PageTabMap_MapRect->slot_force_update();
 }

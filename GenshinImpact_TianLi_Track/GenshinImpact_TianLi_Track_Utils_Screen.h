@@ -74,6 +74,9 @@ inline void get_genshin_screen(const GenshinHandle& genshin_handle, GenshinScree
 		out_genshin_screen.img_uid_maybe = giFrame(genshin_handle.rect_uid_maybe);
 		out_genshin_screen.img_left_give_items_maybe = giFrame(genshin_handle.rect_left_give_items_maybe);
 		out_genshin_screen.img_right_pick_items_maybe = giFrame(genshin_handle.rect_right_pick_items_maybe);
+		out_genshin_screen.img_left_give_items = giFrame(genshin_handle.rect_left_give_items);
+		out_genshin_screen.img_right_pick_items = giFrame(genshin_handle.rect_right_pick_items);
+		
 
 		out_genshin_screen.config.rect_paimon_maybe = genshin_handle.rect_paimon_maybe;
 		out_genshin_screen.config.rect_minimap_cailb_maybe = genshin_handle.rect_minimap_cailb_maybe;

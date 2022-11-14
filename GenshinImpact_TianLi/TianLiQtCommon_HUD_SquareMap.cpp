@@ -7,8 +7,8 @@
 #include "TianLiQtCommon_Logger.h"
 #include "TianLiQtCommon_Utils.h"
 
-#include "..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.h"
-#pragma comment(lib,"GenshinImpact_TianLi_Core.lib")
+#include "..\GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Map.lib")
 
 TianLiQtCommon_HUD_SquareMap::TianLiQtCommon_HUD_SquareMap(QWidget *parent)
 	: QWidget(parent)
@@ -58,19 +58,19 @@ void TianLiQtCommon_HUD_SquareMap::paintEvent(QPaintEvent* event)
 
 		//cv::Rect viewer_rect;
 		//mapMatRect = TianLi::Utils::get_view_map(gi_map, cv::Size(width(), height()), render_map_pos, render_map_scale, viewer_rect);
-		Core.GetMap().map_info.is_overlay = true;
-		Core.GetMap().map_info.is_show_map = true;
+		CoreMap.map_info.is_overlay = true;
+		CoreMap.map_info.is_show_map = true;
 
 
-		Core.GetMap().map_info.center_x = render_map_pos.x;
-		Core.GetMap().map_info.center_y = render_map_pos.y;
-		Core.GetMap().map_info.viewer_width = this->width();
-		Core.GetMap().map_info.viewer_height = this->height();
+		CoreMap.map_info.center_x = render_map_pos.x;
+		CoreMap.map_info.center_y = render_map_pos.y;
+		CoreMap.map_info.viewer_width = this->width();
+		CoreMap.map_info.viewer_height = this->height();
 
-		//Core.GetMap().map_info.map_rect = map_rect;
-		Core.GetMap().map_info.scale_form_gimap = render_map_scale;
+		//CoreMap.map_info.map_rect = map_rect;
+		CoreMap.map_info.scale_form_gimap = render_map_scale;
 		// äÖÈ¾Í¼Àý
-		Core.GetMap().render_legend(mapMatRect);
+		CoreMap.render_legend(mapMatRect);
 
 
 		std::vector<cv::Mat> mv;

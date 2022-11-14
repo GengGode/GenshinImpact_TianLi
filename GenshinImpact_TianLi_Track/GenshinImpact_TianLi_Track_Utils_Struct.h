@@ -214,6 +214,17 @@ struct GenshinUID
 	GenshinUIDConfig config;
 };
 
+struct GenshinPickableItemsConfig
+{
+	
+};
+struct GenshinPickableItems
+{
+	std::vector<cv::Mat> item_imgs;
+	std::vector<std::string> item_tags;
+	GenshinPickableItemsConfig config;
+};
+
 class Filter
 {
 public:
