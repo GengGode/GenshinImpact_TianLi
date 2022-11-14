@@ -26,12 +26,12 @@
 #include <QMouseEvent>
 #include <QTimer>
 
-#include <QNetworkReply>
-#include <QNetworkAccessManager>
-
 
 #include "..\GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Map.lib")
+
+#include "..\GenshinImpact_TianLi_Data\GenshinImpact_TianLi_Data.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Data.lib")
 
 using namespace TianLi;
 
@@ -74,21 +74,32 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	emit this->ui_updatePusButtonList();
 	
-	
-	// Qt HttpGet
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-	connect(manager, &QNetworkAccessManager::finished, [=](QNetworkReply* reply) {
-		if (reply->error() == QNetworkReply::NoError) {
-			QByteArray bytes = reply->readAll();
-			QString result(bytes);
-			LogInfo(result.toStdString().c_str());
+	//auto Data = GenshinImpact_TianLi_Data();
+	//Data.init(&Core.GetSqlite());
+	auto& area = Data.area_group;
+	for (auto& [parent_name, childs] : area)
+	{
+		//auto parent_button = new TianLiQtCommon_TypeGroupButton(parent_name, ui.scrollAreaWidgetContents_TypeList);
+		//parent_button->setGeometry(0, 0, 100, 100);
+		//parent_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+		//parent_button->setObjectName("TypeGroupButton");
+		//parent_button->setParent(ui.scrollAreaWidgetContents_TypeList);
+		//parent_button->show();
+		//ui.verticalLayout_TypeList->addWidget(parent_button);
+		LogInfo(parent_name.c_str());
+		for (auto& child_name : childs)
+		{
+			//auto child_button = new TianLiQtCommon_TypeGroupButton(child_name, ui.scrollAreaWidgetContents_TypeList);
+			//child_button->setGeometry(0, 0, 100, 100);
+			//child_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+			//child_button->setObjectName("TypeGroupButton");
+			//child_button->setParent(ui.scrollAreaWidgetContents_TypeList);
+			//child_button->show();
+			//ui.verticalLayout_TypeList->addWidget(child_button);
+			LogWarn((parent_name+": "+child_name).c_str());
+
 		}
-		else {
-			LogError("HttpGet Error");
-		}
-		reply->deleteLater();
-		});
-	manager->get(QNetworkRequest(QUrl("http://download.api.weixitianli.com/GenshinImpactTianLi/Version/Latest")));
+	}
 	
 
 	

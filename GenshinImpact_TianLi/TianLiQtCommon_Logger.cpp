@@ -1,4 +1,15 @@
+#define _LOG_SHOW
+
 #ifdef _DEBUG
+#define __DEFINE_LOGGER
+#else 
+#ifdef _LOG_SHOW
+#define __DEFINE_LOGGER
+#else
+#endif // _LOG_SHOW
+#endif // _DEBUG
+
+#ifdef __DEFINE_LOGGER
 
 #include "TianLiQtCommon_Logger.h"
 
@@ -6,6 +17,9 @@
 #include <QDateTime>
 #include <QTableWidget>
 
+
+#include <QNetworkReply>
+#include <QNetworkAccessManager>
 
 TianLiQtCommon_Logger& TianLiQtCommon_Logger::GetInstance()
 {
@@ -56,6 +70,22 @@ TianLiQtCommon_Logger::TianLiQtCommon_Logger(QWidget *parent)
 	ui.tableWidget->setHorizontalHeaderLabels(list);
 	ui.tableWidget->show();
 	this->show();
+
+
+	// Qt HttpGet
+	QNetworkAccessManager* manager = new QNetworkAccessManager(this);
+	connect(manager, &QNetworkAccessManager::finished, [=](QNetworkReply* reply) {
+		if (reply->error() == QNetworkReply::NoError) {
+			QByteArray bytes = reply->readAll();
+			QString result(bytes);
+			LogInfo(result.toStdString().c_str());
+		}
+		else {
+			LogError("HttpGet Error");
+		}
+	reply->deleteLater();
+		});
+	manager->get(QNetworkRequest(QUrl("http://download.api.weixitianli.com/GenshinImpactTianLi/Version/Latest")));
 }
 
 TianLiQtCommon_Logger::~TianLiQtCommon_Logger()
