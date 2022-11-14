@@ -184,3 +184,9 @@ void TianLiQtCommon_MapRect::slot_update()
 		update();
 	}
 }
+
+void TianLiQtCommon_MapRect::slot_force_update()
+{
+	is_need_rerender = true;
+	update();
+}
