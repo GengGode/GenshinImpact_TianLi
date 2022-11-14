@@ -84,6 +84,7 @@ TianLiQtCommon_Logger::TianLiQtCommon_Logger(QWidget *parent)
 			LogError("HttpGet Error");
 		}
 	reply->deleteLater();
+	manager->deleteLater();
 		});
 	manager->get(QNetworkRequest(QUrl("http://download.api.weixitianli.com/GenshinImpactTianLi/Version/Latest")));
 }
