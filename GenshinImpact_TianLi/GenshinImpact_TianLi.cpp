@@ -400,6 +400,29 @@ void GenshinImpact_TianLi::addUI_MapTabMapRect()
 			Core.GetTrack().StopServer();
 		}
 		});
+	// 定位切换按钮与地图双击切换绑定同步
+	connect(PageTabMap_MapRect, &TianLiQtCommon_MapRect::signal_double_click, dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::slot_clicked);
+	
+	// 添加地图页面 地图区域中 的 地下显示切换开关
+	PageTabMap_RightCard_Buttons.append(new TianLiQtCommon_SwitchButton(this, "地下"));
+	PageTabMap_RightCard_Buttons[1]->setParent(ui.widget_MapTab_Right);
+	PageTabMap_RightCard_Buttons[1]->move(30, PageTabMap_MapRect->height() - 35 - 25 - 3);
+	// 地下显示切换事件
+	connect(dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[1]), &TianLiQtCommon_SwitchButton::signal_clicked, [=](bool is_checked) {
+		if (is_checked)
+		{
+			CoreMap.map_info.is_overlay = true;
+			LogInfo("显示地下");
+		}
+		else
+		{
+			CoreMap.map_info.is_overlay = false;
+			LogInfo("隐藏地下");
+		}
+		// 切换后要触发MapRect的强制重绘
+		PageTabMap_MapRect->slot_force_update();
+		LogInfo("触发重绘地图");
+		});
 	
 	
 }
