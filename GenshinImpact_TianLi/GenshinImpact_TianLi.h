@@ -93,7 +93,7 @@ private:
 	// µØÍ¼Ò³×ó²àÓÒ°ë±ß»¬¿é¿¨Æ¬ÇøÓò
     QVector<TianLiQtCommon_ScrollCardRect*> PageTabMap_ScrollCardRect;
 	// µØÍ¼Ò³ÓÒ²àµØÍ¼ÇøÓò
-    QVector<TianLiQtCommon_MapRect*> PageTabMap_MapRect;
+    TianLiQtCommon_MapRect* PageTabMap_MapRect;
 	// HUDÒ³¿¨Æ¬ÇøÓò
     QVector<TianLiQtCommon_CardRect*> PageTabHUD_CardRects;
 
@@ -132,6 +132,7 @@ private:
 private slots:
     void slot_show_or_hide();
     void slot_auto_track();
+    void slot_updata_pickable_items(std::vector<std::string> item_tags);
 private:
 	TianLiQtCommon_HUD_SquareMap* hud_square_map = nullptr;
 	TianLiQtCommon_HUD_CircularMap* hud_circular_map = nullptr;

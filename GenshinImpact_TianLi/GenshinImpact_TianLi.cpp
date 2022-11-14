@@ -369,16 +369,16 @@ void GenshinImpact_TianLi::addUI_MapTabCardRects()
 void GenshinImpact_TianLi::addUI_MapTabMapRect()
 {
 	// 地图页面右侧的地图区域
-	PageTabMap_MapRect.append(new TianLiQtCommon_MapRect(this));
-	PageTabMap_MapRect[0]->setParent(ui.widget_MapTab_Right);
-	PageTabMap_MapRect[0]->setGeometry(10, 10, ui.widget_MapMask->width() - 20, ui.widget_MapMask->height() - 20);
-
+	PageTabMap_MapRect=new TianLiQtCommon_MapRect(this);
+	PageTabMap_MapRect->setParent(ui.widget_MapTab_Right);
+	PageTabMap_MapRect->setGeometry(10, 10, ui.widget_MapMask->width() - 20, ui.widget_MapMask->height() - 20);
+	connect(PageTabMap_MapRect, &TianLiQtCommon_MapRect::singal_updata_pickable_items, this, &GenshinImpact_TianLi::slot_updata_pickable_items);
+	
+	// 添加地图页面 地图区域中 的 定位启用切换开关
 	PageTabMap_RightCard_Buttons.append(new TianLiQtCommon_SwitchButton(this,"定位"));
 	PageTabMap_RightCard_Buttons[0]->setParent(ui.widget_MapTab_Right);
-	PageTabMap_RightCard_Buttons[0]->move(30, PageTabMap_MapRect[0]->height() - 35);
-
-	
-	
+	PageTabMap_RightCard_Buttons[0]->move(30, PageTabMap_MapRect->height() - 35);
+	// 定位启用切换事件
 	connect(dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::signal_clicked, [](bool is_checked){
 		if (is_checked)
 		{
@@ -389,7 +389,7 @@ void GenshinImpact_TianLi::addUI_MapTabMapRect()
 			Core.GetTrack().StopServer();
 		}
 		});
-	connect(PageTabMap_MapRect[0], &TianLiQtCommon_MapRect::signal_double_click, dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::slot_clicked);
+	
 	
 }
 
@@ -793,6 +793,64 @@ void GenshinImpact_TianLi::slot_auto_track()
 		LogInfo("Track状态为未运行，执行启动");
 		Core.GetTrack().StartServer();
 	}
+}
+QImage get_image(std::string item)
+{
+	auto img = Core.GetResource().GetImageBuffer("", "", "", item);
+	auto img_qimage = TianLi::Utils::mat_2_qimage(img);
+	return img_qimage;
+}
+
+void GenshinImpact_TianLi::slot_updata_pickable_items(std::vector<std::string> item_tags)
+{
+	static std::map<std::string, cv::Mat> item_tags_buf;
+	static std::map<std::string, TianLiQtCommon_NearbyItemButton* > item_button_buf;
+
+	std::map<std::string, bool> check_state_map;
+	
+	for (auto& item : item_tags)
+	{
+		if (item.size() <= 1)
+		{
+			continue;
+		}
+		
+		check_state_map[item] = true;
+		if (item_tags_buf.contains(item))
+		{
+			continue;
+		}
+		auto im = get_image(item);
+		TianLiQtCommon_NearbyItemButton* new_pickable_tag = new TianLiQtCommon_NearbyItemButton(QString::fromStdString(item), im);
+		PageTabMap_ScrollCardRect[1]->addWidget(new_pickable_tag);
+		item_tags_buf[item] = Core.GetResource().GetImageBuffer("", "", "", item);
+		item_button_buf[item] = new_pickable_tag;
+	}
+	for (auto& [item, state] : check_state_map)
+	{
+		auto is_find = item_tags_buf.contains(item);
+		if (is_find)
+		{
+			continue;
+		}
+		item_tags_buf.erase(item);
+		auto btn = item_button_buf[item];
+		// delete
+		btn->deleteLater();
+		item_button_buf.erase(item);
+		
+		//LogInfo(item);
+	}
+	
+
+	
+	//for (int i = 0; i < 2; i++)
+	//{
+	//	QImage im;
+	//	im.load(":/Test/resource/Test/Tex_0537_0.png");
+	//	TianLiQtCommon_PickedItemButton* asd = new TianLiQtCommon_PickedItemButton(QString::number(i) + "号物品xxx", im);
+	//	PageTabMap_ScrollCardRect[2]->addWidget(asd);
+	//}
 }
 
 void GenshinImpact_TianLi::slot_show()

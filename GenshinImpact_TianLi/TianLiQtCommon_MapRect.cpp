@@ -172,6 +172,14 @@ void TianLiQtCommon_MapRect::slot_update()
 	{
 		render_map_pos = cv::Point(CoreMap.Core.GetTrack().GetResult().position_x, CoreMap.Core.GetTrack().GetResult().position_y);
 		ui.label_UID->setText(QString("UID: %1").arg(CoreMap.Core.GetTrack().GetResult().uid, 9, 10, QLatin1Char('0')));
+
+		static std::vector<std::string> item_tags_buf;
+		auto item_tags = CoreMap.Core.GetTrack().GetResult().item_tags;
+		if (item_tags_buf != item_tags)
+		{
+			item_tags_buf = item_tags;
+			emit singal_updata_pickable_items(item_tags);
+		}
 		
 		update();
 	}
