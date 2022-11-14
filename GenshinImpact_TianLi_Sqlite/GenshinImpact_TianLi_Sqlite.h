@@ -99,12 +99,15 @@ extern "C"
 #include<vector>
 #include<string>
 
+#ifdef _DEF_V1
 namespace v1
 {
 	std::map<std::pair<int, std::string>, std::vector<std::pair<int, std::string>> > get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
 	std::map<std::pair<std::pair<int, std::string>, std::string>, std::vector<std::pair<std::pair<int, std::string>, std::string>> >  get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
 
 }
+#endif
+
 #ifdef _DEF_V2
 namespace v2
 {
@@ -136,3 +139,4 @@ typedef std::pair<std::pair<int, std::string>, std::string > DLLAPI Tag;
 
 std::map<Tag, std::vector<Tag> > DLLAPI get_area_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
 std::map<Tag, std::vector<Tag> > DLLAPI get_type_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
+std::map<std::pair<Tag, Tag>, std::vector<Tag>> DLLAPI get_item_group_map(GenshinImpact_TianLi_Sqlite* sqlite);
