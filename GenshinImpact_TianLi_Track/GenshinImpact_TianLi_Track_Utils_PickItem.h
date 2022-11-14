@@ -10,15 +10,15 @@
 
 inline std::string ocr_call(cv::Mat& mat)
 {
-	//cv::Mat mat_gray;
-	//cv::cvtColor(mat, mat_gray, cv::COLOR_BGRA2BGR);
-	//std::string text;
-	//{
-	//	const char* t = libocr::ocr_image(mat_gray.cols, mat_gray.rows, (char*)mat_gray.data, mat_gray.channels() * mat_gray.rows * mat_gray.cols);
-	//	text = t;
-	//	libocr::free_char((char*)t);
-	//}
-	auto text = GenshinImpact_TianLi_Ocr::GetInstance().add_image_tag(mat);
+	cv::Mat mat_gray;
+	cv::cvtColor(mat, mat_gray, cv::COLOR_BGRA2BGR);
+	std::string text;
+	{
+		const char* t = libocr::ocr_image(mat_gray.cols, mat_gray.rows, (char*)mat_gray.data, mat_gray.channels() * mat_gray.rows * mat_gray.cols);
+		text = t;
+		libocr::free_char((char*)t);
+	}
+	//auto text = GenshinImpact_TianLi_Ocr::GetInstance().add_image_tag(mat);
 	return text;
 }
 inline std::vector<std::string> ocr_call(std::vector<cv::Mat>& vec)
@@ -30,6 +30,12 @@ inline std::vector<std::string> ocr_call(std::vector<cv::Mat>& vec)
 	}
 	return str;
 }
+
+inline std::string ocr_task(cv::Mat mat)
+{
+	return ocr_call(mat);
+}
+
 inline void get_pickable_items(const GenshinScreen& genshin_screen, GenshinPickableItems& out_genshin_pickable_items)
 {
 	auto roi = genshin_screen.img_right_pick_items;
@@ -76,7 +82,8 @@ inline void get_pickable_items(const GenshinScreen& genshin_screen, GenshinPicka
 	}
 	imshow("alpha right", layers[3]);
 
-
+	static std::mutex task_mutex;
+	static std::queue<std::function<std::string()>> task_queue;
 	// 从原图中取出矩形
 	std::vector<cv::Mat> roi_vec;
 	for (int i = 0; i < contours.size(); i++)
@@ -88,15 +95,39 @@ inline void get_pickable_items(const GenshinScreen& genshin_screen, GenshinPicka
 			continue;
 		}
 		roi_vec.push_back(roi(rect));
+		
+		std::lock_guard<std::mutex> lock(task_mutex);
+		task_queue.push(std::bind(ocr_task, roi(rect)));
+	}
+	
+	// queue task ocr
+	int ocr_task_solt_count = roi_vec.size();
+	if (ocr_task_solt_count == 0)
+	{
+		ocr_task_solt_count = 1;
+		if (task_queue.empty())
+		{
+			ocr_task_solt_count = 0;
+		}
+	}
+	for (int i = 0; i < ocr_task_solt_count; i++)
+	{
+		auto task = task_queue.front();
+		task_queue.pop();
+		if (task)
+		{
+			out_genshin_pickable_items.item_tags.push_back(task());
+			Sleep(100);
+		}
 	}
 
 	// ocr
-	auto res = ocr_call(roi_vec);
-	for (int i = 0; i < res.size(); i++)
-	{
-		out_genshin_pickable_items.item_tags.push_back(res[i]);
-	}
+	//auto res = ocr_call(roi_vec);
+	//for (int i = 0; i < res.size(); i++)
+	//{
+	//	out_genshin_pickable_items.item_tags.push_back(res[i]);
+	//}
 	// Sleep
 	
-	Sleep(1000);
+	//Sleep(3000);
 }

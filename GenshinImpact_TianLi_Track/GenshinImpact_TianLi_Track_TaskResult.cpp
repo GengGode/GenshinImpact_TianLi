@@ -195,7 +195,8 @@ TianLi::Track::TrackResult GenshinImpact_TianLi_Track_TaskResult::get_result()
 	result.viewer_angle = task_get_viewer_direction->get_output().angle;
 
 	result.uid = task_get_uid->get_output().uid;
-	result.item_tags = task_get_pickable_items->get_output().item_tags;
+	result.item_tags = std::vector<std::string>();
+	task_get_pickable_items->get_output().item_tags.swap(result.item_tags);
 	
 	//=========================================================================
 
