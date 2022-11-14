@@ -81,6 +81,7 @@ void TianLi::Map::Utils::add_rgba_image(cv::Mat& src1, cv::Mat& src2, cv::Mat& d
 	cv::split(src1, src1_split);
 	cv::split(src2, src2_split);
 
+	// TODO:fix 修改透明度只是改变了叠加层的透明度，并未显示底层的画面
 	for (int i = 0; i < 3; i++)
 	{
 		auto dst_src1 = src1_split[i].mul(~src2_split[3], 1.0 / 255.0);
