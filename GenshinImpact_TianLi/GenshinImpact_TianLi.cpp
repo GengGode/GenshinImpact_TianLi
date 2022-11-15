@@ -418,6 +418,26 @@ void GenshinImpact_TianLi::addUI_MapTabCardRects()
 	PageTabMap_ScrollCardRect.append(new TianLiQtCommon_ScrollCardRect("选中物品", this));
 	PageTabMap_ScrollCardRect[0]->setParent(ui.widget_MapTab_Left);
 	PageTabMap_ScrollCardRect[0]->setGeometry(350, 81, 260, 288);
+
+	// 添加一键取消按钮
+	QPushButton* all_cancel_button = new QPushButton(PageTabMap_ScrollCardRect[0]);
+	all_cancel_button->setParent(PageTabMap_ScrollCardRect[0]);
+	all_cancel_button->setGeometry(220, 15, 20, 20);
+	connect(all_cancel_button, &QPushButton::clicked, [=]() {
+		// 遍历所有select按钮，触发双击事件
+		auto buttons = object_button_group.buttons();
+		for (int i = 0; i < buttons.size(); i++)
+		{
+			TianLiQtCommon_SelectedItemButton* button = qobject_cast<TianLiQtCommon_SelectedItemButton*>(buttons[i]);
+			if (button != nullptr)
+			{
+				emit button->signal_double_click(true);
+				button->deleteLater();
+				object_button_group.removeButton(buttons[i]);
+			}
+
+		}
+		});
 	
 	PageTabMap_ScrollCardRect.append(new TianLiQtCommon_ScrollCardRect("附近物品日志", this));
 	PageTabMap_ScrollCardRect[1]->setParent(ui.widget_MapTab_Left);
