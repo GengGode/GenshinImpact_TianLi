@@ -840,13 +840,7 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 		// 获取 选中种类文字
 		QString str = button->text();
 		// 检查 选中种类文字 是否与之前 选中种类 一致
-		if (str == selectedStr_Item)
-		{
-			// 如果一致 则什么都不做
-			return;
-		}
-		else
-		{
+	
 			// 如果不一致 则更新 选中种类
 			selectedStr_Item = str;
 			// 更新当前种类可选物品数据
@@ -869,31 +863,31 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 			auto img_type_qimage = TianLi::Utils::mat_2_qimage(img_type);
 
 			
-			auto button = new TianLiQtCommon_SelectedItemButton(str, get_selected_type(), get_selected_area(), img_qimage, img_type_qimage, PageTabMap_ScrollCardRect[0]);
+			auto select_button = new TianLiQtCommon_SelectedItemButton(str, get_selected_type(), get_selected_area(), img_qimage, img_type_qimage, PageTabMap_ScrollCardRect[0]);
 			// 创建按钮到 物品按钮QMap 中
 			//pushButtonMap_Items.insert(str, button);
 
-			object_button_group.addButton(button);
-			object_button_index_map[{ get_selected_area().toStdString() + "-" + get_selected_type().toStdString() + "-" + selectedStr_Item.toStdString()}] = object_button_group.id(button);
+			object_button_group.addButton(select_button);
+			object_button_index_map[{ get_selected_area().toStdString() + "-" + get_selected_type().toStdString() + "-" + selectedStr_Item.toStdString()}] = object_button_group.id(select_button);
 
 			// 设置按钮父对象
-			button->setParent(PageTabMap_ScrollCardRect[0]);
-			PageTabMap_ScrollCardRect[0]->addWidget(button);
+			select_button->setParent(PageTabMap_ScrollCardRect[0]);
+			PageTabMap_ScrollCardRect[0]->addWidget(select_button);
 			
 		
-			connect(button, &TianLiQtCommon_SelectedItemButton::signal_double_click, this,&GenshinImpact_TianLi::slot_delete_object);
+			connect(select_button, &TianLiQtCommon_SelectedItemButton::signal_double_click, this,&GenshinImpact_TianLi::slot_delete_object);
 			
 			// 显示按钮
-			button->show();
+			select_button->show();
 			// 生成1-100的随机数
 			int rand_num = QRandomGenerator::global()->bounded(100);
-			button->setProgressMaxNumber(50);
-			button->setProgressCount(rand_num);
+			select_button->setProgressMaxNumber(50);
+			select_button->setProgressCount(rand_num);
 
 			// 强制重绘MapRect
 			// 切换后要触发MapRect的强制重绘
 			PageTabMap_MapRect->slot_force_update();
-		}
+		
 	}
 	else
 	{
