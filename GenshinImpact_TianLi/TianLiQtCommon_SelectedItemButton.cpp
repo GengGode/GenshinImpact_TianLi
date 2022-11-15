@@ -2,15 +2,19 @@
 
 #include <QGraphicsDropShadowEffect>
 
-TianLiQtCommon_SelectedItemButton::TianLiQtCommon_SelectedItemButton(QString title , QString region , QImage image , QImage labelimage , QWidget *parent)
+TianLiQtCommon_SelectedItemButton::TianLiQtCommon_SelectedItemButton(QString item_name , QString type_name, QString area_name, QImage item_image , QImage type_image , QWidget *parent)
 	: QPushButton(parent)
 {
 	ui.setupUi(this);
 	// QSS qlineargradient(spread:repeat, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:0.227273 rgba(255, 255, 255, 82), stop:0.539773 rgba(255, 255, 255, 255), stop:0.789773 rgba(255, 255, 255, 149), stop:1 rgba(255, 255, 255, 0));
-	setTitle(title);
-	setRegion(region);
-	setImage(image);
-	setLabelImage(labelimage);
+	item = item_name;
+	type = type_name;
+	area = area_name;
+
+	setTitle(item);
+	setRegion(area);
+	setImage(item_image);
+	setLabelImage(type_image);
 
 	QGraphicsDropShadowEffect* titleShadow = new QGraphicsDropShadowEffect();
 	titleShadow->setOffset(0, 4);
@@ -45,6 +49,21 @@ TianLiQtCommon_SelectedItemButton::~TianLiQtCommon_SelectedItemButton()
 void TianLiQtCommon_SelectedItemButton::mouseDoubleClickEvent(QMouseEvent* event)
 {
 	emit signal_double_click(isChecked());
+}
+
+QString TianLiQtCommon_SelectedItemButton::item_name()
+{
+	return item;
+}
+
+QString TianLiQtCommon_SelectedItemButton::type_name()
+{
+	return type;
+}
+
+QString TianLiQtCommon_SelectedItemButton::area_name()
+{
+	return area;
 }
 
 void TianLiQtCommon_SelectedItemButton::setTitle(QString title)

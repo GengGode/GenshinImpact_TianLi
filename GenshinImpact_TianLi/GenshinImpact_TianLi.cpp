@@ -208,6 +208,10 @@ QString GenshinImpact_TianLi::get_selected_area()
 	if (button == nullptr)
 	{
 		button = area_button_group.button(0);
+		if (button == nullptr)
+		{
+			return "";
+		}
 	}
 	return button->text();
 }
@@ -251,6 +255,10 @@ QString GenshinImpact_TianLi::get_selected_type()
 	if (button == nullptr)
 	{
 		button = type_button_group.button(0);
+		if (button == nullptr)
+		{
+			return "";
+		}
 	}
 	return button->text();
 }
@@ -861,18 +869,22 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 			auto img_type_qimage = TianLi::Utils::mat_2_qimage(img_type);
 
 			
-			auto button = new TianLiQtCommon_SelectedItemButton(str, get_selected_area(), img_qimage, img_type_qimage, PageTabMap_ScrollCardRect[0]);
+			auto button = new TianLiQtCommon_SelectedItemButton(str, get_selected_type(), get_selected_area(), img_qimage, img_type_qimage, PageTabMap_ScrollCardRect[0]);
 			// 创建按钮到 物品按钮QMap 中
-			pushButtonMap_Items.insert(str, button);
+			//pushButtonMap_Items.insert(str, button);
+
+			object_button_group.addButton(button);
+			object_button_index_map[{ get_selected_area().toStdString() + "-" + get_selected_type().toStdString() + "-" + selectedStr_Item.toStdString()}] = object_button_group.id(button);
+
 			// 设置按钮父对象
-			pushButtonMap_Items[str]->setParent(PageTabMap_ScrollCardRect[0]);
-			PageTabMap_ScrollCardRect[0]->addWidget(pushButtonMap_Items[str]);
+			button->setParent(PageTabMap_ScrollCardRect[0]);
+			PageTabMap_ScrollCardRect[0]->addWidget(button);
 			
 		
-			//connect(button, &TianLiQtCommon_SelectedItemButton::signal_double_click, this,&GenshinImpact_TianLi::slot_delete_object);
+			connect(button, &TianLiQtCommon_SelectedItemButton::signal_double_click, this,&GenshinImpact_TianLi::slot_delete_object);
 			
 			// 显示按钮
-			pushButtonMap_Items[str]->show();
+			button->show();
 			// 生成1-100的随机数
 			int rand_num = QRandomGenerator::global()->bounded(100);
 			button->setProgressMaxNumber(50);
@@ -891,32 +903,135 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 
 void GenshinImpact_TianLi::slot_delete_object()
 {
-	// 自身sender
-	QPushButton* button = qobject_cast<QPushButton*>(sender());
-	// 获取 选中种类文字
-	QString str = button->text();
+	enum button_class
+	{
+		SelectedItemButton,
+		TypeGroupButton,
+		Button
+	};
+	button_class sender_class = button_class::Button;
+	TianLiQtCommon_SelectedItemButton* button_ = qobject_cast<TianLiQtCommon_SelectedItemButton*>(sender());
+	if (button_ != nullptr)
+	{
+		sender_class = button_class::SelectedItemButton;
+	}
+	TianLiQtCommon_TypeGroupButton* y = qobject_cast<TianLiQtCommon_TypeGroupButton*>(sender());
+	if (y != nullptr)
+	{
+		sender_class = button_class::TypeGroupButton;
+	}
+	// 每个路径都要做三个工作
+	// 1. 删除SelectItem按钮
+	// 2. 取消TypeGroup按钮的点击状态
+	// 3. 清空该点位数据
+	switch (sender_class)
+	{
+	case button_class::SelectedItemButton:
+	{
+		TianLiQtCommon_SelectedItemButton* button = qobject_cast<TianLiQtCommon_SelectedItemButton*>(sender());
+		auto item_name = button->item_name().toStdString();
+		auto type_name = button->type_name().toStdString();
+		auto area_name = button->area_name().toStdString();
 
-	auto name = str.toStdString();
-	int delete_id = -1;
-	for (int i = 0; i < CoreMap.badge_info.badge_block_list.size(); i++)
-	{
-		if (CoreMap.badge_info.badge_block_list[i].name == name)
+		// 1. 删除自身
+		button->deleteLater();
+		// 2. 取消Type按钮的状态
+		QAbstractButton* item_button = nullptr;
+		// 2.1 先找到该按钮
+		// 2.1.1 先判断该按钮是否正在显示x
+		if (get_selected_area() == button->area_name() && get_selected_type() == button->type_name())
 		{
-			delete_id = i;
-			break;
+			// 2.1.2 如果正在显示，则从map中找到对应文字按钮的id
+			int id = -1;
+			if (item_button_index_map.contains(item_name))
+			{
+				id = item_button_index_map[item_name];
+			}
+			if (id != -1)
+			{
+				item_button = item_button_group.button(id);
+			}
 		}
+		// 2.1.3 否则只需要修改map中的bool即可
+		if (item_button_checked_map.contains({ area_name ,type_name,item_name}))
+		{
+			item_button_checked_map[{area_name, type_name, item_name}] = false;
+		}
+		// 2.2 取消按钮状态
+		if (item_button != nullptr)
+		{
+			item_button->setChecked(false);
+		}
+		// 2.3 删除点位数据
+		// TODO: 待优化，此处可能会误删除
+		auto name = item_name;
+		int delete_id = -1;
+		for (int i = 0; i < CoreMap.badge_info.badge_block_list.size(); i++)
+		{
+			if (CoreMap.badge_info.badge_block_list[i].name == name)
+			{
+				delete_id = i;
+				break;
+			}
+		}
+		if (delete_id != -1)
+		{
+			// 删除id元素
+			CoreMap.badge_info.badge_block_list.erase(CoreMap.badge_info.badge_block_list.begin() + delete_id);
+		}
+
+		// 切换后要触发MapRect的强制重绘
+		PageTabMap_MapRect->slot_force_update();
+		break;
 	}
-	if (delete_id != -1)
+	case button_class::TypeGroupButton:
 	{
-		// 删除id元素
-		CoreMap.badge_info.badge_block_list.erase(CoreMap.badge_info.badge_block_list.begin() + delete_id);
+		TianLiQtCommon_TypeGroupButton* button = qobject_cast<TianLiQtCommon_TypeGroupButton*>(sender());
+		// 0. 能够点击，所以type按钮一定可见
+		auto item_name = button->text().toStdString();
+		auto type_name = get_selected_type().toStdString();
+		auto area_name = get_selected_area().toStdString();
+		// 1. 删除Select按钮
+		QAbstractButton* select_button = nullptr;
+		// 1.1 先找到按钮
+		auto key = area_name + "-" + type_name + "-" + item_name;
+		if (object_button_index_map.contains(key))
+		{
+			int delete_id = object_button_index_map[key];
+			select_button = object_button_group.button(delete_id);
+		}
+		// 1.2 删除按钮
+		select_button->deleteLater();
+		// 2. 清空本身选择和map中的bool
+		button->setChecked(false);
+		if (item_button_checked_map.contains({ area_name ,type_name,item_name }))
+		{
+			item_button_checked_map[{area_name, type_name, item_name}] = false;
+		}
+		// 3. 删除点位数据
+		// TODO: 待优化，此处可能会误删除
+		auto name = item_name;
+		int delete_id = -1;
+		for (int i = 0; i < CoreMap.badge_info.badge_block_list.size(); i++)
+		{
+			if (CoreMap.badge_info.badge_block_list[i].name == name)
+			{
+				delete_id = i;
+				break;
+			}
+		}
+		if (delete_id != -1)
+		{
+			// 删除id元素
+			CoreMap.badge_info.badge_block_list.erase(CoreMap.badge_info.badge_block_list.begin() + delete_id);
+		}
+		// 切换后要触发MapRect的强制重绘
+		PageTabMap_MapRect->slot_force_update();
+		break;
 	}
-	// 删除按钮
-	if (pushButtonMap_Items.contains(str))
+	default:
 	{
-		pushButtonMap_Items[str]->deleteLater();
-		pushButtonMap_Items.remove(str);
+		LogWarn("信号来源未设定执行方法，检查来源");
 	}
-	// 切换后要触发MapRect的强制重绘
-	PageTabMap_MapRect->slot_force_update();
+	}
 }

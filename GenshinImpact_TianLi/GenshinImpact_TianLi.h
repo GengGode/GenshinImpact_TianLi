@@ -55,6 +55,9 @@ private:
     std::map<std::string, int> item_button_index_map;
     std::map<std::tuple<std::string,std::string,std::string>,bool> item_button_checked_map;
 
+    QButtonGroup object_button_group;
+    std::map<std::string, int> object_button_index_map;
+
     void init_area_list();
     QString get_selected_area();
     void init_type_list();
