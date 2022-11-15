@@ -26,7 +26,7 @@ private:
 	QTimer* timer = nullptr;
 	bool is_visible = false;	// ÊÇ·ñ¿É¼û
 
-	cv::Point render_map_pos = cv::Point(1428, 2937);
+	cv::Point render_map_pos = cv::Point(2000, 2937);
 	double render_map_scale = 1.0;
 
 	QImage render_map_image;

@@ -299,3 +299,7 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_move(RECT& gi_client_rect)
 		update();
 	}
 }
+
+void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_object()
+{
+}
