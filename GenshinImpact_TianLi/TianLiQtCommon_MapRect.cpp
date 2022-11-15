@@ -120,11 +120,6 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 		old_map_center_pos = render_map_pos;
 		old_map_scale = render_map_scale;
 		
-		//---
-		//cv::Rect map_rect;
-		//mapMatRect = TianLi::Utils::get_view_map(CoreMap.Core().GetResource().GiMap(), cv::Size(ui.label_Render->width(), ui.label_Render->height()), render_map_pos, render_map_scale, map_rect);
-		
-		//CoreMap.map_info.is_overlay = true;
 		CoreMap.map_info.is_show_map = true;
 
 		CoreMap.map_info.center_x = render_map_pos.x;
@@ -173,7 +168,13 @@ void TianLiQtCommon_MapRect::slot_update()
 {
 	if (CoreMap.Core.GetTrack().GetResult().is_find_paimon)
 	{
-		render_map_pos = cv::Point(CoreMap.Core.GetTrack().GetResult().position_x, CoreMap.Core.GetTrack().GetResult().position_y);
+		auto pos = cv::Point(CoreMap.Core.GetTrack().GetResult().position_x, CoreMap.Core.GetTrack().GetResult().position_y);
+		render_map_pos = pos;
+		CoreMap.avatar_info.x = pos.x;
+		CoreMap.avatar_info.y = pos.y;
+		CoreMap.avatar_info.a = CoreMap.Core.GetTrack().GetResult().avatar_angle;
+
+
 		ui.label_UID->setText(QString("UID: %1").arg(CoreMap.Core.GetTrack().GetResult().uid, 9, 10, QLatin1Char('0')));
 
 		static std::vector<std::string> item_tags_buf;

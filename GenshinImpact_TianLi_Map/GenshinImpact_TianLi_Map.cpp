@@ -72,7 +72,7 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 		render_overlay(map);
 	}
 
-	for (auto& info : badge_info.badge_block_list)
+	for (auto& [key,info] : badge_info.badge_block_list)
 	{
 		cv::Mat img = info.image;
 		cv::resize(img, img, cv::Size(), 1.0/map_info.scale_form_gimap, 1.0/map_info.scale_form_gimap);
@@ -173,7 +173,9 @@ BadgeInfo GenshinImpact_TianLi_Map::search(const char* country, const char* type
 			badge_block.badge_list.push_back(badge);
 		}
 	}
-	result_badge_info.badge_block_list.push_back(badge_block);
+	std::tuple<std::string, std::string, std::string> key = { country, type, item };
+
+	result_badge_info.badge_block_list.insert({ key,badge_block });
 
 	return result_badge_info;
 }

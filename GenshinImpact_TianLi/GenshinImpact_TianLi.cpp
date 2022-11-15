@@ -823,12 +823,17 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 		QString selectedStr_Item;
 			// 如果不一致 则更新 选中种类
 			selectedStr_Item = str;
-			// 更新当前种类可选物品数据
+
+			ItemsVector itemsItemsVector;
+			auto area = get_selected_area().toStdString();
+			auto type = get_selected_type().toStdString();
+			auto item = selectedStr_Item.toStdString();
+			std::tuple<std::string, std::string, std::string> key = { area, type, item };
+
 			{
-				ItemsVector itemsItemsVector;
 
 				// 加载该种类下的物品
-				Core.GetSqlite().ReadItems(get_selected_area().toStdString().c_str(), get_selected_type().toStdString().c_str(), selectedStr_Item.toStdString().c_str(), itemsItemsVector);
+				Core.GetSqlite().ReadItems(area.c_str(), type.c_str(), item.c_str(), itemsItemsVector);
 				// 如果读取到的数据是空的
 				if (itemsItemsVector.size == 0)
 				{
@@ -855,18 +860,17 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 
 					legend_block.badge_list.push_back(legend);
 				}
-				CoreMap.badge_info.badge_block_list.push_back(legend_block);
+				CoreMap.badge_info.badge_block_list.insert({ key,legend_block });
 
 			}
 
-
-			if (item_button_checked_map.contains({ get_selected_area().toStdString(),get_selected_type().toStdString(),selectedStr_Item.toStdString()}))
+			if (item_button_checked_map.contains(key))
 			{
-				item_button_checked_map[{ get_selected_area().toStdString(), get_selected_type().toStdString(), selectedStr_Item.toStdString()}] = true;
+				item_button_checked_map[key] = true;
 			}
 			else
 			{
-				item_button_checked_map.insert({ { get_selected_area().toStdString(), get_selected_type().toStdString(), selectedStr_Item.toStdString()},true });
+				item_button_checked_map.insert({ key ,true });
 			}
 
 			
@@ -937,9 +941,10 @@ void GenshinImpact_TianLi::slot_delete_object()
 	case button_class::SelectedItemButton:
 	{
 		TianLiQtCommon_SelectedItemButton* button = qobject_cast<TianLiQtCommon_SelectedItemButton*>(sender());
-		auto item_name = button->item_name().toStdString();
-		auto type_name = button->type_name().toStdString();
-		auto area_name = button->area_name().toStdString();
+		auto item = button->item_name().toStdString();
+		auto type = button->type_name().toStdString();
+		auto area = button->area_name().toStdString();
+		std::tuple<std::string, std::string, std::string> key = { area, type, item };
 
 		// 1. 删除自身
 		button->deleteLater();
@@ -951,9 +956,9 @@ void GenshinImpact_TianLi::slot_delete_object()
 		{
 			// 2.1.2 如果正在显示，则从map中找到对应文字按钮的id
 			int id = -1;
-			if (item_button_index_map.contains(item_name))
+			if (item_button_index_map.contains(item))
 			{
-				id = item_button_index_map[item_name];
+				id = item_button_index_map[item];
 			}
 			if (id != -1)
 			{
@@ -961,9 +966,9 @@ void GenshinImpact_TianLi::slot_delete_object()
 			}
 		}
 		// 2.1.3 否则只需要修改map中的bool即可
-		if (item_button_checked_map.contains({ area_name ,type_name,item_name}))
+		if (item_button_checked_map.contains(key))
 		{
-			item_button_checked_map[{area_name, type_name, item_name}] = false;
+			item_button_checked_map[key] = false;
 		}
 		// 2.2 取消按钮状态
 		if (item_button != nullptr)
@@ -971,21 +976,9 @@ void GenshinImpact_TianLi::slot_delete_object()
 			item_button->setChecked(false);
 		}
 		// 2.3 删除点位数据
-		// TODO: 待优化，此处可能会误删除
-		auto name = item_name;
-		int delete_id = -1;
-		for (int i = 0; i < CoreMap.badge_info.badge_block_list.size(); i++)
+		if (CoreMap.badge_info.badge_block_list.contains(key))
 		{
-			if (CoreMap.badge_info.badge_block_list[i].name == name)
-			{
-				delete_id = i;
-				break;
-			}
-		}
-		if (delete_id != -1)
-		{
-			// 删除id元素
-			CoreMap.badge_info.badge_block_list.erase(CoreMap.badge_info.badge_block_list.begin() + delete_id);
+			CoreMap.badge_info.badge_block_list.erase(key);
 		}
 
 		// 切换后要触发MapRect的强制重绘
@@ -996,42 +989,31 @@ void GenshinImpact_TianLi::slot_delete_object()
 	{
 		TianLiQtCommon_TypeGroupButton* button = qobject_cast<TianLiQtCommon_TypeGroupButton*>(sender());
 		// 0. 能够点击，所以type按钮一定可见
-		auto item_name = button->text().toStdString();
-		auto type_name = get_selected_type().toStdString();
-		auto area_name = get_selected_area().toStdString();
+		auto item = button->text().toStdString();
+		auto type = get_selected_type().toStdString();
+		auto area = get_selected_area().toStdString();
+		std::tuple<std::string, std::string, std::string> key = { area, type, item };
 		// 1. 删除Select按钮
 		QAbstractButton* select_button = nullptr;
 		// 1.1 先找到按钮
-		auto key = area_name + "-" + type_name + "-" + item_name;
-		if (object_button_index_map.contains(key))
+		auto key_split = area + "-" + type + "-" + item;
+		if (object_button_index_map.contains(key_split))
 		{
-			int delete_id = object_button_index_map[key];
+			int delete_id = object_button_index_map[key_split];
 			select_button = object_button_group.button(delete_id);
 		}
 		// 1.2 删除按钮
 		select_button->deleteLater();
 		// 2. 清空本身选择和map中的bool
 		button->setChecked(false);
-		if (item_button_checked_map.contains({ area_name ,type_name,item_name }))
+		if (item_button_checked_map.contains(key))
 		{
-			item_button_checked_map[{area_name, type_name, item_name}] = false;
+			item_button_checked_map[key] = false;
 		}
 		// 3. 删除点位数据
-		// TODO: 待优化，此处可能会误删除
-		auto name = item_name;
-		int delete_id = -1;
-		for (int i = 0; i < CoreMap.badge_info.badge_block_list.size(); i++)
+		if (CoreMap.badge_info.badge_block_list.contains(key))
 		{
-			if (CoreMap.badge_info.badge_block_list[i].name == name)
-			{
-				delete_id = i;
-				break;
-			}
-		}
-		if (delete_id != -1)
-		{
-			// 删除id元素
-			CoreMap.badge_info.badge_block_list.erase(CoreMap.badge_info.badge_block_list.begin() + delete_id);
+			CoreMap.badge_info.badge_block_list.erase(key);
 		}
 		// 切换后要触发MapRect的强制重绘
 		PageTabMap_MapRect->slot_force_update();

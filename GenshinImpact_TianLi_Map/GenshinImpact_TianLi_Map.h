@@ -18,6 +18,7 @@
 #endif // DLLAPI
 #endif
 
+#include <map>
 #include <vector>
 #include <string>
 #include <opencv2/opencv.hpp>
@@ -72,7 +73,7 @@ struct BadgeInfo
 		};
 		std::vector<Badge> badge_list;
 	};
-	std::vector<BadgeBlock> badge_block_list;
+	std::map<std::tuple<std::string,std::string,std::string>,BadgeBlock> badge_block_list;
 };
 //
 //class object
