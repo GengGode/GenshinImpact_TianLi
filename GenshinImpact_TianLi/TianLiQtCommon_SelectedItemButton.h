@@ -8,10 +8,7 @@ class TianLiQtCommon_SelectedItemButton : public QPushButton
 	Q_OBJECT
 
 public:
-	TianLiQtCommon_SelectedItemButton(QString title = "",QString region="", QImage image = QImage(),QImage labelimage=QImage(), QWidget * parent = Q_NULLPTR); // : TianLiQtCommon_SelectedItemButton("") {}
-	//TianLiQtCommon_SelectedItemButton(QString title, QWidget* parent = Q_NULLPTR) :TianLiQtCommon_SelectedItemButton(title, QImage()) {}
-	//TianLiQtCommon_SelectedItemButton(QString title, QImage image, QWidget* parent = Q_NULLPTR);
-	
+	TianLiQtCommon_SelectedItemButton(QString item_name = "", QString type_name = "", QString area_name = "", QImage item_image = QImage(), QImage type_image = QImage(), QWidget* parent = Q_NULLPTR);
 
 	~TianLiQtCommon_SelectedItemButton();
 	
@@ -26,7 +23,15 @@ private:
 	//void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 	int progress_max_number = 100;
 	int progress_count = 5;
+private:
+	QString item;
+	QString type;
+	QString area;
 public:
+	QString item_name();
+	QString type_name();
+	QString area_name();
+
 	void setTitle(QString title);
 	void setRegion(QString region);
 	void setImage(QImage image);

@@ -60,6 +60,7 @@ public slots:
 public:
 	void slot_update_avatar_rotate(double avatar_rotate);
 	void slot_update_move(RECT& gi_client_rect);
+	void slot_update_object();
 signals:
 	void signal_close_finished();
 };

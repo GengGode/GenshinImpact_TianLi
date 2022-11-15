@@ -18,6 +18,7 @@
 #endif // DLLAPI
 #endif
 
+#include <map>
 #include <vector>
 #include <string>
 #include <opencv2/opencv.hpp>
@@ -28,14 +29,15 @@ struct MapBlock
 };
 struct AvatarInfo
 {
-	double x=0;
-	double y=0;
+	double x= 2000;
+	double y= 2937;
 	double z=0; // 根据地图所在位置，大致判定高度区间
 	double a=0;
 	double r=0;
 };
 struct MapInfo
 {
+	cv::Point map_pos;
 	int center_x=0;
 	int center_y=0;
 	int viewer_width=0;
@@ -71,7 +73,7 @@ struct BadgeInfo
 		};
 		std::vector<Badge> badge_list;
 	};
-	std::vector<BadgeBlock> badge_block_list;
+	std::map<std::tuple<std::string,std::string,std::string>,BadgeBlock> badge_block_list;
 };
 //
 //class object

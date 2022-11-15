@@ -55,6 +55,9 @@ private:
     std::map<std::string, int> item_button_index_map;
     std::map<std::tuple<std::string,std::string,std::string>,bool> item_button_checked_map;
 
+    QButtonGroup object_button_group;
+    std::map<std::string, int> object_button_index_map;
+
     void init_area_list();
     QString get_selected_area();
     void init_type_list();
@@ -63,25 +66,6 @@ private:
     //void updata_selectable_type(std::string area);
     void updata_selectable_item(std::string area, std::string type);
 	
-
-private:
-	// 更新可选物品数据
-    void updata_ItemsList();
-	
-	// 字符串列表 可选物品
-    QStringList strList_Items;
-	
-	// 选中种类
-	QString selectedStr_Item;
-	// 选中物品
-	QString selectedStr_Items;
-	
-	// 物品按钮QMap
-    QMap<QString, QPushButton*> pushButtonMap_Items;
-
-
-    //QVector<QString>  
-
 // 为四个页面添加UI
 private:
 	// 地图页左侧左半边卡片区域

@@ -72,7 +72,7 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 		render_overlay(map);
 	}
 
-	for (auto& info : badge_info.badge_block_list)
+	for (auto& [key,info] : badge_info.badge_block_list)
 	{
 		cv::Mat img = info.image;
 		cv::resize(img, img, cv::Size(), 1.0/map_info.scale_form_gimap, 1.0/map_info.scale_form_gimap);
@@ -107,6 +107,42 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 			}
 		}
 	}
+	// 地图中心绘制角色箭头
+	// 1. 旋转角色箭头图片
+	auto roation_angle = avatar_info.a;
+	auto avatar = TianLi::Map::Utils::rotate_avatar(Core.GetResource().GIAVATAR, roation_angle, 1.0 / 1.3);//大地图与小地图之比
+	auto avatar_rect = cv::Rect(avatar_info.x - avatar.cols / 2, avatar_info.y - avatar.rows / 2, avatar.cols, avatar.rows);
+	auto avatar_rect_roi = avatar_rect & map_info.map_rect;
+	if (avatar_rect_roi.area() > 0)
+	{
+		auto map_avatar_roi = map(avatar_rect_roi - map_info.map_rect.tl());
+		auto avatar_roi = avatar(avatar_rect_roi - avatar_rect.tl());
+		TianLi::Map::Utils::add_rgba_image(map_avatar_roi, avatar_roi, map_avatar_roi);
+	}
+	else
+	{
+		//// TODO:
+		//// 获取点位相对朝向，计算其于边框的交点
+		//// 1. 计算avatar_pos和map_pos的差值
+		//auto diff_x = map_info.center_x - avatar_info.x;
+		//auto diff_y = map_info.center_y - avatar_info.y;
+		//
+		//// 1.1 计算diff的角度，[0-90]，以及象限
+		//double diff_abs_angle = std::atan2(diff_y, diff_x);
+		//double diff_abs_k = static_cast<double>(diff_y/ diff_x);
+		//// 
+		//double rect_x = map.cols * (0.5 + 0.5 * std::sin(diff_abs_angle));
+		//double rect_y = map.rows * (0.5 + 0.5 * std::cos(diff_abs_angle));
+		////auto mat = map.clone();
+		////cv::putText(mat, std::to_string(diff_abs_k), cv::Point(200, 200), 1, 2, cv::Scalar(128, 128, 128,128), -1);
+		////LogInfo(std::to_string(diff_abs_k).c_str());
+		////cv::imshow("map", map);
+		////cv::waitKey(1);
+		//cv::Rect vec_roi;
+
+
+	}
+
 }
 
 BadgeInfo GenshinImpact_TianLi_Map::search(const char* country, const char* type, const char* item)
@@ -137,7 +173,9 @@ BadgeInfo GenshinImpact_TianLi_Map::search(const char* country, const char* type
 			badge_block.badge_list.push_back(badge);
 		}
 	}
-	result_badge_info.badge_block_list.push_back(badge_block);
+	std::tuple<std::string, std::string, std::string> key = { country, type, item };
+
+	result_badge_info.badge_block_list.insert({ key,badge_block });
 
 	return result_badge_info;
 }

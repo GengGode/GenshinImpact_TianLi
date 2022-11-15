@@ -93,3 +93,12 @@ void TianLi::Map::Utils::add_rgba_image(cv::Mat& src1, cv::Mat& src2, cv::Mat& d
 	dst_merge.push_back(alpha_dst);
 	cv::merge(dst_merge, dst);
 }
+
+cv::Mat TianLi::Map::Utils::rotate_avatar(cv::Mat& avatar, double angle, double scale)
+{
+	cv::Mat rota_avatar;
+	cv::Point2f pt(avatar.cols / 2., avatar.rows / 2.);
+	cv::Mat r = getRotationMatrix2D(pt, angle, scale);
+	warpAffine(avatar, rota_avatar, r, cv::Size(pt * 2));
+	return rota_avatar;
+}
