@@ -312,48 +312,6 @@ void GenshinImpact_TianLi::updata_selectable_item(std::string area, std::string 
 	}
 
 }
-void GenshinImpact_TianLi::updata_ItemsList()
-{
-	ItemsVector itemsItemsVector;
-
-	// 清空 可选物品
-	strList_Items.clear();
-
-	// 加载该种类下的物品
-	Core.GetSqlite().ReadItems(get_selected_area().toStdString().c_str(), get_selected_type().toStdString().c_str(), selectedStr_Item.toStdString().c_str(), itemsItemsVector);
-	// 如果读取到的数据是空的
-	if (itemsItemsVector.size == 0)
-	{
-		return;
-	}
-
-
-	BadgeInfo::BadgeBlock legend_block;
-	legend_block.name = itemsItemsVector[0].name;
-
-	legend_block.image = Core.GetResource().GetImageBuffer("", "", "", itemsItemsVector[0].name);
-	cv::resize(legend_block.image, legend_block.image, cv::Size(32, 32));
-	// 绘制半透明圆环
-	cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 3, cv::Scalar(255, 255, 255, 200), 3, cv::LINE_AA);
-	cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2-1, cv::Scalar(0, 0, 0,250), 1,cv::LINE_AA);
-	
-	for (int i = 0; i < itemsItemsVector.size; i++)
-	{
-		BadgeInfo::BadgeBlock::Badge legend;
-		legend.x = itemsItemsVector[i].x;
-		legend.y = itemsItemsVector[i].y;
-		legend.z = itemsItemsVector[i].z;
-		legend.message = itemsItemsVector[i].msg;
-		
-		strList_Items << itemsItemsVector[i].name;
-		//LogTrace(itemsItemsVector[i].msg);
-		
-		legend_block.badge_list.push_back(legend);
-	}
-	CoreMap.badge_info.badge_block_list.push_back(legend_block);
-	
-}
-
 void GenshinImpact_TianLi::addUI_Tab_Map()
 {
 	this->addUI_MapTabCardRects();
@@ -860,11 +818,47 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 		// 获取 选中种类文字
 		QString str = button->text();
 		// 检查 选中种类文字 是否与之前 选中种类 一致
-	
+
+	// 选中种类
+		QString selectedStr_Item;
 			// 如果不一致 则更新 选中种类
 			selectedStr_Item = str;
 			// 更新当前种类可选物品数据
-			updata_ItemsList();
+			{
+				ItemsVector itemsItemsVector;
+
+				// 加载该种类下的物品
+				Core.GetSqlite().ReadItems(get_selected_area().toStdString().c_str(), get_selected_type().toStdString().c_str(), selectedStr_Item.toStdString().c_str(), itemsItemsVector);
+				// 如果读取到的数据是空的
+				if (itemsItemsVector.size == 0)
+				{
+					return;
+				}
+
+
+				BadgeInfo::BadgeBlock legend_block;
+				legend_block.name = itemsItemsVector[0].name;
+
+				legend_block.image = Core.GetResource().GetImageBuffer("", "", "", itemsItemsVector[0].name);
+				cv::resize(legend_block.image, legend_block.image, cv::Size(32, 32));
+				// 绘制半透明圆环
+				cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 3, cv::Scalar(255, 255, 255, 200), 3, cv::LINE_AA);
+				cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 1, cv::Scalar(0, 0, 0, 250), 1, cv::LINE_AA);
+
+				for (int i = 0; i < itemsItemsVector.size; i++)
+				{
+					BadgeInfo::BadgeBlock::Badge legend;
+					legend.x = itemsItemsVector[i].x;
+					legend.y = itemsItemsVector[i].y;
+					legend.z = itemsItemsVector[i].z;
+					legend.message = itemsItemsVector[i].msg;
+
+					legend_block.badge_list.push_back(legend);
+				}
+				CoreMap.badge_info.badge_block_list.push_back(legend_block);
+
+			}
+
 
 			if (item_button_checked_map.contains({ get_selected_area().toStdString(),get_selected_type().toStdString(),selectedStr_Item.toStdString()}))
 			{
