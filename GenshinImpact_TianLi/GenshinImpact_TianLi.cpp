@@ -393,7 +393,6 @@ void GenshinImpact_TianLi::addUI_MapTabCardRects()
 				button->deleteLater();
 				object_button_group.removeButton(buttons[i]);
 			}
-
 		}
 		});
 	
@@ -807,8 +806,6 @@ void GenshinImpact_TianLi::slot_hide()
 	//this->hide();
 }
 
-
-#include<QRandomGenerator>
 void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 {
 	if (checked == true)
@@ -829,13 +826,14 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 			auto type = get_selected_type().toStdString();
 			auto item = selectedStr_Item.toStdString();
 			std::tuple<std::string, std::string, std::string> key = { area, type, item };
-
+			int size = 0;
 			{
 
 				// 加载该种类下的物品
 				Core.GetSqlite().ReadItems(area.c_str(), type.c_str(), item.c_str(), itemsItemsVector);
 				// 如果读取到的数据是空的
-				if (itemsItemsVector.size == 0)
+				size = itemsItemsVector.size;
+				if (size == 0)
 				{
 					return;
 				}
@@ -845,10 +843,13 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 				legend_block.name = itemsItemsVector[0].name;
 
 				legend_block.image = Core.GetResource().GetImageBuffer("", "", "", itemsItemsVector[0].name);
-				cv::resize(legend_block.image, legend_block.image, cv::Size(32, 32));
-				// 绘制半透明圆环
-				cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 3, cv::Scalar(255, 255, 255, 200), 3, cv::LINE_AA);
-				cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 1, cv::Scalar(0, 0, 0, 250), 1, cv::LINE_AA);
+
+				{
+					cv::resize(legend_block.image, legend_block.image, cv::Size(32, 32));
+					// 绘制半透明圆环
+					cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 3, cv::Scalar(255, 255, 255, 100), 3, cv::LINE_AA);
+					cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 1, cv::Scalar(0, 0, 0, 250), 1, cv::LINE_AA);
+				}
 
 				for (int i = 0; i < itemsItemsVector.size; i++)
 				{
@@ -873,15 +874,7 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 				item_button_checked_map.insert({ key ,true });
 			}
 
-			
-			auto img = Core.GetResource().GetImageBuffer("", "", "",str.toStdString());
-			auto img_qimage = TianLi::Utils::mat_2_qimage(img);
-
-			auto img_type = Core.GetResource().GetImageBuffer("", get_selected_type().toStdString(),"", "");
-			auto img_type_qimage = TianLi::Utils::mat_2_qimage(img_type);
-
-			
-			auto select_button = new TianLiQtCommon_SelectedItemButton(str, get_selected_type(), get_selected_area(), img_qimage, img_type_qimage, PageTabMap_ScrollCardRect[0]);
+			auto select_button = new TianLiQtCommon_SelectedItemButton(str, get_selected_type(), get_selected_area(), PageTabMap_ScrollCardRect[0]);
 			// 创建按钮到 物品按钮QMap 中
 			//pushButtonMap_Items.insert(str, button);
 
@@ -897,10 +890,7 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 			
 			// 显示按钮
 			select_button->show();
-			// 生成1-100的随机数
-			int rand_num = QRandomGenerator::global()->bounded(100);
-			select_button->setProgressMaxNumber(50);
-			select_button->setProgressCount(rand_num);
+			select_button->setProgressMaxNumber(size);
 
 			// 强制重绘MapRect
 			// 切换后要触发MapRect的强制重绘

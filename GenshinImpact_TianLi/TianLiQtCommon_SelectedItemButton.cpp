@@ -2,7 +2,42 @@
 
 #include <QGraphicsDropShadowEffect>
 
-TianLiQtCommon_SelectedItemButton::TianLiQtCommon_SelectedItemButton(QString item_name , QString type_name, QString area_name, QImage item_image , QImage type_image , QWidget *parent)
+#include "TianLiQtCommon_Utils.h"
+
+#include "..\GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.h"
+#pragma comment(lib,"GenshinImpact_TianLi_Map.lib")
+
+inline QImage TianLiQtCommon_SelectedItemButton::get_type_image(std::string type)
+{
+	if (type_image_buffer.contains(type))
+	{
+		return type_image_buffer[type];
+	}
+	else
+	{
+		auto img_type = Core.GetResource().GetImageBuffer("", type, "", "");
+		auto img_type_qimage = TianLi::Utils::mat_2_qimage(img_type);
+		type_image_buffer[type] = img_type_qimage;
+		return img_type_qimage;
+	}
+}
+
+inline QImage TianLiQtCommon_SelectedItemButton::get_item_image(std::string item)
+{
+	if (item_image_buffer.contains(item))
+	{
+		return item_image_buffer[item];
+	}
+	else
+	{
+		auto img_item = Core.GetResource().GetImageBuffer("", "", "", item);
+		cv::resize(img_item, img_item, cv::Size(48, 48));
+		auto img_item_qimage = TianLi::Utils::mat_2_qimage(img_item);
+		type_image_buffer[item] = img_item_qimage;
+		return img_item_qimage;
+	}
+}
+TianLiQtCommon_SelectedItemButton::TianLiQtCommon_SelectedItemButton(QString item_name , QString type_name, QString area_name , QWidget *parent)
 	: QPushButton(parent)
 {
 	ui.setupUi(this);
@@ -13,8 +48,8 @@ TianLiQtCommon_SelectedItemButton::TianLiQtCommon_SelectedItemButton(QString ite
 
 	setTitle(item);
 	setRegion(area);
-	setImage(item_image);
-	setLabelImage(type_image);
+	setImage(get_item_image(item.toStdString()));
+	setLabelImage(get_type_image(type.toStdString()));
 
 	QGraphicsDropShadowEffect* titleShadow = new QGraphicsDropShadowEffect();
 	titleShadow->setOffset(0, 4);

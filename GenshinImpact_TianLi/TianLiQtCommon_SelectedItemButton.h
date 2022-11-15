@@ -6,9 +6,13 @@
 class TianLiQtCommon_SelectedItemButton : public QPushButton
 {
 	Q_OBJECT
-
 public:
-	TianLiQtCommon_SelectedItemButton(QString item_name = "", QString type_name = "", QString area_name = "", QImage item_image = QImage(), QImage type_image = QImage(), QWidget* parent = Q_NULLPTR);
+	inline static std::map<std::string, QImage> type_image_buffer;
+	inline static std::map<std::string, QImage> item_image_buffer;
+	inline static QImage get_type_image(std::string type);
+	inline static QImage get_item_image(std::string item);
+public:
+	TianLiQtCommon_SelectedItemButton(QString item_name = "", QString type_name = "", QString area_name = "", QWidget* parent = Q_NULLPTR);
 
 	~TianLiQtCommon_SelectedItemButton();
 	
