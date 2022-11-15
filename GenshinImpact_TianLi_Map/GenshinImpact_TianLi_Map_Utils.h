@@ -10,4 +10,6 @@ namespace TianLi::Map::Utils
 	// 四通道半透明图片叠加算法
 	void add_rgba_image(cv::Mat& src1, cv::Mat& src2, cv::Mat& dst, double alpha = 1.0);
 	
+	cv::Mat rotate_avatar(cv::Mat& avatar, double angle, double scale);
+
 }

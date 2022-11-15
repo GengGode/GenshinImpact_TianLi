@@ -28,14 +28,15 @@ struct MapBlock
 };
 struct AvatarInfo
 {
-	double x=0;
-	double y=0;
+	double x= 2000;
+	double y= 2937;
 	double z=0; // 根据地图所在位置，大致判定高度区间
 	double a=0;
 	double r=0;
 };
 struct MapInfo
 {
+	cv::Point map_pos;
 	int center_x=0;
 	int center_y=0;
 	int viewer_width=0;
