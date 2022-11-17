@@ -414,6 +414,8 @@ void GenshinImpact_TianLi::addUI_MapTabMapRect()
 	PageTabMap_MapRect->setParent(ui.widget_MapTab_Right);
 	PageTabMap_MapRect->setGeometry(10, 10, ui.widget_MapMask->width() - 20, ui.widget_MapMask->height() - 20);
 	connect(PageTabMap_MapRect, &TianLiQtCommon_MapRect::singal_updata_pickable_items, this, &GenshinImpact_TianLi::slot_updata_pickable_items);
+	// 绑定传输数据到方位条
+	connect(PageTabMap_MapRect, &TianLiQtCommon_MapRect::signle_send_mini_object_info_text, hud_azimuth_bar_window, &TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_show_info);
 	
 	// 添加地图页面 地图区域中 的 定位启用切换开关
 	PageTabMap_RightCard_Buttons.append(new TianLiQtCommon_SwitchButton(this,"定位"));
