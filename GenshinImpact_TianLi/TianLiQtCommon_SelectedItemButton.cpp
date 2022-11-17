@@ -31,7 +31,10 @@ inline QImage TianLiQtCommon_SelectedItemButton::get_item_image(std::string item
 	else
 	{
 		auto img_item = Core.GetResource().GetImageBuffer("", "", "", item);
-		cv::resize(img_item, img_item, cv::Size(48, 48));
+		double scale = 48.0 / max(img_item.cols, img_item.rows);
+		cv::resize(img_item, img_item, cv::Size(img_item.cols * scale, img_item.rows * scale));
+		
+		//cv::resize(img_item, img_item, cv::Size(48, 48));
 		auto img_item_qimage = TianLi::Utils::mat_2_qimage(img_item);
 		type_image_buffer[item] = img_item_qimage;
 		return img_item_qimage;

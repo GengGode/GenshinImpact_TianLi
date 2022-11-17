@@ -878,9 +878,9 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 				legend_block.name = itemsItemsVector[0].name;
 
 				legend_block.image = Core.GetResource().GetImageBuffer("", "", "", itemsItemsVector[0].name);
-
 				{
-					cv::resize(legend_block.image, legend_block.image, cv::Size(32, 32));
+					double scale = 32.0 / max(legend_block.image.rows, legend_block.image.cols) ;
+					cv::resize(legend_block.image, legend_block.image, cv::Size(scale * legend_block.image.cols, scale * legend_block.image.rows));
 					// 绘制半透明圆环
 					cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 3, cv::Scalar(255, 255, 255, 100), 3, cv::LINE_AA);
 					cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 1, cv::Scalar(0, 0, 0, 250), 1, cv::LINE_AA);
