@@ -38,19 +38,19 @@ inline std::string ocr_task(cv::Mat mat)
 
 inline void get_pickable_items(const GenshinScreen& genshin_screen, GenshinPickableItems& out_genshin_pickable_items)
 {
-	auto roi = genshin_screen.img_right_pick_items;
+	auto roi = genshin_screen.img_right_pick_items.clone();
 	
 	if (roi.empty()) return;
 	roi = roi(cv::Rect(64, 0, roi.cols - 64, roi.rows));
 
 	
-	cv::imshow("pickable", roi);
-	cv::waitKey(1);
+	/*cv::imshow("pickable", roi);
+	cv::waitKey(1);*/
 	std::vector<cv::Mat> layers;
 	split(roi, layers);
 
 	// ∫·œÚ∆¥Ω”
-	cv::Mat h_all = cv::Mat::zeros(cv::Size(roi.cols * layers.size(), roi.rows), CV_8UC1);
+	cv::Mat h_all = cv::Mat::zeros(cv::Size(roi.cols * static_cast<int>(layers.size()), roi.rows), CV_8UC1);
 	for (int i = 0; i < layers.size(); i++)
 	{
 		cv::Mat r = h_all(cv::Rect(roi.cols * i, 0, roi.cols, roi.rows));
@@ -80,7 +80,7 @@ inline void get_pickable_items(const GenshinScreen& genshin_screen, GenshinPicka
 		cv::Rect rect = cv::boundingRect(contours[i]);
 		rectangle(layers[3], rect, color, 1);
 	}
-	imshow("alpha right", layers[3]);
+	//imshow("alpha right", layers[3]);
 
 	static std::mutex task_mutex;
 	static std::queue<std::function<std::string()>> task_queue;
@@ -101,7 +101,7 @@ inline void get_pickable_items(const GenshinScreen& genshin_screen, GenshinPicka
 	}
 	
 	// queue task ocr
-	int ocr_task_solt_count = roi_vec.size();
+	int ocr_task_solt_count = static_cast<int>(roi_vec.size());
 	if (ocr_task_solt_count == 0)
 	{
 		ocr_task_solt_count = 1;
@@ -112,7 +112,7 @@ inline void get_pickable_items(const GenshinScreen& genshin_screen, GenshinPicka
 	}
 	for (int i = 0; i < ocr_task_solt_count; i++)
 	{
-		auto task = task_queue.front();
+		auto &task = task_queue.front();
 		task_queue.pop();
 		if (task)
 		{

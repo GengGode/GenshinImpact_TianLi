@@ -5,45 +5,67 @@
 inline void check_paimon(const GenshinScreen& genshin_screen, GenshinPaimon& out_genshin_paimon)
 {
 	static std::vector<cv::Mat> split_paimon_template;
+	static cv::Mat paimon_template;
 	static cv::Mat paimon_template_handle_mode;
+	static cv::Mat paimon_template_no_alpha;
+	static cv::Mat paimon_template_no_alpha_handle_mode;
 	static bool is_first = true;
 	if (is_first)
 	{
 		cv::Mat paimon;
 		cv::resize(GenshinImpact_TianLi_Resource::GetInstance()->GIPAIMON, paimon, cv::Size(68, 77));
+		cv::cvtColor(paimon, paimon_template_no_alpha, cv::COLOR_RGBA2GRAY);
 		cv::split(paimon, split_paimon_template);
+		paimon_template = split_paimon_template[3];
+		paimon_template_no_alpha = split_paimon_template[0];
 		cv::resize(split_paimon_template[3], paimon_template_handle_mode, cv::Size(), 1.0 / 1.20, 1.0 / 1.20);
+		cv::resize(split_paimon_template[3], paimon_template_no_alpha_handle_mode, cv::Size(), 1.0 / 1.20, 1.0 / 1.20);
 		is_first = false;
 	}
-	auto& giPaimonRef = genshin_screen.img_paimon_maybe;
+	auto giPaimonRef = genshin_screen.img_paimon_maybe;
 	auto& rect_origin = genshin_screen.config.rect_paimon_maybe;
+	auto& template_not_handle_mode = split_paimon_template[3];
+	auto& template_handle_mode = paimon_template_handle_mode;
+	// 判空退出
+	if (giPaimonRef.empty() || paimon_template_handle_mode.empty()) return /*false*/;
+	if (giPaimonRef.cols < split_paimon_template[3].cols || giPaimonRef.rows < split_paimon_template[3].rows) return /*false*/;
 
-	if (giPaimonRef.empty() || paimon_template_handle_mode.empty()) return;
-	if (giPaimonRef.cols < split_paimon_template[3].cols || giPaimonRef.rows < split_paimon_template[3].rows) return;
+	// 设置阈值取值 根据是否使用alpha图层
+	double check_match_paimon_param = out_genshin_paimon.config.check_match_paimon_params;
+	if (genshin_screen.config.is_used_alpha == false)
+	{
+		cv::cvtColor(genshin_screen.img_paimon_maybe, giPaimonRef, cv::COLOR_RGBA2GRAY);
+		template_not_handle_mode = paimon_template_no_alpha;
+		template_handle_mode = paimon_template_no_alpha_handle_mode;
+		check_match_paimon_param = out_genshin_paimon.config.check_match_paimon_params_no_alpha;
+	}
 
+	// 拆分图层
 	std::vector<cv::Mat>  split_paimon;
 	cv::split(giPaimonRef, split_paimon);
 
+
 	cv::Mat template_result;
 	// TODO HOTCODE
-	cv::matchTemplate(split_paimon[3], split_paimon_template[3], template_result, cv::TM_CCOEFF_NORMED);
+	cv::matchTemplate(split_paimon.back(), template_not_handle_mode, template_result, cv::TM_CCOEFF_NORMED);
 
 	double paimon_match_minVal, paimon_match_maxVal;
 	cv::Point paimon_match_minLoc, paimon_match_maxLoc;
 	cv::minMaxLoc(template_result, &paimon_match_minVal, &paimon_match_maxVal, &paimon_match_minLoc, &paimon_match_maxLoc);
 
-	if (paimon_match_maxVal < out_genshin_paimon.config.check_match_paimon_params || paimon_match_maxVal == 1)
+	// 如果小于阈值，则尝试判断是否为手柄模式，否则为检测到派蒙
+	if (paimon_match_maxVal < check_match_paimon_param || paimon_match_maxVal == 1)
 	{
-		if (paimon_match_maxVal > 0.5)
+		if (paimon_match_maxVal > 0.2)
 		{
 			cv::Mat template_handle_mode_result;
 			// TODO HOTCODE
-			cv::matchTemplate(split_paimon[3], paimon_template_handle_mode, template_handle_mode_result, cv::TM_CCOEFF_NORMED);
+			cv::matchTemplate(split_paimon.back(), template_handle_mode, template_handle_mode_result, cv::TM_CCOEFF_NORMED);
 
 			double paimon_match_handle_mode_minVal, paimon_match_handle_mode_maxVal;
 			cv::Point paimon_match_handle_mode_minLoc, paimon_match_handle_mode_maxLoc;
 			cv::minMaxLoc(template_handle_mode_result, &paimon_match_handle_mode_minVal, &paimon_match_handle_mode_maxVal, &paimon_match_handle_mode_minLoc, &paimon_match_handle_mode_maxLoc);
-			if (paimon_match_handle_mode_maxVal > out_genshin_paimon.config.check_match_paimon_params)
+			if (paimon_match_handle_mode_maxVal > check_match_paimon_param)
 			{
 				out_genshin_paimon.is_handle_mode = true;
 				out_genshin_paimon.is_visial = true;
@@ -61,42 +83,63 @@ inline void check_paimon(const GenshinScreen& genshin_screen, GenshinPaimon& out
 		out_genshin_paimon.is_visial = true;
 		out_genshin_paimon.rect_paimon = cv::Rect(rect_origin.tl() + paimon_match_maxLoc, split_paimon_template[3].size());
 	}
+	return /*true*/;
 }
 
 inline void match_minimap_cailb(const GenshinScreen& genshin_screen, GenshinMinimapCailb& out_genshin_minimap_cailb)
 {
 	static std::vector<cv::Mat> split_minimap_cailb_template;
+	static cv::Mat minimap_cailb_template;
 	static cv::Mat minimap_cailb_template_handle_mode;
+	static cv::Mat minimap_cailb_template_no_alpha;
+	static cv::Mat minimap_cailb_template_no_alpha_handle_mode;
 	static bool is_first = true;
 	if (is_first)
 	{
 		cv::Mat minimap_cailb;
 		cv::resize(GenshinImpact_TianLi_Resource::GetInstance()->GIMINIMAP_CAILB, minimap_cailb, cv::Size(), 0.8, 0.8);
 		cv::split(minimap_cailb, split_minimap_cailb_template);
+		minimap_cailb_template = split_minimap_cailb_template[3];
+		minimap_cailb_template_no_alpha = split_minimap_cailb_template[0];
 		cv::resize(split_minimap_cailb_template[3], minimap_cailb_template_handle_mode, cv::Size(), 1 / 1.2, 1 / 1.2, cv::INTER_CUBIC);
+		cv::resize(split_minimap_cailb_template[3], minimap_cailb_template_no_alpha_handle_mode, cv::Size(), 1.0 / 1.2, 1.0 / 1.2);
 		is_first = false;
 	}
 
-	auto& giMinimapCailbRef = genshin_screen.img_minimap_cailb_maybe;
+	auto giMinimapCailbRef = genshin_screen.img_minimap_cailb_maybe;
 	auto& rect_origin = genshin_screen.config.rect_minimap_cailb_maybe;
 	auto& is_handle_mode = genshin_screen.config.is_handle_mode;
 
-	if (giMinimapCailbRef.empty() || minimap_cailb_template_handle_mode.empty()) return;
-	if (giMinimapCailbRef.cols < split_minimap_cailb_template[3].cols || giMinimapCailbRef.rows < split_minimap_cailb_template[3].rows) return;
+	auto& template_not_handle_mode = split_minimap_cailb_template[3];
+	auto& template_handle_mode = minimap_cailb_template_handle_mode;
+
+	if (giMinimapCailbRef.empty() || minimap_cailb_template_handle_mode.empty()) return /*false*/;
+	if (giMinimapCailbRef.cols < split_minimap_cailb_template[3].cols || giMinimapCailbRef.rows < split_minimap_cailb_template[3].rows) return /*false*/;
+
+	// 设置阈值取值 根据是否使用alpha图层
+	double check_match_minimap_cailb_param = out_genshin_minimap_cailb.config.check_match_minimap_cailb_params;
+	if (genshin_screen.config.is_used_alpha == false)
+	{
+		cv::cvtColor(genshin_screen.img_minimap_cailb_maybe, giMinimapCailbRef, cv::COLOR_RGBA2GRAY);
+		template_not_handle_mode = minimap_cailb_template_no_alpha;
+		template_handle_mode = minimap_cailb_template_no_alpha_handle_mode;
+		check_match_minimap_cailb_param = out_genshin_minimap_cailb.config.check_match_minimap_cailb_params_no_alpha;
+	}
+
 
 	std::vector<cv::Mat>  split_minimap_cailb;
 	cv::split(giMinimapCailbRef, split_minimap_cailb);
 
 	cv::Mat template_result;
-	if (!is_handle_mode)
+	if (is_handle_mode)
 	{
 		// TODO HOTCODE
-		cv::matchTemplate(split_minimap_cailb[3], split_minimap_cailb_template[3], template_result, cv::TM_CCOEFF_NORMED);
+		cv::matchTemplate(split_minimap_cailb.back(), template_handle_mode, template_result, cv::TM_CCOEFF_NORMED);
 	}
 	else
 	{
 		// TODO HOTCODE
-		cv::matchTemplate(split_minimap_cailb[3], minimap_cailb_template_handle_mode, template_result, cv::TM_CCOEFF_NORMED);
+		cv::matchTemplate(split_minimap_cailb.back(), template_not_handle_mode, template_result, cv::TM_CCOEFF_NORMED);
 	}
 
 
@@ -104,23 +147,24 @@ inline void match_minimap_cailb(const GenshinScreen& genshin_screen, GenshinMini
 	cv::Point minimap_cailb_match_minLoc, minimap_cailb_match_maxLoc;
 	cv::minMaxLoc(template_result, &minimap_cailb_match_minVal, &minimap_cailb_match_maxVal, &minimap_cailb_match_minLoc, &minimap_cailb_match_maxLoc);
 
-	if (minimap_cailb_match_maxVal < out_genshin_minimap_cailb.config.check_match_minimap_cailb_params || minimap_cailb_match_maxVal == 1)
+	if (minimap_cailb_match_maxVal < check_match_minimap_cailb_param || minimap_cailb_match_maxVal == 1)
 	{
 		out_genshin_minimap_cailb.is_visial = false;
 	}
 	else
 	{
 		out_genshin_minimap_cailb.is_visial = true;
-		if (!is_handle_mode)
+		if (is_handle_mode)
 		{
-			out_genshin_minimap_cailb.rect_minimap_cailb = cv::Rect(rect_origin.tl() + minimap_cailb_match_maxLoc, split_minimap_cailb_template[3].size());
+			out_genshin_minimap_cailb.rect_minimap_cailb = cv::Rect(rect_origin.tl() + minimap_cailb_match_maxLoc, template_handle_mode.size());
 		}
 		else
 		{
-			out_genshin_minimap_cailb.rect_minimap_cailb = cv::Rect(rect_origin.tl() + minimap_cailb_match_maxLoc, minimap_cailb_template_handle_mode.size());
+			out_genshin_minimap_cailb.rect_minimap_cailb = cv::Rect(rect_origin.tl() + minimap_cailb_match_maxLoc, template_not_handle_mode.size());
 		}
 	}
 
+	return /*true*/;
 }
 
 inline void splite_minimap(const GenshinScreen& genshin_screen, GenshinMinimap& out_genshin_minimap)
@@ -208,7 +252,7 @@ inline double Line2Angle(cv::Point2f p)
 
 inline void get_avatar_direction(const GenshinMinimap& genshin_minimap, GenshinAvatarDirection& out_genshin_direction)
 {
-	static cv::Mat dilate_element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2, 2));
+	static cv::Mat dilate_element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 	static cv::Mat erode_element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2, 2));
 
 	if (genshin_minimap.img_avatar.empty()) return;
@@ -216,35 +260,33 @@ inline void get_avatar_direction(const GenshinMinimap& genshin_minimap, GenshinA
 	cv::Mat giAvatarRef;
 
 	cv::resize(genshin_minimap.img_avatar, giAvatarRef, cv::Size(), 2, 2);
-
+	
 	std::vector<cv::Mat> lis;
 	cv::split(giAvatarRef, lis);
 
-	cv::Mat gray_0;
-	cv::Mat gray_1;
-	cv::Mat gray_2;
+	cv::Mat gray0;
+	cv::Mat gray1;
+	cv::Mat gray2;
 
-	threshold(lis[0], gray_0, 240, 255, cv::THRESH_BINARY);
-	threshold(lis[1], gray_1, 212, 255, cv::THRESH_BINARY);
-	threshold(lis[2], gray_2, 25, 255, cv::THRESH_BINARY_INV);
+	cv::threshold(lis[0], gray0, 240, 255, cv::THRESH_BINARY);
+	cv::threshold(lis[1], gray1, 212, 255, cv::THRESH_BINARY);
+	cv::threshold(lis[2], gray2, 25, 255, cv::THRESH_BINARY_INV);
 
-	cv::Mat and_1_2;
-
-	cv::bitwise_and(gray_1, gray_2, and_1_2, gray_0);
-	cv::resize(and_1_2, and_1_2, cv::Size(), 2, 2, 3);
-	cv::Canny(and_1_2, and_1_2, 20, 3 * 20, 3);
-	cv::circle(and_1_2, cv::Point(cvCeil(and_1_2.cols / 2), cvCeil(and_1_2.rows / 2)), cvCeil(and_1_2.cols / 4.5), cv::Scalar(0, 0, 0), -1);
-
-	dilate(and_1_2, and_1_2, dilate_element);
-	erode(and_1_2, and_1_2, erode_element);
+	cv::Mat and12;
+	cv::bitwise_and(gray1, gray2, and12, gray0);
+	cv::resize(and12, and12, cv::Size(), 2, 2, 3);
+	cv::Canny(and12, and12, 20, 3 * 20, 3);
+	cv::circle(and12, cv::Point(cvCeil(and12.cols / 2), cvCeil(and12.rows / 2)), cvCeil(and12.cols / 4.5), cv::Scalar(0, 0, 0), -1);
+	cv::dilate(and12, and12, dilate_element);
+	cv::erode(and12, and12, erode_element);
 
 	std::vector<std::vector<cv::Point>> contours;
 	std::vector<cv::Vec4i> hierarcy;
+	cv::Point2d center = cv::Point2d(and12.cols / 2.0, and12.rows / 2.0);
 
-	findContours(and_1_2, contours, hierarcy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
+	cv::findContours(and12, contours, hierarcy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
 
 	std::vector<cv::Rect> boundRect(contours.size());  //定义外接矩形集合
-
 	cv::Point2f rect[4];
 
 	std::vector<cv::Point2d> AvatarKeyPoint;
@@ -252,43 +294,58 @@ inline void get_avatar_direction(const GenshinMinimap& genshin_minimap, GenshinA
 	std::vector<cv::Point2f> AvatarKeyLine;
 	cv::Point2f KeyLine;
 
-	if (contours.size() != 3)
+	if (contours.size() == 3)
 	{
+		for (int i = 0; i < 3; i++)
+		{
+			boundRect[i] = cv::boundingRect(cv::Mat(contours[i]));
+			AvatarKeyPoint.push_back(cv::Point2d(boundRect[i].x + boundRect[i].width / 2.0, boundRect[i].y + boundRect[i].height / 2.0));
+		}
+
+		AvatarKeyPointLine[0] = dis(AvatarKeyPoint[2] - AvatarKeyPoint[1]);
+		AvatarKeyPointLine[1] = dis(AvatarKeyPoint[2] - AvatarKeyPoint[0]);
+		AvatarKeyPointLine[2] = dis(AvatarKeyPoint[1] - AvatarKeyPoint[0]);
+
+		if (AvatarKeyPointLine[0] >= AvatarKeyPointLine[2] && AvatarKeyPointLine[1] >= AvatarKeyPointLine[2])
+		{
+			AvatarKeyLine.push_back(AvatarKeyPoint[2] - AvatarKeyPoint[1]);
+			AvatarKeyLine.push_back(AvatarKeyPoint[2] - AvatarKeyPoint[0]);
+		}
+		if (AvatarKeyPointLine[0] >= AvatarKeyPointLine[1] && AvatarKeyPointLine[2] >= AvatarKeyPointLine[1])
+		{
+			AvatarKeyLine.push_back(AvatarKeyPoint[1] - AvatarKeyPoint[0]);
+			AvatarKeyLine.push_back(AvatarKeyPoint[1] - AvatarKeyPoint[2]);
+		}
+		if (AvatarKeyPointLine[1] >= AvatarKeyPointLine[0] && AvatarKeyPointLine[2] >= AvatarKeyPointLine[0])
+		{
+			AvatarKeyLine.push_back(AvatarKeyPoint[0] - AvatarKeyPoint[1]);
+			AvatarKeyLine.push_back(AvatarKeyPoint[0] - AvatarKeyPoint[2]);
+		}
+
+		AvatarKeyLine = Vector2UnitVector(AvatarKeyLine);
+		KeyLine = AvatarKeyLine[0] + AvatarKeyLine[1];
+
+		out_genshin_direction.angle = Line2Angle(KeyLine);
+	}
+	else if (contours.size() == 2)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			boundRect[i] = cv::boundingRect(cv::Mat(contours[i]));
+			AvatarKeyPoint.push_back(cv::Point2d(boundRect[i].x + boundRect[i].width / 2.0, boundRect[i].y + boundRect[i].height / 2.0));
+		}
+		// 两点取中点
+		AvatarKeyPoint.push_back((AvatarKeyPoint[0] + AvatarKeyPoint[1]) / 2.0);
+		// 中点基于图片中心对称位置
+		cv::Point2d line = center - AvatarKeyPoint[2];
+		out_genshin_direction.angle =Line2Angle(line);
+	}
+	else
+	{
+		//config.error = true;
+		//config.err = { 9,"提取小箭头特征误差过大" };
 		return;
 	}
-
-	for (int i = 0; i < 3; i++)
-	{
-		//box[i] = minAreaRect(Mat(contours[i]));  //计算每个轮廓最小外接矩形
-		boundRect[i] = cv::boundingRect(cv::Mat(contours[i]));
-		AvatarKeyPoint.push_back(cv::Point(cvRound(boundRect[i].x + boundRect[i].width / 2), cvRound(boundRect[i].y + boundRect[i].height / 2)));
-	}
-
-	AvatarKeyPointLine[0] = dis(AvatarKeyPoint[2] - AvatarKeyPoint[1]);
-	AvatarKeyPointLine[1] = dis(AvatarKeyPoint[2] - AvatarKeyPoint[0]);
-	AvatarKeyPointLine[2] = dis(AvatarKeyPoint[1] - AvatarKeyPoint[0]);
-
-
-
-	if (AvatarKeyPointLine[0] >= AvatarKeyPointLine[2] && AvatarKeyPointLine[1] >= AvatarKeyPointLine[2])
-	{
-		AvatarKeyLine.push_back(AvatarKeyPoint[2] - AvatarKeyPoint[1]);
-		AvatarKeyLine.push_back(AvatarKeyPoint[2] - AvatarKeyPoint[0]);
-	}
-	if (AvatarKeyPointLine[0] >= AvatarKeyPointLine[1] && AvatarKeyPointLine[2] >= AvatarKeyPointLine[1])
-	{
-		AvatarKeyLine.push_back(AvatarKeyPoint[1] - AvatarKeyPoint[0]);
-		AvatarKeyLine.push_back(AvatarKeyPoint[1] - AvatarKeyPoint[2]);
-	}
-	if (AvatarKeyPointLine[1] >= AvatarKeyPointLine[0] && AvatarKeyPointLine[2] >= AvatarKeyPointLine[0])
-	{
-		AvatarKeyLine.push_back(AvatarKeyPoint[0] - AvatarKeyPoint[1]);
-		AvatarKeyLine.push_back(AvatarKeyPoint[0] - AvatarKeyPoint[2]);
-	}
-
-	AvatarKeyLine = Vector2UnitVector(AvatarKeyLine);
-	KeyLine = AvatarKeyLine[0] + AvatarKeyLine[1];
-	out_genshin_direction.angle = Line2Angle(KeyLine);
 
 }
 
@@ -316,7 +373,7 @@ inline void get_viewer_direction(const GenshinMinimap& genshin_minimap, GenshinV
 	cv::threshold(Alpha, Alpha, 50, 255, cv::THRESH_BINARY);
 
 	double min_r = std::min(Alpha.cols / 2.0, Alpha.rows / 2.0);
-	cv::Point center_p = cv::Point(Alpha.cols / 2, Alpha.rows / 2.0);
+	cv::Point center_p = cv::Point(static_cast<int>(Alpha.cols / 2), static_cast<int>(Alpha.rows / 2.0));
 
 	cv::circle(Alpha, center_p, static_cast<int>(min_r * 1.21), cv::Scalar(0, 0, 0), static_cast<int>(min_r * 0.42));
 	cv::circle(Alpha, center_p, static_cast<int>(min_r * 0.3), cv::Scalar(0, 0, 0), -1);
@@ -356,7 +413,7 @@ inline void get_viewer_direction(const GenshinMinimap& genshin_minimap, GenshinV
 			maxBlack = static_cast<int>(contours[i].size());
 			maxId = i;
 		}
-		boundRect[i] = cv::boundingRect(cv::Mat(contours[i]));
+		boundRect[i] = cv::boundingRect(contours[i]);
 	}
 
 	cv::Point pos_viewer_center = cv::Point(boundRect[maxId].x + boundRect[maxId].width / 2, boundRect[maxId].y + boundRect[maxId].height / 2);
@@ -500,13 +557,13 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 		// 剔除结果中的inf
 		cv::Mat result2;
 		result.copyTo(result2);
-		for (int i = 0; i < result2.rows; i++)
+		for (int ii = 0; ii < result2.rows; ii++)
 		{
-			for (int j = 0; j < result2.cols; j++)
+			for (int jj = 0; jj < result2.cols; jj++)
 			{
-				if (result2.at<float>(i, j) > 1)
+				if (result2.at<float>(ii,jj) > 1)
 				{
-					result2.at<float>(i, j) = 0;
+					result2.at<float>(ii, jj) = 0;
 				}
 			}
 		}
@@ -543,6 +600,8 @@ inline void get_minimap_direction(const GenshinMinimap& genshin_minimap, Genshin
 
 inline void get_stars(const GenshinMinimap& genshin_minimap, GenshinStars& out_genshin_stars)
 {
+	UNREFERENCED_PARAMETER(out_genshin_stars);
+
 	static cv::Mat star_template;
 	static cv::Point2d star_template_center;
 	static bool is_first = true;
@@ -566,7 +625,7 @@ inline void get_stars(const GenshinMinimap& genshin_minimap, GenshinStars& out_g
 
 	std::vector<cv::Point2d> pos;
 
-	double scale = 1.3;
+	//double scale = 1.3;
 
 
 	auto& giMinimapRef = genshin_minimap.img_stars;
@@ -621,5 +680,7 @@ inline void get_stars(const GenshinMinimap& genshin_minimap, GenshinStars& out_g
 
 inline void get_tagflags(const GenshinMinimap& genshin_minimap, GenshinTagflags& out_genshin_tagflags)
 {
+	UNREFERENCED_PARAMETER(genshin_minimap);
+	UNREFERENCED_PARAMETER(out_genshin_tagflags);
 
 }

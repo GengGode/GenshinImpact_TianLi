@@ -305,31 +305,59 @@ cv::Point2d SurfMatch::match_no_continuity(bool& calc_is_faile)
 }
 
 
-void calc_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double render_map_scale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
+namespace CalcMatch
 {
-#ifdef _DEBUG
-	std::vector<cv::DMatch> good_matches;
-#endif
-	for (size_t i = 0; i < KNN_m.size(); i++)
+	namespace Debug
 	{
-		if (KNN_m[i][0].distance < ratio_thresh * KNN_m[i][1].distance)
+		void calc_good_matches_show(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double mapScale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
 		{
-#ifdef _DEBUG
-			good_matches.push_back(KNN_m[i][0]);
-#endif
-			if (KNN_m[i][0].queryIdx >= keypoint_object.size())
+			std::vector<cv::DMatch> good_matches;
+			for (size_t i = 0; i < KNN_m.size(); i++)
 			{
-				continue;
+				if (KNN_m[i][0].distance < ratio_thresh * KNN_m[i][1].distance)
+				{
+					good_matches.push_back(KNN_m[i][0]);
+					if (KNN_m[i][0].queryIdx >= keypoint_object.size())
+					{
+						continue;
+					}
+					lisx.push_back(((img_object.cols / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.x) * mapScale + keypoint_scene[KNN_m[i][0].trainIdx].pt.x));
+					lisy.push_back(((img_object.rows / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.y) * mapScale + keypoint_scene[KNN_m[i][0].trainIdx].pt.y));
+					sumx += lisx.back();
+					sumy += lisy.back();
+				}
 			}
-			lisx.push_back(((img_object.cols / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.x) * render_map_scale + keypoint_scene[KNN_m[i][0].trainIdx].pt.x));
-			lisy.push_back(((img_object.rows / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.y) * render_map_scale + keypoint_scene[KNN_m[i][0].trainIdx].pt.y));
-			sumx += lisx.back();
-			sumy += lisy.back();
+			draw_good_matches(img_scene, keypoint_scene, img_object, keypoint_object, good_matches);
+				}
+		}
+
+	void calc_good_matches_show(cv::Mat&, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double mapScale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
+	{
+		for (size_t i = 0; i < KNN_m.size(); i++)
+		{
+			if (KNN_m[i][0].distance < ratio_thresh * KNN_m[i][1].distance)
+			{
+				if (KNN_m[i][0].queryIdx >= keypoint_object.size())
+				{
+					continue;
+				}
+				lisx.push_back(((img_object.cols / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.x) * mapScale + keypoint_scene[KNN_m[i][0].trainIdx].pt.x));
+				lisy.push_back(((img_object.rows / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.y) * mapScale + keypoint_scene[KNN_m[i][0].trainIdx].pt.y));
+				sumx += lisx.back();
+				sumy += lisy.back();
+			}
 		}
 	}
+
+	}
+
+void calc_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double mapScale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
+{
+	CalcMatch::
 #ifdef _DEBUG
-	draw_good_matches(img_scene, keypoint_scene, img_object, keypoint_object, good_matches);
+		Debug::
 #endif
+		calc_good_matches_show(img_scene, keypoint_scene, img_object, keypoint_object, KNN_m, ratio_thresh, mapScale, lisx, lisy, sumx, sumy);
 }
 
 
@@ -438,10 +466,10 @@ bool func_test_diff_match(const cv::Mat minimap, double& dx, double& dy)
 		return false;
 	}
 
-	int x = minimap.cols * 0.1;
-	int y = minimap.cols * 0.1;
-	int w = minimap.cols * 0.8;
-	int h = minimap.cols * 0.8;
+	int x = static_cast<int>(minimap.cols * 0.1);
+	int y = static_cast<int>(minimap.cols * 0.1);
+	int w = static_cast<int>(minimap.cols * 0.8);
+	int h = static_cast<int>(minimap.cols * 0.8);
 
 	auto now_minimap_mat = minimap(cv::Rect(x, y, w, h));
 
