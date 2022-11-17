@@ -59,6 +59,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	hud_azimuth_bar_window->hide();
 	
 
+
 	this->addUI_Tab_Map();
 	this->addUI_Tab_HUD();
 	this->addUI_Tab_3();
@@ -94,8 +95,8 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	//添加全局快捷键
 	// F1 触发 slot_show_or_hide
-	//hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("F1", this));
-	//connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_show_or_hide);
+	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("F1", this));
+	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_show_or_hide);
 	
 	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("Alt+T", this));
 	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_auto_track);
@@ -106,7 +107,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	// listen_key_board->register_key_signal(0x41, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
 	// F1 触发 slot_show_or_hide
-	listen_key_board->register_key(0x70, this, &GenshinImpact_TianLi::slot_show_or_hide);
+	//listen_key_board->register_key(0x70, this, &GenshinImpact_TianLi::slot_show_or_hide);
 	
 	
 	
@@ -782,14 +783,48 @@ void GenshinImpact_TianLi::slot_show()
 
 void GenshinImpact_TianLi::slot_show_or_hide()
 {
-	
+	static bool before_hud_state_square_map = false;
+	static bool before_hud_state_circular_map = false;
+	static bool before_hud_state_azimuth_bar_window = false;
+
 	if (is_visible)
 	{
+		// 1. 隐藏主页面
 		this->slot_hide();
+		//// 2. 如果此前HUD为显示状态，则恢复显示HUD，否则不变
+		//if (before_hud_state_square_map==false)
+		//{
+		//	hud_square_map->show();
+		//}
+		//if (before_hud_state_circular_map == false)
+		//{
+		//	hud_circular_map->show();
+		//}
+		//if (before_hud_state_azimuth_bar_window == false)
+		//{
+		//	hud_azimuth_bar_window->show();
+		//}
 	}
 	else
 	{
+		// 1. 显示主界面
 		this->slot_show();
+		//// 2. 如果正在显示的HUD，记录其状态，并隐藏
+		//if (hud_square_map->isHidden() == false)
+		//{
+		//	hud_square_map->hide();
+		//	before_hud_state_square_map = true;
+		//}
+		//if (hud_circular_map->isHidden() == false)
+		//{
+		//	hud_circular_map->hide();
+		//	before_hud_state_circular_map = true;
+		//}
+		//if (hud_azimuth_bar_window->isHidden() == false)
+		//{
+		//	hud_azimuth_bar_window->hide();
+		//	before_hud_state_azimuth_bar_window = true;
+		//}
 	}
 }
 
