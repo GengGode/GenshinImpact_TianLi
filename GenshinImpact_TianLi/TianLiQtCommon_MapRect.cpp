@@ -166,19 +166,46 @@ void TianLiQtCommon_MapRect::resizeEvent(QResizeEvent* event)
 
 void TianLiQtCommon_MapRect::slot_update()
 {
-	if (CoreMap.Core.GetTrack().GetResult().is_find_paimon)
+	if (Core.GetTrack().ServerState() && Core.GetTrack().GetResult().is_find_paimon)
 	{
 		auto pos = cv::Point(CoreMap.Core.GetTrack().GetResult().position_x, CoreMap.Core.GetTrack().GetResult().position_y);
 		render_map_pos = pos;
 		CoreMap.avatar_info.x = pos.x;
 		CoreMap.avatar_info.y = pos.y;
 		CoreMap.avatar_info.a = CoreMap.Core.GetTrack().GetResult().avatar_angle;
+	
 
 
 		ui.label_UID->setText(QString("UID: %1").arg(CoreMap.Core.GetTrack().GetResult().uid, 9, 10, QLatin1Char('0')));
+		// 获取距离最近的一个物品的详细信息
+		// 1. 遍历所有距离，为了降低计算量，先使用曼哈顿距离？好像这么叫的
+		// TODO: 需要改为欧式距离，等优化数据源
+		auto show_objects = CoreMap.map_show_objects;
+		std::string show_info_min_ids = "";
+		// 最小距离的起始点应该从边框处距离计算，即对角顶点的距离
+		double dis = 80;
+		for (auto& objects : show_objects.types)
+		{
+			auto& x = pos.x;
+			auto& y = pos.y;
+			for (auto& object : objects.badge_list)
+			{
+				// 计算公式为 x2-x1 + y2-y1
+				double object_dis = std::abs(object.x - x) + std::abs(object.y - y);
+				if (object_dis < dis)
+				{
+					dis = object_dis;
+					show_info_min_ids = object.message;
+				}
 
+			}
+		}
+		emit signle_send_mini_object_info_text(QString::fromStdString(show_info_min_ids));
+
+
+		// 更新可捡取物品列表
 		static std::vector<std::string> item_tags_buf;
-		auto item_tags = CoreMap.Core.GetTrack().GetResult().item_tags;
+		auto &item_tags = CoreMap.Core.GetTrack().GetResult().item_tags;
 		if (item_tags_buf != item_tags)
 		{
 			item_tags_buf = item_tags;
