@@ -57,7 +57,7 @@ void TianLiQtCommon_HUD_CircularMap::paintEvent(QPaintEvent* event)
 
 		//cv::Rect viewer_rect;
 		//mapMatRect = TianLi::Utils::get_view_map(gi_map, cv::Size(width(), height()), render_map_pos, render_map_scale, viewer_rect);
-		CoreMap.map_info.is_overlay = true;
+		//CoreMap.map_info.is_overlay = true;
 
 		if (Core.GetResource().GIMAP_OVERLAY_RECT.contains(render_map_pos))
 		{

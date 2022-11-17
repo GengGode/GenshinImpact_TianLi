@@ -19,7 +19,7 @@ public:
 private:
 	Ui::TianLiQtCommon_HUD_AzimuthBarWindow ui;
 
-// UI重绘
+// UI閲嶇粯
 private:
 	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 	void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
@@ -51,8 +51,9 @@ public:
 	};
 	QTimer* timer=nullptr;
 	std::map<int, AzimuthObject> object_map;
-	bool is_visible = false;	// 是否可见
+	bool is_visible = false;	// 鏄惁鍙
 	bool is_need_rerender = false;
+	QString show_info_text = "璇︾粏淇℃伅";
 public slots:
 	void slot_update();
 	void slot_show();
@@ -61,6 +62,7 @@ public:
 	void slot_update_avatar_rotate(double avatar_rotate);
 	void slot_update_move(RECT& gi_client_rect);
 	void slot_update_object();
+	void slot_update_show_info(QString text);
 signals:
 	void signal_close_finished();
 };
