@@ -72,10 +72,15 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 		render_overlay(map);
 	}
 
+	map_show_objects.types.clear();
+
 	for (auto& [key,info] : badge_info.badge_block_list)
 	{
 		cv::Mat img = info.image;
 		cv::resize(img, img, cv::Size(), 1.0/map_info.scale_form_gimap, 1.0/map_info.scale_form_gimap);
+
+		BadgeInfo::BadgeBlock show_infos;
+
 		for (auto& legend : info.badge_list)
 		{
 			// 取交集
@@ -99,6 +104,10 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 					auto img_roi = img(r2);
 
 					TianLi::Map::Utils::add_rgba_image(map_roi, img_roi, map_roi);
+
+					// 将显示在地图中的点位添加到show_object
+					show_infos.badge_list.push_back(legend);
+
 				}
 				catch (...)
 				{
@@ -106,12 +115,19 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 				}
 			}
 		}
+
+		if (show_infos.badge_list.size() != 0)
+		{
+			show_infos.image = info.image;
+			show_infos.name = info.name;
+			map_show_objects.types.push_back(show_infos);
+		}
 	}
 	// 地图中心绘制角色箭头
 	// 1. 旋转角色箭头图片
 	auto roation_angle = avatar_info.a;
 	auto avatar = TianLi::Map::Utils::rotate_avatar(Core.GetResource().GIAVATAR, roation_angle, 1.0 / 1.3);//大地图与小地图之比
-	auto avatar_rect = cv::Rect(avatar_info.x - avatar.cols / 2, avatar_info.y - avatar.rows / 2, avatar.cols, avatar.rows);
+	auto avatar_rect = cv::Rect((avatar_info.x - avatar.cols / 2) * map_info.scale_form_gimap, avatar_info.y - avatar.rows / 2, avatar.cols, avatar.rows);
 	auto avatar_rect_roi = avatar_rect & map_info.map_rect;
 	if (avatar_rect_roi.area() > 0)
 	{
