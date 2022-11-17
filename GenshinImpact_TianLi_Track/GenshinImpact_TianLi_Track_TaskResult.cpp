@@ -72,7 +72,14 @@ std::map<std::string, bool> GenshinImpact_TianLi_Track_TaskResult::check_wait()
 	if (task_screen->check_wait())
 	{
 		screen_out = task_screen->get_output();
-		
+		if (/*handle_out.config.capture->mode == Capture::DirectX ||*/ handle_out.config.is_force_used_no_alpha)
+		{
+			screen_out.config.is_used_alpha = false;
+		}
+		else
+		{
+			screen_out.config.is_used_alpha = true;
+		}
 		task_screen->set_input(handle_out);
 		task_screen->work();
 		wait_map["task_screen"] = true;

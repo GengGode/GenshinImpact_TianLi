@@ -47,10 +47,10 @@ background-color:qradialgradient(spread:pad, cx:0.5, cy:0.488636, radius:1.502, 
   <widget class="QLabel" name="label_Image">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>-17</y>
-     <width>61</width>
-     <height>61</height>
+     <x>5</x>
+     <y>-10</y>
+     <width>48</width>
+     <height>48</height>
     </rect>
    </property>
    <property name="styleSheet">

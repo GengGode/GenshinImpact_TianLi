@@ -70,7 +70,7 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	//painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 	//painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-	//// µ×²ãÍÖÔ²½¥±äÒõÓ°
+	//// åº•å±‚æ¤­åœ†æ¸å˜é˜´å½±
 	//QRadialGradient radial_gradient(x, 0, 50);
 	//radial_gradient.setColorAt(0, QColor(0, 0, 0, 0));
 	//radial_gradient.setColorAt(1, QColor(200,200, 200, 255));
@@ -78,24 +78,30 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	//painter.setPen(Qt::NoPen);
 	//painter.drawEllipse(QPointF(x/2, 0),100, 100);
 	
-	//	// ·´×ßÑù 
+	//	// åèµ°æ · 
 	//painter.setRenderHint(QPainter::Antialiasing, true);
-	//// ÉèÖÃ½¥±äÉ« qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.5 rgba(0, 0, 0, 166), stop:1 rgba(255, 255, 255, 255))
+	//// è®¾ç½®æ¸å˜è‰² qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.5 rgba(0, 0, 0, 166), stop:1 rgba(255, 255, 255, 255))
 	//QRadialGradient radial(QPointF(x/2, 0),x/2,QPointF(x/2,0));
 	//radial.setColorAt( 0, QColor(0, 0, 0, 128));
 	//radial.setColorAt(1, QColor(0, 0, 0, 0));
 
-	//// ÉèÖÃÏÔÊ¾Ä£Ê½
+	//// è®¾ç½®æ˜¾ç¤ºæ¨¡å¼
 	////radial.setSpread(QGradient::PadSpread);
 
-	//// ÉèÖÃ»­±ÊÑÕÉ«¡¢¿í¶È
+	
+	//// è®¾ç½®ç”»ç¬”é¢œè‰²ã€å®½åº¦
 	//painter.setPen(Qt::NoPen);
-	//// ÉèÖÃ»­Ë¢Ìî³ä
+	//// è®¾ç½®ç”»åˆ·å¡«å……
 	//painter.setBrush(radial);
-	//// »æÖÆÍÖÔ²
+	//// ç»˜åˆ¶æ¤­åœ†
 	//painter.drawRect(QRect(0, y-x, x, x));
 	//
-	
+
+	// ç»˜åˆ¶æµ‹è¯•æ–‡å­—å­—æ · è¯¦ç»†ä¿¡æ¯
+	painter.setPen(QColor(255, 255, 255, 255));
+	//painter.setFont(QFont("Microsoft YaHei", 15, QFont::Normal));
+	painter.drawText(QRect(0, 75, 300, 50), Qt::AlignCenter, show_info_text);
+
 	QStyleOption option;
 	option.initFrom(this);
 	QPainter p(this);
@@ -103,11 +109,11 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 
 	painter.setRenderHint(QPainter::Antialiasing);
 
-	// »ù´¡ÏßÌõºÍ¼ıÍ·
+	// åŸºç¡€çº¿æ¡å’Œç®­å¤´
 	painter.drawImage(0, 37, base_line);
 	painter.drawImage(332, 10, base_arrow_center);
 
-	// ±êµã
+	// æ ‡ç‚¹
 	double base_point_list_param = 1.0 / 180 * 674;
 	double base_point_list_N = static_cast<int>(-(-avatar_rotate_deg) + 180) * base_point_list_param;
 	double base_point_det= 30 * base_point_list_param;
@@ -153,9 +159,9 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	paint.fillRect(avatar_arrow_rect, Qt::transparent);
 	paint.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-	// »ù´¡´óÔ²
-	paint.setPen(Qt::NoPen);//ÉèÖÃ»­±ÊĞÎÊ½ 
-	paint.setBrush(QBrush(Qt::white, Qt::SolidPattern));//ÉèÖÃ»­Ë¢ĞÎÊ½ 
+	// åŸºç¡€å¤§åœ†
+	paint.setPen(Qt::NoPen);//è®¾ç½®ç”»ç¬”å½¢å¼ 
+	paint.setBrush(QBrush(Qt::white, Qt::SolidPattern));//è®¾ç½®ç”»åˆ·å½¢å¼ 
 	paint.drawEllipse(x_c - main_r, y_c - main_r, main_2r, main_2r);
 
 	if (object_map.size() > 0)
@@ -169,17 +175,17 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	//{
 	//	for (int i = 0; i < ObjectList.size(); i++)
 	//	{
-	//		// Ä¿±ê»¡Ïß
+	//		// ç›®æ ‡å¼§çº¿
 	//		paint.setPen(QPen(QColor(230, 185, 69), 2, Qt::SolidLine));
 	//		int startAngle = 90 * 16;
 	//		int spanAngle = ObjectList[i] * 16;
 	//		QRectF R_C_arc(4.0, 4.0, 40.0, 40.0);
 	//		paint.drawArc(R_C_arc, startAngle, spanAngle);
 
-	//		// Ä¿±êĞ¡Ô²
+	//		// ç›®æ ‡å°åœ†
 	//		double x, y;
-	//		paint.setPen(Qt::NoPen);//ÉèÖÃ»­±ÊĞÎÊ½ 
-	//		paint.setBrush(QColor(230, 185, 69));//ÉèÖÃ»­Ë¢ĞÎÊ½ 
+	//		paint.setPen(Qt::NoPen);//è®¾ç½®ç”»ç¬”å½¢å¼ 
+	//		paint.setBrush(QColor(230, 185, 69));//è®¾ç½®ç”»åˆ·å½¢å¼ 
 	//		x = sin(deg2rad(ObjectList[i])) * 20;
 	//		y = cos(deg2rad(ObjectList[i])) * 20;
 	//		QRectF R_C_Avatar(x_c - x - min_r, y_c - y - min_r, min_2r, min_2r);
@@ -189,16 +195,16 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 	//}
 
 
-	// »ù´¡×ÔÉí³¯ÏòĞ¡Ô²
-	paint.setPen(Qt::NoPen);//ÉèÖÃ»­±ÊĞÎÊ½ 
-	paint.setBrush(Qt::white);//ÉèÖÃ»­Ë¢ĞÎÊ½ 
+	// åŸºç¡€è‡ªèº«æœå‘å°åœ†
+	paint.setPen(Qt::NoPen);//è®¾ç½®ç”»ç¬”å½¢å¼ 
+	paint.setBrush(Qt::white);//è®¾ç½®ç”»åˆ·å½¢å¼ 
 	QRectF R_C_baseN(x_c - min_r, avatar_arrow_rect.y()+2, min_2r, min_2r);
 	paint.drawEllipse(R_C_baseN);
 
-	// ±±·½Ğ¡Ô²
+	// åŒ—æ–¹å°åœ†
 	//double x, y;
-	//paint.setPen(Qt::NoPen);//ÉèÖÃ»­±ÊĞÎÊ½ 
-	//paint.setBrush(QColor(57, 255, 255));//ÉèÖÃ»­Ë¢ĞÎÊ½ 
+	//paint.setPen(Qt::NoPen);//è®¾ç½®ç”»ç¬”å½¢å¼ 
+	//paint.setBrush(QColor(57, 255, 255));//è®¾ç½®ç”»åˆ·å½¢å¼ 
 	//x = sin(avatar_rotate_rad) * 20;
 	//y = cos(avatar_rotate_rad) * 20;
 	//QRectF R_C_Avatar(x_c - x - min_r, y_c - y - min_r, min_2r, min_2r);
@@ -206,7 +212,7 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 
 	//QPainterPath AvatarArrow;
 
-	// Ä¿±ê¼ıÍ·
+	// ç›®æ ‡ç®­å¤´
 	double x_a, y_a;
 	double x_b, y_b;
 	x_a = sin(-avatar_rotate_rad) * 12;
@@ -292,7 +298,7 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_move(RECT& gi_client_rect)
 		|| gi_client_rect_old.right != gi_client_rect.right || gi_client_rect_old.bottom != gi_client_rect.bottom)
 	{
 		gi_client_rect_old = gi_client_rect;
-		// ÒÆ¶¯µ½ Ë®Æ½ÉÏ¶ÔÆë£¬´¹Ö±¾ÓÖĞ¶ÔÆë µÄÎ»ÖÃ
+		// ç§»åŠ¨åˆ° æ°´å¹³ä¸Šå¯¹é½ï¼Œå‚ç›´å±…ä¸­å¯¹é½ çš„ä½ç½®
 		int move_x = gi_client_rect.left + (gi_client_rect.right - gi_client_rect.left - width()) / 2;
 		int move_y = gi_client_rect.top;
 		move(move_x, move_y);
@@ -302,4 +308,10 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_move(RECT& gi_client_rect)
 
 void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_object()
 {
+}
+
+void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_show_info(QString text)
+{
+	show_info_text = text;
+	update();
 }

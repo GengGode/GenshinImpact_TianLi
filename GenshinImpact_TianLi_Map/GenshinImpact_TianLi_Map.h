@@ -75,6 +75,12 @@ struct BadgeInfo
 	};
 	std::map<std::tuple<std::string,std::string,std::string>,BadgeBlock> badge_block_list;
 };
+
+struct MapShowObjects
+{
+	std::vector<BadgeInfo::BadgeBlock> types;
+
+};
 //
 //class object
 //{
@@ -245,6 +251,7 @@ public:
 	AvatarInfo avatar_info;
 	MapInfo map_info;
 	BadgeInfo badge_info;
+	MapShowObjects map_show_objects;
 	//cv::Mat viewer_mat;
 	//cv::Mat viewer_draw_badge_mat;
 	GenshinImpact_TianLi_Core& Core() { return *core; }

@@ -52,4 +52,5 @@ public slots:
 signals:
 	void signal_double_click(bool is_checked);
 	void singal_updata_pickable_items(std::vector<std::string> item_tags);
+	void signle_send_mini_object_info_text(QString text);
 };

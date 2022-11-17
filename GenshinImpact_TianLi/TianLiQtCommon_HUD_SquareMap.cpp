@@ -58,7 +58,7 @@ void TianLiQtCommon_HUD_SquareMap::paintEvent(QPaintEvent* event)
 
 		//cv::Rect viewer_rect;
 		//mapMatRect = TianLi::Utils::get_view_map(gi_map, cv::Size(width(), height()), render_map_pos, render_map_scale, viewer_rect);
-		CoreMap.map_info.is_overlay = true;
+		//CoreMap.map_info.is_overlay = true;
 		CoreMap.map_info.is_show_map = true;
 
 
@@ -107,10 +107,15 @@ void TianLiQtCommon_HUD_SquareMap::slot_update()
 			render_map_pos = cv::Point(Core.GetTrack().GetResult().position_x, Core.GetTrack().GetResult().position_y);
 			RECT gi_minimap_rect = Core.GetTrack().GetResult().minimap_rect;
 			slot_update_move(gi_minimap_rect); 
+
+			this->show();
+
 			update();
 		}
 		else
 		{
+			this->hide();
+
 			update();
 		}
 	}

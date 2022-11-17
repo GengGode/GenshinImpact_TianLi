@@ -59,6 +59,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	hud_azimuth_bar_window->hide();
 	
 
+
 	this->addUI_Tab_Map();
 	this->addUI_Tab_HUD();
 	this->addUI_Tab_3();
@@ -94,8 +95,8 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	//添加全局快捷键
 	// F1 触发 slot_show_or_hide
-	//hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("F1", this));
-	//connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_show_or_hide);
+	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("F1", this));
+	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_show_or_hide);
 	
 	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("Alt+T", this));
 	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_auto_track);
@@ -106,7 +107,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	// listen_key_board->register_key_signal(0x41, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
 	// F1 触发 slot_show_or_hide
-	listen_key_board->register_key(0x70, this, &GenshinImpact_TianLi::slot_show_or_hide);
+	//listen_key_board->register_key(0x70, this, &GenshinImpact_TianLi::slot_show_or_hide);
 	
 	
 	
@@ -393,7 +394,6 @@ void GenshinImpact_TianLi::addUI_MapTabCardRects()
 				button->deleteLater();
 				object_button_group.removeButton(buttons[i]);
 			}
-
 		}
 		});
 	
@@ -414,6 +414,8 @@ void GenshinImpact_TianLi::addUI_MapTabMapRect()
 	PageTabMap_MapRect->setParent(ui.widget_MapTab_Right);
 	PageTabMap_MapRect->setGeometry(10, 10, ui.widget_MapMask->width() - 20, ui.widget_MapMask->height() - 20);
 	connect(PageTabMap_MapRect, &TianLiQtCommon_MapRect::singal_updata_pickable_items, this, &GenshinImpact_TianLi::slot_updata_pickable_items);
+	// 绑定传输数据到方位条
+	connect(PageTabMap_MapRect, &TianLiQtCommon_MapRect::signle_send_mini_object_info_text, hud_azimuth_bar_window, &TianLiQtCommon_HUD_AzimuthBarWindow::slot_update_show_info);
 	
 	// 添加地图页面 地图区域中 的 定位启用切换开关
 	PageTabMap_RightCard_Buttons.append(new TianLiQtCommon_SwitchButton(this,"定位"));
@@ -783,14 +785,48 @@ void GenshinImpact_TianLi::slot_show()
 
 void GenshinImpact_TianLi::slot_show_or_hide()
 {
-	
+	static bool before_hud_state_square_map = false;
+	static bool before_hud_state_circular_map = false;
+	static bool before_hud_state_azimuth_bar_window = false;
+
 	if (is_visible)
 	{
+		// 1. 隐藏主页面
 		this->slot_hide();
+		//// 2. 如果此前HUD为显示状态，则恢复显示HUD，否则不变
+		//if (before_hud_state_square_map==false)
+		//{
+		//	hud_square_map->show();
+		//}
+		//if (before_hud_state_circular_map == false)
+		//{
+		//	hud_circular_map->show();
+		//}
+		//if (before_hud_state_azimuth_bar_window == false)
+		//{
+		//	hud_azimuth_bar_window->show();
+		//}
 	}
 	else
 	{
+		// 1. 显示主界面
 		this->slot_show();
+		//// 2. 如果正在显示的HUD，记录其状态，并隐藏
+		//if (hud_square_map->isHidden() == false)
+		//{
+		//	hud_square_map->hide();
+		//	before_hud_state_square_map = true;
+		//}
+		//if (hud_circular_map->isHidden() == false)
+		//{
+		//	hud_circular_map->hide();
+		//	before_hud_state_circular_map = true;
+		//}
+		//if (hud_azimuth_bar_window->isHidden() == false)
+		//{
+		//	hud_azimuth_bar_window->hide();
+		//	before_hud_state_azimuth_bar_window = true;
+		//}
 	}
 }
 
@@ -807,8 +843,6 @@ void GenshinImpact_TianLi::slot_hide()
 	//this->hide();
 }
 
-
-#include<QRandomGenerator>
 void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 {
 	if (checked == true)
@@ -829,13 +863,14 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 			auto type = get_selected_type().toStdString();
 			auto item = selectedStr_Item.toStdString();
 			std::tuple<std::string, std::string, std::string> key = { area, type, item };
-
+			int size = 0;
 			{
 
 				// 加载该种类下的物品
 				Core.GetSqlite().ReadItems(area.c_str(), type.c_str(), item.c_str(), itemsItemsVector);
 				// 如果读取到的数据是空的
-				if (itemsItemsVector.size == 0)
+				size = itemsItemsVector.size;
+				if (size == 0)
 				{
 					return;
 				}
@@ -845,10 +880,16 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 				legend_block.name = itemsItemsVector[0].name;
 
 				legend_block.image = Core.GetResource().GetImageBuffer("", "", "", itemsItemsVector[0].name);
-				cv::resize(legend_block.image, legend_block.image, cv::Size(32, 32));
-				// 绘制半透明圆环
-				cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 3, cv::Scalar(255, 255, 255, 200), 3, cv::LINE_AA);
-				cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 1, cv::Scalar(0, 0, 0, 250), 1, cv::LINE_AA);
+				{
+					double scale = 32.0 / max(legend_block.image.rows, legend_block.image.cols) ;
+					cv::resize(legend_block.image, legend_block.image, cv::Size(scale * legend_block.image.cols, scale * legend_block.image.rows));
+					// 绘制半透明圆环
+					if (legend_block.name != "传送锚点" && legend_block.name != "七天神像")
+					{
+						cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 3, cv::Scalar(255, 255, 255, 100), 3, cv::LINE_AA);
+						cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 1, cv::Scalar(0, 0, 0, 250), 1, cv::LINE_AA);
+					}
+				}
 
 				for (int i = 0; i < itemsItemsVector.size; i++)
 				{
@@ -873,15 +914,7 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 				item_button_checked_map.insert({ key ,true });
 			}
 
-			
-			auto img = Core.GetResource().GetImageBuffer("", "", "",str.toStdString());
-			auto img_qimage = TianLi::Utils::mat_2_qimage(img);
-
-			auto img_type = Core.GetResource().GetImageBuffer("", get_selected_type().toStdString(),"", "");
-			auto img_type_qimage = TianLi::Utils::mat_2_qimage(img_type);
-
-			
-			auto select_button = new TianLiQtCommon_SelectedItemButton(str, get_selected_type(), get_selected_area(), img_qimage, img_type_qimage, PageTabMap_ScrollCardRect[0]);
+			auto select_button = new TianLiQtCommon_SelectedItemButton(str, get_selected_type(), get_selected_area(), PageTabMap_ScrollCardRect[0]);
 			// 创建按钮到 物品按钮QMap 中
 			//pushButtonMap_Items.insert(str, button);
 
@@ -897,10 +930,7 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 			
 			// 显示按钮
 			select_button->show();
-			// 生成1-100的随机数
-			int rand_num = QRandomGenerator::global()->bounded(100);
-			select_button->setProgressMaxNumber(50);
-			select_button->setProgressCount(rand_num);
+			select_button->setProgressMaxNumber(size);
 
 			// 强制重绘MapRect
 			// 切换后要触发MapRect的强制重绘

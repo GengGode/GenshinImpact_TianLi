@@ -12,28 +12,53 @@ inline void get_genshin_handle(GenshinHandle& genshin_handle)
 		//genshin_handle.handle = FindWindowA(NULL, "窗口位置调整");
 		
 		auto& giHandle = genshin_handle.handle;
-		LPCWSTR giWindowName = { L"原神" };
+		enum genshin_class
+		{
+			Unity,
+			Obs,
+			Qt,
+
+		};
+		auto now_class = genshin_class::Unity;
 		/* 对原神窗口的操作 */
 		giHandle = FindWindowA("UnityWndClass", "原神");
 		if (giHandle == NULL)
 		{
-			giWindowName = L"Genshin Impact";
-			giHandle = FindWindowW(L"UnityWndClass", giWindowName); /* 匹配名称：原神 */
+			giHandle = FindWindowW(L"UnityWndClass", L"Genshin Impact"); /* 匹配名称：原神 */
 		}
 		if (giHandle == NULL)
 		{
-			giWindowName = L"원신";
-			giHandle = FindWindowW(L"UnityWndClass", giWindowName); /* 匹配名称：원신 */
+			giHandle = FindWindowW(NULL, L"窗口投影（源） - 云·原神"); /* 匹配名称：原神-调试 */
+			now_class = genshin_class::Obs;
 		}
 		if (giHandle == NULL)
 		{
-			giWindowName = L"\u539F\u795E";
-			giHandle = FindWindowW(L"UnityWndClass", giWindowName); /* 匹配名称：原神 */
+			giHandle = FindWindowW(L"Qt5152QWindowIcon", L"云·原神"); /* 匹配名称：云·原神 */
 		}
 		if (giHandle == NULL)
 		{
-			giWindowName = L"\uC6D0\uC2E0";
-			giHandle = FindWindowW(L"UnityWndClass", giWindowName); /* 匹配名称：원신 */
+			giHandle = FindWindowW(L"UnityWndClass", L"원신"); /* 匹配名称：원신 */
+		}
+		if (giHandle == NULL)
+		{
+			giHandle = FindWindowW(L"UnityWndClass", L"\u539F\u795E"); /* 匹配名称：原神 */
+		}
+		if (giHandle == NULL)
+		{
+			giHandle = FindWindowW(L"UnityWndClass", L"\uC6D0\uC2E0"); /* 匹配名称：원신 */
+		}
+		if (giHandle == NULL)
+		{
+			giHandle = FindWindowW(NULL, L"原神-调试"); /* 匹配名称：原神-调试 */
+		}
+		//窗口投影（源） - 云·原神
+		if (now_class == genshin_class::Obs)
+		{
+			genshin_handle.config.is_force_used_no_alpha = true;
+		}
+		else
+		{
+			genshin_handle.config.is_force_used_no_alpha = false;
 		}
 		
 	}

@@ -10,16 +10,17 @@
 struct GenshinHandleConfig
 {
 	bool is_auto_find_genshin = true;
+	bool is_force_used_no_alpha = false;
 	HWND genshin_handle = nullptr;
 
 };
 struct GenshinHandle
 {
 	bool is_exist = false;
-	HWND handle;
-	RECT rect;
-	RECT rect_client;
-	double scale;
+	HWND handle = nullptr;
+	RECT rect = RECT();
+	RECT rect_client = RECT();
+	double scale = 1.0;
 	bool is_exist_title_bar = true;
 	cv::Size size_frame;
 	cv::Rect rect_paimon_maybe;
@@ -52,6 +53,10 @@ struct GenshinScreenConfig
 	cv::Rect rect_paimon_maybe;
 	cv::Rect rect_minimap_cailb_maybe;
 	cv::Rect rect_minimap_maybe;
+
+
+
+	bool is_used_alpha = true;
 
 	bool is_handle_mode = false;
 
@@ -90,7 +95,8 @@ struct GenshinScreen
 };
 struct GenshinPaimonConfig
 {
-	double check_match_paimon_params = 0.85;
+	double check_match_paimon_params = 0.80;
+	double check_match_paimon_params_no_alpha = 0.50;
 };
 
 struct GenshinPaimon
@@ -104,6 +110,7 @@ struct GenshinMinimapCailbConfig
 {
 	bool is_need_find = true;
 	double check_match_minimap_cailb_params = 0.85;
+	double check_match_minimap_cailb_params_no_alpha = 0.50;
 };
 
 struct GenshinMinimapCailb

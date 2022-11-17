@@ -9,7 +9,7 @@ inline void get_genshin_screen(const GenshinHandle& genshin_handle, GenshinScree
 	auto& giHandle = genshin_handle.handle;
 	auto& giRect = genshin_handle.rect;
 	auto& giRectClient = genshin_handle.rect_client;
-	auto& giScale = genshin_handle.scale;
+	//auto& giScale = genshin_handle.scale;
 	auto& giFrame = out_genshin_screen.img_screen;
 
 #ifdef TEST_LOCAL
@@ -44,7 +44,6 @@ inline void get_genshin_screen(const GenshinHandle& genshin_handle, GenshinScree
 	//类型转换
 	GetObject(hBmp, sizeof(BITMAP), &bmp);
 	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
-	int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
 
 	//mat操作
 
@@ -57,14 +56,13 @@ inline void get_genshin_screen(const GenshinHandle& genshin_handle, GenshinScree
 		cvtColor(giFrame, giFrame, cv::COLOR_RGB2RGBA);
 	}
 
-	cv::resize(giFrame, giFrame, genshin_handle.size_frame);
 
 #endif // TEST_LOCAL
-
-
 	{
 		if (giFrame.empty())return;
-		
+
+		cv::resize(giFrame, giFrame, genshin_handle.size_frame);
+
 		out_genshin_screen.rect_client = cv::Rect(giRect.left, giRect.top, giRectClient.right - giRectClient.left, giRectClient.bottom - giRectClient.top);
 		
 		// 获取maybe区域
@@ -84,6 +82,5 @@ inline void get_genshin_screen(const GenshinHandle& genshin_handle, GenshinScree
 
 
 		out_genshin_screen.img_uid = giFrame(genshin_handle.rect_uid);
-
 	}
 }

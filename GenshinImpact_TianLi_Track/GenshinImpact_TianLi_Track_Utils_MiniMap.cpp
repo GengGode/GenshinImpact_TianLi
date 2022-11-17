@@ -180,21 +180,21 @@ cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_fai
 	detectorSomeMap->detectAndCompute(minMap, cv::noArray(), Kp_MinMap, Dp_MinMap);
 
 	// 如果搜索范围内可识别特征点数量为0，则认为计算失败
-	if (Kp_SomeMap.size() == 0 || Kp_MinMap.size() == 0)
+	if (Kp_SomeMap.size() == 0 || Kp_MinMap.size() <= 2)
 	{
 		calc_continuity_is_faile = true;
 		return pos_not_on_city;
 	}
-	cv::Ptr<cv::DescriptorMatcher> matcherTmp = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
-	std::vector< std::vector<cv::DMatch> > KNN_mTmp;
+	cv::Ptr<cv::DescriptorMatcher> matcher_not_on_city = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
+	std::vector< std::vector<cv::DMatch> > KNN_not_no_city;
 
-	matcherTmp->knnMatch(Dp_MinMap, Dp_SomeMap, KNN_mTmp, 2);
+	matcher_not_on_city->knnMatch(Dp_MinMap, Dp_SomeMap, KNN_not_no_city, 2);
 	std::vector<double> lisx;
 	std::vector<double> lisy;
 	double sumx = 0;
 	double sumy = 0;
 
-	calc_good_matches(someMap, Kp_SomeMap, img_object, Kp_MinMap, KNN_mTmp, ratio_thresh, render_map_scale, lisx, lisy, sumx, sumy);
+	calc_good_matches(someMap, Kp_SomeMap, img_object, Kp_MinMap, KNN_not_no_city, ratio_thresh, render_map_scale, lisx, lisy, sumx, sumy);
 
 	// 如果范围内最佳匹配特征点对数量大于4，则认为不可能处于城镇之中，位于城镇之外
 	if (std::min(lisx.size(), lisy.size()) > 4)
@@ -226,17 +226,17 @@ cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_fai
 			return pos_not_on_city;
 		}
 
-		cv::Ptr<cv::DescriptorMatcher> matcherTmp = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
-		std::vector< std::vector<cv::DMatch> > KNN_mTmp;
+		cv::Ptr<cv::DescriptorMatcher> matcher_mabye_on_city = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
+		std::vector< std::vector<cv::DMatch> > KNN_mabye_on_city;
 
-		matcherTmp->knnMatch(Dp_MinMap, Dp_SomeMap, KNN_mTmp, 2);
+		matcher_mabye_on_city->knnMatch(Dp_MinMap, Dp_SomeMap, KNN_mabye_on_city, 2);
 
 		std::vector<double> list_x_on_city;
 		std::vector<double> list_y_on_city;
 		double sum_x_on_city = 0;
 		double sum_y_on_city = 0;
 
-		calc_good_matches(someMap, Kp_SomeMap, img_object, Kp_MinMap, KNN_mTmp, ratio_thresh, 0.8667, list_x_on_city, list_y_on_city, sum_x_on_city, sum_y_on_city);
+		calc_good_matches(someMap, Kp_SomeMap, img_object, Kp_MinMap, KNN_mabye_on_city, ratio_thresh, 0.8667, list_x_on_city, list_y_on_city, sum_x_on_city, sum_y_on_city);
 
 		if (std::min(list_x_on_city.size(), list_y_on_city.size()) <= 4)
 		{
@@ -305,31 +305,59 @@ cv::Point2d SurfMatch::match_no_continuity(bool& calc_is_faile)
 }
 
 
-void calc_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double render_map_scale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
+namespace CalcMatch
 {
-#ifdef _DEBUG
-	std::vector<cv::DMatch> good_matches;
-#endif
-	for (size_t i = 0; i < KNN_m.size(); i++)
+	namespace Debug
 	{
-		if (KNN_m[i][0].distance < ratio_thresh * KNN_m[i][1].distance)
+		void calc_good_matches_show(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double mapScale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
 		{
-#ifdef _DEBUG
-			good_matches.push_back(KNN_m[i][0]);
-#endif
-			if (KNN_m[i][0].queryIdx >= keypoint_object.size())
+			std::vector<cv::DMatch> good_matches;
+			for (size_t i = 0; i < KNN_m.size(); i++)
 			{
-				continue;
+				if (KNN_m[i][0].distance < ratio_thresh * KNN_m[i][1].distance)
+				{
+					good_matches.push_back(KNN_m[i][0]);
+					if (KNN_m[i][0].queryIdx >= keypoint_object.size())
+					{
+						continue;
+					}
+					lisx.push_back(((img_object.cols / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.x) * mapScale + keypoint_scene[KNN_m[i][0].trainIdx].pt.x));
+					lisy.push_back(((img_object.rows / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.y) * mapScale + keypoint_scene[KNN_m[i][0].trainIdx].pt.y));
+					sumx += lisx.back();
+					sumy += lisy.back();
+				}
 			}
-			lisx.push_back(((img_object.cols / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.x) * render_map_scale + keypoint_scene[KNN_m[i][0].trainIdx].pt.x));
-			lisy.push_back(((img_object.rows / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.y) * render_map_scale + keypoint_scene[KNN_m[i][0].trainIdx].pt.y));
-			sumx += lisx.back();
-			sumy += lisy.back();
+			draw_good_matches(img_scene, keypoint_scene, img_object, keypoint_object, good_matches);
+				}
+		}
+
+	void calc_good_matches_show(cv::Mat&, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double mapScale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
+	{
+		for (size_t i = 0; i < KNN_m.size(); i++)
+		{
+			if (KNN_m[i][0].distance < ratio_thresh * KNN_m[i][1].distance)
+			{
+				if (KNN_m[i][0].queryIdx >= keypoint_object.size())
+				{
+					continue;
+				}
+				lisx.push_back(((img_object.cols / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.x) * mapScale + keypoint_scene[KNN_m[i][0].trainIdx].pt.x));
+				lisy.push_back(((img_object.rows / 2.0 - keypoint_object[KNN_m[i][0].queryIdx].pt.y) * mapScale + keypoint_scene[KNN_m[i][0].trainIdx].pt.y));
+				sumx += lisx.back();
+				sumy += lisy.back();
+			}
 		}
 	}
+
+	}
+
+void calc_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double mapScale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
+{
+	CalcMatch::
 #ifdef _DEBUG
-	draw_good_matches(img_scene, keypoint_scene, img_object, keypoint_object, good_matches);
+		Debug::
 #endif
+		calc_good_matches_show(img_scene, keypoint_scene, img_object, keypoint_object, KNN_m, ratio_thresh, mapScale, lisx, lisy, sumx, sumy);
 }
 
 
@@ -438,10 +466,10 @@ bool func_test_diff_match(const cv::Mat minimap, double& dx, double& dy)
 		return false;
 	}
 
-	int x = minimap.cols * 0.1;
-	int y = minimap.cols * 0.1;
-	int w = minimap.cols * 0.8;
-	int h = minimap.cols * 0.8;
+	int x = static_cast<int>(minimap.cols * 0.1);
+	int y = static_cast<int>(minimap.cols * 0.1);
+	int w = static_cast<int>(minimap.cols * 0.8);
+	int h = static_cast<int>(minimap.cols * 0.8);
 
 	auto now_minimap_mat = minimap(cv::Rect(x, y, w, h));
 
