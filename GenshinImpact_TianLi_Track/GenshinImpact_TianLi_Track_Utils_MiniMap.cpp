@@ -17,15 +17,34 @@ void SurfMatch::setMap(cv::Mat gi_map)
 	_mapMat = gi_map;
 }
 
-void SurfMatch::setMinMap(cv::Mat minMapMat)
+void SurfMatch::setMiniMap(cv::Mat miniMapMat)
 {
-	_minMapMat = minMapMat;
+	std::vector<cv::Mat> minimap_split;
+	cv::split(miniMapMat(cv::Rect(30, 30, miniMapMat.cols - 60, miniMapMat.rows - 60)), minimap_split);
+	minimap_split[3] = cv::Scalar(255);
+	cv::merge(minimap_split, _miniMapMat);
+	if(_minimap_mat_mask.empty())
+	{
+		_minimap_mat_mask = cv::Mat(_miniMapMat.size(), CV_8UC1, cv::Scalar(255));
+		// ä¸­å¿ƒåŠå¾„ä¸º15çš„åœ†å½¢åŒºåŸŸä¸º0
+		cv::circle(_minimap_mat_mask, cv::Point(_miniMapMat.cols / 2, _miniMapMat.rows / 2), 12, cv::Scalar(0), -1, cv::LINE_AA);
+	}
+	else
+	{
+		// å¦‚æœå›¾ç‰‡å¤§å°å‘ç”Ÿäº†æ”¹å˜
+		if (_minimap_mat_mask.size() != _miniMapMat.size())
+		{
+			_minimap_mat_mask = cv::Mat(_miniMapMat.size(), CV_8UC1, cv::Scalar(255));
+			// ä¸­å¿ƒåŠå¾„ä¸º15çš„åœ†å½¢åŒºåŸŸä¸º0
+			cv::circle(_minimap_mat_mask, cv::Point(_miniMapMat.cols / 2, _miniMapMat.rows / 2), 12, cv::Scalar(0), -1, cv::LINE_AA);
+		}
+	}
 }
 
 void SurfMatch::Init()
 {
 	if (isInit)return;
-	detector = cv::xfeatures2d::SURF::create(minHessian);
+	detector = cv::xfeatures2d::SURF::create(hessian_threshold, octaves, octave_layers);
 	detector->detectAndCompute(_mapMat, cv::noArray(), Kp_Map, Dp_Map);
 	isInit = true;
 }
@@ -49,7 +68,7 @@ void SurfMatch::match()
 
 	int someSizeR = 200;// (img_object.cols + img_object.rows) / 4;
 
-	//½ÇÉ«ÒÆ¶¯Á¬ĞøĞÔÅĞ¶Ï
+	//è§’è‰²ç§»åŠ¨è¿ç»­æ€§åˆ¤æ–­
 	if (((dis(dp1) + dis(dp2)) < 2000) && (hisP[2].x > someSizeR && hisP[2].x < _mapMat.cols - someSizeR && hisP[2].y>someSizeR && hisP[2].y < _mapMat.rows - someSizeR))
 	{
 		isContinuity = true;
@@ -104,21 +123,21 @@ cv::Point2d SurfMatch::match_continuity_on_city(bool& calc_continuity_is_faile)
 	cv::Point2d pos_on_city;
 
 	cv::Mat img_scene(_mapMat);
-	cv::Mat img_object(_minMapMat(cv::Rect(30, 30, _minMapMat.cols - 60, _minMapMat.rows - 60)));
+	cv::Mat img_object(_miniMapMat);
 	
 	int someSizeR = (img_object.cols + img_object.rows) / 4;
 
-	//ÔÚ³ÇÕòÖĞ
+	//åœ¨åŸé•‡ä¸­
 		/***********************/
-		//ÖØĞÂ´ÓÍêÕûÖĞµØÍ¼È¡³ö½ÇÉ«ÖÜÎ§²¿·ÖµØÍ¼
+		//é‡æ–°ä»å®Œæ•´ä¸­åœ°å›¾å–å‡ºè§’è‰²å‘¨å›´éƒ¨åˆ†åœ°å›¾
 	cv::Mat someMap(img_scene(cv::Rect(static_cast<int>(hisP[2].x - someSizeR), static_cast<int>(hisP[2].y - someSizeR), someSizeR * 2, someSizeR * 2)));
 	cv::Mat minMap(img_object);
 
 	resize(someMap, someMap, cv::Size(someSizeR * 4, someSizeR * 4));
 
-	detectorSomeMap = cv::xfeatures2d::SURF::create(minHessian);
+	detectorSomeMap = cv::xfeatures2d::SURF::create(hessian_threshold, octaves, octave_layers);
 	detectorSomeMap->detectAndCompute(someMap, cv::noArray(), Kp_SomeMap, Dp_SomeMap);
-	detectorSomeMap->detectAndCompute(minMap, cv::noArray(), Kp_MinMap, Dp_MinMap);
+	detectorSomeMap->detectAndCompute(minMap, _minimap_mat_mask, Kp_MinMap, Dp_MinMap);
 
 	if (Kp_SomeMap.size() <= 2 || Kp_MinMap.size() <= 2)
 	{
@@ -167,19 +186,19 @@ cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_fai
 	cv::Point2d pos_not_on_city;
 
 	cv::Mat img_scene(_mapMat);
-	cv::Mat img_object(_minMapMat(cv::Rect(30, 30, _minMapMat.cols - 60, _minMapMat.rows - 60)));
+	cv::Mat img_object(_miniMapMat);
 	
 	int someSizeR = (img_object.cols + img_object.rows) / 4;
 
-	//²»ÔÚ³ÇÕòÖĞÊ±
+	//ä¸åœ¨åŸé•‡ä¸­æ—¶
 	cv::Mat someMap(img_scene(cv::Rect(static_cast<int>(hisP[2].x - someSizeR), static_cast<int>(hisP[2].y - someSizeR), someSizeR * 2, someSizeR * 2)));
 	cv::Mat minMap(img_object);
 
-	detectorSomeMap = cv::xfeatures2d::SURF::create(minHessian);
+	detectorSomeMap = cv::xfeatures2d::SURF::create(hessian_threshold, octaves, octave_layers);
 	detectorSomeMap->detectAndCompute(someMap, cv::noArray(), Kp_SomeMap, Dp_SomeMap);
-	detectorSomeMap->detectAndCompute(minMap, cv::noArray(), Kp_MinMap, Dp_MinMap);
+	detectorSomeMap->detectAndCompute(minMap, _minimap_mat_mask, Kp_MinMap, Dp_MinMap);
 
-	// Èç¹ûËÑË÷·¶Î§ÄÚ¿ÉÊ¶±ğÌØÕ÷µãÊıÁ¿Îª0£¬ÔòÈÏÎª¼ÆËãÊ§°Ü
+	// å¦‚æœæœç´¢èŒƒå›´å†…å¯è¯†åˆ«ç‰¹å¾ç‚¹æ•°é‡ä¸º0ï¼Œåˆ™è®¤ä¸ºè®¡ç®—å¤±è´¥
 	if (Kp_SomeMap.size() == 0 || Kp_MinMap.size() <= 2)
 	{
 		calc_continuity_is_faile = true;
@@ -196,7 +215,7 @@ cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_fai
 
 	calc_good_matches(someMap, Kp_SomeMap, img_object, Kp_MinMap, KNN_not_no_city, ratio_thresh, render_map_scale, lisx, lisy, sumx, sumy);
 
-	// Èç¹û·¶Î§ÄÚ×î¼ÑÆ¥ÅäÌØÕ÷µã¶ÔÊıÁ¿´óÓÚ4£¬ÔòÈÏÎª²»¿ÉÄÜ´¦ÓÚ³ÇÕòÖ®ÖĞ£¬Î»ÓÚ³ÇÕòÖ®Íâ
+	// å¦‚æœèŒƒå›´å†…æœ€ä½³åŒ¹é…ç‰¹å¾ç‚¹å¯¹æ•°é‡å¤§äº4ï¼Œåˆ™è®¤ä¸ºä¸å¯èƒ½å¤„äºåŸé•‡ä¹‹ä¸­ï¼Œä½äºåŸé•‡ä¹‹å¤–
 	if (std::min(lisx.size(), lisy.size()) > 4)
 	{
 		isOnCity = false;
@@ -207,17 +226,17 @@ cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_fai
 	else
 	{
 
-		//ÓĞ¿ÉÄÜ´¦ÓÚ³ÇÕòÖĞ
+		//æœ‰å¯èƒ½å¤„äºåŸé•‡ä¸­
 
 		/***********************/
-		//ÖØĞÂ´ÓÍêÕûÖĞµØÍ¼È¡³ö½ÇÉ«ÖÜÎ§²¿·ÖµØÍ¼
+		//é‡æ–°ä»å®Œæ•´ä¸­åœ°å›¾å–å‡ºè§’è‰²å‘¨å›´éƒ¨åˆ†åœ°å›¾
 		img_scene(cv::Rect(static_cast<int>(hisP[2].x - someSizeR), static_cast<int>(hisP[2].y - someSizeR), someSizeR * 2, someSizeR * 2)).copyTo(someMap);
 		//Mat minMap(img_object);
 
 		resize(someMap, someMap, cv::Size(someSizeR * 4, someSizeR * 4));
 		//resize(minMap, minMap, Size(), MatchMatScale, MatchMatScale, 1);
 
-		detectorSomeMap = cv::xfeatures2d::SURF::create(minHessian);
+		detectorSomeMap = cv::xfeatures2d::SURF::create(hessian_threshold, octaves, octave_layers);
 		detectorSomeMap->detectAndCompute(someMap, cv::noArray(), Kp_SomeMap, Dp_SomeMap);
 		//detectorSomeMap->detectAndCompute(minMap, noArray(), Kp_MinMap, Dp_MinMap);
 		if (Kp_SomeMap.size() == 0 || Kp_MinMap.size() == 0)
@@ -269,11 +288,11 @@ cv::Point2d SurfMatch::match_no_continuity(bool& calc_is_faile)
 {
 	cv::Point2d pos_continuity_no;
 
-	// TODO: ¿ÉÓÅ»¯Îªstatic
+	// TODO: å¯ä¼˜åŒ–ä¸ºstatic
 	cv::Mat img_scene(_mapMat);
-	cv::Mat img_object(_minMapMat(cv::Rect(30, 30, _minMapMat.cols - 60, _minMapMat.rows - 60)));
+	cv::Mat img_object(_miniMapMat);
 
-	detector->detectAndCompute(img_object, cv::noArray(), Kp_MinMap, Dp_MinMap);
+	detector->detectAndCompute(img_object, _minimap_mat_mask, Kp_MinMap, Dp_MinMap);
 
 	if (Kp_MinMap.size() == 0)
 	{
@@ -354,6 +373,7 @@ namespace CalcMatch
 void calc_good_matches(cv::Mat& img_scene, std::vector<cv::KeyPoint> keypoint_scene, cv::Mat& img_object, std::vector<cv::KeyPoint> keypoint_object, std::vector<std::vector<cv::DMatch>>& KNN_m, double ratio_thresh, double mapScale, std::vector<double>& lisx, std::vector<double>& lisy, double& sumx, double& sumy)
 {
 	CalcMatch::
+		Debug::
 #ifdef _DEBUG
 		Debug::
 #endif
@@ -392,11 +412,11 @@ double SurfMatch::dis(cv::Point2d& p)
 
 cv::Point2d SurfMatch::SPC(std::vector<double> lisx, double sumx, std::vector<double> lisy, double sumy)
 {
-	//Õâ¸öÌŞ³ıÒì³£µãËã·¨
-	//»ØÍ·Òª¸Ä
+	//è¿™ä¸ªå‰”é™¤å¼‚å¸¸ç‚¹ç®—æ³•
+	//å›å¤´è¦æ”¹
 	cv::Point2d mpos;
-	double meanx = sumx / lisx.size(); //¾ùÖµ
-	double meany = sumy / lisy.size(); //¾ùÖµ
+	double meanx = sumx / lisx.size(); //å‡å€¼
+	double meany = sumy / lisy.size(); //å‡å€¼
 	double x = meanx;
 	double y = meany;
 	if (std::min(lisx.size(), lisy.size()) > 3)
@@ -409,8 +429,8 @@ cv::Point2d SurfMatch::SPC(std::vector<double> lisx, double sumx, std::vector<do
 			accumy += (lisy[i] - meany) * (lisy[i] - meany);
 		}
 
-		double stdevx = sqrt(accumx / (lisx.size() - 1)); //±ê×¼²î
-		double stdevy = sqrt(accumy / (lisy.size() - 1)); //±ê×¼²î
+		double stdevx = sqrt(accumx / (lisx.size() - 1)); //æ ‡å‡†å·®
+		double stdevy = sqrt(accumy / (lisy.size() - 1)); //æ ‡å‡†å·®
 
 		sumx = 0;
 		sumy = 0;
@@ -513,14 +533,14 @@ bool func_test_diff_match(const cv::Mat minimap, double& dx, double& dy)
 	//
 	//pos_minimap += diff_pos;
 	//std::cout << "pos_minimap = " << pos_minimap.x << " , " << pos_minimap.y << std::endl;c
-	//// Ğ¡µØÍ¼µş¼Ó»æÖÆÕ¹Ê¾
+	//// å°åœ°å›¾å åŠ ç»˜åˆ¶å±•ç¤º
 	//static cv::Mat minimap_mat(500, 500, CV_8UC4, cv::Scalar(0, 0, 0, 0));
 	//static cv::Point center(250, 250);
 	//static bool is_frist = true;
 	//if (is_frist)
 	//{
 	//	is_frist = false;
-	//	// ¿½±´Ğ¡µØÍ¼µ½Æ«ÒÆÎ»ÖÃ
+	//	// æ‹·è´å°åœ°å›¾åˆ°åç§»ä½ç½®
 	//	cv::Mat minimap_mat_roi = minimap_mat(cv::Rect(static_cast<int>(250 - now_minimap_mat.cols / 2), static_cast<int>(250 - now_minimap_mat.rows / 2), now_minimap_mat.cols, now_minimap_mat.rows));
 	//	now_minimap_mat.copyTo(minimap_mat_roi);
 	//}
@@ -541,7 +561,7 @@ bool func_test_diff_match(const cv::Mat minimap, double& dx, double& dy)
 
 	//try {
 
-	//	// »æÖÆÆ«ÒÆÎ»ÖÃ
+	//	// ç»˜åˆ¶åç§»ä½ç½®
 	//	cv::Mat minimap_mat_roi = minimap_mat(cv::Rect(static_cast<int>(pos_minimap_draw.x - now_minimap_mat.cols / 2), static_cast<int>(pos_minimap_draw.y - now_minimap_mat.rows / 2), now_minimap_mat.cols, now_minimap_mat.rows));
 	//	cv::addWeighted(minimap_mat_roi, 0.5, now_minimap_mat, 0.5, 0, minimap_mat_roi);
 
@@ -589,17 +609,17 @@ bool ins_gps_data_fusion(const Pos& ins, const Pos& gps, double& x, double& y)
 	//x = ins.x + ins.dx - gps.x - gps.dx;
 	//y = ins.y + ins.dy - gps.y - gps.dy;
 
-	// »ùÓÚkalman filterµÄinsºÍgpsÊı¾İÈÚºÏ
-	// ·Ö±ğÊ¹ÓÃkalman filter¶ÔinsºÍgpsÊı¾İ½øĞĞÂË²¨
-	// ½«ÂË²¨ºóµÄinsºÍgpsÊı¾İ½øĞĞÈÚºÏ
-	// ´Ó¶øµÃµ½¸ü¼Ó×¼È·µÄÎ»ÖÃĞÅÏ¢
-	// 1. insÊı¾İÂË²¨
-	// 2. gpsÊı¾İÂË²¨
-	// 3. insºÍgpsÊı¾İÈÚºÏ
-	// 4. ÈÚºÏºóµÄÊı¾İ½øĞĞÂË²¨
-	// 5. ·µ»ØÈÚºÏºóµÄÊı¾İ
+	// åŸºäºkalman filterçš„inså’Œgpsæ•°æ®èåˆ
+	// åˆ†åˆ«ä½¿ç”¨kalman filterå¯¹inså’Œgpsæ•°æ®è¿›è¡Œæ»¤æ³¢
+	// å°†æ»¤æ³¢åçš„inså’Œgpsæ•°æ®è¿›è¡Œèåˆ
+	// ä»è€Œå¾—åˆ°æ›´åŠ å‡†ç¡®çš„ä½ç½®ä¿¡æ¯
+	// 1. insæ•°æ®æ»¤æ³¢
+	// 2. gpsæ•°æ®æ»¤æ³¢
+	// 3. inså’Œgpsæ•°æ®èåˆ
+	// 4. èåˆåçš„æ•°æ®è¿›è¡Œæ»¤æ³¢
+	// 5. è¿”å›èåˆåçš„æ•°æ®
 
-	// insÊı¾İÂË²¨
+	// insæ•°æ®æ»¤æ³¢
 	static Filter* ins_filter = nullptr;
 	static bool ins_kf_init = false;
 	if (!ins_kf_init)
@@ -611,7 +631,7 @@ bool ins_gps_data_fusion(const Pos& ins, const Pos& gps, double& x, double& y)
 	}
 	auto ins_pos = ins_filter->filterting(ins.pos_t);
 
-	// gpsÊı¾İÂË²¨
+	// gpsæ•°æ®æ»¤æ³¢
 	static Filter* gps_filter = nullptr;
 	static bool gps_kf_init = false;
 	if (!gps_kf_init)
@@ -622,10 +642,10 @@ bool ins_gps_data_fusion(const Pos& ins, const Pos& gps, double& x, double& y)
 	}
 	auto gps_pos = gps_filter->filterting(gps.pos_t);
 
-	// insºÍgpsÊı¾İÈÚºÏ
+	// inså’Œgpsæ•°æ®èåˆ
 	auto pos = (gps_pos + ins_pos);
 
-	// ÈÚºÏºóµÄÊı¾İ½øĞĞÂË²¨
+	// èåˆåçš„æ•°æ®è¿›è¡Œæ»¤æ³¢
 	static Filter* fusion_filter = nullptr;
 	static bool fusion_kf_init = false;
 	if (!fusion_kf_init)
@@ -654,21 +674,23 @@ void get_avatar_position(const GenshinMinimap& genshin_minimap, GenshinAvatarPos
 	if (!is_init)
 	{
 		TianLi::XmlDbMem xml_db_mem = GenshinImpact_TianLi_Resource::GetInstance()->LoadXml_GIMAP_COMPUTE();
-		// ´ÓÄÚ´æÖĞ¼ÓÔØxmlÎÄ¼şµÄstring
+		// ä»å†…å­˜ä¸­åŠ è½½xmlæ–‡ä»¶çš„string
 		std::string xml_str(xml_db_mem.ptr);
-		// ½«xmlÎÄ¼şµÄstring×ª»»ÎªxmlÎÄ¼ş
+		// å°†xmlæ–‡ä»¶çš„stringè½¬æ¢ä¸ºxmlæ–‡ä»¶
 		cv::FileStorage fs(xml_str, cv::FileStorage::MEMORY | cv::FileStorage::READ);
 		
 		std::vector<cv::KeyPoint> gi_map_keypoints;
 		cv::Mat gi_map_descriptors;
-		// ´Ófs¼ÓÔØ keypoints ºÍ descriptor
+		std::string build_time;
+		fs["build_time"] >> build_time;
+		// ä»fsåŠ è½½ keypoints å’Œ descriptor
 		fs["keypoints"] >> gi_map_keypoints;
 		fs["descriptors"] >> gi_map_descriptors;
 		
 		surf_match.setMap(GenshinImpact_TianLi_Resource::GetInstance()->GIMAP);
 
-		surf_match.detector = cv::xfeatures2d::SURF::create(surf_match.minHessian);
-		surf_match.detectorSomeMap = cv::xfeatures2d::SURF::create(surf_match.minHessian);
+		surf_match.detector = cv::xfeatures2d::SURF::create(surf_match.hessian_threshold, surf_match.octaves, surf_match.octave_layers);
+		surf_match.detectorSomeMap = cv::xfeatures2d::SURF::create(surf_match.hessian_threshold, surf_match.octaves, surf_match.octave_layers);
 		
 		surf_match.Init(gi_map_keypoints, gi_map_descriptors);
 		
@@ -686,10 +708,10 @@ void get_avatar_position(const GenshinMinimap& genshin_minimap, GenshinAvatarPos
 		return;
 	}
 
-	surf_match.setMinMap(genshin_minimap.img_minimap);
+	surf_match.setMiniMap(genshin_minimap.img_minimap);
 	
 	surf_match.match();
-	// GPSÊı¾İ»ñÈ¡
+	// GPSæ•°æ®è·å–
 	out_genshin_position.position = surf_match.getLocalPos();
 
 	//static Pos ins_pos;
@@ -697,14 +719,14 @@ void get_avatar_position(const GenshinMinimap& genshin_minimap, GenshinAvatarPos
 	//static Pos fusion_pos;
 	//double dx = 0;
 	//double dy = 0;
-	//// INSÊı¾İ»ñÈ¡
+	//// INSæ•°æ®è·å–
 	//func_test_diff_match(genshin_minimap.img_minimap, dx, dy);
-	//// ´ÓGPS»ñÈ¡¾ø¶ÔÎ»ÖÃ
+	//// ä»GPSè·å–ç»å¯¹ä½ç½®
 	//ins_pos.pos_t = ins_pos.pos_t;
 	//ins_pos.updata(dx/2.0, dy/2.0);
-	//// GPSÊı¾İ»ñÈ¡
+	//// GPSæ•°æ®è·å–
 	//gps_pos.updata(out_genshin_position.position);
-	//// INSºÍGPSÊı¾İÈÚºÏ
+	//// INSå’ŒGPSæ•°æ®èåˆ
 	//double x = 0;
 	//double y = 0;
 	//ins_gps_data_fusion(ins_pos, gps_pos, x, y);

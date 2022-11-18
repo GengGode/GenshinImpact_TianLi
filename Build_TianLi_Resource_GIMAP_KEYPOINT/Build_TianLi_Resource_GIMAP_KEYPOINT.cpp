@@ -12,10 +12,14 @@ int main()
 	std::vector<cv::KeyPoint> Kp_Map;
 	cv::Mat Dp_Map;
 	
-	cv::Ptr<cv::xfeatures2d::SURF>  detector = cv::xfeatures2d::SURF::create(400);
+	cv::Ptr<cv::xfeatures2d::SURF>  detector = cv::xfeatures2d::SURF::create(1,1,1);
 	detector->detectAndCompute(map, cv::noArray(), Kp_Map, Dp_Map);
 	
 	cv::FileStorage fs("../GenshinImpact_TianLi_Resource/resource/GIMAP_COMPUTE.xml", cv::FileStorage::WRITE);
+	
+	// 获取系统时间
+	std::string build_time = __DATE__ " " __TIME__;
+	fs << "build_time" << build_time;
 	fs << "keypoints" << Kp_Map;
 	fs << "descriptors" << Dp_Map;
 	fs.release();

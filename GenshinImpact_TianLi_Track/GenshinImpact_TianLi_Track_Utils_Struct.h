@@ -274,13 +274,15 @@ private:
 class SurfMatch
 {
 	cv::Mat _mapMat;
-	cv::Mat _minMapMat;
-	cv::Mat _minMapLastMat;
+	cv::Mat _miniMapMat;
+	cv::Mat _minimap_mat_mask;
+	cv::Mat _miniMapLastMat;
 
 	double ratio_thresh = 0.66;
 	double render_map_scale = 1.3;//1.3;
 	//int someSizeR = 106;
 	double MatchMatScale = 2.0;
+
 
 
 
@@ -293,7 +295,9 @@ public:
 	~SurfMatch();
 
 public:
-	int minHessian = 400;
+	int hessian_threshold = 1;
+	int octaves = 1;
+	int octave_layers = 1;
 
 	cv::Ptr<cv::xfeatures2d::SURF> detector, detectorSomeMap;
 	std::vector<cv::KeyPoint> Kp_MinMap, Kp_Map, Kp_SomeMap;
@@ -304,7 +308,7 @@ public:
 	bool isOnCity = false;
 
 	void setMap(cv::Mat gi_map);
-	void setMinMap(cv::Mat minMapMat);
+	void setMiniMap(cv::Mat miniMapMat);
 
 	void Init();
 	void Init(std::vector<cv::KeyPoint>& gi_map_keypoints, cv::Mat& gi_map_descriptors);
