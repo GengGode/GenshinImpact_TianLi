@@ -295,9 +295,14 @@ public:
 	~SurfMatch();
 
 public:
-	int hessian_threshold = 1;
-	int octaves = 1;
-	int octave_layers = 1;
+	Kalman fiting;
+public:
+	//int hessian_threshold = 1;
+	//int octaves = 1;
+	//int octave_layers = 1;
+	int hessian_threshold = 10;
+	int octaves = 4;
+	int octave_layers = 6;
 
 	cv::Ptr<cv::xfeatures2d::SURF> detector, detectorSomeMap;
 	std::vector<cv::KeyPoint> Kp_MinMap, Kp_Map, Kp_SomeMap;

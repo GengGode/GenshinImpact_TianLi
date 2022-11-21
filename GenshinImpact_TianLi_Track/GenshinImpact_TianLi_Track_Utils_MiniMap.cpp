@@ -712,7 +712,18 @@ void get_avatar_position(const GenshinMinimap& genshin_minimap, GenshinAvatarPos
 	
 	surf_match.match();
 	// GPS数据获取
-	out_genshin_position.position = surf_match.getLocalPos();
+	auto position = surf_match.getLocalPos();
+
+	// kalman filter
+	if (surf_match.isContinuity)
+	{
+		out_genshin_position.position = surf_match.fiting.filterting(position);
+	}
+	else
+	{
+		out_genshin_position.position = surf_match.fiting.re_init_filterting(position);
+
+	}
 
 	//static Pos ins_pos;
 	//static Pos gps_pos;
