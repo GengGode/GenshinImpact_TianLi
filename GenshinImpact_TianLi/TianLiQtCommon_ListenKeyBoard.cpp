@@ -70,7 +70,6 @@ void TianLiQtCommon_ListenKeyBoard::register_key(int key, std::function<void()> 
 	register_key_signal(key, [func](bool is_press) {
 		if (is_press)
 		{
-			LogTrace("key press");
 			func();
 		}
 		}, is_intercept);
@@ -83,7 +82,7 @@ LRESULT CALLBACK TianLiQtCommon_ListenKeyBoard::keyboard_proc(int nCode, WPARAM 
 	{
 		switch (wParam) {
 		case WM_KEYDOWN: {
-			LogInfo(QString::fromStdString(std::format("WM_KEYDOWN: {}\n", p->vkCode)));
+			LogInfo(QString::fromStdString(std::format("按下: {}\n", p->vkCode)));
 			if (key_signal_map.contains(p->vkCode))
 			{
 				if (key_signal_map[p->vkCode].first.first == false)
@@ -117,7 +116,7 @@ LRESULT CALLBACK TianLiQtCommon_ListenKeyBoard::keyboard_proc(int nCode, WPARAM 
 			
 		} break;
 		case WM_KEYUP: {
-			//LogInfo(QString::fromStdString(std::format("WM_KEYUP: {}\n", p->vkCode)));
+			LogInfo(QString::fromStdString(std::format("弹起: {}\n", p->vkCode)));
 			if (key_signal_map.contains(p->vkCode))
 			{
 				if (key_signal_map[p->vkCode].first.first == true)
