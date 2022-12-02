@@ -5,13 +5,30 @@
 #include "GenshinImpact_TianLi_Track.h"
 
 //#define TEST_LOCAL
+enum GenshinWindowClass
+{
+	None,
+	Unity,
+	Obs,
+	Qt,
+};
 
+const std::vector<std::pair<std::wstring,GenshinWindowClass>> GenshinWindowNameList =
+{
+	{L"原神",GenshinWindowClass::Unity},
+	{L"云·原神", GenshinWindowClass::Qt} ,
+	{L"窗口投影（源） - 云·原神",GenshinWindowClass::Obs},
+	{L"원신", GenshinWindowClass::Unity},
+	{L"Genshin Impact", GenshinWindowClass::Unity},
+	{L"原神-调试", GenshinWindowClass::None}
+};
 
 struct GenshinHandleConfig
 {
 	bool is_auto_find_genshin = true;
 	bool is_force_used_no_alpha = false;
 	HWND genshin_handle = nullptr;
+	std::vector<std::pair<std::wstring, GenshinWindowClass>> genshin_window_name_list = GenshinWindowNameList;
 
 };
 struct GenshinHandle
