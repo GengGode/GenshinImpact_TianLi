@@ -232,8 +232,8 @@ cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_fai
 		//重新从完整中地图取出角色周围部分地图
 		img_scene(cv::Rect(static_cast<int>(hisP[2].x - someSizeR), static_cast<int>(hisP[2].y - someSizeR), someSizeR * 2, someSizeR * 2)).copyTo(someMap);
 		//Mat minMap(img_object);
-
-		resize(someMap, someMap, cv::Size(someSizeR * 4, someSizeR * 4));
+		double scale_param = 4;
+		resize(someMap, someMap, cv::Size(someSizeR * scale_param, someSizeR * scale_param));
 		//resize(minMap, minMap, Size(), MatchMatScale, MatchMatScale, 1);
 
 		detectorSomeMap = cv::xfeatures2d::SURF::create(hessian_threshold, octaves, octave_layers);
