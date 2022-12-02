@@ -95,8 +95,8 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	//添加全局快捷键
 	// F1 触发 slot_show_or_hide
-	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("F1", this));
-	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_show_or_hide);
+	//hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("F1", this));
+	//connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_show_or_hide);
 	
 	hook_key_board_list.push_back(new TianLiQtCommon_HookKeyBoard("Alt+T", this));
 	connect(hook_key_board_list.back(), &TianLiQtCommon_HookKeyBoard::signal_activated, this, &GenshinImpact_TianLi::slot_auto_track);
@@ -107,8 +107,9 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	
 	// listen_key_board->register_key_signal(0x41, this, &GenshinImpact_TianLi::pushButton_Tab_1_clicked);
 	// F1 触发 slot_show_or_hide
-	//listen_key_board->register_key(0x70, this, &GenshinImpact_TianLi::slot_show_or_hide);
-	
+	listen_key_board->register_key(0x70, this, &GenshinImpact_TianLi::slot_show_or_hide);
+	// ESC 触发隐藏 slot_hide
+	listen_key_board->register_key(0x1B, this, &GenshinImpact_TianLi::slot_hide);
 	
 	
 	//connect(this, &GenshinImpact_TianLi::show, this, &GenshinImpact_TianLi::slot_show);
@@ -768,13 +769,18 @@ void GenshinImpact_TianLi::slot_show()
 			main_bebind_widget->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow);
 			main_bebind_widget->setAttribute(Qt::WA_TranslucentBackground, true);
 
+			LogInfo(QString("创建主窗口后的模糊覆盖 RECT：") + QString::number(gi_client_rect.left) + " " +  QString::number(gi_client_rect.top) + " " + QString::number(gi_client_rect.right) + " " +  QString::number(gi_client_rect.bottom));
 			/*SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)main_bebind_widget->winId(), GWL_EXSTYLE) |
 				WS_EX_TRANSPARENT);*/
 			TianLi::Utils::set_window_blur_bebind((HWND)main_bebind_widget->winId());
+
+			// 设置显示时隐藏HUD
+
 		}
 		
 		main_bebind_widget->show();
 		main_bebind_widget->activateWindow();
+
 	}
 	this->showNormal();
 	this->show();
