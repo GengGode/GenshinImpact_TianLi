@@ -26,7 +26,7 @@ struct DataJsonApi
 		int end = objects.size();
 		for (auto& object : objects)
 		{
-			sqlite3_exec(sql_db, object.sql_insert_str().c_str(), NULL, NULL, NULL);
+			sqlite3_exec(sql_db, object.sql_insert_str().c_str(), nullptr, nullptr, nullptr);
 			// 控制台输出运行进度条
 			std::cout << "\r" << "insert object: " << (it++) << "/" << end << std::flush;
 		}
@@ -138,7 +138,7 @@ void create_sql_db()
 	auto sql_create_str_list = create_sql_str();
 	for (auto& sql_create_str : sql_create_str_list)
 	{
-		sqlite3_exec(sql_db, sql_create_str.c_str(), NULL, NULL, NULL);
+		sqlite3_exec(sql_db, sql_create_str.c_str(), nullptr, nullptr, nullptr);
 	}
 	
 	sqlite3_close(sql_db);
@@ -175,13 +175,13 @@ void alter_png_sql_db(DataJsonApi& data_json_api)
 	// ALTER 
 	// Icon 表中插入一列data是图片的二进制
 	sql = "ALTER TABLE Icon ADD COLUMN data BLOB";
-	sqlite3_exec(sql_db, sql.c_str(), NULL, NULL, NULL);
+	sqlite3_exec(sql_db, sql.c_str(), nullptr, nullptr, nullptr);
 	// Icon 表中插入一列x是图片的宽
 	sql = "ALTER TABLE Icon ADD COLUMN x INTEGER";
-	sqlite3_exec(sql_db, sql.c_str(), NULL, NULL, NULL);
+	sqlite3_exec(sql_db, sql.c_str(), nullptr, nullptr, nullptr);
 	// Icon 表中插入一列y是图片的高
 	sql = "ALTER TABLE Icon ADD COLUMN y INTEGER";
-	sqlite3_exec(sql_db, sql.c_str(), NULL, NULL, NULL);
+	sqlite3_exec(sql_db, sql.c_str(), nullptr, nullptr, nullptr);
 
 	for (auto icon : icons)
 	{
@@ -201,7 +201,7 @@ void alter_png_sql_db(DataJsonApi& data_json_api)
 			// 更新数据库
 			sql = "UPDATE Icon SET data = ?, x = ?, y = ? WHERE url = ?";
 			sqlite3_stmt* stmt;
-			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, NULL);
+			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, nullptr);
 			sqlite3_bind_blob(stmt, 1, data.data, data.size, SQLITE_STATIC);
 			sqlite3_bind_int(stmt, 2, mat.cols);
 			sqlite3_bind_int(stmt, 3, mat.rows);
@@ -210,7 +210,7 @@ void alter_png_sql_db(DataJsonApi& data_json_api)
 			sqlite3_finalize(stmt);
 			// 测试从数据库读取图片
 			sql = "SELECT data FROM Icon WHERE url = ?";
-			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, NULL);
+			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, nullptr);
 			sqlite3_bind_text(stmt, 1, url.c_str(), url.size(), SQLITE_STATIC);
 			if (sqlite3_step(stmt) == SQLITE_ROW)
 			{
@@ -246,7 +246,7 @@ void update_png_sql_db()
 	// Select Icon
 	sql = "SELECT url FROM Icon";
 	sqlite3_stmt* stmt;
-	sqlite3_prepare_v2(sql_db, sql.c_str(), -1, &stmt, NULL);
+	sqlite3_prepare_v2(sql_db, sql.c_str(), -1, &stmt, nullptr);
 	
 	while (sqlite3_step(stmt) == SQLITE_ROW)
 	{
@@ -266,7 +266,7 @@ void update_png_sql_db()
 			// 更新数据库
 			sql = "UPDATE Icon SET data = ?, x = ?, y = ? WHERE url = ?";
 			sqlite3_stmt* stmt;
-			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, NULL);
+			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, nullptr);
 			sqlite3_bind_blob(stmt, 1, data.data, data.size, SQLITE_STATIC);
 			sqlite3_bind_int(stmt, 2, mat.cols);
 			sqlite3_bind_int(stmt, 3, mat.rows);
@@ -275,7 +275,7 @@ void update_png_sql_db()
 			sqlite3_finalize(stmt);
 			// 测试从数据库读取图片
 			sql = "SELECT data FROM Icon WHERE url = ?";
-			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, NULL);
+			sqlite3_prepare_v2(sql_db, sql, -1, &stmt, nullptr);
 			sqlite3_bind_text(stmt, 1, url, strlen(url), SQLITE_STATIC);
 			if (sqlite3_step(stmt) == SQLITE_ROW)
 			{
