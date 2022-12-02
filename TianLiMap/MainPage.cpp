@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "MainPage.h"
 #include "MainPage.g.cpp"
+#include <WebView2.h>
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
