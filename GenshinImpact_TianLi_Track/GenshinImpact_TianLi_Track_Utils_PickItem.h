@@ -18,7 +18,7 @@ inline std::string ocr_call(cv::Mat& mat)
 		text = t;
 		libocr::free_char((char*)t);
 	}
-	//auto text = GenshinImpact_TianLi_Ocr::GetInstance().add_image_tag(mat);
+	// text = GenshinImpact_TianLi_Ocr::GetInstance().add_image_tag(mat);
 	return text;
 }
 inline std::vector<std::string> ocr_call(std::vector<cv::Mat>& vec)
@@ -80,8 +80,9 @@ inline void get_pickable_items(const GenshinScreen& genshin_screen, GenshinPicka
 		cv::Rect rect = cv::boundingRect(contours[i]);
 		rectangle(layers[3], rect, color, 1);
 	}
-	//imshow("alpha right", layers[3]);
-
+	imshow("alpha right", layers[3]);
+	cv::waitKey(1);
+		
 	static std::mutex task_mutex;
 	static std::queue<std::function<std::string()>> task_queue;
 	// 从原图中取出矩形
