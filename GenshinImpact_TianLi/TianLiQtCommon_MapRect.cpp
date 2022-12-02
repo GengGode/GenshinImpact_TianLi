@@ -205,7 +205,7 @@ void TianLiQtCommon_MapRect::slot_update()
 
 		// 更新可捡取物品列表
 		static std::vector<std::string> item_tags_buf;
-		auto &item_tags = CoreMap.Core.GetTrack().GetResult().item_tags;
+		auto item_tags = CoreMap.Core.GetTrack().GetResult().item_tags;
 		if (item_tags_buf != item_tags)
 		{
 			item_tags_buf = item_tags;
