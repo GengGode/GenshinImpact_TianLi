@@ -56,6 +56,7 @@ struct BadgeInfo
 	{
 		std::string name;
 		cv::Mat image;
+		cv::Point center_pos;
 		struct Badge
 		{
 			std::string message;
