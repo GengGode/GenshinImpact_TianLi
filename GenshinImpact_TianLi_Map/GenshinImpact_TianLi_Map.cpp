@@ -48,7 +48,7 @@ void GenshinImpact_TianLi_Map::render_overlay(cv::Mat& map)
 void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 {
 	// 地图中心绘制环形光标
-	cv::circle(map, cv::Point(map.cols / 2, map.rows / 2), 5, cv::Scalar(0, 128, 255, 128), 1, cv::LINE_AA);
+	//cv::circle(map, cv::Point(map.cols / 2, map.rows / 2), 5, cv::Scalar(0, 128, 255, 128), 1, cv::LINE_AA);
 
 	cv::Rect viewer_rect = cv::Rect(cv::Point(map_info.center_x, map_info.center_y),cv::Size(map_info.viewer_width, map_info.viewer_height));
 	if (map_info.is_show_map)
@@ -77,24 +77,27 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 	for (auto& [key,info] : badge_info.badge_block_list)
 	{
 		cv::Mat img = info.image;
+		cv::Point diff_center_pos = cv::Point(info.image.cols / 2, info.image.rows / 2) - info.center_pos;
 		cv::resize(img, img, cv::Size(), 1.0/map_info.scale_form_gimap, 1.0/map_info.scale_form_gimap);
 
 		BadgeInfo::BadgeBlock show_infos;
-
+		
 		for (auto& legend : info.badge_list)
 		{
+			cv::Rect object_rect = map_info.map_rect - diff_center_pos;
+
 			// 取交集
-			if (legend & map_info.map_rect)
+			if (legend & object_rect)
 			{
 				// 绘制在map中Rect
 				// TODO:
 				cv::Rect r_img = cv::Rect(cv::Point(std::round((legend.x- img.cols/2.0) / map_info.scale_form_gimap), std::round((legend.y- img.rows/2.0)) / map_info.scale_form_gimap), img.size());
 				
 				// 取交集
-				cv::Rect r = (r_img & map_info.map_rect);
+				cv::Rect r = (r_img & object_rect);
 				
 				// 获取相对于地图图片的范围
-				cv::Rect r1 = r - map_info.map_rect.tl();
+				cv::Rect r1 = r - object_rect.tl();
 				// 获取相对于区块图片的范围
 				cv::Rect r2 = r - r_img.tl();
 				//img(r2).copyTo(map(r1));
