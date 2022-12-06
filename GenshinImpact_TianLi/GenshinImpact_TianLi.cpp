@@ -885,17 +885,39 @@ void GenshinImpact_TianLi::pushButtonGroup_SelectItem(bool checked)
 				BadgeInfo::BadgeBlock legend_block;
 				legend_block.name = itemsItemsVector[0].name;
 
-				legend_block.image = Core.GetResource().GetImageBuffer("", "", "", itemsItemsVector[0].name);
-				{
-					double scale = 32.0 / max(legend_block.image.rows, legend_block.image.cols) ;
-					cv::resize(legend_block.image, legend_block.image, cv::Size(scale * legend_block.image.cols, scale * legend_block.image.rows));
 					// 绘制半透明圆环
 					if (legend_block.name != "传送锚点" && legend_block.name != "七天神像")
 					{
-						cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 3, cv::Scalar(255, 255, 255, 100), 3, cv::LINE_AA);
-						cv::circle(legend_block.image, cv::Point(legend_block.image.cols / 2, legend_block.image.rows / 2), legend_block.image.cols / 2 - 1, cv::Scalar(0, 0, 0, 250), 1, cv::LINE_AA);
+						int resize = 49;
+						int rect_w = 57;
+						int rect_h = 64;
+						int center_x = 28;
+						int center_y = 28;
+
+						legend_block.image = cv::Mat(rect_h, rect_w, CV_8UC4, cv::Scalar(0, 0, 0, 0));//
+						cv::Mat image = Core.GetResource().GetImageBuffer("", "", "", itemsItemsVector[0].name).clone();
+
+						int lt = (rect_w - resize) * 0.5;
+						double scale = 1.0 * resize / max(image.rows, image.cols);
+						cv::Size img_resize = cv::Size(scale * image.cols, scale * image.rows);
+						cv::Mat image_roi = legend_block.image(cv::Rect(lt, lt, img_resize.width, img_resize.height));
+
+						cv::resize(image, image_roi, img_resize);
+
+						legend_block.image = TianLi::Utils::draw_object_border(legend_block.image);
+						legend_block.center_pos.x = legend_block.image.cols / 2;
+						legend_block.center_pos.y = legend_block.image.rows;
 					}
-				}
+					else
+					{
+						cv::Mat image = Core.GetResource().GetImageBuffer("", "", "", itemsItemsVector[0].name).clone();
+						double scale = 48.0 / max(image.rows, image.cols);
+						cv::Size img_resize = cv::Size(scale * image.cols, scale * image.rows);
+						cv::resize(image, legend_block.image, img_resize);
+
+						legend_block.center_pos.x = legend_block.image.cols / 2;
+						legend_block.center_pos.y = legend_block.image.rows / 2;
+					}
 
 				for (int i = 0; i < itemsItemsVector.size; i++)
 				{
