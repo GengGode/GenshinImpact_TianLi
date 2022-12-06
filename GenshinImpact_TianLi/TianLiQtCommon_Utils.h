@@ -48,5 +48,7 @@ namespace TianLi::Utils
 	QImage mat_2_qimage(cv::Mat const& src);
 	
 	cv::Mat qimage_2_mat(QImage const& src);
+
+	cv::Mat draw_object_border(cv::Mat src, bool is_show = false);
 }
 

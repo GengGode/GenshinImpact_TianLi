@@ -311,5 +311,97 @@ namespace TianLi::Utils
 		result = tmp.clone();
 		return result;
 	}
+
+	void add_rgba_image(cv::Mat& src1, cv::Mat& src2, cv::Mat& dst, double alpha)
+	{
+		//assert(src1.size() != src2.size());
+		assert(src1.channels() == 4 && src2.channels() == 4);
+
+		std::vector<cv::Mat> src1_split;
+		std::vector<cv::Mat> src2_split;
+		std::vector<cv::Mat> dst_merge;
+
+		cv::split(src1, src1_split);
+		cv::split(src2, src2_split);
+
+		// TODO:fix 修改透明度只是改变了叠加层的透明度，并未显示底层的画面
+		for (int i = 0; i < 3; i++)
+		{
+			auto dst_src1 = src1_split[i].mul(~src2_split[3], 1.0 / 255.0);
+			auto dst_src2 = src2_split[i].mul(src2_split[3], alpha / 255.0);
+			auto dst_channel = dst_src1 + dst_src2;
+			dst_merge.push_back(dst_channel);
+		}
+		cv::Mat alpha_dst = src1_split[3] + src2_split[3] * alpha;
+		dst_merge.push_back(alpha_dst);
+		cv::merge(dst_merge, dst);
+	}
+	
+	cv::Mat draw_object_border(cv::Mat src, bool is_show)
+	{
+		cv::Scalar show_color = cv::Scalar(240, 240, 240, 255);
+		if (is_show)
+		{
+			show_color = cv::Scalar(255, 255, 25, 255);
+		}
+
+		int resize = 49;
+		int rect_w = 57;
+		int rect_h = 64;
+		int center_x = 28;
+		int center_y = 28;
+		
+		cv::Mat dst = src;
+
+		cv::circle(dst, cv::Point(center_x, center_y), center_x - 2, cv::Scalar(0, 0, 0, 48), 2, cv::LINE_AA);
+		cv::circle(dst, cv::Point(center_x, center_y), center_x - 6, show_color, 4, cv::LINE_AA);
+		cv::ellipse(dst, cv::Point(center_x, center_y), cv::Size(center_x - 6, center_x - 6), 90, -40, 40, cv::Scalar(255, 255, 255, 255), 4, cv::LINE_AA);
+		/*{
+			int box_r = 13;
+			cv::Mat box_img = cv::Mat(box_r + box_r, box_r + box_r, CV_8UC4, cv::Scalar(0, 0, 0, 0));
+			int center_box_y = center_y + center_y - 6;
+			cv::Point pts[4];
+			pts[0] = cv::Point(center_x, center_box_y + box_r);
+			pts[1] = cv::Point(center_x + box_r, center_box_y);
+			pts[2] = cv::Point(center_x, center_box_y - box_r);
+			pts[3] = cv::Point(center_x - box_r, center_box_y);
+			cv::fillConvexPoly(dst, pts, 4, cv::Scalar(0, 0, 0, 48));
+			cv::Rect roi_rect = cv::Rect(center_x - box_r, center_box_y - box_r, box_r + box_r, box_r + box_r);
+			cv::Mat box_roi = dst(roi_rect);
+
+		}*/
+		{
+			int box_r = 11;
+			cv::Mat box_img=cv::Mat(box_r + box_r+1, box_r + box_r+1,CV_8UC4,cv::Scalar(0,0,0,0));
+			int center_box_y = center_y + center_y - 4;
+			cv::Point pts[4];
+			pts[0] = cv::Point(box_r, box_r + box_r);
+			pts[1] = cv::Point(box_r + box_r, box_r);
+			pts[2] = cv::Point(box_r, box_r - box_r);
+			pts[3] = cv::Point(box_r - box_r, box_r);
+			cv::fillConvexPoly(box_img, pts, 4, cv::Scalar(0, 0, 0, 48));
+			cv::Rect roi_rect=cv::Rect(center_x - box_r, center_box_y - box_r, box_r+ box_r+1, box_r+ box_r+1);
+			cv::Mat box_roi = dst(roi_rect);
+
+			add_rgba_image(box_roi, box_img, box_roi,1.0);
+		}
+		{
+			int center_box_y = center_y + center_y - 4;
+			int box_r = 7;
+			cv::Point pts[4];
+			pts[0] = cv::Point(center_x, center_box_y + box_r);
+			pts[1] = cv::Point(center_x + box_r, center_box_y);
+			pts[2] = cv::Point(center_x, center_box_y - box_r);
+			pts[3] = cv::Point(center_x - box_r, center_box_y);
+			cv::fillConvexPoly(dst, pts, 4, cv::Scalar(255, 255, 255, 255));
+		}
+		{
+			int box_r = 7;
+			int center_box_y = center_y + center_y - box_r;
+			cv::ellipse(dst, cv::Point(center_x, center_box_y-4), cv::Size(4, 4), 90, -45, 45, show_color, -1, cv::LINE_AA,0);
+		}
+		return dst;
+	}
+
 }
 
