@@ -1,4 +1,4 @@
-#include "TianLiQtCommon_MapRect.h"
+﻿#include "TianLiQtCommon_MapRect.h"
 
 #include <QTimer>
 #include <QPainter>
