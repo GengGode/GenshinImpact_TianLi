@@ -188,7 +188,7 @@ void GenshinImpact_TianLi::init_area_list()
 			// 记录在按钮组中的id
 			area_button_index_map.insert({ child_name, button_id });
 
-			new_child_button->setGeometry((area_button_index_map.size()-1) % 5 * 60, (area_button_index_map.size()-1) / 5 * 40, 60, 30);
+			new_child_button->setGeometry(static_cast<int>((area_button_index_map.size()-1) % 5 * 60), static_cast<int>((area_button_index_map.size()-1) / 5 * 40), 60, 30);
 
 			// 显示按钮
 			new_child_button->show();
@@ -235,7 +235,7 @@ void GenshinImpact_TianLi::init_type_list()
 			// 记录在按钮组中的id
 			type_button_index_map.insert({ child_name, button_id });
 
-			new_child_button->setGeometry(type_button_index_map.size() % 5 * 60, 80 + type_button_index_map.size() / 5 * 40, 60, 30);
+			new_child_button->setGeometry(static_cast<int>(type_button_index_map.size() % 5 * 60), static_cast <int>(80 + type_button_index_map.size() / 5 * 40), 60, 30);
 
 			// 显示按钮
 			new_child_button->show();
@@ -295,7 +295,7 @@ void GenshinImpact_TianLi::updata_selectable_item(std::string area, std::string 
 			// 记录在按钮组中的id
 			item_button_index_map.insert({ item, button_id });
 
-			new_child_button->setGeometry(item_button_index_map.size() % 5 * 60, 130 + item_button_index_map.size() / 5 * 40, 60, 30);
+			new_child_button->setGeometry(static_cast<int>(item_button_index_map.size() % 5 * 60), static_cast < int>(130 + item_button_index_map.size() / 5 * 40), 60, 30);
 			
 			// 显示按钮
 			new_child_button->show();
