@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "..\GenshinImpact_TianLi_Resource\GenshinImpact_TianLi_Resource.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Resource.lib")
 
