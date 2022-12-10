@@ -18,8 +18,7 @@ TianLiQtCommon_HUD_SquareMap::TianLiQtCommon_HUD_SquareMap(QWidget *parent)
 	this->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow | Qt::WindowStaysOnTopHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
 
-	SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) |
-		WS_EX_TRANSPARENT | WS_EX_LAYERED);
+	//SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) | WS_EX_TRANSPARENT | WS_EX_LAYERED);
 	
 	
 	timer = new QTimer;

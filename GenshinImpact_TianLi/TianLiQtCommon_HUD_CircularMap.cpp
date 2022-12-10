@@ -18,8 +18,7 @@ TianLiQtCommon_HUD_CircularMap::TianLiQtCommon_HUD_CircularMap(QWidget* parent)
 	this->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow | Qt::WindowStaysOnTopHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
 
-	SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) |
-		WS_EX_TRANSPARENT | WS_EX_LAYERED);
+	SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) | WS_EX_TRANSPARENT | WS_EX_LAYERED);
 
 	timer = new QTimer;
 	timer->setInterval(42);

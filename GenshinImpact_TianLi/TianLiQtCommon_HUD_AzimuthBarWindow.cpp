@@ -1,4 +1,4 @@
-#include "TianLiQtCommon_HUD_AzimuthBarWindow.h"
+﻿#include "TianLiQtCommon_HUD_AzimuthBarWindow.h"
 #include <QTimer>
 #include <QPainter>
 #include <QCloseEvent>
@@ -15,8 +15,7 @@ TianLiQtCommon_HUD_AzimuthBarWindow::TianLiQtCommon_HUD_AzimuthBarWindow(QWidget
 	this->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow | Qt::WindowStaysOnTopHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
 	
-	SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) |
-		WS_EX_TRANSPARENT | WS_EX_LAYERED );
+	SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)winId(), GWL_EXSTYLE) | WS_EX_TRANSPARENT | WS_EX_LAYERED );
 	
 	//SetWindowBlurBehind(HWND(winId()));
 	
