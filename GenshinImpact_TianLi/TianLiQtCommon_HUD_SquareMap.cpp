@@ -113,9 +113,10 @@ void TianLiQtCommon_HUD_SquareMap::slot_update()
 		}
 		else
 		{
-			this->hide();
-
-			update();
+			if (!is_visible)
+			{
+				this->hide();
+			}
 		}
 	}
 }
