@@ -10,6 +10,8 @@
 #include "..\GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Map.lib")
 
+#include "GenshinImpact_TianLi.h"
+
 TianLiQtCommon_HUD_SquareMap::TianLiQtCommon_HUD_SquareMap(QWidget *parent)
 	: QWidget(parent)
 {
@@ -32,6 +34,47 @@ TianLiQtCommon_HUD_SquareMap::~TianLiQtCommon_HUD_SquareMap()
 	delete timer;	
 }
 
+void TianLiQtCommon_HUD_SquareMap::mousePressEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::LeftButton)
+	{
+
+		move_press = event->globalPos();
+		is_left_clicked = true;
+
+	}
+}
+void TianLiQtCommon_HUD_SquareMap::mouseReleaseEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::LeftButton) {
+		is_left_clicked = false;
+	}
+}
+void TianLiQtCommon_HUD_SquareMap::mouseMoveEvent(QMouseEvent* event)
+{
+	if (is_left_clicked) {
+		move_value = event->globalPos();
+		this->move(this->pos() + move_value - move_press);
+		move_press = move_value;
+	}
+}
+
+void TianLiQtCommon_HUD_SquareMap::mouseDoubleClickEvent(QMouseEvent* event)
+{
+	static bool is_double_click_old = false;
+	if (event->button() == Qt::LeftButton)
+	{
+		if (this->main_tianli == nullptr)
+		{
+			LogError("main_widget is nullptr");
+		}
+		else
+		{
+			// 激活到最前面
+			this->main_tianli->slot_show();
+		}
+	}
+}
 void TianLiQtCommon_HUD_SquareMap::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);
@@ -95,6 +138,11 @@ void TianLiQtCommon_HUD_SquareMap::resizeEvent(QResizeEvent* event)
 	const int h = event->size().height();
 	render_map_mask = TianLi::Utils::create_square_mask(w, h, 20);
 	is_need_rerender = true;
+}
+
+void TianLiQtCommon_HUD_SquareMap::setMainPage(GenshinImpact_TianLi* tianli)
+{
+	main_tianli = tianli;
 }
 
 void TianLiQtCommon_HUD_SquareMap::slot_update()

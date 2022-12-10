@@ -108,7 +108,7 @@ private:
 	TianLiQtCommon_HUD_SquareMap* hud_square_map = nullptr;
 	TianLiQtCommon_HUD_CircularMap* hud_circular_map = nullptr;
 	TianLiQtCommon_HUD_AzimuthBarWindow* hud_azimuth_bar_window = nullptr;
-private:
+public:
     void slot_show();
     void slot_hide();
 

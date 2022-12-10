@@ -53,6 +53,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 
 	hud_square_map = new TianLiQtCommon_HUD_SquareMap(NULL);
 	hud_square_map->hide();
+	hud_square_map->setMainPage(this);
 	hud_circular_map = new TianLiQtCommon_HUD_CircularMap(NULL);
 	hud_circular_map->hide();
 	hud_azimuth_bar_window = new TianLiQtCommon_HUD_AzimuthBarWindow(NULL);

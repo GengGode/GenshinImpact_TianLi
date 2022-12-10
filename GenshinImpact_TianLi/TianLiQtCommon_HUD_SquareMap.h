@@ -5,6 +5,8 @@
 #include "ui_TianLiQtCommon_HUD_SquareMap.h"
 #include <windows.h>
 
+class GenshinImpact_TianLi;
+
 class TianLiQtCommon_HUD_SquareMap : public QWidget
 {
 	Q_OBJECT
@@ -16,12 +18,23 @@ public:
 private:
 	Ui::TianLiQtCommon_HUD_SquareMap ui;
 
-// UI重绘
+private:
+	QPoint move_press;
+	QPoint move_value;
+	bool is_left_clicked = false;
+	void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+	void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+	void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+	void mouseDoubleClickEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+// UI重绘	
 private:
 	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 	void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
-
 	void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
+public:
+	void setMainPage(GenshinImpact_TianLi* tianli);
+private:
+	GenshinImpact_TianLi* main_tianli;
 private:
 	QTimer* timer = nullptr;
 	bool is_visible = false;	// 是否可见
