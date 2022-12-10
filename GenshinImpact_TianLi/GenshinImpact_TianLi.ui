@@ -166,7 +166,7 @@ background-image:url(:/GenshinImpact_TianLi/resource/书册.png);
         <string/>
        </property>
       </widget>
-	  <widget class="QPushButton" name="pushButton_Tab_1">
+      <widget class="QPushButton" name="pushButton_Tab_1">
        <property name="geometry">
         <rect>
          <x>14</x>
@@ -410,7 +410,7 @@ color:rgb(134, 99, 67);
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="page">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -471,6 +471,7 @@ color:rgb(134, 99, 67);
        </widget>
        <widget class="QWidget" name="page_3"/>
        <widget class="QWidget" name="page_4"/>
+       <widget class="QWidget" name="page_set"/>
       </widget>
       <widget class="QWidget" name="verticalLayoutWidget">
        <property name="geometry">
@@ -487,7 +488,33 @@ color:rgb(134, 99, 67);
         </property>
        </layout>
       </widget>
+      <widget class="QPushButton" name="pushButton_Set">
+       <property name="geometry">
+        <rect>
+         <x>94</x>
+         <y>452</y>
+         <width>89</width>
+         <height>278</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">.QPushButton
+{
+border:none;
+background-image: url(:/GenshinImpact_TianLi/resource/冒险手册_钥匙.png);
+}
+.QPushButton:hover
+{
+border:none;
+background-image: url(:/GenshinImpact_TianLi/resource/冒险手册_钥匙.png);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
       <zorder>label_Main</zorder>
+      <zorder>pushButton_Set</zorder>
       <zorder>pushButton_Exit</zorder>
       <zorder>label_MainPage</zorder>
       <zorder>stackedWidget_MainTabPages</zorder>

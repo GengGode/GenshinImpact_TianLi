@@ -59,11 +59,11 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	hud_azimuth_bar_window->hide();
 	
 
-
 	this->addUI_Tab_Map();
 	this->addUI_Tab_HUD();
 	this->addUI_Tab_3();
 	this->addUI_Tab_4();
+	this->addUI_Tab_Set();
 	ui.stackedWidget_MainTabPages->setCurrentIndex(0);
 	
 	init_area_list();
@@ -121,6 +121,9 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 			ui.stackedWidget_MainTabPages->setCurrentIndex(-2-id);
 			LogInfo(QString::number(id)+" -=> "+ QString::number(-2-id));
 		}
+		});
+	connect(ui.pushButton_Set, &QPushButton::clicked, [=]() {
+			ui.stackedWidget_MainTabPages->setCurrentIndex(4);
 		});
 }
 
@@ -331,11 +334,16 @@ void GenshinImpact_TianLi::addUI_Tab_3()
 }
 void GenshinImpact_TianLi::addUI_Tab_4()
 {
-	auto button = new TianLiQtCommon_SwitchButton(ui.page_4, "最小化");
-	
-	button->setParent(ui.page_4);
-	button->move(30, ui.page_4->height() - 35);
-	
+
+}
+
+void GenshinImpact_TianLi::addUI_Tab_Set()
+{
+	auto button = new TianLiQtCommon_SwitchButton(ui.page_set, "最小化");
+
+	button->setParent(ui.page_set);
+	button->move(30, ui.page_set->height() - 35);
+
 	connect(dynamic_cast<TianLiQtCommon_SwitchButton*>(button), &TianLiQtCommon_SwitchButton::signal_clicked, [=](bool is_checked) {
 		if (is_checked)
 		{

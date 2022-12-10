@@ -85,7 +85,8 @@ private:
     void addUI_Tab_Map();
 	void addUI_Tab_HUD();
 	void addUI_Tab_3();
-	void addUI_Tab_4();
+    void addUI_Tab_4();
+    void addUI_Tab_Set();
 
 // Ìí¼Ó UI ²¿·Ö
 private:
