@@ -163,14 +163,14 @@
     <ClCompile Include="TianLiQtCommon_HUD_CircularMap.cpp">
       <Filter>Source Files\TianLiQtCommon\HUD</Filter>
     </ClCompile>
-    <ClCompile Include="TianLiQtCommon_SwitchButton.cpp">
-      <Filter>Source Files\TianLiQtCommon\Common</Filter>
-    </ClCompile>
     <ClCompile Include="TianLiQtCommon_ListenKeyBoard.cpp">
       <Filter>Source Files\TianLiQtCommon\Listen</Filter>
     </ClCompile>
     <ClCompile Include="TianLiQtCommon_Utils_Sqlite.cpp">
       <Filter>Source Files\TianLiQtCommon\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TianLiQtCommon_SwitchButton.cpp">
+      <Filter>Source Files\TianLiQtCommon\Common\SwitchButton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,10 @@ TianLiQtCommon_SwitchButton::TianLiQtCommon_SwitchButton(QWidget *parent, QStrin
 TianLiQtCommon_SwitchButton::~TianLiQtCommon_SwitchButton()
 {}
 
+void TianLiQtCommon_SwitchButton::paintEvent(QPaintEvent* event)
+{
+}
+
 void TianLiQtCommon_SwitchButton::setTitle(QString title)
 {
 	ui.label_Text->setText(title);

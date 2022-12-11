@@ -340,12 +340,16 @@ void GenshinImpact_TianLi::addUI_Tab_4()
 
 void GenshinImpact_TianLi::addUI_Tab_Set()
 {
-	auto button = new TianLiQtCommon_SwitchButton(ui.page_set, "最小化");
+	auto button_set_capture_bitblt = new TianLiQtCommon_SwitchButton(ui.page_set, "使用Bitblt");
+	auto button_set_capture_driectx = new TianLiQtCommon_SwitchButton(ui.page_set, "使用DriectX");
+	auto button_is_mini = new TianLiQtCommon_SwitchButton(ui.page_set, "最小化");
+	
 
-	button->setParent(ui.page_set);
-	button->move(30, ui.page_set->height() - 35);
+	button_set_capture_bitblt->move(30, 50);
+	button_set_capture_driectx->move(30, 100);
+	button_is_mini->move(30, ui.page_set->height() - 35);
 
-	connect(dynamic_cast<TianLiQtCommon_SwitchButton*>(button), &TianLiQtCommon_SwitchButton::signal_clicked, [=](bool is_checked) {
+	connect(dynamic_cast<TianLiQtCommon_SwitchButton*>(button_is_mini), &TianLiQtCommon_SwitchButton::signal_clicked, [=](bool is_checked) {
 		if (is_checked)
 		{
 			this->close_is_mini = true;
@@ -355,7 +359,19 @@ void GenshinImpact_TianLi::addUI_Tab_Set()
 			this->close_is_mini = false;
 		}
 		});
-	//connect(PageTabMap_MapRect[0], &TianLiQtCommon_MapRect::signal_double_click, dynamic_cast<TianLiQtCommon_SwitchButton*>(PageTabMap_RightCard_Buttons[0]), &TianLiQtCommon_SwitchButton::slot_clicked);
+
+	//QButtonGroup* group_set_capture = new QButtonGroup(ui.page_set);
+
+	//group_set_capture->addButton(button_set_capture_bitblt);
+	//group_set_capture->addButton(button_set_capture_driectx);
+
+	//group_set_capture->setExclusive(true);
+
+
+	//button_set_capture_bitblt->setParent(ui.page_set);
+	//button_set_capture_driectx->setParent(ui.page_set);
+
+		
 }
 
 void GenshinImpact_TianLi::addUI_MapTabCardRects()

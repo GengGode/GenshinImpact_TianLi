@@ -13,6 +13,8 @@ public:
 
 private:
 	Ui::TianLiQtCommon_SwitchButtonClass ui;
+private:
+	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 
 public:
 	void setTitle(QString title);
