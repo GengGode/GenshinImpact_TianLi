@@ -11,7 +11,7 @@ public:
 	bool capture(cv::Mat& frame) override;
 	bool setHandle(HWND handle = 0) override;
 private:
-	HWND giHandle = nullptr;
+	//HWND genshin_handle = nullptr;
 	RECT giRect = { 0,0,0,0 };
 	RECT giClientRect = { 0,0,0,0 };
 	cv::Size giClientSize;
@@ -45,22 +45,22 @@ bool BitbltCapture::capture(cv::Mat& frame)
 
 	DeleteObject(hBmp);
 
-	if (giHandle == NULL)
+	if (genshin_handle == NULL)
 	{
 		err = { 12, "窗口句柄失效" };
 		return false;
 	}
-	if (!IsWindow(giHandle))
+	if (!IsWindow(genshin_handle))
 	{
 		err = { 11, "无效句柄或指定句柄所指向窗口不存在" };
 		return false;
 	}
-	if (!GetWindowRect(giHandle, &giRect))
+	if (!GetWindowRect(genshin_handle, &giRect))
 	{
 		err = { 11, "无效句柄或指定句柄所指向窗口不存在" };
 		return false;
 	}
-	if (!GetClientRect(giHandle, &giClientRect))
+	if (!GetClientRect(genshin_handle, &giClientRect))
 	{
 		err = { 11, "无效句柄或指定句柄所指向窗口不存在" };
 		return false;
@@ -92,10 +92,10 @@ bool BitbltCapture::capture(cv::Mat& frame)
 	giClientSize.height = (int)(screen_scale * (giClientRect.bottom - giClientRect.top));
 
 	//获取目标句柄的窗口大小RECT
-	GetWindowRect(giHandle, &giRect);/* 对原神窗口的操作 */
+	GetWindowRect(genshin_handle, &giRect);/* 对原神窗口的操作 */
 
 	//获取目标句柄的DC
-	HDC hScreen = GetDC(giHandle);/* 对原神窗口的操作 */
+	HDC hScreen = GetDC(genshin_handle);/* 对原神窗口的操作 */
 	HDC hCompDC = CreateCompatibleDC(hScreen);
 
 	//获取目标句柄的宽度和高度
@@ -145,10 +145,10 @@ bool BitbltCapture::capture(cv::Mat& frame)
 
 bool BitbltCapture::setHandle(HWND handle)
 {
-	if (giHandle != handle)
+	if (genshin_handle != handle)
 	{
 		uninit();
-		giHandle = handle;
+		genshin_handle = handle;
 		init();
 	}
 	return true;

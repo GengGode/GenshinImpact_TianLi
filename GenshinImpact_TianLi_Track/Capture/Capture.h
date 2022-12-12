@@ -8,10 +8,11 @@ public:
 	TianLi::Track::CaptureType type = TianLi::Track::CaptureType::Unkown;
 	//ErrorCode& err = ErrorCode::getInstance();
 	std::pair<int, std::string> err;
-
+	HWND genshin_handle = nullptr;
+	
 	Capture() {}
 	virtual ~Capture() {}
-
+	
 	virtual bool init() = 0;
 	virtual bool uninit() = 0;
 	virtual bool capture(cv::Mat& frame) = 0;

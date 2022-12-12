@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GenshinImpact_TianLi_Track_Utils_Struct.h"
-#include "Capture/Capture.h"
 #include "Capture/Window/BitbltCapture.h"
 #include "Capture/Window/DirectXCapture.h"
 
@@ -36,6 +35,15 @@ inline void get_genshin_screen(const GenshinHandle& genshin_handle, GenshinScree
 	if (out_genshin_screen.config.capture == nullptr)
 	{
 		out_genshin_screen.config.capture = create_capture(genshin_handle.config.capture_type);
+		out_genshin_screen.config.capture->setHandle(giHandle);
+		if (out_genshin_screen.config.capture->type == TianLi::Track::CaptureType::DirectX || genshin_handle.config.is_force_used_no_alpha)
+		{
+			out_genshin_screen.config.is_used_alpha = false;
+		}
+		else
+		{
+			out_genshin_screen.config.is_used_alpha = true;
+		}
 	}
 	else
 	{
@@ -43,11 +51,24 @@ inline void get_genshin_screen(const GenshinHandle& genshin_handle, GenshinScree
 		{
 			delete out_genshin_screen.config.capture;
 			out_genshin_screen.config.capture = create_capture(genshin_handle.config.capture_type);
+			out_genshin_screen.config.capture->setHandle(giHandle);
+
+			if (out_genshin_screen.config.capture->type == TianLi::Track::CaptureType::DirectX || genshin_handle.config.is_force_used_no_alpha)
+			{
+				out_genshin_screen.config.is_used_alpha = false;
+			}
+			else
+			{
+				out_genshin_screen.config.is_used_alpha = true;
+			}
 		}
 	}
 
 	if (out_genshin_screen.config.capture != nullptr)
 	{
+		if (out_genshin_screen.config.capture->genshin_handle!= giHandle)
+			out_genshin_screen.config.capture->setHandle(giHandle);
+
 		out_genshin_screen.config.capture->capture(giFrame);
 	}
 	else

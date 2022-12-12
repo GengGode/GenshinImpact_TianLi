@@ -48,7 +48,6 @@ public:
     bool capture(cv::Mat& frame) override;
     bool setHandle(HWND handle = 0) override;
 public:
-    HWND window_handle;
     D3D11_TEXTURE2D_DESC desc_type{ 0,0,1,1,DXGI_FORMAT_B8G8R8A8_UNORM,{1,0},D3D11_USAGE_STAGING,0,D3D11_CPU_ACCESS_READ,0 }; 
     bool isInitialized = false;
     bool isBaseCapture = true;
@@ -90,9 +89,9 @@ bool DirectXCapture::init() {
 
     auto activation_factory = winrt::get_activation_factory<winrt::Windows::Graphics::Capture::GraphicsCaptureItem>();
     auto interop_factory = activation_factory.as<IGraphicsCaptureItemInterop>();
-    interop_factory->CreateForWindow(window_handle, winrt::guid_of<ABI::Windows::Graphics::Capture::IGraphicsCaptureItem>(), reinterpret_cast<void**>(winrt::put_abi(this->item)));
+    interop_factory->CreateForWindow(genshin_handle, winrt::guid_of<ABI::Windows::Graphics::Capture::IGraphicsCaptureItem>(), reinterpret_cast<void**>(winrt::put_abi(this->item)));
     if (!item) {
-        auto monitor_handle = MonitorFromWindow(window_handle, MONITOR_DEFAULTTONEAREST);
+        auto monitor_handle = MonitorFromWindow(genshin_handle, MONITOR_DEFAULTTONEAREST);
         interop_factory->CreateForMonitor(monitor_handle, winrt::guid_of<ABI::Windows::Graphics::Capture::IGraphicsCaptureItem>(), reinterpret_cast<void**>(winrt::put_abi(this->item)));
     }
     if (nullptr == this->item) {
@@ -199,10 +198,10 @@ bool DirectXCapture::capture(cv::Mat& frame)
 }
 
 bool DirectXCapture::setHandle(HWND handle) {
-    if (window_handle == handle) {
+    if (genshin_handle == handle) {
         return true;
     }
-    this->window_handle = handle;
+    this->genshin_handle = handle;
     if (isInitialized)
     {
         uninit();

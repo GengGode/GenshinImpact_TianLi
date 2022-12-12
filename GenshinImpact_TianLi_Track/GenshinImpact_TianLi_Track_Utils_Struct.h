@@ -4,7 +4,8 @@
 
 #include "GenshinImpact_TianLi_Track.h"
 
-//#define TEST_LOCAL
+#include "Capture/Capture.h"
+
 enum GenshinWindowClass
 {
 	None,
@@ -23,7 +24,7 @@ const std::vector<std::pair<std::wstring,GenshinWindowClass>> GenshinWindowNameL
 	{L"原神-调试", GenshinWindowClass::None}
 };
 
-class Capture;
+//class Capture;
 struct GenshinHandleConfig
 {
 	bool is_auto_find_genshin = true;
