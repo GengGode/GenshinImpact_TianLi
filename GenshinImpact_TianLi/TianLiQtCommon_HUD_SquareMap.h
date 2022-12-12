@@ -34,7 +34,7 @@ private:
 public:
 	void setMainPage(GenshinImpact_TianLi* tianli);
 private:
-	GenshinImpact_TianLi* main_tianli;
+	GenshinImpact_TianLi* main_tianli{};
 private:
 	QTimer* timer = nullptr;
 	bool is_visible = false;	// ÊÇ·ñ¿É¼û

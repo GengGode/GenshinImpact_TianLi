@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Capture">
+      <UniqueIdentifier>{42c90662-5eef-4892-b55b-4d7c70ce87a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Capture\Window">
+      <UniqueIdentifier>{fa971e5a-682d-4e0f-8dd1-e7953669ca7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -47,6 +53,15 @@
     </ClInclude>
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils_PickItem.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Capture\Capture.h">
+      <Filter>Capture</Filter>
+    </ClInclude>
+    <ClInclude Include="Capture\Window\BitbltCapture.h">
+      <Filter>Capture\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Capture\Window\DirectXCapture.h">
+      <Filter>Capture\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

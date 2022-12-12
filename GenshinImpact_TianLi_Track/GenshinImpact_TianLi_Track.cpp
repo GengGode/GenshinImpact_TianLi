@@ -39,6 +39,11 @@ TianLi::Track::TrackResult& GenshinImpact_TianLi_Track::GetResult()
 	return track_manage->GetResult();
 }
 
+TianLi::Track::TrackConfig& GenshinImpact_TianLi_Track::GetConfig()
+{
+	return track_manage->GetConfig();
+}
+
 void GenshinImpact_TianLi_Track::SetConfig(TianLi::Track::TrackConfig& config)
 {
 	return track_manage->SetConfig(config);

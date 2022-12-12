@@ -23,13 +23,14 @@ const std::vector<std::pair<std::wstring,GenshinWindowClass>> GenshinWindowNameL
 	{L"原神-调试", GenshinWindowClass::None}
 };
 
+class Capture;
 struct GenshinHandleConfig
 {
 	bool is_auto_find_genshin = true;
 	bool is_force_used_no_alpha = false;
 	HWND genshin_handle = nullptr;
 	std::vector<std::pair<std::wstring, GenshinWindowClass>> genshin_window_name_list = GenshinWindowNameList;
-
+	TianLi::Track::CaptureType capture_type = TianLi::Track::CaptureType::Bitblt;
 };
 struct GenshinHandle
 {
@@ -39,7 +40,7 @@ struct GenshinHandle
 	RECT rect_client = RECT();
 	double scale = 1.0;
 	bool is_exist_title_bar = true;
-	cv::Size size_frame;
+	cv::Size size_frame= cv::Size(1920,1080);
 	cv::Rect rect_paimon_maybe;
 	cv::Rect rect_paimon;
 	cv::Rect rect_minimap_cailb_maybe;
@@ -66,13 +67,12 @@ struct GenshinHandle
 };
 struct GenshinScreenConfig
 {
-	TianLi::Track::ScreenType screen_type = TianLi::Track::Bitblt;
+	Capture* capture = nullptr;
+
 	cv::Rect rect_paimon_maybe;
 	cv::Rect rect_minimap_cailb_maybe;
 	cv::Rect rect_minimap_maybe;
-
-
-
+	
 	bool is_used_alpha = true;
 
 	bool is_handle_mode = false;

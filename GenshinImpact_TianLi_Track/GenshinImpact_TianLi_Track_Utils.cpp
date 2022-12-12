@@ -6,17 +6,10 @@
 #include "GenshinImpact_TianLi_Track_Utils_UID.h"
 #include "GenshinImpact_TianLi_Track_Utils_PickItem.h"
 
-GenshinHandle func_get_handle(HWND& in)
+GenshinHandle func_get_handle(GenshinHandleConfig& in)
 {
 	static GenshinHandle out;
-	if (in == 0)
-	{
-		get_genshin_handle(out);
-	}
-	else
-	{
-		update_genshin_handle(in, out);
-	}
+	get_genshin_handle(in, out);
 	return out;
 };
 

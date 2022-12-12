@@ -6,7 +6,7 @@
 GenshinImpact_TianLi_Track_TaskResult::GenshinImpact_TianLi_Track_TaskResult()
 {
 	//=========================================================================
-	task_handle                 = new TrackTask<HWND, GenshinHandle>                             (func_get_handle            );
+	task_handle                 = new TrackTask<GenshinHandleConfig, GenshinHandle>              (func_get_handle            );
 	task_screen                 = new TrackTask<GenshinHandle, GenshinScreen>                    (func_get_screen            );
 	task_is_find_paimon         = new TrackTask<GenshinScreen, GenshinPaimon>                    (func_is_find_paimon        );
 	task_match_minimap_cailb    = new TrackTask<GenshinScreen, GenshinMinimapCailb>              (func_match_minimap_cailb   );
@@ -47,25 +47,24 @@ std::map<std::string, bool> GenshinImpact_TianLi_Track_TaskResult::check_wait()
 	std::map<std::string, bool> wait_map;
 	
 	//=========================================================================
-	static GenshinHandle handle_out;
-	static GenshinScreen screen_out;
-	static GenshinPaimon paimon_out;
-	static GenshinMinimapCailb minimap_cailb_out;
-	static GenshinMinimap minimap_out;
-	static GenshinAvatarDirection avatar_direction_out;
-	static GenshinAvatarPosition avatar_position_out;
-	static GenshinViewerDirection viewer_direction_out;
-	static GenshinMinimapDirection minimap_direction_out;
-	static GenshinStars stars_out;
-	static GenshinTagflags tagflags_out;
-	static GenshinUID uid_out;
-	static GenshinPickableItems pickable_items_out;
+	// static GenshinHandle handle_out;
+	// static GenshinScreen screen_out;
+	// static GenshinPaimon paimon_out;
+	// static GenshinMinimapCailb minimap_cailb_out;
+	// static GenshinMinimap minimap_out;
+	// static GenshinAvatarDirection avatar_direction_out;
+	// static GenshinAvatarPosition avatar_position_out;
+	// static GenshinViewerDirection viewer_direction_out;
+	// static GenshinMinimapDirection minimap_direction_out;
+	// static GenshinStars stars_out;
+	// static GenshinTagflags tagflags_out;
+	// static GenshinUID uid_out;
+	// static GenshinPickableItems pickable_items_out;
 	
 	if (task_handle->check_wait())
 	{
-		
 		handle_out = task_handle->get_output();
-		task_handle->set_input(handle_out.handle);
+		task_handle->set_input(handle_config);
 		task_handle->work();
 		wait_map["task_handle"] = true;
 	}
@@ -214,6 +213,6 @@ void GenshinImpact_TianLi_Track_TaskResult::set_config(TianLi::Track::TrackConfi
 {
 	config = tasks_config;
 	//=========================================================================
-	
+	handle_config.capture_type = config.capture_type;
 	//=========================================================================
 }

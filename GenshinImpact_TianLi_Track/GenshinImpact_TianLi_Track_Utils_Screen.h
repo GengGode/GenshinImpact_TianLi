@@ -1,63 +1,60 @@
 #pragma once
 
 #include "GenshinImpact_TianLi_Track_Utils_Struct.h"
+#include "Capture/Capture.h"
+#include "Capture/Window/BitbltCapture.h"
+#include "Capture/Window/DirectXCapture.h"
+
+Capture* create_capture(TianLi::Track::CaptureType capture_type)
+{
+	switch (capture_type)
+	{
+	case TianLi::Track::CaptureType::Unkown:
+	case TianLi::Track::CaptureType::Bitblt:
+	{
+		return new BitbltCapture();
+	}
+	case TianLi::Track::CaptureType::DirectX:
+	{
+		return new DirectXCapture();
+	}
+	case TianLi::Track::CaptureType::Video:
+	{
+		return new BitbltCapture();
+	}
+	}
+}
 
 inline void get_genshin_screen(const GenshinHandle& genshin_handle, GenshinScreen& out_genshin_screen)
 {
-	static HBITMAP hBmp;
-
 	auto& giHandle = genshin_handle.handle;
 	auto& giRect = genshin_handle.rect;
 	auto& giRectClient = genshin_handle.rect_client;
 	//auto& giScale = genshin_handle.scale;
 	auto& giFrame = out_genshin_screen.img_screen;
 
-#ifdef TEST_LOCAL
-	static cv::Mat img = cv::imread("C:\\Users\\GengG\\source\\repos\\Cv测试\\OpencvConsole\\img3.png", -1);
-	giFrame = img;
-#else
-	if (genshin_handle.handle == NULL)
-		return;
-
-	//获取目标句柄的DC
-	HDC hScreen = GetDC(giHandle);/* 对原神窗口的操作 */
-	HDC hCompDC = CreateCompatibleDC(hScreen);
-
-	//获取目标句柄的宽度和高度
-	int	nWidth = static_cast<int>(std::round((giRectClient.right - giRectClient.left)));
-	int	nHeight = static_cast<int>(std::round((giRectClient.bottom - giRectClient.top)));
-
-	DeleteObject(hBmp);
-
-	//创建Bitmap对象
-	hBmp = CreateCompatibleBitmap(hScreen, nWidth, nHeight);//得到位图
-
-	SelectObject(hCompDC, hBmp);
-	BitBlt(hCompDC, 0, 0, nWidth, nHeight, hScreen, 0, 0, SRCCOPY);
-
-	//释放对象
-	DeleteDC(hScreen);
-	DeleteDC(hCompDC);
-
-	BITMAP bmp;
-
-	//类型转换
-	GetObject(hBmp, sizeof(BITMAP), &bmp);
-	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
-
-	//mat操作
-
-	giFrame.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
-
-	GetBitmapBits(hBmp, bmp.bmHeight * bmp.bmWidth * nChannels, giFrame.data);
-
-	if (giFrame.channels() == 3)
+	if (out_genshin_screen.config.capture == nullptr)
 	{
-		cvtColor(giFrame, giFrame, cv::COLOR_RGB2RGBA);
+		out_genshin_screen.config.capture = create_capture(genshin_handle.config.capture_type);
+	}
+	else
+	{
+		if (genshin_handle.config.capture_type != out_genshin_screen.config.capture->type)
+		{
+			delete out_genshin_screen.config.capture;
+			out_genshin_screen.config.capture = create_capture(genshin_handle.config.capture_type);
+		}
 	}
 
+	if (out_genshin_screen.config.capture != nullptr)
+	{
+		out_genshin_screen.config.capture->capture(giFrame);
+	}
+	else
+	{
+		return;
+	}
 
-#endif // TEST_LOCAL
 	{
 		if (giFrame.empty())return;
 

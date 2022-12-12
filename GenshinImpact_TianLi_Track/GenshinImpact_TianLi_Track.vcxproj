@@ -216,6 +216,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Capture\Capture.h" />
+    <ClInclude Include="Capture\Window\BitbltCapture.h" />
+    <ClInclude Include="Capture\Window\DirectXCapture.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_TaskResult.h" />
     <ClInclude Include="GenshinImpact_TianLi_Track_Utils.h" />

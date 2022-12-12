@@ -1,7 +1,7 @@
 #pragma once
 #include "GenshinImpact_TianLi_Track_Utils_Struct.h"
 
-GenshinHandle func_get_handle(HWND& in);
+GenshinHandle func_get_handle(GenshinHandleConfig& in);
 
 GenshinScreen func_get_screen(GenshinHandle& in);
 

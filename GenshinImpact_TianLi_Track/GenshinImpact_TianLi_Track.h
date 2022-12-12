@@ -29,12 +29,12 @@ class TrackManage;
 
 namespace TianLi::Track
 {
-	enum ScreenType
+	enum class CaptureType
 	{
-		Window,
-		Desktop,
+		Unkown,
 		Bitblt,
 		DirectX,
+		Video
 	};
 	struct TrackResultStarPosition
 	{
@@ -86,7 +86,7 @@ namespace TianLi::Track
 
 		bool is_auto_find_genshin = true;
 		HWND genshin_handle = nullptr;
-		ScreenType screen_type = Bitblt;
+		CaptureType capture_type = CaptureType::Bitblt;
 	};
 }
 
@@ -101,6 +101,7 @@ public:
 	void StopServer();
 	bool ServerState();
 	TianLi::Track::TrackResult& GetResult();
+	TianLi::Track::TrackConfig& GetConfig();
 	void SetConfig(TianLi::Track::TrackConfig &config);
 };
 

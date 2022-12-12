@@ -106,7 +106,7 @@ struct TrackInputTemplate
 class GenshinImpact_TianLi_Track_TaskResult
 {
 	// 获取句柄
-	TrackTask<HWND, GenshinHandle>* task_handle = nullptr;
+	TrackTask<GenshinHandleConfig, GenshinHandle>* task_handle = nullptr;
 	// 获取屏幕画面
 	TrackTask<GenshinHandle, GenshinScreen>* task_screen = nullptr;
 	// 检查派蒙
@@ -133,6 +133,21 @@ class GenshinImpact_TianLi_Track_TaskResult
 	
 	// 从屏幕画面获取右侧可捡取物品列表
 	TrackTask<GenshinScreen, GenshinPickableItems>* task_get_pickable_items = nullptr;
+	
+	GenshinHandleConfig handle_config;
+	GenshinHandle handle_out;
+	GenshinScreen screen_out;
+	GenshinPaimon paimon_out;
+	GenshinMinimapCailb minimap_cailb_out;
+	GenshinMinimap minimap_out;
+	GenshinAvatarDirection avatar_direction_out;
+	GenshinAvatarPosition avatar_position_out;
+	GenshinViewerDirection viewer_direction_out;
+	GenshinMinimapDirection minimap_direction_out;
+	GenshinStars stars_out;
+	GenshinTagflags tagflags_out;
+	GenshinUID uid_out;
+	GenshinPickableItems pickable_items_out;
 
 	
 	TianLi::Track::TrackResult result;
@@ -216,6 +231,11 @@ public:
 		std::lock_guard<std::mutex> lk(*result_m);
 		tasks_result.last_runtime_ms =static_cast<int>( last_runtime_ms.count());
 		return tasks_result;
+	}
+	TianLi::Track::TrackConfig& GetConfig()
+	{
+		std::lock_guard<std::mutex> lk(*config_m);
+		return tasks_config;
 	}
 	void SetConfig(TianLi::Track::TrackConfig& config)
 	{

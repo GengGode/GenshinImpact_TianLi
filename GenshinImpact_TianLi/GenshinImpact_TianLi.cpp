@@ -344,11 +344,36 @@ void GenshinImpact_TianLi::addUI_Tab_Set()
 	auto button_set_capture_driectx = new TianLiQtCommon_SwitchButton(ui.page_set, "使用DriectX");
 	auto button_is_mini = new TianLiQtCommon_SwitchButton(ui.page_set, "最小化");
 	
+	button_set_capture_bitblt->setGeometry(30, 50, 200, 25);
+	button_set_capture_driectx->setGeometry(30, 100, 200, 25);
 
-	button_set_capture_bitblt->move(30, 50);
-	button_set_capture_driectx->move(30, 100);
+	//button_set_capture_bitblt->move(30, 50);
+	//button_set_capture_driectx->move(30, 100);
 	button_is_mini->move(30, ui.page_set->height() - 35);
+	
+	connect(button_set_capture_bitblt, &TianLiQtCommon_SwitchButton::signal_clicked, [=](bool is_checked) {
+		if (is_checked)
+		{
+			auto config = Core.GetTrack().GetConfig();
+			config.capture_type = TianLi::Track::CaptureType::Bitblt;
+			Core.GetTrack().SetConfig(config);
+		}
+		else
+		{
+		}
+		});
 
+	connect(button_set_capture_driectx, &TianLiQtCommon_SwitchButton::signal_clicked, [=](bool is_checked) {
+		if (is_checked)
+		{
+			auto config = Core.GetTrack().GetConfig();
+			config.capture_type =TianLi::Track::CaptureType::DirectX;
+			Core.GetTrack().SetConfig(config);
+		}
+		else
+		{
+		}
+		});
 	connect(dynamic_cast<TianLiQtCommon_SwitchButton*>(button_is_mini), &TianLiQtCommon_SwitchButton::signal_clicked, [=](bool is_checked) {
 		if (is_checked)
 		{

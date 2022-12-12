@@ -5,9 +5,39 @@
 
 #include "GenshinImpact_TianLi_Track_Utils_Struct.h"
 
-inline void get_genshin_handle(GenshinHandle& genshin_handle)
+inline void get_genshin_handle(GenshinHandleConfig& genshin_handle_config, GenshinHandle& out_genshin_handle)
 {
-	if (genshin_handle.config.is_auto_find_genshin)
+	
+	static unsigned char tick_count = 0;
+	if (IsWindowVisible(out_genshin_handle.handle))
+	{
+		if (tick_count < 30)
+		{
+			tick_count++;
+			return;
+		}
+		else
+		{
+			tick_count = 0;
+		}
+	}
+	else
+	{
+		if (tick_count < 30)
+		{
+			tick_count++;
+			return;
+		}
+		else
+		{
+			tick_count = 0;
+		}
+	}
+	
+	out_genshin_handle.config = genshin_handle_config;
+	
+	auto& genshin_handle = out_genshin_handle;
+	if (genshin_handle_config.is_auto_find_genshin)
 	{
 		auto& giHandle = genshin_handle.handle;
 
@@ -241,26 +271,4 @@ auto right_rect(const cv::Mat& frame)
 		genshin_handle.rect_right_pick_items = Area_RightGetItems_Rect;
 		
 	}
-}
-
-inline void update_genshin_handle(const HWND& old_handle, GenshinHandle& out_genshin_handle)
-{
-	static unsigned char tick_count = 0;
-	if (IsWindowVisible(old_handle))
-	{
-		if (tick_count < 30)
-		{
-			tick_count++;
-		}
-		else
-		{
-			tick_count = 0;
-			get_genshin_handle(out_genshin_handle);
-		}
-	}
-	else
-	{
-		get_genshin_handle(out_genshin_handle);
-	}
-	return;
 }
