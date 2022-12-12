@@ -149,9 +149,9 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 
 	QPainter paint(this);
 
-
-	paint.setRenderHint(QPainter::HighQualityAntialiasing);
-	//
+	//警告	C4996	'QPainter::HighQualityAntialiasing': Use Antialiasing instead	GenshinImpact_TianLi	C : \Users\GengG\source\repos\GenshinImpact_TianLi\GenshinImpact_TianLi\TianLiQtCommon_HUD_AzimuthBarWindow.cpp	153
+	//paint.setRenderHint(QPainter::HighQualityAntialiasing);
+	
 	//paint.setCompositionMode(QPainter::CompositionMode_DestinationIn);
 	paint.setCompositionMode(QPainter::CompositionMode_DestinationIn);
 	//paint.fillRect(this.rect(), Qt::NoBrush);
@@ -165,7 +165,7 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::paintEvent(QPaintEvent* event)
 
 	if (object_map.size() > 0)
 	{
-		for (auto object : object_map)
+		for (auto& object : object_map)
 		{
 			
 		}
@@ -252,7 +252,7 @@ void TianLiQtCommon_HUD_AzimuthBarWindow::slot_update()
 {
 	//avatar_rotate_deg_atom = -avatar_rotate_deg;
 	//TrackResult traack_res = Core.GetTrack().GetResult();
-	auto  track_res = CoreMap.Core.GetTrack().GetResult();
+	auto& track_res = CoreMap.Core.GetTrack().GetResult();
 	if (track_res.is_find_paimon)
 	{
 		this->show();
