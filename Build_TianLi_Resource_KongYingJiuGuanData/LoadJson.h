@@ -183,9 +183,9 @@ void alter_png_sql_db(DataJsonApi& data_json_api)
 	sql = "ALTER TABLE Icon ADD COLUMN y INTEGER";
 	sqlite3_exec(sql_db, sql.c_str(), nullptr, nullptr, nullptr);
 
-	for (auto icon : icons)
+	for (auto& icon : icons)
 	{
-		auto url = icon.url;
+		auto& url = icon.url;
 		
 		// œ¬‘ÿurlµΩdownload_tmp_dir
 		auto file_name = utils::get_file_name(url);

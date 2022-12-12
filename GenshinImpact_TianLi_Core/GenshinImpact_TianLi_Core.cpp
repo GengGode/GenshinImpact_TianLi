@@ -68,7 +68,7 @@ GenshinImpact_TianLi_Core::GenshinImpact_TianLi_Core()
 	//=============== init
 	// init sqlite
 	TianLi::SqliteDbMem db_mem = resource->LoadSqlite_KYJGDB();
-	sqlite->OpenSqlite(db_mem.ptr, db_mem.size);
+	sqlite->OpenSqlite(db_mem.ptr, static_cast<int>(db_mem.size));
 	
 	// init resource
 	std::function<cv::Mat(std::string area, std::string type, std::string item, std::string object)> map_get_image_callback = std::bind(&get_image_tag, sqlite, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);

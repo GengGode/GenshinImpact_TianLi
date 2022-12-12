@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "GenshinImpact_TianLi_Track_Utils_MiniMap.h"
 
 SurfMatch::SurfMatch()
@@ -233,7 +233,7 @@ cv::Point2d SurfMatch::match_continuity_not_on_city(bool& calc_continuity_is_fai
 		img_scene(cv::Rect(static_cast<int>(hisP[2].x - someSizeR), static_cast<int>(hisP[2].y - someSizeR), someSizeR * 2, someSizeR * 2)).copyTo(someMap);
 		//Mat minMap(img_object);
 		double scale_param = 4;
-		resize(someMap, someMap, cv::Size(someSizeR * scale_param, someSizeR * scale_param));
+		resize(someMap, someMap, cv::Size(static_cast<int>(std::round(someSizeR * scale_param)), static_cast<int>(std::round(someSizeR * scale_param))));
 		//resize(minMap, minMap, Size(), MatchMatScale, MatchMatScale, 1);
 
 		detectorSomeMap = cv::xfeatures2d::SURF::create(hessian_threshold, octaves, octave_layers);

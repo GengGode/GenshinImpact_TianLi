@@ -24,8 +24,8 @@ cv::Mat TianLi::Map::Utils::get_view_map(const cv::Mat& GIMAP, cv::Size view_siz
 	cv::Size reMapSize = view_size;
 	cv::Point2d reMapCenter = cv::Point(view_size.width / 2, view_size.height / 2) * view_map_scale;
 	//cv::Point2d reAutoMapCenter = view_center;
-	reMapSize.width = (reMapSize.width * view_map_scale);
-	reMapSize.height = (reMapSize.height * view_map_scale);
+	reMapSize.width = static_cast<int>(std::ceil(reMapSize.width * view_map_scale));
+	reMapSize.height = static_cast<int>(std::ceil(reMapSize.height * view_map_scale));
 	if (reMapSize.width > mapSizeWidth)
 	{
 		reMapSize.width = mapSizeWidth;
@@ -97,7 +97,7 @@ void TianLi::Map::Utils::add_rgba_image(cv::Mat& src1, cv::Mat& src2, cv::Mat& d
 cv::Mat TianLi::Map::Utils::rotate_avatar(cv::Mat& avatar, double angle, double scale)
 {
 	cv::Mat rota_avatar;
-	cv::Point2f pt(avatar.cols / 2., avatar.rows / 2.);
+	cv::Point2f pt(static_cast<float>(std::round(avatar.cols / 2.)), static_cast<float>(std::round(avatar.rows / 2.)));
 	cv::Mat r = getRotationMatrix2D(pt, angle, scale);
 	warpAffine(avatar, rota_avatar, r, cv::Size(pt * 2));
 	return rota_avatar;

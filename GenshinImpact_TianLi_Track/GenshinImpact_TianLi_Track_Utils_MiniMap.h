@@ -22,7 +22,7 @@ inline void check_paimon(const GenshinScreen& genshin_screen, GenshinPaimon& out
 		cv::resize(split_paimon_template[3], paimon_template_no_alpha_handle_mode, cv::Size(), 1.0 / 1.20, 1.0 / 1.20);
 		is_first = false;
 	}
-	auto giPaimonRef = genshin_screen.img_paimon_maybe;
+	cv::Mat giPaimonRef = genshin_screen.img_paimon_maybe;
 	auto& rect_origin = genshin_screen.config.rect_paimon_maybe;
 	auto& template_not_handle_mode = split_paimon_template[3];
 	auto& template_handle_mode = paimon_template_handle_mode;
@@ -106,7 +106,7 @@ inline void match_minimap_cailb(const GenshinScreen& genshin_screen, GenshinMini
 		is_first = false;
 	}
 
-	auto giMinimapCailbRef = genshin_screen.img_minimap_cailb_maybe;
+	cv::Mat giMinimapCailbRef = genshin_screen.img_minimap_cailb_maybe;
 	auto& rect_origin = genshin_screen.config.rect_minimap_cailb_maybe;
 	auto& is_handle_mode = genshin_screen.config.is_handle_mode;
 

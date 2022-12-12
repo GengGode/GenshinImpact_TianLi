@@ -91,7 +91,7 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 			{
 				// 绘制在map中Rect
 				// TODO:
-				cv::Rect r_img = cv::Rect(cv::Point(std::round((legend.x- img.cols/2.0) / map_info.scale_form_gimap), std::round((legend.y- img.rows/2.0)) / map_info.scale_form_gimap), img.size());
+				cv::Rect r_img = cv::Rect(cv::Point(static_cast<int>(std::round((legend.x- img.cols/2.0) / map_info.scale_form_gimap)), static_cast<int>(std::round((legend.y- img.rows/2.0) / map_info.scale_form_gimap))), img.size());
 				
 				// 取交集
 				cv::Rect r = (r_img & object_rect);
@@ -130,7 +130,7 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 	// 1. 旋转角色箭头图片
 	auto roation_angle = avatar_info.a;
 	auto avatar = TianLi::Map::Utils::rotate_avatar(Core.GetResource().GIAVATAR, roation_angle, 1.0 / 1.3);//大地图与小地图之比
-	auto avatar_rect = cv::Rect((avatar_info.x - avatar.cols / 2) * map_info.scale_form_gimap, avatar_info.y - avatar.rows / 2, avatar.cols, avatar.rows);
+	auto avatar_rect = cv::Rect(static_cast<int>(std::round((avatar_info.x - avatar.cols / 2) * map_info.scale_form_gimap)), static_cast<int>(std::round(avatar_info.y - avatar.rows / 2)), avatar.cols, avatar.rows);
 	auto avatar_rect_roi = avatar_rect & map_info.map_rect;
 	if (avatar_rect_roi.area() > 0)
 	{

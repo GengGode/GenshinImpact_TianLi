@@ -68,11 +68,11 @@ public:
 	}
 	bool get_image_tag(std::string id, std::string& tag)
 	{
+		std::lock_guard<std::mutex> lock(is_used_m);
 		if (result_map.find(id) != result_map.end())
 		{
 			tag = result_map[id];
 			// ÇåÀí£¬¼ÓËø
-			std::lock_guard<std::mutex> lock(is_used_m);
 			result_map.erase(id);
 			task_map.erase(id);
 			work_map.erase(id);
