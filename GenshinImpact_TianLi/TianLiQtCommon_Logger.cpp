@@ -1,4 +1,4 @@
-#define _LOG_SHOW
+ï»¿#define _LOG_SHOW
 
 #ifdef _DEBUG
 #define __DEFINE_LOGGER
@@ -21,6 +21,9 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 
+#include "Logger/TianLi.Logger/TianLi.Logger.h"
+#pragma comment(lib, "TianLi.Logger.lib")
+
 TianLiQtCommon_Logger& TianLiQtCommon_Logger::GetInstance()
 {
 	static QMutex mutex;
@@ -31,6 +34,9 @@ TianLiQtCommon_Logger& TianLiQtCommon_Logger::GetInstance()
 		if (instance.isNull())
 		{
 			instance.reset(new TianLiQtCommon_Logger(NULL));
+			TianLi::Logger::Logger::get_instance().set_callback([](const char* log) {
+				TianLiQtCommon_Logger::GetInstance().Info("Log", log);
+			});
 		}
 		mutex.unlock();
 	}
@@ -65,8 +71,8 @@ TianLiQtCommon_Logger::TianLiQtCommon_Logger(QWidget *parent)
 	widthlist->resizeSection(3, 100);
 	widthlist->setStretchLastSection(true);
 	QStringList list;                                                     
-	// list << "Ê±¼ä´Á" << "ÀàÐÍ" << "º¯Êý" << "ÏûÏ¢" ;
-	list << QString::fromLocal8Bit("Ê±¼ä´Á") << QString::fromLocal8Bit("ÀàÐÍ") << QString::fromLocal8Bit("º¯Êý") << QString::fromLocal8Bit("ÏûÏ¢");
+	// list << "æ—¶é—´æˆ³" << "ç±»åž‹" << "å‡½æ•°" << "æ¶ˆæ¯" ;
+	list << QString::fromLocal8Bit("time") << QString::fromLocal8Bit("ç±»åž‹") << QString::fromLocal8Bit("å‡½æ•°") << QString::fromLocal8Bit("æ¶ˆæ¯");
 	ui.tableWidget->setHorizontalHeaderLabels(list);
 	ui.tableWidget->show();
 	this->show();
@@ -95,9 +101,9 @@ TianLiQtCommon_Logger::~TianLiQtCommon_Logger()
 
 void TianLiQtCommon_Logger::append(QString time, QString type, QString func, QString msg)
 {
-	int rowcount = ui.tableWidget->rowCount();           //»ñÈ¡µ±Ç°ÐÐÊý
-	ui.tableWidget->insertRow(rowcount);                 //ÐÂÔöÐÐ
-	ui.tableWidget->setItem(rowcount, 0, new QTableWidgetItem(time)); //ÐÂÔöÐÐÌí¼ÓÊý¾Ý
+	int rowcount = ui.tableWidget->rowCount();           //ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
+	ui.tableWidget->insertRow(rowcount);                 //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ui.tableWidget->setItem(rowcount, 0, new QTableWidgetItem(time)); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	QTableWidgetItem* item_type = new QTableWidgetItem(type);
 	// Info Error Warning Debug other
 	// blue red orange yellow green
@@ -134,7 +140,7 @@ void TianLiQtCommon_Logger::append(QString time, QString type, QString func, QSt
 void TianLiQtCommon_Logger::log(QString type, QString func, QString msg)
 {
 	QDateTime time = QDateTime::currentDateTime();  
-	QString timestr = time.toString("hh:mm:ss:ms");             //ÉèÖÃÏÔÊ¾¸ñÊ½
+	QString timestr = time.toString("hh:mm:ss:ms");             //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê½
 	append(timestr, type, func, msg);
 }
 

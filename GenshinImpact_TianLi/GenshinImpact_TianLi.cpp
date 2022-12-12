@@ -33,6 +33,9 @@
 #include "..\GenshinImpact_TianLi_Data\GenshinImpact_TianLi_Data.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Data.lib")
 
+#include "Logger/TianLi.Logger/TianLi.Logger.h"
+#pragma comment(lib, "TianLi.Logger.lib")
+
 using namespace TianLi;
 
 GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
@@ -92,6 +95,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 			LogInfo(item_button_group.button(id)->text() + " 被选中");
 			item_button_group.button(id)->clicked(true);
 		}
+		Logger::Logger::get_instance().info("测试结束");
 	}
 	
 	//添加全局快捷键
