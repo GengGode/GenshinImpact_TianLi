@@ -82,7 +82,7 @@ LRESULT CALLBACK TianLiQtCommon_ListenKeyBoard::keyboard_proc(int nCode, WPARAM 
 	{
 		switch (wParam) {
 		case WM_KEYDOWN: {
-			LogInfo(QString::fromStdString(std::format("按下: {}\n", p->vkCode)));
+			//LogInfo(QString::fromStdString(std::format("按下: {}\n", p->vkCode)));
 			if (key_signal_map.contains(p->vkCode))
 			{
 				if (key_signal_map[p->vkCode].first.first == false)
@@ -95,7 +95,7 @@ LRESULT CALLBACK TianLiQtCommon_ListenKeyBoard::keyboard_proc(int nCode, WPARAM 
 			}
 		} break;
 		case WM_SYSKEYDOWN: {
-			LogInfo(QString::fromStdString(std::format("WM_SYSKEYDOWN: {}\n", p->vkCode)));
+			//LogInfo(QString::fromStdString(std::format("WM_SYSKEYDOWN: {}\n", p->vkCode)));
 			key_system = p->vkCode;
 			if (key_system == 164 || key_system == 165)
 			{
@@ -116,7 +116,7 @@ LRESULT CALLBACK TianLiQtCommon_ListenKeyBoard::keyboard_proc(int nCode, WPARAM 
 			
 		} break;
 		case WM_KEYUP: {
-			LogInfo(QString::fromStdString(std::format("弹起: {}\n", p->vkCode)));
+			//LogInfo(QString::fromStdString(std::format("弹起: {}\n", p->vkCode)));
 			if (key_signal_map.contains(p->vkCode))
 			{
 				if (key_signal_map[p->vkCode].first.first == true)

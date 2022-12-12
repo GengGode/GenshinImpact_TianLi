@@ -34,8 +34,8 @@ TianLiQtCommon_Logger& TianLiQtCommon_Logger::GetInstance()
 		if (instance.isNull())
 		{
 			instance.reset(new TianLiQtCommon_Logger(NULL));
-			TianLi::Logger::Logger::get_instance().set_callback([](const char* log) {
-				TianLiQtCommon_Logger::GetInstance().Info("Log", log);
+			TianLi::Logger::Logger::get_instance().set_callback([](const char* time, const char* type, const char* func, const char* msg) {
+				TianLiQtCommon_Logger::GetInstance().append(time, type, func, msg);
 			});
 		}
 		mutex.unlock();
@@ -72,7 +72,7 @@ TianLiQtCommon_Logger::TianLiQtCommon_Logger(QWidget *parent)
 	widthlist->setStretchLastSection(true);
 	QStringList list;                                                     
 	// list << "时间戳" << "类型" << "函数" << "消息" ;
-	list << QString::fromLocal8Bit("time") << QString::fromLocal8Bit("类型") << QString::fromLocal8Bit("函数") << QString::fromLocal8Bit("消息");
+	list << QString::fromLocal8Bit("时间戳") << QString::fromLocal8Bit("类型") << QString::fromLocal8Bit("函数") << QString::fromLocal8Bit("消息");
 	ui.tableWidget->setHorizontalHeaderLabels(list);
 	ui.tableWidget->show();
 	this->show();

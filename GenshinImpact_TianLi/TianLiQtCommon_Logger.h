@@ -111,16 +111,16 @@ private:
 #define _Cat_(a, b) a ## b
 #define _Cat(a, b) _Cat_(a, b)
 #define _CatVarNameWithLine(Var) _Cat(Var, __LINE__)
-#define Log Logger::get_instance()
+//#define Log Logger::get_instance()
 #define LogTraceScope LoggerAux _CatVarNameWithLine(_func_aux_)
 #define LogTraceFunction LogTraceScope(__FUNCTION__)
 #define LogTraceFunctionWithArgs 
 #define TianLi_Logger TianLiQtCommon_Logger::GetInstance() 
-#define LogInfo(x) TianLi_Logger.Info(__FUNCTION__, x)
-#define LogDebug(x) TianLi_Logger.Debug(__FUNCTION__, x)
-#define LogTrace(x) TianLi_Logger.Trace(__FUNCTION__, x)
-#define LogWarn(x) TianLi_Logger.Warn(__FUNCTION__, x)
-#define LogError(x) TianLi_Logger.Error(__FUNCTION__, x)
+//#define LogInfo(x) TianLi_Logger.Info(__FUNCTION__, x)
+//#define LogDebug(x) TianLi_Logger.Debug(__FUNCTION__, x)
+//#define LogTrace(x) TianLi_Logger.Trace(__FUNCTION__, x)
+//#define LogWarn(x) TianLi_Logger.Warn(__FUNCTION__, x)
+//#define LogError(x) TianLi_Logger.Error(__FUNCTION__, x)
 #else
 #ifdef _LOG_SHOW
 #define _Cat_(a, b) a ## b
@@ -131,17 +131,18 @@ private:
 #define LogTraceFunction LogTraceScope(__FUNCTION__)
 #define LogTraceFunctionWithArgs 
 #define TianLi_Logger TianLiQtCommon_Logger::GetInstance() 
-#define LogInfo(x) TianLi_Logger.Info(__FUNCTION__, x)
-#define LogDebug(x) TianLi_Logger.Debug(__FUNCTION__, x)
-#define LogTrace(x) TianLi_Logger.Trace(__FUNCTION__, x)
-#define LogWarn(x) TianLi_Logger.Warn(__FUNCTION__, x)
-#define LogError(x) TianLi_Logger.Error(__FUNCTION__, x)
+//#define LogInfo(x) TianLi_Logger.Info(__FUNCTION__, x)
+//#define LogDebug(x) TianLi_Logger.Debug(__FUNCTION__, x)
+//#define LogTrace(x) TianLi_Logger.Trace(__FUNCTION__, x)
+//#define LogWarn(x) TianLi_Logger.Warn(__FUNCTION__, x)
+//#define LogError(x) TianLi_Logger.Error(__FUNCTION__, x)
 #else
 #define LogTraceFunction ;
-#define LogInfo(x) ;
-#define LogDebug(x) ;
-#define LogTrace(x) ;
-#define LogWarn(x) ;
-#define LogError(x) ;
+#define TianLi_Logger ;
+//#define LogInfo(x) ;
+//#define LogDebug(x) ;
+//#define LogTrace(x) ;
+//#define LogWarn(x) ;
+//#define LogError(x) ;
 #endif // _LOG_SHOW
 #endif // _DEBUG

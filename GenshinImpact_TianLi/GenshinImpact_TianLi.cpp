@@ -25,6 +25,8 @@
 #include <QFontDatabase>
 #include <QMouseEvent>
 #include <QTimer>
+#include <QFile>
+#include <QTextStream>
 
 
 #include "..\GenshinImpact_TianLi_Map\GenshinImpact_TianLi_Map.h"
@@ -42,6 +44,18 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+	TianLi_Logger;
+	// 从qrc中加载 qrc:/Version/resource/Version/version.ver
+	QFile file(":/Version/resource/Version/version.ver");
+	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		QTextStream in(&file);
+		QString line = in.readLine();
+		LogInfo(line.toStdString().c_str());
+		//this->setWindowTitle(QString("天理辅助 %1").arvg(line));
+		file.close();
+	}
+	
 
 	this->setWindowFlags(Qt::FramelessWindowHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -79,23 +93,23 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 		{
 			int id = area_button_index_map["诸法丛林"];
 			area_button_group.button(id)->setChecked(true);
-			LogInfo(area_button_group.button(id)->text() + " 被选中");
+			LogInfo(QString(area_button_group.button(id)->text() + " 被选中").toStdString().c_str());
 		}
 		if (type_button_index_map.contains("特产"))
 		{
 			int id = type_button_index_map["特产"];
 			type_button_group.button(id)->setChecked(true);
-			LogInfo(type_button_group.button(id)->text() + " 被选中");
+			LogInfo(QString(type_button_group.button(id)->text() + " 被选中").toStdString().c_str());
 			type_button_group.button(id)->clicked(true);
 		}
 		if (item_button_index_map.contains("劫波莲"))
 		{
 			int id = item_button_index_map["劫波莲"];
 			item_button_group.button(id)->setChecked(true);
-			LogInfo(item_button_group.button(id)->text() + " 被选中");
+			LogInfo(QString(item_button_group.button(id)->text() + " 被选中").toStdString().c_str());
 			item_button_group.button(id)->clicked(true);
 		}
-		Logger::Logger::get_instance().info("测试结束");
+		LogInfo("测试结束");
 	}
 	
 	//添加全局快捷键
@@ -124,7 +138,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 		if (ui.Tab_ButtonGroup->button(id)->isChecked())
 		{
 			ui.stackedWidget_MainTabPages->setCurrentIndex(-2-id);
-			LogInfo(QString::number(id)+" -=> "+ QString::number(-2-id));
+			LogInfo((QString::number(id) + " -=> " + QString::number(-2 - id)).toStdString().c_str());
 		}
 		});
 	connect(ui.pushButton_Set, &QPushButton::clicked, [=]() {
@@ -823,7 +837,7 @@ void GenshinImpact_TianLi::slot_show()
 			main_bebind_widget->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow);
 			main_bebind_widget->setAttribute(Qt::WA_TranslucentBackground, true);
 
-			LogInfo(QString("创建主窗口后的模糊覆盖 RECT：") + QString::number(gi_client_rect.left) + " " +  QString::number(gi_client_rect.top) + " " + QString::number(gi_client_rect.right) + " " +  QString::number(gi_client_rect.bottom));
+			LogInfo((QString("创建主窗口后的模糊覆盖 RECT：") + QString::number(gi_client_rect.left) + " " +  QString::number(gi_client_rect.top) + " " + QString::number(gi_client_rect.right) + " " +  QString::number(gi_client_rect.bottom)).toStdString().c_str());
 			/*SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)main_bebind_widget->winId(), GWL_EXSTYLE) |
 				WS_EX_TRANSPARENT);*/
 			TianLi::Utils::set_window_blur_bebind((HWND)main_bebind_widget->winId());

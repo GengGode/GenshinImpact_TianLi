@@ -18,7 +18,7 @@ GenshinImpact_TianLi_Map::GenshinImpact_TianLi_Map()
 	data = new GenshinImpact_TianLi_Data();
 	//================== init =========================
 	data->init(&core->GetSqlite());
-	TianLi::Logger::Logger::get_instance().info("GenshinImpact_TianLi_Map init");
+	LogInfo("GenshinImpact_TianLi_Map init");
 }
 
 GenshinImpact_TianLi_Map::~GenshinImpact_TianLi_Map()
