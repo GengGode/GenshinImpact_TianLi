@@ -218,6 +218,7 @@
     <ClInclude Include="GenshinImpact_TianLi_Resource.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="TianLi.Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GenshinImpact_TianLi_Resource.cpp" />

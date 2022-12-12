@@ -27,6 +27,9 @@
     <ClInclude Include="GenshinImpact_TianLi_Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="TianLi.Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GenshinImpact_TianLi_Resource.cpp">

@@ -36,9 +36,6 @@ namespace TianLi
 		__int64 size;
 	};
 
-	HBITMAP DLLAPI LoadPNG_GIMAP();
-	HBITMAP DLLAPI LoadBitmap_GIPAIMON();
-
 	SqliteDbMem DLLAPI LoadSqlite_KYJGDB();
 	XmlDbMem DLLAPI LoadXml_GIMAP_COMPUTE();
 }
@@ -48,9 +45,6 @@ class DLLAPI GenshinImpact_TianLi_Resource
 public:
 	~GenshinImpact_TianLi_Resource();
 	static GenshinImpact_TianLi_Resource* GetInstance();
-
-	HBITMAP LoadPNG_GIMAP() { return TianLi::LoadPNG_GIMAP(); }
-	HBITMAP LoadBitmap_GIPAIMON() { return TianLi::LoadBitmap_GIPAIMON(); }
 	TianLi::SqliteDbMem LoadSqlite_KYJGDB() { return TianLi::LoadSqlite_KYJGDB(); }
 	TianLi::XmlDbMem LoadXml_GIMAP_COMPUTE() { return TianLi::LoadXml_GIMAP_COMPUTE(); }
 

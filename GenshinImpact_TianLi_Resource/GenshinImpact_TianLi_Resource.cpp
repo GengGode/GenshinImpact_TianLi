@@ -11,77 +11,7 @@
 namespace TianLi
 {
 	
-	HBITMAP LoadPNG_GIMAP()
-	{
-		HMODULE hModu = NULL;
-		IWICStream* pIWICStream = NULL;
-		IWICBitmapDecoder* pIDecoder = NULL;
-		IWICBitmapFrameDecode* pIDecoderFrame = NULL;
-		IWICImagingFactory* m_pIWICFactory = NULL;
-		IWICBitmapSource* bitmap_source = NULL;
-		HRSRC imageResHandle = NULL;
-		HGLOBAL imageResDataHandle = NULL;
-		void* pImageFile = NULL;
-		DWORD imageFileSize = 0;
-		
-		HBITMAP hGIMAP;
-#ifdef _LIB
-		hModu = GetModuleHandle(0);
-#else
-		hModu = GetModuleHandle(L"GenshinImpact_TianLi_Resource.dll");
-#endif
-		
-		CoInitializeEx(NULL, COINIT_MULTITHREADED);
-
-		CoCreateInstance(
-			CLSID_WICImagingFactory,
-			NULL,
-			CLSCTX_INPROC_SERVER,
-			IID_PPV_ARGS(&m_pIWICFactory)
-		);
-
-		imageResHandle = FindResource(hModu, MAKEINTRESOURCE(IDB_PNG_GIMAP), L"PNG");
-		imageResDataHandle = LoadResource(hModu, imageResHandle);
-		pImageFile = LockResource(imageResDataHandle);
-		imageFileSize = SizeofResource(hModu, imageResHandle);
-		m_pIWICFactory->CreateStream(&pIWICStream);
-
-		pIWICStream->InitializeFromMemory(
-			reinterpret_cast<BYTE*>(pImageFile),
-			imageFileSize);
-		m_pIWICFactory->CreateDecoderFromStream(
-			pIWICStream,                   // The stream to use to create the decoder
-			NULL,                          // Do not prefer a particular vendor
-			WICDecodeMetadataCacheOnLoad,  // Cache metadata when needed
-			&pIDecoder);                   // Pointer to the decoder
-		pIDecoder->GetFrame(0, &pIDecoderFrame);
-
-		bitmap_source = pIDecoderFrame;
-
-		UINT width = 0, height = 0, depht = 4;
-		bitmap_source->GetSize(&width, &height);
-
-		{
-			std::vector<BYTE> buffer(width * height * depht);
-			bitmap_source->CopyPixels(NULL, width * depht, static_cast<UINT>(buffer.size()), buffer.data());
-
-			hGIMAP = CreateBitmap(width, height, 1, 8 * depht, buffer.data());
-		}
-		return hGIMAP;
-	}
-
-	// 加载 Bitmap 图片 ID_GIPAIMON
-	HBITMAP LoadBitmap_GIPAIMON()
-	{
-#ifdef _LIB
-		HMODULE H_Module = GetModuleHandleW(NULL);
-#else
-		HMODULE H_Module = GetModuleHandle(L"GenshinImpact_TianLi_Resource.dll");
-#endif
-		
-		HBITMAP H_GIPAIMON = LoadBitmap(H_Module, MAKEINTRESOURCE(IDB_BITMAP_GIPAIMON));
-		return H_GIPAIMON;
-	}
+	
 	SqliteDbMem LoadSqlite_KYJGDB()
 	{
 #ifdef _LIB
@@ -308,7 +238,15 @@ void GenshinImpact_TianLi_Resource::LoadPng_ID2Mat(int IDB, cv::Mat& mat)
 	DWORD imageFileSize = 0;
 	
 	imageResHandle = FindResource(hModu, MAKEINTRESOURCE(IDB), L"PNG");
+	if (imageResHandle == NULL)
+	{
+		return;
+	}
 	imageResDataHandle = LoadResource(hModu, imageResHandle);
+	if (imageResDataHandle == NULL)
+	{
+		return;
+	}
 	pImageFile = LockResource(imageResDataHandle);
 	imageFileSize = SizeofResource(hModu, imageResHandle);
 	m_pIWICFactory->CreateStream(&pIWICStream);
@@ -350,14 +288,22 @@ void GenshinImpact_TianLi_Resource::LoadPng()
 #endif
 	hModu = H_Module;
 
-	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	auto co_res = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	if (co_res == S_OK)
+	{
+		return;
+	}
 
-	CoCreateInstance(
+	co_res=CoCreateInstance(
 		CLSID_WICImagingFactory,
 		NULL,
 		CLSCTX_INPROC_SERVER,
 		IID_PPV_ARGS(&m_pIWICFactory)
 	);
+	if (FAILED(co_res))
+	{
+		return;
+	}
 	
 	LoadPng_ID2Mat(IDB_PNG_GIMAP, GIMAP);
 	LoadPng_ID2Mat(IDB_PNG_GIPAIMON, GIPAIMON);
@@ -386,7 +332,7 @@ void GenshinImpact_TianLi_Resource::LoadPng()
 bool GenshinImpact_TianLi_Resource::HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat)
 {
 	//BITMAP操作
-	BITMAP bmp;
+	BITMAP bmp{};
 	GetObject(_hBmp, sizeof(BITMAP), &bmp);
 	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
 	//int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
@@ -407,7 +353,7 @@ bool GenshinImpact_TianLi_Resource::HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat)
 bool GenshinImpact_TianLi_Resource::HBitmap2MatAlpha(HBITMAP& _hBmp, cv::Mat& _mat)
 {
 	//BITMAP操作
-	BITMAP bmp;
+	BITMAP bmp{};
 	GetObject(_hBmp, sizeof(BITMAP), &bmp);
 	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
 	//int depth = bmp.bmBitsPixel == 1 ? 1 : 8;
