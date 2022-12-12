@@ -150,7 +150,7 @@
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -173,6 +173,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="TianLiQtCommon\TabMap.cpp" />
     <ClCompile Include="TianLiQtCommon_CardRect.cpp" />
     <ClCompile Include="TianLiQtCommon_HookKeyBoard.cpp" />
     <ClCompile Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.cpp" />
@@ -200,6 +201,7 @@
     <QtMoc Include="GenshinImpact_TianLi.h" />
     <ClCompile Include="GenshinImpact_TianLi.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="TianLiQtCommon\TabMap.ui" />
     <QtUic Include="TianLiQtCommon_CardRect.ui" />
     <QtUic Include="TianLiQtCommon_HUD_AzimuthBarWindow.ui" />
     <QtUic Include="TianLiQtCommon_HUD_CircularMap.ui" />
@@ -237,6 +239,7 @@
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <QtMoc Include="TianLiQtCommon_HookKeyBoard.h" />
+    <QtMoc Include="TianLiQtCommon\TabMap.h" />
     <ClInclude Include="TianLiQtCommon_HookKeyBoard_NativeEventFilter.h" />
     <QtMoc Include="TianLiQtCommon_SwitchButton.h" />
     <QtMoc Include="TianLiQtCommon_ListenKeyBoard.h" />

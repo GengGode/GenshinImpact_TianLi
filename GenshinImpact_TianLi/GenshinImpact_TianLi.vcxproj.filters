@@ -87,6 +87,12 @@
     <Filter Include="Source Files\TianLiQtCommon\Listen">
       <UniqueIdentifier>{c5c45c37-0997-4072-ba46-05941972e18d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TianLiQtCommon">
+      <UniqueIdentifier>{7c11b6fa-62af-41ae-818b-f1715a503c5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TianLiQtCommon\TabMap">
+      <UniqueIdentifier>{9edf7753-9548-47f3-9dd7-b82e32f4c88f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GenshinImpact_TianLi.qrc">
@@ -172,6 +178,9 @@
     <ClCompile Include="TianLiQtCommon_SwitchButton.cpp">
       <Filter>Source Files\TianLiQtCommon\Common\SwitchButton</Filter>
     </ClCompile>
+    <ClCompile Include="TianLiQtCommon\TabMap.cpp">
+      <Filter>TianLiQtCommon\TabMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="GenshinImpact_TianLi_zh.ts">
@@ -221,6 +230,9 @@
     <QtMoc Include="TianLiQtCommon_ListenKeyBoard.h">
       <Filter>Header Files\TianLiQtCommon</Filter>
     </QtMoc>
+    <QtMoc Include="TianLiQtCommon\TabMap.h">
+      <Filter>TianLiQtCommon\TabMap</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="TianLiQtCommon_CardRect.ui">
@@ -258,6 +270,9 @@
     </QtUic>
     <QtUic Include="TianLiQtCommon_SwitchButton.ui">
       <Filter>Form Files\TianLiQtCommon\Common</Filter>
+    </QtUic>
+    <QtUic Include="TianLiQtCommon\TabMap.ui">
+      <Filter>TianLiQtCommon\TabMap</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
