@@ -1,0 +1,61 @@
+name: MSBuild
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: .
+  
+  BUILD_CONFIGURATION: Release
+  Qt_Dir_Static : D:/a/GenshinTianLiBattleClient/GenshinTianLiBattleClient/deps_qt/5.15.7/
+  Opencv_Dir_Static : D:/a/GenshinTianLiBattleClient/GenshinTianLiBattleClient/opencv/
+permissions:
+  contents: read
+
+jobs:
+  depend:
+    runs-on: windows-latest
+    steps:
+    - name: Add Depend Opencv
+      run: |
+        # 下载 https://github.com/GengGode/OpencvStaticLib/releases/download/4.6.0/Opencv.zip
+        curl -L https://github.com/GengGode/OpencvStaticLib/releases/download/4.6.0/Opencv.zip -o Opencv.zip
+        7z x Opencv.zip -oopencv
+        dir
+    - name: Add Deps_Qt
+      run: |
+        git clone http://github.com/GenshinTianLiBattle/deps_qt.git
+        cd deps_qt
+        .\unzip.bat
+        Copy-Item -Path "openssl" -Destination "C:\" -Recurse
+        cd ..
+        dir
+        copy deps_qt/QtMsBuild.7z GenshinImpact_TianLi/
+        copy deps_qt/7z.exe GenshinImpact_TianLi/
+        copy deps_qt/7z.dll GenshinImpact_TianLi/
+        cd GenshinImpact_TianLi
+        7z.exe x QtMsBuild.7z   
+        
+  build:
+    runs-on: windows-latest
+    needs: depend
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
