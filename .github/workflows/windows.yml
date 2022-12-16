@@ -17,16 +17,12 @@ permissions:
   contents: read
 
 jobs:
-  source:
+  build:
     runs-on: windows-latest
+
     steps:
     - uses: actions/checkout@v3
     
-  depend:
-    runs-on: windows-latest
-    needs: source
-    
-    steps:
     - name: Add Depend Opencv
       run: |
         # 下载 https://github.com/GengGode/OpencvStaticLib/releases/download/4.6.0/Opencv.zip
@@ -47,13 +43,6 @@ jobs:
         cd GenshinImpact_TianLi
         7z.exe x QtMsBuild.7z   
         
-  build:
-    runs-on: windows-latest
-    needs: depend
-
-    steps:
-    - uses: actions/checkout@v3
-
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
 
