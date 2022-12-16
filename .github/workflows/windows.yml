@@ -11,14 +11,21 @@ env:
   SOLUTION_FILE_PATH: .
   
   BUILD_CONFIGURATION: Release
-  Qt_Dir_Static : D:/a/GenshinTianLiBattleClient/GenshinTianLiBattleClient/deps_qt/5.15.7/
-  Opencv_Dir_Static : D:/a/GenshinTianLiBattleClient/GenshinTianLiBattleClient/opencv/
+  Qt_Dir_Static : D:/a/GenshinImpact_TianLi/GenshinImpact_TianLi/deps_qt/5.15.7/
+  Opencv_Dir_Static : D:/a/GenshinImpact_TianLi/GenshinImpact_TianLi/opencv/
 permissions:
   contents: read
 
 jobs:
+  source:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    
   depend:
     runs-on: windows-latest
+    needs: source
+    
     steps:
     - name: Add Depend Opencv
       run: |
