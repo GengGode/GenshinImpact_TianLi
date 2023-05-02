@@ -92,7 +92,7 @@ TianLiQtCommon_Logger::TianLiQtCommon_Logger(QWidget *parent)
 	reply->deleteLater();
 	manager->deleteLater();
 		});
-	manager->get(QNetworkRequest(QUrl("http://download.api.weixitianli.com/GenshinImpactTianLi/Version/Latest")));
+	manager->get(QNetworkRequest(QUrl("http://download.api.weixitianli.com/cvAutoTrack/")));
 }
 
 TianLiQtCommon_Logger::~TianLiQtCommon_Logger()

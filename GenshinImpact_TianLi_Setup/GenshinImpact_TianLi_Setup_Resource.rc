@@ -50,8 +50,9 @@ END
 // EXE
 //
 
-IDR_EXE                 EXE                     "C:\\Users\\GengG\\source\\repos\\GenshinImpact_TianLi\\x64\\Debug\\GenshinImpact_TianLi.exe"
-
+#ifndef OnlineDownloadPkg
+IDR_EXE                 EXE                     "..\\x64\\Release\\test.exe"
+#endif
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 

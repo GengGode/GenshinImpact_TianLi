@@ -72,7 +72,4 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\x64\Debug\GenshinImpact_TianLi.exe" />
-  </ItemGroup>
 </Project>

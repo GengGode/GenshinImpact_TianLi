@@ -153,6 +153,7 @@ void GenshinImpact_TianLi_Setup::pushButton_UI_Close()
 	
     ui.label_MainShadow_A->hide();
     ui.label_MainShadow_B->hide();
+	ui.label_Satellite_Orbit->hide();
 	
 	// Ω•Ω•Àı–°
     exitAnimation = new QPropertyAnimation(ui.label_MainShadow, "geometry");

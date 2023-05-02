@@ -82,7 +82,7 @@ void GenshinImpact_TianLi_Map::render_legend(cv::Mat& map)
 	{
 		cv::Mat img = info.image;
 		cv::Point diff_center_pos = cv::Point(info.image.cols / 2, info.image.rows / 2) - info.center_pos;
-		cv::resize(img, img, cv::Size(), 1.0/map_info.scale_form_gimap, 1.0/map_info.scale_form_gimap);
+		//cv::resize(img, img, cv::Size(), 1.0/map_info.scale_form_gimap, 1.0/map_info.scale_form_gimap);
 
 		BadgeInfo::BadgeBlock show_infos;
 		

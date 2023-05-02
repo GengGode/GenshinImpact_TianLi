@@ -15,7 +15,9 @@
         <file>resource/Vector.png</file>
         <file>resource/Group 72 1 1.png</file>
     </qresource>
-    <qresource prefix="/font"/>
+    <qresource prefix="/font">
+        <file>resource/font/MiSans-Bold.ttf</file>
+    </qresource>
     <qresource prefix="/Logo">
         <file>resource/Icon.ico</file>
         <file>resource/Icon.png</file>

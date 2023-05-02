@@ -7,7 +7,16 @@
 
 int main()
 {
-	cv::Mat map = cv::imread("../GenshinImpact_TianLi_Resource/resource/GIMAP.png");
+	cv::Mat map;
+	try
+	{
+		map = cv::imread("../GenshinImpact_TianLi_Resource/resource/GIMAP.png");
+	}
+	catch (std::exception e)
+	{
+		std::cout << e.what();
+		return 0;
+	}
 	
 	std::vector<cv::KeyPoint> Kp_Map;
 	cv::Mat Dp_Map;

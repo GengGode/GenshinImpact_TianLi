@@ -14,9 +14,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi", "Gen
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Setup", "GenshinImpact_TianLi_Setup\GenshinImpact_TianLi_Setup.vcxproj", "{4B8927E3-4588-42B5-9A46-B5A3CA12B4CB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9BDDB7C6-9680-4FC5-BB05-AE567E9CD227} = {9BDDB7C6-9680-4FC5-BB05-AE567E9CD227}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_TianLi_Sqlite", "GenshinImpact_TianLi_Sqlite\GenshinImpact_TianLi_Sqlite.vcxproj", "{3B1F4292-4764-4F16-A0EF-FB7B98721EC1}"
 EndProject
@@ -50,7 +47,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Build_TianLi_Resource_GIMAP
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Build_TianLi_Resource_KongYingJiuGuanData", "Build_TianLi_Resource_KongYingJiuGuanData\Build_TianLi_Resource_KongYingJiuGuanData.vcxproj", "{CD321B7D-54F9-4890-9280-5BB8DE643570}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{29614384-E608-44DF-8C12-39C93EFE2D1E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "文档", "文档", "{29614384-E608-44DF-8C12-39C93EFE2D1E}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection

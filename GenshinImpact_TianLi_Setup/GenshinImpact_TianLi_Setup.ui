@@ -204,7 +204,7 @@ border-radius:5px;
     <string notr="true"/>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QPushButton" name="pushButton_FastInstall">
@@ -541,13 +541,14 @@ font-size:16px;</string>
      <property name="font">
       <font>
        <family>HYWenHei</family>
+       <pointsize>-1</pointsize>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">color: #7B7B7B;
 
 padding: 8px 16px 7px;
-
+font-size:13px;
 position: absolute;
 width: 58px;
 height: 32px;
@@ -639,6 +640,9 @@ font-size:12px;</string>
           <height>38</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true">font-size:13px;</string>
+        </property>
         <property name="text">
          <string>TextLabel</string>
         </property>
@@ -657,6 +661,9 @@ font-size:12px;</string>
           <width>38</width>
           <height>38</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font-size:13px;</string>
         </property>
         <property name="text">
          <string>TextLabel</string>
@@ -677,13 +684,14 @@ font-size:12px;</string>
      <property name="font">
       <font>
        <family>HYWenHei</family>
+       <pointsize>-1</pointsize>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">color: #FFFFFF;
 
 padding: 8px 16px 7px;
-
+font-size:13px;
 position: absolute;
 width: 58px;
 height: 32px;
@@ -709,13 +717,14 @@ border-radius: 4px;</string>
      <property name="font">
       <font>
        <family>HYWenHei</family>
+       <pointsize>-1</pointsize>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">color: #7B7B7B;
 
 padding: 8px 16px 7px;
-
+font-size:13px;
 position: absolute;
 width: 58px;
 height: 32px;

@@ -22,6 +22,12 @@
     <height>31</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>HYWenHei</family>
+    <pointsize>13</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>TianLiQtCommon_TimeLineLabel</string>
   </property>
