@@ -158,13 +158,15 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>D:\opencv\opencv_455\install\install_build_Static_NoWorld_NoCuda\include;</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)third_party/Opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(SolutionDir)third_party/Opencv\x64\vc17\staticlib;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>aded.lib;IlmImfd.lib;ippicvmt.lib;ippiwd.lib;ittnotifyd.lib;libjpeg-turbod.lib;libopenjp2d.lib;libpngd.lib;libprotobufd.lib;libtiffd.lib;libwebpd.lib;opencv_world460d.lib;quircd.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DeDyn|x64'">
@@ -200,7 +202,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>E:\Opencv\4.6.0\include;E:\Opencv\4.6.0-staticlib\include;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)third_party/Opencv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -209,7 +211,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>E:\Opencv\4.6.0\x64\vc17\lib;E:\Opencv\4.6.0-staticlib\x64\vc17\staticlib;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)third_party/Opencv\x64\vc17\staticlib;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world460.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -231,6 +233,23 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GenshinImpact_TianLi_Core\GenshinImpact_TianLi_Core.vcxproj">
+      <Project>{bac67ee5-a634-40d5-83f8-585577f9505f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GenshinImpact_TianLi_Data\GenshinImpact_TianLi_Data.vcxproj">
+      <Project>{ab34b28c-7701-45fa-8342-02847dd92771}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GenshinImpact_TianLi_Resource\GenshinImpact_TianLi_Resource.vcxproj">
+      <Project>{534b6e8d-220b-48fc-9163-dddba5207f89}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GenshinImpact_TianLi_Sqlite\GenshinImpact_TianLi_Sqlite.vcxproj">
+      <Project>{3b1f4292-4764-4f16-a0ef-fb7b98721ec1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GenshinImpact_TianLi_Track\GenshinImpact_TianLi_Track.vcxproj">
+      <Project>{ce0fb596-e144-46aa-961c-bef99dc6efbc}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

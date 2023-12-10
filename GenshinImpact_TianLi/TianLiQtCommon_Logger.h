@@ -1,8 +1,7 @@
 #pragma once
 #include <QWidget>
 #include "ui_TianLiQtCommon_Logger.h"
-#include "Logger/TianLi.Logger/TianLi.Logger.h"
-#pragma comment(lib, "TianLi.Logger.lib")
+
 class TianLiQtCommon_Logger : public QWidget
 {
     Q_OBJECT

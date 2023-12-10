@@ -21,8 +21,6 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 
-#include "Logger/TianLi.Logger/TianLi.Logger.h"
-#pragma comment(lib, "TianLi.Logger.lib")
 
 TianLiQtCommon_Logger& TianLiQtCommon_Logger::GetInstance()
 {
@@ -34,9 +32,6 @@ TianLiQtCommon_Logger& TianLiQtCommon_Logger::GetInstance()
 		if (instance.isNull())
 		{
 			instance.reset(new TianLiQtCommon_Logger(NULL));
-			TianLi::Logger::Logger::get_instance().set_callback([](const char* time, const char* type, const char* func, const char* msg) {
-				TianLiQtCommon_Logger::GetInstance().append(time, type, func, msg);
-			});
 		}
 		mutex.unlock();
 	}
@@ -84,10 +79,10 @@ TianLiQtCommon_Logger::TianLiQtCommon_Logger(QWidget *parent)
 		if (reply->error() == QNetworkReply::NoError) {
 			QByteArray bytes = reply->readAll();
 			QString result(bytes);
-			LogInfo(result.toStdString().c_str());
+			//LogInfo(result.toStdString().c_str());
 		}
 		else {
-			LogError("HttpGet Error");
+			//LogError("HttpGet Error");
 		}
 	reply->deleteLater();
 	manager->deleteLater();

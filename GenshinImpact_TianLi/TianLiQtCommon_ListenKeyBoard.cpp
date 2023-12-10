@@ -33,11 +33,11 @@ TianLiQtCommon_ListenKeyBoard::TianLiQtCommon_ListenKeyBoard(QObject *parent)
 	
 	if (handle_hook_keyboard == NULL)
 	{
-		LogWarn("SetWindowsHookEx failed!");
+		//LogWarn("SetWindowsHookEx failed!");
 	}
 	else
 	{
-		LogInfo("SetWindowsHookEx success!");
+		//LogInfo("SetWindowsHookEx success!");
 	}
 }
 

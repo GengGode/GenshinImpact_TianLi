@@ -66,7 +66,7 @@ void TianLiQtCommon_HUD_SquareMap::mouseDoubleClickEvent(QMouseEvent* event)
 	{
 		if (this->main_tianli == nullptr)
 		{
-			LogError("main_widget is nullptr");
+			//LogError("main_widget is nullptr");
 		}
 		else
 		{

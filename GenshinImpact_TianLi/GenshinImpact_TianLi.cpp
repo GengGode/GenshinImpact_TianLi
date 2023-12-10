@@ -35,9 +35,6 @@
 #include "..\GenshinImpact_TianLi_Data\GenshinImpact_TianLi_Data.h"
 #pragma comment(lib,"GenshinImpact_TianLi_Data.lib")
 
-#include "Logger/TianLi.Logger/TianLi.Logger.h"
-#pragma comment(lib, "TianLi.Logger.lib")
-
 using namespace TianLi;
 
 GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
@@ -51,7 +48,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 	{
 		QTextStream in(&file);
 		QString line = in.readLine();
-		LogInfo(line.toStdString().c_str());
+		//LogInfo(line.toStdString().c_str());
 		//this->setWindowTitle(QString("天理辅助 %1").arvg(line));
 		file.close();
 	}
@@ -93,23 +90,23 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 		{
 			int id = area_button_index_map["诸法丛林"];
 			area_button_group.button(id)->setChecked(true);
-			LogInfo(QString(area_button_group.button(id)->text() + " 被选中").toStdString().c_str());
+			//LogInfo(QString(area_button_group.button(id)->text() + " 被选中").toStdString().c_str());
 		}
 		if (type_button_index_map.contains("特产"))
 		{
 			int id = type_button_index_map["特产"];
 			type_button_group.button(id)->setChecked(true);
-			LogInfo(QString(type_button_group.button(id)->text() + " 被选中").toStdString().c_str());
+			//LogInfo(QString(type_button_group.button(id)->text() + " 被选中").toStdString().c_str());
 			type_button_group.button(id)->clicked(true);
 		}
 		if (item_button_index_map.contains("劫波莲"))
 		{
 			int id = item_button_index_map["劫波莲"];
 			item_button_group.button(id)->setChecked(true);
-			LogInfo(QString(item_button_group.button(id)->text() + " 被选中").toStdString().c_str());
+			//LogInfo(QString(item_button_group.button(id)->text() + " 被选中").toStdString().c_str());
 			item_button_group.button(id)->clicked(true);
 		}
-		LogInfo("测试结束");
+		//LogInfo("测试结束");
 	}
 	
 	//添加全局快捷键
@@ -138,7 +135,7 @@ GenshinImpact_TianLi::GenshinImpact_TianLi(QWidget *parent)
 		if (ui.Tab_ButtonGroup->button(id)->isChecked())
 		{
 			ui.stackedWidget_MainTabPages->setCurrentIndex(-2-id);
-			LogInfo((QString::number(id) + " -=> " + QString::number(-2 - id)).toStdString().c_str());
+			//LogInfo((QString::number(id) + " -=> " + QString::number(-2 - id)).toStdString().c_str());
 		}
 		});
 	connect(ui.pushButton_Set, &QPushButton::clicked, [=]() {
@@ -513,16 +510,16 @@ void GenshinImpact_TianLi::addUI_MapTabMapRect()
 		if (is_checked)
 		{
 			CoreMap.map_info.is_overlay = true;
-			LogInfo("显示地下");
+			//LogInfo("显示地下");
 		}
 		else
 		{
 			CoreMap.map_info.is_overlay = false;
-			LogInfo("隐藏地下");
+			//LogInfo("隐藏地下");
 		}
 		// 切换后要触发MapRect的强制重绘
 		PageTabMap_MapRect->slot_force_update();
-		LogInfo("触发重绘地图");
+		//LogInfo("触发重绘地图");
 		});
 	
 	
@@ -754,12 +751,12 @@ void GenshinImpact_TianLi::slot_auto_track()
 {
 	if (Core.GetTrack().ServerState())
 	{
-		LogInfo("Track状态为已运行，执行停止");
+		//LogInfo("Track状态为已运行，执行停止");
 		Core.GetTrack().StopServer();
 	}
 	else
 	{
-		LogInfo("Track状态为未运行，执行启动");
+		//LogInfo("Track状态为未运行，执行启动");
 		Core.GetTrack().StartServer();
 	}
 }
@@ -825,7 +822,7 @@ void GenshinImpact_TianLi::slot_updata_pickable_items(std::vector<std::string> i
 
 void GenshinImpact_TianLi::slot_show()
 {
-	LogInfo("显示主窗口");
+	//LogInfo("显示主窗口");
 	if (Core.GetTrack().GetResult().is_find_paimon)
 	{
 		if (main_bebind_widget == nullptr)
@@ -837,7 +834,7 @@ void GenshinImpact_TianLi::slot_show()
 			main_bebind_widget->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow);
 			main_bebind_widget->setAttribute(Qt::WA_TranslucentBackground, true);
 
-			LogInfo((QString("创建主窗口后的模糊覆盖 RECT：") + QString::number(gi_client_rect.left) + " " +  QString::number(gi_client_rect.top) + " " + QString::number(gi_client_rect.right) + " " +  QString::number(gi_client_rect.bottom)).toStdString().c_str());
+			//LogInfo((QString("创建主窗口后的模糊覆盖 RECT：") + QString::number(gi_client_rect.left) + " " +  QString::number(gi_client_rect.top) + " " + QString::number(gi_client_rect.right) + " " +  QString::number(gi_client_rect.bottom)).toStdString().c_str());
 			/*SetWindowLong((HWND)winId(), GWL_EXSTYLE, GetWindowLong((HWND)main_bebind_widget->winId(), GWL_EXSTYLE) |
 				WS_EX_TRANSPARENT);*/
 			TianLi::Utils::set_window_blur_bebind((HWND)main_bebind_widget->winId());
@@ -906,7 +903,7 @@ void GenshinImpact_TianLi::slot_show_or_hide()
 
 void GenshinImpact_TianLi::slot_hide()
 {
-	LogInfo("隐藏主窗口");
+	//LogInfo("隐藏主窗口");
 	if (main_bebind_widget != nullptr)
 	{
 		main_bebind_widget->hide();
@@ -1147,7 +1144,7 @@ void GenshinImpact_TianLi::slot_delete_object()
 	}
 	default:
 	{
-		LogWarn("信号来源未设定执行方法，检查来源");
+		//LogWarn("信号来源未设定执行方法，检查来源");
 	}
 	}
 }

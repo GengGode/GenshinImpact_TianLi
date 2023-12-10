@@ -9,16 +9,12 @@
 #pragma comment(lib,"GenshinImpact_TianLi_Data.lib")
 
 
-#include "..\GenshinImpact_TianLi\Logger/TianLi.Logger/TianLi.Logger.h"
-#pragma comment(lib, "TianLi.Logger.lib")
-
 GenshinImpact_TianLi_Map::GenshinImpact_TianLi_Map()
 {
 	core = new GenshinImpact_TianLi_Core();
 	data = new GenshinImpact_TianLi_Data();
 	//================== init =========================
 	data->init(&core->GetSqlite());
-	LogInfo("GenshinImpact_TianLi_Map init");
 }
 
 GenshinImpact_TianLi_Map::~GenshinImpact_TianLi_Map()

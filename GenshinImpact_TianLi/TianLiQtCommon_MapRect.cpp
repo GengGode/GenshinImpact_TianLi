@@ -55,13 +55,13 @@ void TianLiQtCommon_MapRect::mouseDoubleClickEvent(QMouseEvent* event)
 	{
 		if (is_double_click_old)
 		{
-			LogInfo("double click up");
+			//LogInfo("double click up");
 			is_double_click_old = false;
 			emit signal_double_click(false);
 		}
 		else
 		{
-			LogInfo("double click down");
+			//LogInfo("double click down");
 			is_double_click_old = true;
 			emit signal_double_click(true);
 		}
@@ -110,7 +110,7 @@ void TianLiQtCommon_MapRect::paintEvent(QPaintEvent* event)
 	static cv::Point old_map_center_pos;
 	static double old_map_scale = 0;
 	
-	// LogInfo(QString("进入 重绘地图 state: ")+QString::number(is_need_rerender));
+	// //LogInfo(QString("进入 重绘地图 state: ")+QString::number(is_need_rerender));
 
 	// 如果 old pos 和 old scale 与当前的一样，就不用重新计算了
 	if (old_map_center_pos != render_map_pos || old_map_scale != render_map_scale || is_need_rerender)
